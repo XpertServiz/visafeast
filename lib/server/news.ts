@@ -4,7 +4,7 @@ import { serviceClient } from "../supabase";
 
 const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
 const INCLUDE = /(visa|visitor|visit|student|study permit|study visa|\bETA\b|e-?visa|schengen|biometric|\bVFS\b|\bfee|processing|immigration rules|international students|pakistan)/i;
-const EXCLUDE = /(\bfuel\b|excise|tax relief|passport renewal)/i; // editable list: move to admin later
+const EXCLUDE = /(\bfuel\b|excise|tax relief|passport renewal|\bvot(e|er|ers|ing)\b|sentenced|\bcharged\b|indicted|arrested|pleads guilty)/i; // editable list: move to admin later
 
 const text = (v: unknown): string => (typeof v === "string" ? v : v && typeof v === "object" ? text((v as Record<string, unknown>)["#text"] ?? "") : "");
 const strip = (s: string) => s.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
