@@ -40,7 +40,7 @@ export async function fetchAllNews(): Promise<{ fetched: number; kept: number; e
   const { data: sources } = await db.from("news_sources").select("*").eq("is_active", true);
   const { data: countries } = await db.from("countries").select("country_code,keywords");
   let fetched = 0, kept = 0; const errors: string[] = [];
-  for (const s of sources ?? []) {
+  await Promise.all((sources ?? []).map(async (s) => {
     try {
       const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 10_000);
       const res = await fetch(s.url, { signal: ctl.signal, headers: { "user-agent": "VisafeastBot/1.0 (+https://visafeast.com)" } });
@@ -58,22 +58,23 @@ export async function fetchAllNews(): Promise<{ fetched: number; kept: number; e
         }
       } else {
         const news = s.kind === "google_news_rss"; // news-search feeds: headline + outlet only (no excerpt), newest 15 that pass the visa filter
-        let used = 0;
+        const { data: have } = await db.from("news_items").select("title").eq("source_id", s.id).limit(500);
+        const known = new Set((have ?? []).map((h: { title: string }) => h.title));
+        const rows: Record<string, unknown>[] = [];
         for (const it of parseFeed(xml).slice(0, 60)) {
-          if (news && used >= 15) break;
+          if (news && rows.length >= 15) break;
           fetched++;
-          if (!isRelevant(it)) continue;
+          if (!isRelevant(it) || known.has(it.title)) continue;
           const hay = `${it.title} ${it.summary}`.toLowerCase();
           // A story belongs to the country of the official source it came from. Keyword matching is only a fallback for sources
           // that cover several countries, and it matches whole words only (short codes like "th" or "us" would match "the" or "us").
           const codes = new Set<string>(s.country_codes ?? []);
           if (!codes.size) for (const c of countries ?? []) if ((c.keywords ?? []).some((k: string) => k.length >= 4 && new RegExp(`(?<![a-z])${k.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![a-z])`).test(hay))) codes.add(c.country_code);
-          const { data: dup } = await db.from("news_items").select("id").eq("source_id", s.id).eq("title", it.title).limit(1);
-          if (dup?.length) continue;
+          known.add(it.title);
           const topics = ["visit", "study", "fee", "processing", "policy"].filter((t) => hay.includes(t === "fee" ? "fee" : t));
-          const { error } = await db.from("news_items").upsert({ source_id: s.id, title: it.title, url: it.url, published_at: it.published_at, summary: news ? "" : it.summary, country_codes: [...codes], topics }, { onConflict: "url", ignoreDuplicates: true });
-          if (!error) { kept++; used++; }
+          rows.push({ source_id: s.id, title: it.title, url: it.url, published_at: it.published_at, summary: news ? "" : it.summary, country_codes: [...codes], topics });
         }
+        if (rows.length) { const { error } = await db.from("news_items").upsert(rows, { onConflict: "url", ignoreDuplicates: true }); if (error) throw new Error(error.message); kept += rows.length; }
       }
       await db.from("news_sources").update({ last_fetched_at: new Date().toISOString(), last_status: "ok" }).eq("id", s.id);
     } catch (e) {
@@ -81,6 +82,6 @@ export async function fetchAllNews(): Promise<{ fetched: number; kept: number; e
       errors.push(`${s.name}: ${msg}`);
       await db.from("news_sources").update({ last_fetched_at: new Date().toISOString(), last_status: `error: ${msg}`.slice(0, 200) }).eq("id", s.id);
     }
-  }
+  }));
   return { fetched, kept, errors };
 }
