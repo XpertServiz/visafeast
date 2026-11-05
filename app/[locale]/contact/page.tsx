@@ -18,7 +18,7 @@ export default async function Page({ params }: P) {
   const row = { display: "flex", gap: 12, alignItems: "center", margin: "14px 0" } as const;
   return (
     <>
-      <PageHeader locale={locale} home={t("common.home")} title={t("pages.contactTitle")} path="/contact" />
+      <PageHeader locale={locale} home={t("common.home")} title={t("pages.contactTitle")} path="/contact" guide="happy" />
       <div className="wrap g2" style={{ paddingBlock: 40, alignItems: "start" }}>
         <div className="card" style={{ padding: 26 }}>
           <p style={row}><MessageCircle aria-hidden /><a href={waLink(undefined, s.whatsapp_number)}>WhatsApp {s.whatsapp_number}</a></p>

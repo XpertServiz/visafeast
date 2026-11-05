@@ -41,7 +41,7 @@ export function Checklist({ slug, docs, locale, whatsapp }: { slug: string; docs
         {docs.map((d, i) => (
           <li key={d.title} className="card" style={{ padding: "12px 16px" }}>
             <label style={{ display: "flex", gap: 14, alignItems: "flex-start", cursor: "pointer", minHeight: 44 }}>
-              <input type="checkbox" checked={ticked.includes(i)} onChange={() => toggle(i)} style={{ width: 24, height: 24, marginTop: 2, accentColor: "#2F6B3A" }} />
+              <input type="checkbox" checked={ticked.includes(i)} onChange={() => toggle(i)} style={{ width: 24, height: 24, marginTop: 2, accentColor: "#8A5300" }} />
               <span><b>{d.title}</b>{d.detail && <span style={{ display: "block", color: "var(--muted)", fontSize: 15 }}>{d.detail}</span>}</span>
             </label>
           </li>

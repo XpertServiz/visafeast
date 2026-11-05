@@ -10,17 +10,17 @@ const C: Record<string, [number, number]> = {
   JFK: [40.64, -73.78], SYD: [-33.94, 151.18], AKL: [-37.0, 174.79], BER: [52.36, 13.5], GYD: [40.47, 50.05], BKK: [13.69, 100.75], SIN: [1.36, 103.99],
 };
 const ROUTES: [string, string][] = [["KHI", "LHR"], ["LHE", "YYZ"], ["ISB", "JFK"], ["KHI", "SYD"], ["LHE", "BER"], ["KHI", "GYD"], ["ISB", "AKL"], ["KHI", "BKK"]];
-const LABELS = ["United Kingdom · visit", "Canada · visit", "USA · B1/B2", "Australia · visit", "Germany · study", "Azerbaijan · e-visa", "New Zealand · visit", "Thailand · visit"];
+const LABELS = ["United Kingdom · visit", "Canada · immigration", "USA · B1/B2", "Australia · skilled", "Germany · study", "Azerbaijan · e-visa", "New Zealand · visit", "Thailand · visit"];
 
 export const STAMPS = [
-  { country: "UNITED KINGDOM", kind: "VISITOR", code: "KHI → LHR", color: "#1F4E8C", radius: "6px", x: "10%", y: "16%", rot: "-5deg" },
-  { country: "CANADA", kind: "TEMP. RESIDENT", code: "LHE → YYZ", color: "#8C1F2C", radius: "50%", x: "48%", y: "13%", rot: "7deg" },
-  { country: "U.S.A.", kind: "B1 / B2", code: "ISB → JFK", color: "#2F6B3A", radius: "6px", x: "8%", y: "38%", rot: "4deg" },
-  { country: "AUSTRALIA", kind: "VISITOR 600", code: "KHI → SYD", color: "#6B3FA0", radius: "50%", x: "50%", y: "36%", rot: "-6deg" },
-  { country: "GERMANY", kind: "STUDENT · D", code: "LHE → BER", color: "#0A1A33", radius: "6px", x: "10%", y: "60%", rot: "-3deg" },
-  { country: "AZERBAIJAN", kind: "E-VISA", code: "KHI → GYD", color: "#1F4E8C", radius: "50%", x: "50%", y: "58%", rot: "9deg" },
-  { country: "NEW ZEALAND", kind: "VISITOR", code: "ISB → AKL", color: "#8C1F2C", radius: "6px", x: "9%", y: "80%", rot: "-4deg" },
-  { country: "THAILAND", kind: "TOURIST", code: "KHI → BKK", color: "#2F6B3A", radius: "50%", x: "50%", y: "78%", rot: "5deg" },
+  { country: "UNITED KINGDOM", kind: "VISITOR", code: "KHI → LHR", x: "18px", y: "50px", rot: "-8deg", color: "#0A1A33", radius: "6px" },
+  { country: "CANADA", kind: "PERMANENT RES.", code: "LHE → YYZ", x: "140px", y: "64px", rot: "7deg", color: "#8A5300", radius: "40px" },
+  { country: "U.S.A.", kind: "B1 / B2", code: "ISB → JFK", x: "30px", y: "128px", rot: "5deg", color: "#0A1A33", radius: "4px" },
+  { country: "AUSTRALIA", kind: "SKILLED", code: "KHI → SYD", x: "146px", y: "140px", rot: "-6deg", color: "#8A5300", radius: "30px" },
+  { country: "GERMANY", kind: "STUDENT · D", code: "LHE → BER", x: "20px", y: "206px", rot: "-3deg", color: "#0A1A33", radius: "6px" },
+  { country: "AZERBAIJAN", kind: "E-VISA", code: "KHI → GYD", x: "150px", y: "214px", rot: "9deg", color: "#8A5300", radius: "40px" },
+  { country: "NEW ZEALAND", kind: "VISITOR", code: "ISB → AKL", x: "34px", y: "270px", rot: "6deg", color: "#0A1A33", radius: "4px" },
+  { country: "THAILAND", kind: "TOURIST", code: "KHI → BKK", x: "156px", y: "278px", rot: "-9deg", color: "#8A5300", radius: "30px" },
 ];
 
 type V3 = [number, number, number];

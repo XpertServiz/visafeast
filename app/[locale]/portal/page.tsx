@@ -22,8 +22,8 @@ type Doc = { id: string; title: string; status: DocStatus; file_path: string | n
 const STATUS = {
   missing: { Icon: Upload, color: "var(--amber-text)", bg: "#FFF3DC" },
   uploaded: { Icon: Clock, color: "var(--stamp-blue)", bg: "#E6EEF8" },
-  approved: { Icon: Check, color: "var(--ok)", bg: "#E5F2E7" },
-  rejected: { Icon: RotateCcw, color: "var(--bad)", bg: "#F8E6E8" },
+  approved: { Icon: Check, color: "var(--ok)", bg: "#FBE9C9" },
+  rejected: { Icon: RotateCcw, color: "var(--bad)", bg: "#E6EEF8" },
 } as const;
 
 export default async function Portal({ params }: P) {

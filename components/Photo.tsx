@@ -9,21 +9,21 @@ import type { Locale } from "@/config/locales";
  * so the layout never shifts or breaks (brief §4).
  */
 export async function Photo({
-  slot, aspect = "4 / 3", sizes = "(max-width: 960px) 100vw, 33vw", priority = false, rounded = 18, locale = "en", className,
-}: { slot: string; aspect?: string; sizes?: string; priority?: boolean; rounded?: number; locale?: Locale; className?: string }) {
+  slot, aspect = "4 / 3", sizes = "(max-width: 960px) 100vw, 33vw", priority = false, rounded = 18, locale = "en", className, tint, height, fit = "cover",
+}: { slot: string; aspect?: string; sizes?: string; priority?: boolean; rounded?: number | string; locale?: Locale; className?: string; tint?: string; height?: number; fit?: "cover" | "contain" }) {
   const p = (await getPhotoMap())[slot];
   const alt = (locale === "ur" && p?.alt_ur) || p?.alt || "";
-  const style = { aspectRatio: aspect, borderRadius: rounded, overflow: "hidden", position: "relative" as const, width: "100%" };
+  const style = { ...(height ? { height } : { aspectRatio: aspect }), borderRadius: rounded, overflow: "hidden", position: "relative" as const, width: "100%" };
   if (!p?.src) {
     return (
-      <div className={`photo-ph ${className ?? ""}`} style={style} role="img" aria-label={alt}>
-        <span>{getT(locale)("ui.photoSoon")}</span>
+      <div className={`photo-ph ${className ?? ""}`} style={{ ...style, ...(tint ? { backgroundColor: tint } : {}) }} role="img" aria-label={alt}>
+        <span style={{ padding: 12 }}>{getT(locale)("ui.photoSoon")}</span>
       </div>
     );
   }
   return (
-    <div className={className} style={style}>
-      <Image src={p.src} alt={alt} fill sizes={sizes} priority={priority} style={{ objectFit: "cover" }} />
+    <div className={className} style={{ ...style, ...(tint ? { backgroundColor: tint } : {}) }}>
+      <Image src={p.src} alt={alt} fill sizes={sizes} priority={priority} unoptimized={p.src.startsWith("/photos/")} style={{ objectFit: fit, objectPosition: fit === "contain" ? "bottom" : "center" }} />
     </div>
   );
 }

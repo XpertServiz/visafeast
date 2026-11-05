@@ -81,7 +81,7 @@ const open = async (country, viewport) => {
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/de-desktop.png` });
   await page.goto(`${BASE}/`, { waitUntil: "domcontentloaded" });
   ok("intro screen only once in a tab", !(await page.locator("#vf-splash").isVisible()));
-  await page.locator("#compare").scrollIntoViewIfNeeded();
+  await page.goto(`${BASE}/visit-visa/uk-visit-visa-from-pakistan`, { waitUntil: "domcontentloaded" });
   await page.waitForFunction(() => document.querySelectorAll(".local-price").length > 0, undefined, { timeout: 10000 }).catch(() => {});
   const prices = await page.locator(".local-price").allTextContents();
   ok("fees show an approximate euro amount", prices.length > 0 && prices.every((p) => p.includes("≈") && p.includes("€")), prices.join(" | "));

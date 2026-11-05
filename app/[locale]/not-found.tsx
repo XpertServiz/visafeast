@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useDict } from "@/components/DictProvider";
@@ -11,6 +12,7 @@ export default function NotFound() {
   const links = [["/visit-visa", d.ui.allVisit], ["/study-visa", d.ui.allStudy], ["/tools/eligibility", d.cta.eligibility], ["/contact", d.ui.contactUs]];
   return (
     <div className="wrap" style={{ paddingBlock: 80, textAlign: "center" }}>
+      <Image src="/photos/guide-sad-letter.webp" alt="" width={140} height={140} unoptimized style={{ display: "block", margin: "0 auto 16px", borderRadius: "50%", background: "#FBE9C9" }} />
       <p className="mono" style={{ color: "var(--amber-text)", margin: 0 }}>404</p>
       <h1 className="disp" style={{ fontSize: 48, margin: "8px 0" }}>{d.ui.notFoundTitle}</h1>
       <p style={{ color: "var(--muted)" }}>{d.ui.notFoundBody}</p>

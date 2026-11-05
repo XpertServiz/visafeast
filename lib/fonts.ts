@@ -4,10 +4,10 @@ import {
 } from "next/font/google";
 
 // next/font requires LITERAL options in every call (no spreads / shared objects).
-export const fraunces = Fraunces({ display: "swap", subsets: ["latin", "latin-ext"], variable: "--f-fraunces", weight: ["500", "600", "700"] });
-export const inter = Inter({ display: "swap", subsets: ["latin", "latin-ext"], variable: "--f-inter", weight: ["400", "500", "600"] });
-export const plex = IBM_Plex_Mono({ display: "swap", subsets: ["latin"], variable: "--f-plex", weight: ["500", "600"] });
-export const nastaliq = Noto_Nastaliq_Urdu({ display: "swap", subsets: ["arabic"], variable: "--f-nastaliq", weight: ["500", "700"] });
+export const fraunces = Fraunces({ display: "swap", subsets: ["latin", "latin-ext"], variable: "--f-fraunces", axes: ["opsz"], preload: false });
+export const inter = Inter({ display: "swap", subsets: ["latin", "latin-ext"], variable: "--f-inter", weight: ["400", "500", "600"], preload: false });
+export const plex = IBM_Plex_Mono({ display: "swap", subsets: ["latin"], variable: "--f-plex", weight: ["500", "600"], preload: false });
+export const nastaliq = Noto_Nastaliq_Urdu({ display: "swap", subsets: ["arabic"], variable: "--f-nastaliq", weight: ["500", "700"], preload: false });
 const sora = Sora({ display: "swap", subsets: ["latin"], variable: "--f-sora", weight: ["600", "700"], preload: false });
 const playfair = Playfair_Display({ display: "swap", subsets: ["latin"], variable: "--f-playfair", weight: ["600", "700"], preload: false });
 const dmSerif = DM_Serif_Display({ display: "swap", subsets: ["latin"], variable: "--f-dmserif", weight: ["400"], preload: false });

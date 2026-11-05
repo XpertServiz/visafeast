@@ -157,6 +157,7 @@ try {
   await rv.page.goto(`${BASE}/`, { waitUntil: "domcontentloaded" });
   await rv.page.fill("#rv-name", `Reviewer ${tag}`);
   await rv.page.fill("#rv-body", reviewText);
+  await rv.page.locator('#reviews button[aria-label="5 / 5"]').click();
   await rv.page.locator('input[name="consent"]').check();
   await rv.page.locator("#reviews button[type=submit]").click();
   await rv.page.waitForSelector('#reviews [role="status"]', { timeout: 20000 });

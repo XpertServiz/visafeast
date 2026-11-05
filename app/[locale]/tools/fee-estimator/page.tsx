@@ -19,7 +19,7 @@ export default async function Page({ params }: P) {
   }));
   return (
     <>
-      <PageHeader locale={locale} home={t("common.home")} title={t("pages.feeTitle")} intro={t("pages.feeIntro")} path="/tools/fee-estimator" />
+      <PageHeader locale={locale} home={t("common.home")} title={t("pages.feeTitle")} intro={t("pages.feeIntro")} path="/tools/fee-estimator" guide="happy" />
       <div className="wrap" style={{ paddingBlock: 48 }}><FeeEstimator locale={locale} rows={rows} mode={s.service_fee_mode} whatsapp={s.whatsapp_number} fallback={t("fallback")} /></div>
     </>
   );

@@ -3,8 +3,8 @@ export interface Q { id: string; en: string; ur: string; opts: { en: string; ur:
 
 export const QUESTIONS: Q[] = [
   { id: "dest", en: "Where do you want to go?", ur: "آپ کہاں جانا چاہتے ہیں؟", opts: [
-    { en: "UK", ur: "یوکے", pts: 0 }, { en: "Canada or USA", ur: "کینیڈا یا امریکہ", pts: 0 }, { en: "Schengen / Europe", ur: "شینگن / یورپ", pts: 0 },
-    { en: "Australia or NZ", ur: "آسٹریلیا یا نیوزی لینڈ", pts: 0 }, { en: "Asia (Thailand, Baku, Singapore)", ur: "ایشیا (تھائی لینڈ، باکو، سنگاپور)", pts: 0 }, { en: "Study abroad", ur: "بیرون ملک تعلیم", pts: 0 } ] },
+    { en: "United Kingdom", ur: "یوکے", pts: 0 }, { en: "Canada or USA", ur: "کینیڈا یا امریکہ", pts: 0 }, { en: "Schengen / Europe", ur: "شینگن / یورپ", pts: 0 },
+    { en: "Australia or New Zealand", ur: "آسٹریلیا یا نیوزی لینڈ", pts: 0 }, { en: "Asia (Thailand, Baku, Singapore)", ur: "ایشیا (تھائی لینڈ، باکو، سنگاپور)", pts: 0 }, { en: "Study abroad", ur: "بیرون ملک تعلیم", pts: 0 } ] },
   { id: "purpose", en: "What is the main purpose?", ur: "سفر کا بنیادی مقصد؟", opts: [
     { en: "Tourism", ur: "سیر و سیاحت", pts: 1 }, { en: "Visiting family", ur: "رشتہ داروں سے ملنا", pts: 1 }, { en: "Business", ur: "کاروبار", pts: 1 }, { en: "Study", ur: "تعلیم", pts: 1 } ] },
   { id: "travel", en: "Travel in the last 5 years?", ur: "پچھلے 5 سال میں سفر؟", opts: [

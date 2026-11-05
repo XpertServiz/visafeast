@@ -16,7 +16,7 @@ export default async function Page({ params }: P) {
   const [s, list] = await Promise.all([getSettings(), getCountriesFor(locale)]);
   return (
     <>
-      <PageHeader locale={locale} home={t("common.home")} title={t("book.title")} path="/book" />
+      <PageHeader locale={locale} home={t("common.home")} title={t("book.title")} path="/book" guide="happy" />
       <div className="wrap g2" style={{ paddingBlock: 40, alignItems: "start" }}>
         <CalEmbed link={s.calcom_link} title={t("book.title")} />
         <div className="sky" style={{ borderRadius: 20, padding: 26 }}>

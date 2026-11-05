@@ -70,7 +70,7 @@ export function staticFaq(locale: Locale, question: string, answer: string): { q
 }
 
 // Only these parts of the language file go to the browser, to keep pages light.
-const CLIENT_KEYS = ["cta", "elig", "eligQ", "decoder", "form", "book", "chat", "consent", "portal", "track", "reviews", "ui", "splash"] as const;
+const CLIENT_KEYS = ["cta", "elig", "eligQ", "decoder", "form", "book", "chat", "consent", "portal", "track", "reviews", "ui", "splash", "home"] as const;
 export type ClientDict = Pick<Dict, (typeof CLIENT_KEYS)[number]>;
 export const clientDict = (locale: Locale): ClientDict => {
   const d = getDict(locale);

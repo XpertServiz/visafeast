@@ -28,7 +28,7 @@ export default async function Page({ params }: P) {
           <h2>{t("pages.aboutFounder")}</h2>
           <p style={{ color: "var(--muted)" }}>{t("pages.aboutFounderSoon")}</p>
         </div>
-        <div><Photo slot="why-us" aspect="4 / 3" locale={locale} /></div>
+        <div><Photo slot="why-us" aspect="4 / 3" locale={locale} tint="#FBE9C9" fit="contain" /></div>
       </div>
       <div className="wrap prose-vf" style={{ paddingBottom: 48 }}>
         <h2>{t("pages.aboutCredits")}</h2>

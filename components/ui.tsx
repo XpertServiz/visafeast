@@ -1,18 +1,37 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Plane } from "lucide-react";
 import type { Country, Faq } from "@/lib/types";
 import { localeMeta, lp, type Locale } from "@/config/locales";
 
-export const Flag = ({ code, size = 28 }: { code: string; size?: number }) => (
-  <span className={`fi fi-${code.toLowerCase()}`} role="img" aria-label={code.toUpperCase()} style={{ width: size * 1.33, height: size, borderRadius: 4, boxShadow: "0 0 0 1px rgba(0,0,0,.1)", display: "inline-block", flex: "none", backgroundSize: "cover" }} />
+export const Flag = ({ code, size = 28, width }: { code: string; size?: number; width?: number }) => (
+  <span className={`fi fi-${code.toLowerCase()}`} role="img" aria-label={code.toUpperCase()} style={{ width: width ?? size * 1.33, height: size, borderRadius: 4, boxShadow: "0 0 0 1px rgba(0,0,0,.08)", display: "inline-block", flex: "none", backgroundSize: "cover" }} />
+);
+
+/** Colourful icon (Fluent Emoji Flat, MIT) from /public/icons. */
+export const Icon = ({ name, size, alt = "", style }: { name: string; size: number; alt?: string; style?: React.CSSProperties }) => (
+  <Image className="pic" src={`/icons/${name}.svg`} alt={alt} width={size} height={size} unoptimized style={{ flex: "none", ...style }} />
+);
+
+const URDU_WORD_RATIO = 106 / 72;
+
+/** The word "اردو" in Nastaliq, drawn from a ~1 KB image in the current text colour, so pages not in Urdu need no Urdu font. */
+export const UrduWord = ({ height = 14 }: { height?: number }) => (
+  <span style={{ position: "relative", display: "inline-block", verticalAlign: "middle", height, width: height * URDU_WORD_RATIO, background: "currentColor", WebkitMask: "url(/icons/urdu-word.webp) center / contain no-repeat", mask: "url(/icons/urdu-word.webp) center / contain no-repeat" }}>
+    <span className="sr-only">اردو</span>
+  </span>
+);
+
+export const WaIcon = ({ size = 20 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M3.5 20.5l1.3-4.1A8.5 8.5 0 1 1 8 19.6z" /><path d="M9 8.5c0 3.5 2.5 6.5 6.5 6.5l1-1.6-2-1-1 .8c-1.3-.5-2.3-1.5-2.8-2.8l.8-1-1-2z" /></svg>
 );
 
 export const KIND_BASE = { visit: "visit-visa", study: "study-visa", immigration: "immigration" } as const;
-export const KIND_COLOR = { visit: "var(--stamp-blue)", study: "var(--bad)", immigration: "var(--stamp-purple)" } as const;
+export const KIND_COLOR = { visit: "var(--stamp-blue)", study: "var(--amber-text)", immigration: "var(--stamp-purple)" } as const;
 
 export function BoardingPass({ c, locale, cta, kindLabel }: { c: Country; locale: Locale; cta: string; kindLabel?: string }) {
   return (
-    <Link href={lp(locale, `/${KIND_BASE[c.kind]}/${c.slug}`)} className="card lift" style={{ textDecoration: "none", color: "var(--ink)", display: "block", overflow: "hidden" }}>
+    <Link prefetch={false} href={lp(locale, `/${KIND_BASE[c.kind]}/${c.slug}`)} className="card lift" style={{ textDecoration: "none", color: "var(--ink)", display: "block", overflow: "hidden" }}>
       <div style={{ padding: "18px 20px 14px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <span className="eyebrow" style={{ color: KIND_COLOR[c.kind], fontSize: 12 }}>{kindLabel ?? c.kind.toUpperCase()}</span>
@@ -40,6 +59,22 @@ export function FaqList({ faqs }: { faqs: Faq[] }) {
         <details key={f.id} className="card" style={{ padding: "4px 18px" }}>
           <summary style={{ cursor: "pointer", fontWeight: 600, fontSize: 18, minHeight: 52, display: "flex", alignItems: "center", listStyle: "none" }}>{f.question}</summary>
           <p style={{ margin: "0 0 16px", color: "#1E293B" }}>{f.answer_md}</p>
+        </details>
+      ))}
+    </div>
+  );
+}
+
+/** Homepage FAQ: plain lines with + / − and the first answer open. */
+export function FaqLines({ faqs }: { faqs: Faq[] }) {
+  return (
+    <div className="faq-lines" style={{ borderTop: "1px solid var(--line)" }}>
+      {faqs.map((f, i) => (
+        <details key={f.id} open={i === 0} style={{ borderBottom: "1px solid var(--line)" }}>
+          <summary style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, cursor: "pointer", padding: "22px 0", fontSize: 18, fontWeight: 600, minHeight: 44 }}>
+            <span className="disp">{f.question}</span><span className="mono faq-sign" aria-hidden style={{ fontSize: 22, color: "var(--amber-text)" }} />
+          </summary>
+          <p style={{ margin: "0 0 22px", color: "var(--muted)", lineHeight: 1.7, maxWidth: 760 }}>{f.answer_md}</p>
         </details>
       ))}
     </div>

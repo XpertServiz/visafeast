@@ -29,7 +29,7 @@ export function SplashArt({ style, ms }: { style: Style; ms: number }) {
       <div className="vf-splash-art" style={{ position: "relative", height: 150, display: "flex", alignItems: "center", justifyContent: "center", perspective: 700 }}>
         {style === "plane_stamp" && (<>
           <svg width="84" height="84" viewBox="0 0 24 24" fill="#fff" style={{ animation: `sp-fly ${ms * 0.5}ms ease-out forwards`, filter: "drop-shadow(0 0 10px #F2A93B)" }} aria-hidden><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z" /></svg>
-          <div className="mono" style={{ position: "absolute", border: "3px solid #2F6B3A", color: "#6FD08A", padding: "6px 14px", borderRadius: 6, fontWeight: 600, letterSpacing: ".12em", animation: `sp-stamp ${ms}ms ease-out forwards`, background: "rgba(10,26,51,.6)" }}>APPROVED</div>
+          <div className="mono" style={{ position: "absolute", border: "3px solid #F2A93B", color: "#F2A93B", padding: "6px 14px", borderRadius: 6, fontWeight: 600, letterSpacing: ".12em", animation: `sp-stamp ${ms}ms ease-out forwards`, background: "rgba(10,26,51,.6)" }}>APPROVED</div>
         </>)}
         {style === "globe_spin" && (
           <div style={{ width: 120, height: 120, borderRadius: "50%", background: "radial-gradient(circle at 35% 30%, #3E7BC4, #0B2A52 70%)", boxShadow: "0 0 40px rgba(64,132,220,.4)", animation: `sp-spin ${ms}ms ease-in-out` }} />

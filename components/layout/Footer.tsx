@@ -4,65 +4,55 @@ import { waLink } from "@/config/site";
 import { getT, lp } from "@/lib/i18n";
 import { getCountriesFor } from "@/lib/data";
 import type { SiteSettings } from "@/lib/types";
-import { LogoMark } from "./Logo";
 import { LangLinks } from "./LangSwitch";
 
 export async function Footer({ locale, settings }: { locale: Locale; settings: SiteSettings }) {
   const t = getT(locale);
   const [visit, study] = await Promise.all([getCountriesFor(locale, "visit"), getCountriesFor(locale, "study")]);
-  const a = { color: "var(--on-navy)", textDecoration: "none" } as const;
-  const h = { margin: "0 0 12px", fontSize: 13, color: "var(--amber)" } as const;
-  const li = { margin: "8px 0" } as const;
+  const visitLinks = ["GB", "CA", "EU"].map((code) => visit.find((c) => c.country_code === code)).filter((c) => c !== undefined);
+  const germany = study.find((c) => c.country_code === "DE");
+  const col = { display: "flex", flexDirection: "column", gap: 8 } as const;
+  const h = { margin: "0 0 4px", fontSize: 12, letterSpacing: ".1em", color: "var(--amber)", textTransform: "uppercase" } as const;
+  const wrap = { maxWidth: 1280, margin: "0 auto" } as const;
+  const small = { display: "flex", flexWrap: "wrap", gap: "6px 16px" } as const;
   return (
-    <footer className="sky foot" style={{ color: "var(--on-navy)", marginTop: 64 }}>
-      <div className="wrap" style={{ paddingBlock: 48 }}>
-        <div className="g4" style={{ gridTemplateColumns: "1.3fr 1fr 1fr 1fr" }}>
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}><LogoMark /><span className="disp" style={{ fontSize: 24, fontWeight: 600, color: "#fff" }}>Visafeast</span></div>
-            <p style={{ fontSize: 15, marginTop: 14 }}>{t("ui.disclaimerShort")}</p>
-          </div>
-          <div>
-            <p className="eyebrow" style={h}>{t("footer.visitStudy")}</p>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0, fontSize: 15 }}>
-              {visit.slice(0, 5).map((c) => <li key={c.slug} style={li}><Link style={a} href={lp(locale, `/visit-visa/${c.slug}`)}>{t("ui.visitIn", { country: c.country_name })}</Link></li>)}
-              {study.slice(0, 3).map((c) => <li key={c.slug} style={li}><Link style={a} href={lp(locale, `/study-visa/${c.slug}`)}>{t("ui.studyIn", { country: c.country_name })}</Link></li>)}
-              <li style={li}><Link style={a} href={lp(locale, "/visit-visa")}>{t("ui.allVisit")}</Link></li>
-              <li style={li}><Link style={a} href={lp(locale, "/study-visa")}>{t("ui.allStudy")}</Link></li>
-            </ul>
-          </div>
-          <div>
-            <p className="eyebrow" style={h}>{t("footer.immigration")}</p>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0, fontSize: 15 }}>
-              {[t("ui.immCanada"), t("ui.immAustralia"), t("ui.immGermany"), t("ui.immUk")].map((x) => <li key={x} style={li}><Link style={a} href={lp(locale, "/immigration")}>{x}</Link></li>)}
-              <li style={li}><Link style={a} href={lp(locale, "/tools/refusal-decoder")}>{t("nav.decoder")}</Link></li>
-              <li style={li}><Link style={a} href={lp(locale, "/tools/fee-estimator")}>{t("ui.feeEstimator")}</Link></li>
-            </ul>
-          </div>
-          <div>
-            <p className="eyebrow" style={h}>{t("footer.contact")}</p>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0, fontSize: 15 }}>
-              <li style={li}><a style={a} href={waLink(undefined, settings.whatsapp_number)}>WhatsApp {settings.whatsapp_number}</a></li>
-              <li style={li}><a style={a} href={`mailto:${settings.email}`}>{settings.email}</a></li>
-              <li style={li}><a style={a} href={settings.facebook_url} rel="noopener">Facebook</a></li>
-              <li style={li}>{settings.address_line}</li>
-              <li style={li}>{settings.office_hours}</li>
-              <li style={li}><Link style={a} href={lp(locale, "/about")}>{t("ui.about")}</Link> · <Link style={a} href={lp(locale, "/contact")}>{t("ui.contact")}</Link> · <Link style={a} href={lp(locale, "/track")}>{t("track.title")}</Link></li>
-            </ul>
-          </div>
+    <footer className="sky foot" style={{ color: "var(--on-navy)", lineHeight: "normal" }}>
+      <div className="g4 pad32" style={{ ...wrap, paddingBlock: "56px 28px", gap: 28, fontSize: 15 }}>
+        <div>
+          <p className="disp" style={{ margin: "0 0 10px", fontSize: 24, fontWeight: 600, color: "#fff", letterSpacing: 0 }}>Visafeast</p>
+          <p style={{ margin: 0, lineHeight: 1.6 }}>{t("home.footerBrand")}</p>
         </div>
-        <div style={{ marginTop: 28, fontSize: 14 }}>
-          <p className="eyebrow" style={h}>{t("ui.languages")}</p>
-          <LangLinks locale={locale} />
-          {locale !== "en" && <p style={{ margin: "12px 0 0", fontSize: 13, color: "var(--on-navy-2)" }}>{t("ui.autoNote")}</p>}
+        <div style={col}>
+          <p className="mono" style={h}>{t("footer.visitStudy")}</p>
+          {visitLinks.map((c) => <Link prefetch={false} key={c.slug} href={lp(locale, `/visit-visa/${c.slug}`)}>{t("ui.visitIn", { country: c.country_name })}</Link>)}
+          {germany && <Link prefetch={false} href={lp(locale, `/study-visa/${germany.slug}`)}>{t("ui.studyIn", { country: germany.country_name })}</Link>}
         </div>
-        <div style={{ borderTop: "1px solid rgba(255,255,255,.1)", marginTop: 32, paddingTop: 18, fontSize: 14, color: "var(--on-navy-2)", display: "flex", flexWrap: "wrap", gap: 16, justifyContent: "space-between" }}>
-          <span>© {new Date().getFullYear()} Visafeast. {t("footer.rights")}</span>
-          <span style={{ display: "flex", flexWrap: "wrap", gap: "8px 16px" }}>
-            <Link style={a} href={lp(locale, "/privacy")}>{t("ui.privacy")}</Link>
-            <Link style={a} href={lp(locale, "/terms")}>{t("ui.terms")}</Link>
-            <Link style={a} href={lp(locale, "/disclaimer")}>{t("ui.disclaimer")}</Link>
-          </span>
+        <div style={col}>
+          <p className="mono" style={h}>{t("footer.immigration")}</p>
+          {[t("ui.immCanada"), t("ui.immAustralia"), t("ui.immGermany"), t("ui.immUk")].map((x) => <Link prefetch={false} key={x} href={lp(locale, "/immigration")}>{x}</Link>)}
         </div>
+        <div style={col}>
+          <p className="mono" style={h}>{t("footer.contact")}</p>
+          <a href={waLink(undefined, settings.whatsapp_number)}><span dir="ltr">WhatsApp {settings.whatsapp_number}</span></a>
+          <a href={`mailto:${settings.email}`}>{settings.email}</a>
+          <a href={settings.facebook_url} rel="noopener">Facebook · /visafeast</a>
+          <Link prefetch={false} href={lp(locale, "/#book")}>{t("nav.book")}</Link>
+        </div>
+      </div>
+      <div className="pad32" style={{ ...wrap, paddingBlock: "18px 32px", borderTop: "1px solid rgba(255,255,255,.1)", fontSize: 13, lineHeight: 1.6, color: "var(--on-navy-2)" }}>
+        <p style={{ margin: 0 }}>{t("ui.disclaimerShort")} © {new Date().getFullYear()} Visafeast</p>
+        <div style={{ ...small, marginTop: 12 }}>
+          <Link prefetch={false} href={lp(locale, "/portal")}>{t("portal.navLink")}</Link>
+          <Link prefetch={false} href={lp(locale, "/track")}>{t("track.title")}</Link>
+          <Link prefetch={false} href={lp(locale, "/about")}>{t("ui.about")}</Link>
+          <Link prefetch={false} href={lp(locale, "/contact")}>{t("ui.contact")}</Link>
+          <Link prefetch={false} href={lp(locale, "/tools/fee-estimator")}>{t("ui.feeEstimator")}</Link>
+          <Link prefetch={false} href={lp(locale, "/privacy")}>{t("ui.privacy")}</Link>
+          <Link prefetch={false} href={lp(locale, "/terms")}>{t("ui.terms")}</Link>
+          <Link prefetch={false} href={lp(locale, "/disclaimer")}>{t("ui.disclaimer")}</Link>
+        </div>
+        <div style={{ marginTop: 10 }}><LangLinks locale={locale} /></div>
+        {locale !== "en" && <p style={{ margin: "10px 0 0" }}>{t("ui.autoNote")}</p>}
       </div>
     </footer>
   );

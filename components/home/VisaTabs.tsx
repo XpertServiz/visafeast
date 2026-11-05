@@ -1,14 +1,14 @@
 "use client";
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { Check } from "lucide-react";
-import { Flag } from "@/components/ui";
+import { Flag, Icon } from "@/components/ui";
 
-export interface CardData { slug: string; kind: "visit" | "study"; flag: string; from: string; to: string; country: string; visa: string; note: string; href: string }
 export interface ImmData { name: string; flag: string; chips: string[]; href: string }
 
-export function VisaTabs({ visit, study, immigration, labels, immNote, cta, qualify }: {
-  visit: React.ReactNode; study: React.ReactNode; immigration: ImmData[]; labels: { visit: string; study: string; immigration: string }; immNote: string; cta: string; qualify: string;
+const ICONS = { visit: "airplane", study: "graduation-cap", immigration: "globe" } as const;
+
+export function VisaTabs({ eyebrow, title, visit, study, immigration, labels, immLabel, immNote, qualify }: {
+  eyebrow: string; title: string; visit: React.ReactNode; study: React.ReactNode; immigration: ImmData[]; labels: { visit: string; study: string; immigration: string }; immLabel: string; immNote: string; qualify: string;
 }) {
   const [tab, setTab] = useState<"visit" | "study" | "immigration">("visit");
   const keys = ["visit", "study", "immigration"] as const;
@@ -19,29 +19,40 @@ export function VisaTabs({ visit, study, immigration, labels, immNote, cta, qual
     setTab(keys[n]); refs.current[n]?.focus();
   };
   return (
-    <div>
-      <div role="tablist" aria-label="Visa types" style={{ display: "flex", justifyContent: "center", gap: 8, flexWrap: "wrap", marginBottom: 28 }}>
-        {keys.map((k, i) => (
-          <button key={k} ref={(el) => { refs.current[i] = el; }} role="tab" id={`tab-${k}`} aria-selected={tab === k} aria-controls={`panel-${k}`} tabIndex={tab === k ? 0 : -1}
-            onClick={() => setTab(k)} onKeyDown={(e) => onKey(e, i)} className="btn"
-            style={{ background: tab === k ? "var(--navy)" : "#fff", color: tab === k ? "#fff" : "var(--navy)", borderColor: "var(--navy)" }}>{labels[k]}</button>
-        ))}
+    <>
+      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "end", justifyContent: "space-between", gap: 20, marginBottom: 28 }}>
+        <div>
+          <p className="eyebrow" style={{ margin: 0, color: "var(--amber-text)" }}>{eyebrow}</p>
+          <h2 className="disp" style={{ margin: "10px 0 0", fontSize: 40, fontWeight: 600 }}>{title}</h2>
+        </div>
+        <div role="tablist" aria-label="Visa types" style={{ display: "flex", flexWrap: "wrap", padding: 5, background: "#ECE6DA", borderRadius: 999 }}>
+          {keys.map((k, i) => (
+            <button key={k} ref={(el) => { refs.current[i] = el; }} type="button" role="tab" id={`tab-${k}`} aria-selected={tab === k} aria-controls={`panel-${k}`} tabIndex={tab === k ? 0 : -1}
+              onClick={() => setTab(k)} onKeyDown={(e) => onKey(e, i)}
+              style={{ border: 0, cursor: "pointer", padding: "10px 20px", borderRadius: 999, fontWeight: 600, fontSize: 16, fontFamily: "inherit", background: tab === k ? "var(--navy)" : "transparent", color: tab === k ? "#fff" : "var(--navy)", minHeight: 48, display: "inline-flex", alignItems: "center", gap: 8 }}>
+              <Icon name={ICONS[k]} size={26} />{labels[k]}
+            </button>
+          ))}
+        </div>
       </div>
       <div role="tabpanel" id="panel-visit" aria-labelledby="tab-visit" hidden={tab !== "visit"}>{visit}</div>
       <div role="tabpanel" id="panel-study" aria-labelledby="tab-study" hidden={tab !== "study"}>{study}</div>
       <div role="tabpanel" id="panel-immigration" aria-labelledby="tab-immigration" hidden={tab !== "immigration"}>
-        <div className="g3" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))" }}>
+        <div className="g3" style={{ gap: 16 }}>
           {immigration.map((c) => (
-            <div key={c.name} className="card" style={{ padding: 20, display: "flex", flexDirection: "column" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}><Flag code={c.flag} /><span className="disp" style={{ fontSize: 22, fontWeight: 600 }}>{c.name}</span></div>
-              <div style={{ flex: 1 }}>{c.chips.map((x) => <span key={x} className="chip">{x}</span>)}</div>
-              <Link href={c.href} style={{ fontWeight: 600, marginTop: 10, display: "inline-flex", alignItems: "center", gap: 6 }}><Check size={16} aria-hidden />{qualify}</Link>
-            </div>
+            <Link prefetch={false} key={c.name} href={c.href} className="lift" style={{ display: "block", textDecoration: "none", background: "#fff", border: "1px solid var(--line)", borderRadius: 16, padding: 22, color: "var(--ink)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <Flag code={c.flag} size={48} width={64} />
+                <span className="mono" style={{ fontSize: 11, letterSpacing: ".14em", color: "var(--ok)", textTransform: "uppercase" }}>{immLabel}</span>
+              </div>
+              <p className="disp" style={{ margin: "10px 0 12px", fontSize: 23, fontWeight: 600, color: "var(--navy)" }}>{c.name}</p>
+              <div>{c.chips.map((x) => <span key={x} className="chip">{x}</span>)}</div>
+              <span style={{ display: "inline-block", marginTop: 8, fontSize: 14, fontWeight: 600, color: "var(--amber-text)" }}>{qualify}</span>
+            </Link>
           ))}
         </div>
-        <p style={{ maxWidth: 800, marginInline: "auto", textAlign: "center", color: "var(--muted)", marginTop: 24 }}>{immNote}</p>
+        <p style={{ margin: "18px 0 0", fontSize: 14, color: "var(--muted-2)", lineHeight: 1.6, maxWidth: 900 }}>{immNote}</p>
       </div>
-      <span hidden>{cta}</span>
-    </div>
+    </>
   );
 }

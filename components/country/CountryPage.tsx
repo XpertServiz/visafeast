@@ -79,7 +79,7 @@ export async function CountryPage({ c, locale }: { c: Country; locale: Locale })
             <div style={{ marginTop: 20 }}><Photo slot={`country-${c.flag}`} aspect="21 / 9" locale={locale} priority /></div>
 
             <h2 id="who">{anchors[0][1]}</h2>
-            <div className="g2">{c.who_for_md.map((w) => <div key={w} className="card" style={{ padding: 16, display: "flex", gap: 10 }}><BadgeCheck size={22} color="#2F6B3A" style={{ flex: "none" }} aria-hidden /><span>{w}</span></div>)}</div>
+            <div className="g2">{c.who_for_md.map((w) => <div key={w} className="card" style={{ padding: 16, display: "flex", gap: 10 }}><BadgeCheck size={22} color="#8A5300" style={{ flex: "none" }} aria-hidden /><span>{w}</span></div>)}</div>
 
             <h2 id="documents">{anchors[1][1]}</h2>
             <Checklist slug={c.slug} docs={c.documents} locale={locale} whatsapp={settings.whatsapp_number} />

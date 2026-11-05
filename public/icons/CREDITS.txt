@@ -1,0 +1,2 @@
+Colourful icons: Fluent Emoji Flat by Microsoft (MIT licence).
+https://github.com/microsoft/fluentui-emoji

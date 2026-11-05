@@ -1,3 +1,5 @@
+import Image from "next/image";
+import { GUIDE } from "@/lib/photos";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -36,8 +38,9 @@ export function hubRoute(kind: Kind) {
     const pub = new Set(list.map((c) => c.slug));
     return (
       <>
-        <header className="sky" style={{ paddingBlock: "36px 56px", color: "#fff" }}>
-          <div className="wrap">
+        <header className="sky" style={{ paddingBlock: "36px 56px", color: "#fff", position: "relative", overflow: "hidden" }}>
+          <Image className="page-guide" src={GUIDE.happy.src} alt="" width={GUIDE.happy.width} height={GUIDE.happy.height} unoptimized />
+          <div className="wrap" style={{ position: "relative" }}>
             <BreadcrumbItems items={[{ label: t("common.home"), href: lp(locale, "/") }, { label: t(HUB[kind].h1) }]} />
             <h1 className="disp h1" style={{ margin: "18px 0 8px", fontSize: 52, fontWeight: 600 }}>{t(HUB[kind].h1)}</h1>
             <p style={{ color: "var(--on-navy)", fontSize: 19, maxWidth: 720, margin: 0 }}>{t(HUB[kind].intro)}</p>
@@ -51,7 +54,7 @@ export function hubRoute(kind: Kind) {
                   <div key={h.name} className="card" style={{ padding: 22 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}><Flag code={h.flag} /><h2 className="disp" style={{ margin: 0, fontSize: 24 }}>{h.code === "EU" ? t("hero.europe") : regionName(h.code, locale, h.name)}</h2></div>
                     {h.chips.map((c) => <span key={c} className="chip">{c}</span>)}
-                    <p style={{ marginBottom: 0 }}>{h.slug && pub.has(h.slug) ? <Link href={lp(locale, `/immigration/${h.slug}`)} style={{ fontWeight: 600 }}>{t("cta.guide")}</Link> : <Link href={lp(locale, "/tools/eligibility")} style={{ fontWeight: 600 }}>{t("cta.qualify")}</Link>}</p>
+                    <p style={{ marginBottom: 0 }}>{h.slug && pub.has(h.slug) ? <Link prefetch={false} href={lp(locale, `/immigration/${h.slug}`)} style={{ fontWeight: 600 }}>{t("cta.guide")}</Link> : <Link prefetch={false} href={lp(locale, "/tools/eligibility")} style={{ fontWeight: 600 }}>{t("cta.qualify")}</Link>}</p>
                   </div>
                 ))}
               </div>

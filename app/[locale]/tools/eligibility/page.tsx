@@ -16,7 +16,7 @@ export default async function Page({ params }: P) {
   const s = await getSettings();
   return (
     <>
-      <PageHeader locale={locale} home={t("common.home")} title={t("elig.h2")} intro={t("elig.sub")} path="/tools/eligibility" />
+      <PageHeader locale={locale} home={t("common.home")} title={t("elig.h2")} intro={t("elig.sub")} path="/tools/eligibility" guide="happy" />
       <div className="wrap" style={{ paddingBlock: 48 }}><Eligibility locale={locale} bookHref={lp(locale, "/book")} whatsapp={s.whatsapp_number} /></div>
     </>
   );
