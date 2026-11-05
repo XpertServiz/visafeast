@@ -39,3 +39,4 @@ insert into news_sources (name,url,kind,country_codes,is_official) values ('GOV.
 insert into news_sources (name,url,kind,country_codes,is_official) values ('Canada.ca — IRCC news','https://api.io.canada.ca/io-server/gc/news/en/v2?dept=departmentofcitizenshipandimmigration&sort=publishedDate&orderBy=desc&pick=50&format=atom','official_rss','{"CA"}'::text[],true) on conflict (url) do nothing;
 
 -- Default service price list is added by the owner in Admin → Settings (first-login checklist).
+insert into news_sources (name,url,kind,country_codes,is_official) values ('USCIS — news releases','https://www.uscis.gov/news/rss-feed/59144','official_rss','{"US"}'::text[],true) on conflict (url) do nothing;

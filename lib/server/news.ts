@@ -61,8 +61,12 @@ export async function fetchAllNews(): Promise<{ fetched: number; kept: number; e
           fetched++;
           if (!isRelevant(it)) continue;
           const hay = `${it.title} ${it.summary}`.toLowerCase();
+          // A story belongs to the country of the official source it came from. Keyword matching is only a fallback for sources
+          // that cover several countries, and it matches whole words only (short codes like "th" or "us" would match "the" or "us").
           const codes = new Set<string>(s.country_codes ?? []);
-          for (const c of countries ?? []) if ((c.keywords ?? []).some((k: string) => hay.includes(k.toLowerCase()))) codes.add(c.country_code);
+          if (!codes.size) for (const c of countries ?? []) if ((c.keywords ?? []).some((k: string) => k.length >= 4 && new RegExp(`(?<![a-z])${k.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![a-z])`).test(hay))) codes.add(c.country_code);
+          const { data: dup } = await db.from("news_items").select("id").eq("source_id", s.id).eq("title", it.title).limit(1);
+          if (dup?.length) continue;
           const topics = ["visit", "study", "fee", "processing", "policy"].filter((t) => hay.includes(t === "fee" ? "fee" : t));
           const { error } = await db.from("news_items").upsert({ source_id: s.id, title: it.title, url: it.url, published_at: it.published_at, summary: it.summary, country_codes: [...codes], topics }, { onConflict: "url", ignoreDuplicates: true });
           if (!error) kept++;
