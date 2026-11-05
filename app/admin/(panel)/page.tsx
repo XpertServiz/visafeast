@@ -88,11 +88,11 @@ export default async function Today() {
 
         <Card title={`Live now: ${liveRows.length} on the site`}>
           {liveRows.length ? liveRows.slice(0, 6).map((v, i) => <p key={i} style={{ margin: "6px 0" }}>{v.country ?? "?"} · {v.city ?? "—"} · <span className="mono" style={{ fontSize: 13 }}>{v.path}</span></p>) : <Empty text="Nobody is on the site right now." />}
-          <p style={{ marginBottom: 0 }}><Link href="/admin/website/visitors">See all visitors →</Link></p>
+          <p style={{ marginBottom: 0 }}><Link href="/admin/visitors">See all visitors →</Link></p>
         </Card>
 
         <Card title="To approve">
-          <p style={{ margin: "6px 0" }}><Link href="/admin/website/reviews">{pendingReviews.count ?? 0} review(s) waiting</Link></p>
+          <p style={{ margin: "6px 0" }}><Link href="/admin/reviews">{pendingReviews.count ?? 0} review(s) waiting</Link></p>
           {drafts.data?.map((p) => <p key={p.id} style={{ margin: "6px 0" }}><Link href="/admin/website/news">Digest: {p.title}</Link></p>)}
         </Card>
       </Grid>

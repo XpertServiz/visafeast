@@ -267,33 +267,46 @@ export async function moderateReview(fd: FormData) {
   const status = s(fd, "status"); // approved | rejected  (text is NEVER editable — brief §9.3)
   await db.from("reviews").update({ status, approved_at: status === "approved" ? new Date().toISOString() : null }).eq("id", s(fd, "id"));
   await log(db, a, `review_${status}`, "reviews", s(fd, "id"));
-  refreshSite(); revalidatePath("/admin/website/reviews");
+  refreshSite(); revalidatePath("/admin/reviews");
 }
 export async function addWhatsappReview(fd: FormData) {
   const { a, db } = await need(can.website);
   if (s(fd, "confirm") !== "on") throw new Error("Please tick the confirmation: this client sent you the review and agreed to publish it.");
   await db.from("reviews").insert({ name: s(fd, "name"), city: s(fd, "city") || null, visa_type: s(fd, "visa_type") || null, rating: Math.min(5, Math.max(1, n(fd, "rating") || 5)), body: s(fd, "body"), consent: true, submitted_via: "whatsapp", admin_confirmed_client_consent: true, status: "approved", approved_at: new Date().toISOString() });
   await log(db, a, "review_added_whatsapp", "reviews");
-  refreshSite(); revalidatePath("/admin/website/reviews");
+  refreshSite(); revalidatePath("/admin/reviews");
 }
-export async function saveVideos(fd: FormData) {
+/** Videos tab: add ONE video to the end of the list (any YouTube link, including unlisted ones). */
+export async function addVideo(fd: FormData) {
   const { a, db } = await need(can.website);
-  const urls = fd.getAll("url").map(String), titles = fd.getAll("title").map(String), caps = fd.getAll("caption").map(String), shorts = fd.getAll("short").map(String), actives = fd.getAll("active").map(String);
-  const rows: Record<string, unknown>[] = []; const seen = new Set<string>();
-  for (let i = 0; i < urls.length; i++) {
-    if (!urls[i].trim()) continue;
-    const p = parseYouTube(urls[i]);
-    if (!p) throw new Error(`Video ${i + 1}: this is not a valid YouTube link.`);
-    if (seen.has(p.id)) throw new Error(`Video ${i + 1}: this video is already in the list.`);
-    seen.add(p.id);
-    let title = titles[i]?.trim();
-    if (!title) { try { const r = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent(urls[i])}&format=json`); if (r.ok) title = (await r.json()).title; } catch { /* optional */ } }
-    rows.push({ youtube_url: urls[i].trim(), video_id: p.id, title: title || null, caption: caps[i]?.trim() || null, is_short: p.isShort || shorts[i] === "1", is_active: actives[i] !== "0", sort_order: (rows.length + 1) * 10 });
-  }
-  await db.from("hero_videos").delete().neq("video_id", "");
-  if (rows.length) await db.from("hero_videos").insert(rows);
-  await log(db, a, "save_videos", "hero_videos", undefined, { count: rows.length });
-  revalidatePath("/", "layout"); revalidatePath("/admin/website/videos");
+  const url = s(fd, "url");
+  const p = parseYouTube(url);
+  if (!p) throw new Error("This is not a YouTube link we recognise. Paste the link from the Share button.");
+  const { data: all } = await db.from("hero_videos").select("video_id,sort_order").order("sort_order", { ascending: false });
+  if (all?.some((r) => r.video_id === p.id)) throw new Error("This video is already in the list.");
+  let title = s(fd, "title").slice(0, 120);
+  if (!title) { try { const r = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent(url)}&format=json`); if (r.ok) title = String((await r.json()).title ?? "").slice(0, 120); } catch { /* optional */ } }
+  const { error } = await db.from("hero_videos").insert({ youtube_url: url, video_id: p.id, title: title || null, caption: s(fd, "caption").slice(0, 160) || null, is_short: p.isShort || s(fd, "short") === "1", is_active: true, sort_order: (all?.[0]?.sort_order ?? 0) + 10 });
+  if (error) throw new Error("Could not save the video. Please try again.");
+  await log(db, a, "add_video", "hero_videos", p.id);
+  refreshSite(); revalidatePath("/admin/videos");
+}
+/** Videos tab: show/hide, move up/down or remove one video. */
+export async function changeVideo(fd: FormData) {
+  const { a, db } = await need(can.website);
+  const id = s(fd, "id"), what = s(fd, "what");
+  if (!/^[0-9a-f-]{36}$/i.test(id)) return;
+  if (what === "remove") await db.from("hero_videos").delete().eq("id", id);
+  else if (what === "show" || what === "hide") await db.from("hero_videos").update({ is_active: what === "show" }).eq("id", id);
+  else if (what === "up" || what === "down") {
+    const { data: all } = await db.from("hero_videos").select("id,sort_order").order("sort_order").order("created_at");
+    const list = all ?? [], i = list.findIndex((r) => r.id === id), j = what === "up" ? i - 1 : i + 1;
+    if (i < 0 || j < 0 || j >= list.length) return;
+    [list[i], list[j]] = [list[j], list[i]];
+    await Promise.all(list.map((r, k) => db.from("hero_videos").update({ sort_order: (k + 1) * 10 }).eq("id", r.id)));
+  } else return;
+  await log(db, a, `video_${what}`, "hero_videos", id);
+  refreshSite(); revalidatePath("/admin/videos");
 }
 export async function saveAppearance(fd: FormData) {
   const { a, db } = await need(can.website);

@@ -20,6 +20,14 @@ const config: NextConfig = {
       { protocol: "https", hostname: "**.supabase.co" },
     ],
   },
+  async redirects() {
+    // these three moved out of the Website group into their own menu items
+    return [
+      { source: "/admin/website/reviews", destination: "/admin/reviews", permanent: false },
+      { source: "/admin/website/videos", destination: "/admin/videos", permanent: false },
+      { source: "/admin/website/visitors", destination: "/admin/visitors", permanent: false },
+    ];
+  },
   async headers() {
     return [
       {

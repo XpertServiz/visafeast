@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Home, Users, Briefcase, Wallet, Globe, Settings as Cog, Plus, LogOut, Search } from "lucide-react";
+import { Home, Users, Briefcase, Wallet, Globe, Settings as Cog, Plus, LogOut, Search, Eye, Video, Star, BarChart3, History } from "lucide-react";
 import { getAdmin, can } from "@/lib/server/admin-auth";
 import { supabaseConfigured, serviceConfigured } from "@/lib/supabase";
 import { Brand } from "@/components/layout/Logo";
+import { serviceClient } from "@/lib/supabase";
 import { signOut } from "../actions";
 import { SetupNeeded } from "@/components/admin/ui";
 
@@ -20,20 +21,32 @@ export default async function PanelLayout({ children }: { children: React.ReactN
   const admin = await getAdmin();
   if (!admin) redirect("/admin/login");
   const r = admin.role;
+  // the little numbers in the menu: new enquiries and reviews waiting
+  const sb = serviceClient();
+  const [newLeads, pendingReviews] = sb ? await Promise.all([
+    can.people(r) ? sb.from("leads").select("id", { count: "exact", head: true }).eq("status", "new") : Promise.resolve({ count: 0 }),
+    can.website(r) ? sb.from("reviews").select("id", { count: "exact", head: true }).eq("status", "pending") : Promise.resolve({ count: 0 }),
+  ]) : [{ count: 0 }, { count: 0 }];
   const items = [
-    { href: "/admin", label: "Today", icon: Home, ok: true },
-    { href: "/admin/people", label: "People", icon: Users, ok: can.people(r) },
-    { href: "/admin/cases", label: "Cases", icon: Briefcase, ok: can.people(r) },
-    { href: "/admin/money", label: "Money", icon: Wallet, ok: can.money(r) },
-    { href: "/admin/website", label: "Website", icon: Globe, ok: can.website(r) },
-    { href: "/admin/settings", label: "Settings", icon: Cog, ok: can.settings(r) },
+    { href: "/admin", label: "Today", icon: Home, ok: true, badge: 0 },
+    { href: "/admin/people", label: "People", icon: Users, ok: can.people(r), badge: newLeads.count ?? 0 },
+    { href: "/admin/cases", label: "Cases", icon: Briefcase, ok: can.people(r), badge: 0 },
+    { href: "/admin/money", label: "Money", icon: Wallet, ok: can.money(r), badge: 0 },
+    { href: "/admin/website", label: "Website", icon: Globe, ok: can.website(r), badge: 0 },
+    { href: "/admin/visitors", label: "Visitors", icon: Eye, ok: can.website(r), badge: 0 },
+    { href: "/admin/videos", label: "Videos", icon: Video, ok: can.website(r), badge: 0 },
+    { href: "/admin/reviews", label: "Reviews", icon: Star, ok: can.website(r), badge: pendingReviews.count ?? 0 },
+    { href: "/admin/reports", label: "Reports", icon: BarChart3, ok: can.reports(r), badge: 0 },
+    { href: "/admin/activity", label: "Activity log", icon: History, ok: can.reports(r), badge: 0 },
+    { href: "/admin/settings", label: "Settings", icon: Cog, ok: can.settings(r), badge: 0 },
   ].filter((i) => i.ok);
+  const dot = (n: number) => n > 0 && <span aria-label={`${n} waiting`} style={{ marginInlineStart: "auto", background: "var(--amber)", color: "var(--navy)", borderRadius: 99, minWidth: 22, height: 22, padding: "0 6px", fontSize: 12, fontWeight: 700, display: "inline-grid", placeItems: "center" }}>{n}</span>;
   const link = { display: "flex", alignItems: "center", gap: 12, padding: "12px 14px", borderRadius: 12, color: "#fff", textDecoration: "none", fontWeight: 500, minHeight: 48 } as const;
   return (
     <div style={{ display: "flex", minHeight: "100vh" }}>
-      <aside className="sky hide-sm" style={{ width: 230, flex: "none", padding: 16, display: "flex", flexDirection: "column", gap: 6, position: "sticky", top: 0, height: "100vh" }}>
+      <aside className="sky hide-sm" style={{ width: 230, flex: "none", padding: 16, display: "flex", flexDirection: "column", gap: 4, position: "sticky", top: 0, height: "100vh", overflowY: "auto" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "4px 8px 16px" }}><Brand size={32} /></div>
-        {items.map((i) => <Link key={i.href} href={i.href} style={link}><i.icon size={20} aria-hidden />{i.label}</Link>)}
+        {items.map((i) => <Link key={i.href} href={i.href} style={link}><i.icon size={20} aria-hidden />{i.label}{dot(i.badge)}</Link>)}
         <div style={{ marginTop: "auto" }}>
           <p style={{ color: "var(--on-navy-2)", fontSize: 13, margin: "0 8px 8px" }}>{admin.name ?? admin.email} · {r}</p>
           <form action={signOut}><button style={{ ...link, background: "transparent", border: 0, cursor: "pointer", width: "100%", font: "inherit" }}><LogOut size={20} aria-hidden />Sign out</button></form>
@@ -57,8 +70,8 @@ export default async function PanelLayout({ children }: { children: React.ReactN
         </div>
       </details>
       {/* phone bottom bar */}
-      <nav className="show-sm" aria-label="Main" style={{ position: "fixed", bottom: 0, insetInline: 0, background: "var(--navy)", display: "flex", zIndex: 30 }}>
-        {items.slice(0, 5).map((i) => <Link key={i.href} href={i.href} style={{ flex: 1, color: "#fff", textDecoration: "none", display: "flex", flexDirection: "column", alignItems: "center", padding: "8px 0", fontSize: 12, minHeight: 56, justifyContent: "center" }}><i.icon size={20} aria-hidden />{i.label}</Link>)}
+      <nav className="show-sm" aria-label="Main" style={{ position: "fixed", bottom: 0, insetInline: 0, background: "var(--navy)", display: "flex", zIndex: 30, overflowX: "auto" }}>
+        {items.map((i) => <Link key={i.href} href={i.href} style={{ flex: "1 0 72px", position: "relative", color: "#fff", textDecoration: "none", display: "flex", flexDirection: "column", alignItems: "center", padding: "8px 0", fontSize: 12, minHeight: 56, justifyContent: "center" }}><i.icon size={20} aria-hidden />{i.label}{i.badge > 0 && <span aria-label={`${i.badge} waiting`} style={{ position: "absolute", top: 4, insetInlineEnd: 14, background: "var(--amber)", color: "var(--navy)", borderRadius: 99, minWidth: 18, height: 18, fontSize: 11, fontWeight: 700, display: "grid", placeItems: "center" }}>{i.badge}</span>}</Link>)}
       </nav>
     </div>
   );

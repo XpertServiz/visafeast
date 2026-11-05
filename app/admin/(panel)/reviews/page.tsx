@@ -1,16 +1,22 @@
+import { redirect } from "next/navigation";
+import { getAdmin, can } from "@/lib/server/admin-auth";
 import { db } from "@/lib/server/admin-data";
 import { siteConfig } from "@/config/site";
-import { Badge, Card, Empty, Field, Grid, day } from "@/components/admin/ui";
-import { addWhatsappReview, moderateReview } from "../../../actions";
+import { Badge, Card, Empty, Field, Grid, Title, day } from "@/components/admin/ui";
+import { addWhatsappReview, moderateReview } from "../../actions";
 
 export const dynamic = "force-dynamic";
+export const metadata = { title: "Reviews" };
 
 export default async function Reviews({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
+  const admin = await getAdmin();
+  if (!admin || !can.website(admin.role)) redirect("/admin");
   const tab = (await searchParams).tab === "approved" ? "approved" : (await searchParams).tab === "rejected" ? "rejected" : "pending";
   const { data } = await db().from("reviews").select("id,name,city,visa_type,rating,body,created_at,submitted_via,status").eq("status", tab).order("created_at", { ascending: false }).limit(50);
   const link = `${siteConfig.url}/reviews/write`;
   return (
     <>
+      <Title sub="Approve what clients wrote. You can approve, reject or hide a review, never edit the client's words.">Reviews</Title>
       <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>{["pending", "approved", "rejected"].map((t) => <a key={t} className="chip" href={`?tab=${t}`} style={{ textDecoration: "none", background: t === tab ? "var(--navy)" : undefined, color: t === tab ? "#fff" : undefined }}>{t[0].toUpperCase() + t.slice(1)}</a>)}</div>
       <div style={{ display: "grid", gap: 12 }}>
         {data?.length ? data.map((r) => (

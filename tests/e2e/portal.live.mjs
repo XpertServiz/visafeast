@@ -173,7 +173,7 @@ try {
   await ep.fill("#em", staffEmail); await ep.fill("#pw", staffPw);
   await ep.locator("button[type=submit]").click();
   await ep.waitForURL(/\/admin$/, { timeout: 45000 });
-  await ep.goto(`${BASE}/admin/website/reviews`, { waitUntil: "domcontentloaded" });
+  await ep.goto(`${BASE}/admin/reviews`, { waitUntil: "domcontentloaded" });
   check("admin Reviews screen shows it", (await ep.textContent("body")).includes(reviewText));
   await ep.locator(`form:has(input[name="id"][value="${pending.id}"]) button`, { hasText: "Approve" }).click();
   await ep.waitForTimeout(3000);
