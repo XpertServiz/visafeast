@@ -4,6 +4,7 @@ import { isbot } from "isbot";
 import { UAParser } from "ua-parser-js";
 import { clientIp, rateLimit, visitorHash } from "@/lib/server/guard";
 import { serviceClient } from "@/lib/supabase";
+import { automated } from "@/lib/bots";
 
 const dec = (v: string | null) => { try { return v ? decodeURIComponent(v) : null; } catch { return v; } };
 const EVENTS = new Set(["whatsapp_click", "cta_click", "chat_open", "checklist_download", "booking_click", "eligibility_complete", "review_submitted", "decoder_used", "video_view", "video_click"]);
@@ -26,6 +27,8 @@ export async function POST(req: NextRequest) {
     if (b.type === "view") {
       const p = new UAParser(ua).getResult();
       const t = p.device.type;
+      // robots that pretend to be a phone or a browser are not counted
+      if (automated({ lang: String(b.lang ?? ""), os: p.os.name, screen: String(b.screen ?? ""), webdriver: b.wd === true })) return new NextResponse(null, { status: 204 });
       let ref: string | null = null;
       try { ref = b.referrer ? new URL(String(b.referrer)).hostname : null; } catch { /* ignore */ }
       const utm = (b.utm ?? {}) as Record<string, string | null>;

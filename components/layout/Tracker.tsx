@@ -24,7 +24,7 @@ export function Tracker({ locale }: { locale: string }) {
     const body = {
       type: "view", path, referrer: document.referrer || null, locale,
       utm: { source: sp.get("utm_source"), medium: sp.get("utm_medium"), campaign: sp.get("utm_campaign") },
-      lang: navigator.language, screen: `${screen.width}x${screen.height}`, sid: sessionId(),
+      lang: navigator.language, screen: `${screen.width}x${screen.height}`, sid: sessionId(), wd: navigator.webdriver === true,
       returning: Boolean(cookie("vf_vid")), landing: first.current,
     };
     first.current = false;
@@ -34,7 +34,7 @@ export function Tracker({ locale }: { locale: string }) {
   useEffect(() => {
     const beat = () => {
       if (document.visibilityState !== "visible" || location.pathname.startsWith("/admin")) return;
-      try { navigator.sendBeacon("/api/presence", new Blob([JSON.stringify({ sid: sessionId(), path: location.pathname, lang: navigator.language, locale, referrer: document.referrer || null })], { type: "application/json" })); } catch { /* ignore */ }
+      try { navigator.sendBeacon("/api/presence", new Blob([JSON.stringify({ sid: sessionId(), path: location.pathname, lang: navigator.language, wd: navigator.webdriver === true, locale, referrer: document.referrer || null })], { type: "application/json" })); } catch { /* ignore */ }
     };
     beat();
     const id = setInterval(beat, 30000);

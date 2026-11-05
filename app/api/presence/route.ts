@@ -4,6 +4,7 @@ import { isbot } from "isbot";
 import { UAParser } from "ua-parser-js";
 import { clientIp, rateLimit, visitorHash } from "@/lib/server/guard";
 import { serviceClient } from "@/lib/supabase";
+import { automated } from "@/lib/bots";
 
 const dec = (v: string | null) => { try { return v ? decodeURIComponent(v) : null; } catch { return v; } };
 
@@ -19,6 +20,7 @@ export async function POST(req: NextRequest) {
   if (!b.sid || String(b.path || "").startsWith("/admin")) return none();
   if (!(await rateLimit(`presence:${clientIp(req)}`, 10, 60_000))) return none();
   const t = new UAParser(ua).getDevice().type;
+  if (automated({ lang: String(b.lang ?? ""), webdriver: (b as unknown as { wd?: unknown }).wd === true })) return none();
   let ref: string | null = null;
   try { ref = b.referrer ? new URL(b.referrer).hostname : null; } catch { /* ignore */ }
   try {

@@ -3,6 +3,7 @@ import { MessageCircle } from "lucide-react";
 import { getAdmin, can } from "@/lib/server/admin-auth";
 import { db, today, startOfMonth } from "@/lib/server/admin-data";
 import { waLink } from "@/config/site";
+import { automated, inHub } from "@/lib/bots";
 import { Card, Empty, Grid, Stat, Title, pkr, day } from "@/components/admin/ui";
 import { doneReminder, setLeadStatus } from "../actions";
 
@@ -23,12 +24,12 @@ export default async function Today() {
     can.money(admin.role) ? d.from("invoices").select("id,number,due_date,person:people(full_name,whatsapp)").in("status", ["sent", "part_paid", "overdue"]).lt("due_date", today()).limit(8) : Promise.resolve({ data: [] }),
     d.from("reviews").select("id", { count: "exact", head: true }).eq("status", "pending"),
     d.from("posts").select("id,title").eq("status", "draft").eq("type", "digest").limit(3),
-    d.from("live_presence").select("country,city,path,device").gte("last_seen", new Date(Date.now() - 2 * 60_000).toISOString()),
+    d.from("live_presence").select("country,city,path,device,browser_language").gte("last_seen", new Date(Date.now() - 2 * 60_000).toISOString()),
     d.from("cases").select("id,ref,stage").in("stage", ["docs_requested", "documents"]).is("deleted_at", null).limit(8),
   ]);
   let money: { income: number; expenses: number; profit: number } | null = null;
   if (can.reports(admin.role)) { const { data } = await d.rpc("report_profit", { p_from: startOfMonth(), p_to: today() }); if (data?.[0]) money = data[0]; }
-  const liveRows = (live.data ?? []) as { country: string | null; city: string | null; path: string; device: string }[];
+  const liveRows = ((live.data ?? []) as { country: string | null; city: string | null; path: string; device: string; browser_language: string | null }[]).filter((r) => !(automated({ lang: r.browser_language }) || inHub(r.city)));
   type Person = { full_name: string | null; whatsapp: string | null } | null;
 
   return (

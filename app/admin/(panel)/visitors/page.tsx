@@ -3,6 +3,7 @@ import { getAdmin, can } from "@/lib/server/admin-auth";
 import { db } from "@/lib/server/admin-data";
 import { AutoRefresh } from "@/components/admin/AutoRefresh";
 import { Card, Empty, Grid, Stat, Title } from "@/components/admin/ui";
+import { automated, automatedSessions, inHub, sessionKey } from "@/lib/bots";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Visitors" };
@@ -14,7 +15,7 @@ const country = (cc: string | null) => { try { return cc && /^[A-Z]{2}$/.test(cc
 const cap = (s: string | null | undefined) => (s ? s[0].toUpperCase() + s.slice(1) : "Unknown");
 const pct = (n: number, t: number) => (t ? Math.round((n / t) * 100) : 0);
 
-interface V { path: string; referrer_host: string | null; utm_source: string | null; country: string | null; city: string | null; device: string | null; browser: string | null; os: string | null; browser_language: string | null; site_locale: string | null; visitor_hash: string | null; session_id: string | null; is_new_visitor: boolean | null; landing: boolean | null; duration_ms: number | null; ts: string }
+interface V { screen: string | null; path: string; referrer_host: string | null; utm_source: string | null; country: string | null; city: string | null; device: string | null; browser: string | null; os: string | null; browser_language: string | null; site_locale: string | null; visitor_hash: string | null; session_id: string | null; is_new_visitor: boolean | null; landing: boolean | null; duration_ms: number | null; ts: string }
 
 const source = (r: V) => r.utm_source || (r.referrer_host ? (/google/.test(r.referrer_host) ? "Google" : /facebook|fb\./.test(r.referrer_host) ? "Facebook" : /instagram/.test(r.referrer_host) ? "Instagram" : /youtube|youtu\.be/.test(r.referrer_host) ? "YouTube" : /whatsapp|wa\.me/.test(r.referrer_host) ? "WhatsApp" : r.referrer_host) : "Direct");
 
@@ -49,21 +50,27 @@ function Bars({ title, rows, total, label, empty = "No data yet." }: { title: st
   );
 }
 
-export default async function Visitors({ searchParams }: { searchParams: Promise<{ days?: string }> }) {
+export default async function Visitors({ searchParams }: { searchParams: Promise<{ days?: string; bots?: string }> }) {
   const admin = await getAdmin();
   if (!admin || !can.website(admin.role)) redirect("/admin");
-  const asked = Number((await searchParams).days);
+  const sp = await searchParams;
+  const showBots = sp.bots === "show";
+  const asked = Number(sp.days);
   const days = RANGES.some(([d]) => d === asked) ? asked : 7;
   const d = db();
   const since = new Date(Date.now() - days * 86400_000).toISOString();
   const [{ data: pv }, { data: live }, { data: ev }, { data: leads }, { data: first }] = await Promise.all([
-    d.from("page_views").select("path,referrer_host,utm_source,country,city,device,browser,os,browser_language,site_locale,visitor_hash,session_id,is_new_visitor,landing,duration_ms,ts").gte("ts", since).order("ts", { ascending: false }).limit(20000),
+    d.from("page_views").select("path,screen,referrer_host,utm_source,country,city,device,browser,os,browser_language,site_locale,visitor_hash,session_id,is_new_visitor,landing,duration_ms,ts").gte("ts", since).order("ts", { ascending: false }).limit(20000),
     d.from("live_presence").select("country,city,path,device,browser_language,referrer_host").gte("last_seen", new Date(Date.now() - 5 * 60_000).toISOString()),
     d.from("events").select("name").gte("ts", since).limit(20000),
     d.from("leads").select("nationality,residence_country").gte("created_at", since).limit(5000),
     d.from("page_views").select("ts").order("ts", { ascending: true }).limit(1),
   ]);
-  const v = (pv ?? []) as V[];
+  const all = (pv ?? []) as V[];
+  // robots that behave like visitors (see lib/bots.ts) are hidden unless asked for
+  const robots = automatedSessions(all.map((r) => ({ lang: r.browser_language, os: r.os, screen: r.screen, city: r.city, session_id: r.session_id, visitor_hash: r.visitor_hash, duration_ms: r.duration_ms })));
+  const v = showBots ? all : all.filter((r) => !robots.has(sessionKey(r)));
+  const hiddenViews = all.length - v.length, hiddenPeople = new Set(all.filter((r) => robots.has(sessionKey(r))).map((r) => r.visitor_hash ?? r.session_id)).size;
   const people = new Set(v.map((r) => r.visitor_hash ?? r.session_id)).size;
   const fresh = new Set(v.filter((r) => r.is_new_visitor).map((r) => r.visitor_hash ?? r.session_id)).size;
   const perSession = new Map<string, number>();
@@ -89,15 +96,22 @@ export default async function Visitors({ searchParams }: { searchParams: Promise
   const evc = (n: string) => (ev ?? []).filter((e) => e.name === n).length;
   const L = (leads ?? []) as { nationality: string | null; residence_country: string | null }[];
   const lgroup = (key: (r: (typeof L)[number]) => string | null) => { const m = new Map<string, number>(); for (const r of L) { const k = key(r) || "Unknown"; m.set(k, (m.get(k) ?? 0) + 1); } return [...m.entries()].map(([name, n]) => ({ name, n, views: n })).sort((a, b) => b.n - a.n).slice(0, 8); };
-  const liveRows = live ?? [];
+  const liveRows = (live ?? []).filter((r) => showBots || !(automated({ lang: r.browser_language }) || inHub(r.city)));
   const since1 = first?.[0]?.ts ? new Date(first[0].ts).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : null;
-  const tab = (k: number, l: string) => <a key={k} href={`?days=${k}`} className="chip" style={{ textDecoration: "none", background: days === k ? "var(--navy)" : undefined, color: days === k ? "#fff" : undefined, minHeight: 44, display: "inline-flex", alignItems: "center" }}>{l}</a>;
+  const tab = (k: number, l: string) => <a key={k} href={`?days=${k}${showBots ? "&bots=show" : ""}`} className="chip" style={{ textDecoration: "none", background: days === k ? "var(--navy)" : undefined, color: days === k ? "#fff" : undefined, minHeight: 44, display: "inline-flex", alignItems: "center" }}>{l}</a>;
 
   return (
     <>
       <AutoRefresh seconds={15} />
       <Title sub="Who is visiting your website: how many people, from which countries, on which device and where they found you. No IP addresses are stored.">Visitors</Title>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>{RANGES.map(([k, l]) => tab(k, l))}</div>
+      <p style={{ margin: "0 0 14px", fontSize: 14, color: "var(--muted)" }}>
+        {showBots
+          ? <>Showing everything, including likely robots. <a href={`?days=${days}`}>Hide likely robots</a></>
+          : hiddenViews > 0
+            ? <>Hidden: {hiddenPeople} likely robot visitor{hiddenPeople === 1 ? "" : "s"} ({hiddenViews} page views) from data centres or with robot signs. <a href={`?days=${days}&bots=show`}>Show them</a></>
+            : <>Likely robots (scanners and monitoring tools) are hidden. None in this period.</>}
+      </p>
       <Grid min={200}>
         <Stat label="Visitors" value={people} /><Stat label="Page views" value={v.length} /><Stat label="Visits (sessions)" value={sessions} /><Stat label="Homepage views" value={home} />
       </Grid>
