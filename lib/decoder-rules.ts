@@ -37,7 +37,7 @@ export function scrub(text: string): string {
 
 export function decodeByRules(text: string, lang: "en" | "ur") {
   const hits = RULES.filter((r) => r.keywords.test(text));
-  const points = (hits.length ? hits : []).map((r) => r[lang]);
+  const points = (hits.length ? hits : []).map((r) => ({ ...r[lang], id: r.id }));
   const sensitive = SENSITIVE.test(text);
   const honest = lang === "ur"
     ? sensitive ? "آپ کے خط میں حساس نکات ہیں۔ دوبارہ درخواست دینے سے پہلے براہ کرم کنسلٹنٹ یا وکیل سے بات کریں۔" : points.length ? "پہلے ہر نکتہ ٹھیک کریں، پھر دوبارہ درخواست دیں۔ ایک ہی فائل دوبارہ جمع کرنے سے فیس ضائع ہوتی ہے۔" : "ہم خط میں واضح وجوہات شناخت نہیں کر سکے۔ مفت فائل ریویو میں کنسلٹنٹ آپ کا خط دیکھ سکتا ہے۔"

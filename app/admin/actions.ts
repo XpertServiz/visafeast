@@ -327,6 +327,7 @@ export async function saveCountryFacts(fd: FormData) {
     processing_time_text: t("processing_time_text"), max_stay_text: t("max_stay_text"), apply_window_text: t("apply_window_text"), biometrics_text: t("biometrics_text"),
     facts_source_url: t("facts_source_url"), facts_last_checked: new Date().toISOString().slice(0, 10), updated_at: new Date().toISOString(),
   }).eq("id", s(fd, "id"));
+  await db.from("chat_cache").delete().neq("q_hash", "");
   await log(db, a, "save_country_facts", "countries", s(fd, "id")); await pingCountry(db, s(fd, "id")); refreshSite(); revalidatePath("/admin/website/countries");
 }
 export async function toggleCountry(fd: FormData) {

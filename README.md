@@ -95,3 +95,21 @@ supabase/migrations/  database
 - **Urdu draft** — Admin → Website → Pages: *Draft Urdu (AI)* translates the text only (never fees, dates or numbers). It needs an AI key (section 3); you then read it and set *Approved* — only approved Urdu pages are shown to Google.
 - **Tests** — `npm test` (money engine, the real database SQL run in an in-memory Postgres, tracker, Urdu rules) and `npm run e2e` (opens the real site in Edge on desktop and a 360px phone).
 - **Vercel free plan allows 2 cron jobs**, so everything daily runs in one job (`/api/cron/daily`).
+
+## Languages, country detection and Google
+
+**Languages:** English at `/`, the others at `/ur`, `/ar`, `/de`, `/fr`, `/es`, `/zh`, `/hi`, `/tr`, `/it`, `/pt`, `/nl`, `/pl`. The list and the country-to-language and country-to-currency tables are in `config/locales.ts`.
+
+**How a visit works:** `proxy.ts` reads the visitor's country from Vercel (no IP is stored) and sends a first-time visitor to their language. A visitor's own choice (the `vf_lang` cookie, set by the language buttons) always wins. Search engines are never redirected: they read each language at its own address, listed in `app/sitemap.ts` with hreflang.
+
+**Text:** interface text lives in `messages/<language>.json`; anything missing falls back to English. Guide pages and FAQs from the database are translated automatically into the `content_translations` table by `lib/server/translate.ts`, which runs daily and redoes only what changed. A translation is refused if any number differs from the English. A page without its translation shows English and is kept out of Google until it has one.
+
+**With the GPT key in `.env.local` and on Vercel, finish all translations once:**
+1. `node scripts/translate-messages.mjs` fills missing interface text. Commit and deploy.
+2. Call `/api/cron/translate` with `Authorization: Bearer <CRON_SECRET>` until it reports `remaining: 0`.
+
+**Currency:** `components/LocalPrice.tsx` adds "≈ €62" after an official fee, in the visitor's currency, using free daily rates through `/api/fx`. The official amount itself never changes.
+
+**Fonts:** each script has its own (`lib/fonts.ts`): Noto Nastaliq for Urdu, Cairo for Arabic, Noto Sans Devanagari for Hindi, the device's Chinese fonts for Chinese, Fraunces and Inter for Latin languages.
+
+**Tests:** `npm test` covers the rules. `BASE=http://localhost:3100 node tests/e2e/lang.live.mjs` checks a running site as visitors from different countries and as Googlebot.

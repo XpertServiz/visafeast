@@ -65,13 +65,13 @@ export default async function Portal({ params }: P) {
               <div key={c.id} style={{ marginBottom: 12 }}>
                 <p style={{ margin: "0 0 10px" }}><b className="mono" dir="ltr">{c.ref}</b> · {c.country?.country_name ?? ""} {c.visa_or_pathway ?? ""}</p>
                 <ol style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: 8 }}>
-                  {buildTimeline((tpl ?? []).filter((x) => x.service_type === c.service_type), c.stage, locale).map((s) => (
+                  {buildTimeline((tpl ?? []).filter((x) => x.service_type === c.service_type), c.stage, locale === "ur" ? "ur" : "en").map((s) => (
                     <li key={s.stage} style={{ display: "flex", gap: 10, alignItems: "center", opacity: s.state === "todo" ? 0.5 : 1, fontWeight: s.state === "current" ? 700 : 500 }}>
                       <span aria-hidden style={{ flex: "0 0 24px", height: 24, borderRadius: 99, display: "grid", placeItems: "center", background: s.state === "done" ? "var(--ok)" : s.state === "current" ? "var(--amber)" : "#E4DED3", color: s.state === "done" ? "#fff" : "#0A1A33" }}>{s.state === "done" ? <Check size={15} /> : ""}</span>{s.label}
                     </li>
                   ))}
                 </ol>
-                <p style={{ margin: "12px 0 0", padding: 12, borderRadius: 12, background: "var(--passport)" }}><b>{t("portal.next")}:</b> {nextStep(c.stage, locale)}</p>
+                <p style={{ margin: "12px 0 0", padding: 12, borderRadius: 12, background: "var(--passport)" }}><b>{t("portal.next")}:</b> {nextStep(c.stage, locale === "ur" ? "ur" : "en")}</p>
                 {c.decision && <p style={{ marginBottom: 0 }}>{t(`portal.${c.decision}`)}</p>}
               </div>
             ))}

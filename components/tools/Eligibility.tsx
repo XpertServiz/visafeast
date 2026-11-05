@@ -2,13 +2,15 @@
 import { useState } from "react";
 import { ArrowLeft, Calendar, MessageCircle } from "lucide-react";
 import { QUESTIONS, bandOf, score, MAX_SCORE } from "@/lib/eligibility";
-import en from "@/messages/en.json";
-import ur from "@/messages/ur.json";
+import { useDict } from "@/components/DictProvider";
+import type { Locale } from "@/config/locales";
 import { track } from "@/lib/track-client";
 import { Turnstile } from "./Turnstile";
 
-export function Eligibility({ locale, bookHref, whatsapp }: { locale: "en" | "ur"; bookHref: string; whatsapp: string }) {
-  const t = (locale === "ur" ? ur : en).elig;
+export function Eligibility({ locale, bookHref, whatsapp }: { locale: Locale; bookHref: string; whatsapp: string }) {
+  const d = useDict();
+  const t = d.elig;
+  const q = d.eligQ as Record<string, string>;
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [sent, setSent] = useState(false);
@@ -46,10 +48,10 @@ export function Eligibility({ locale, bookHref, whatsapp }: { locale: "en" | "ur
           <div role="progressbar" aria-valuemin={0} aria-valuemax={QUESTIONS.length} aria-valuenow={step} style={{ height: 8, background: "#EEE8DC", borderRadius: 99, overflow: "hidden" }}>
             <div style={{ width: `${(step / QUESTIONS.length) * 100}%`, height: "100%", background: "var(--amber)", transition: "width .3s" }} />
           </div>
-          <h3 className="disp" style={{ fontSize: 26, margin: "20px 0 14px" }}>{QUESTIONS[step][locale]}</h3>
+          <h3 className="disp" style={{ fontSize: 26, margin: "20px 0 14px" }}>{q[QUESTIONS[step].id] ?? QUESTIONS[step].en}</h3>
           <div style={{ display: "grid", gap: 10 }}>
             {QUESTIONS[step].opts.map((o, i) => (
-              <button key={o.en} type="button" onClick={() => pick(i)} style={{ textAlign: "start", minHeight: 52, padding: "12px 16px", borderRadius: 14, border: `1.5px solid ${answers[step] === i ? "var(--navy)" : "var(--line)"}`, background: "#fff", font: "inherit", cursor: "pointer", fontSize: 17 }}>{o[locale]}</button>
+              <button key={o.en} type="button" onClick={() => pick(i)} style={{ textAlign: "start", minHeight: 52, padding: "12px 16px", borderRadius: 14, border: `1.5px solid ${answers[step] === i ? "var(--navy)" : "var(--line)"}`, background: "#fff", font: "inherit", cursor: "pointer", fontSize: 17 }}>{q[`${QUESTIONS[step].id}_${i}`] ?? o.en}</button>
             ))}
           </div>
         </>
@@ -59,7 +61,7 @@ export function Eligibility({ locale, bookHref, whatsapp }: { locale: "en" | "ur
           <p style={{ fontSize: 14, color: "var(--muted-2)", margin: "10px 0 0" }} className="mono">{total} / {MAX_SCORE}</p>
           <p style={{ fontSize: 19, marginTop: 14 }}>{t[band === "strong" ? "strongT" : band === "moderate" ? "moderateT" : "needsT"]}</p>
           <p style={{ color: "var(--muted)", fontSize: 15 }}>{t.disclaimer}</p>
-          {sent ? <p style={{ color: "var(--ok)", fontWeight: 600 }}>{(locale === "ur" ? ur : en).book.sent}</p> : (
+          {sent ? <p style={{ color: "var(--ok)", fontWeight: 600 }}>{d.book.sent}</p> : (
             <form onSubmit={send} style={{ display: "grid", gap: 10, marginTop: 14 }}>
               <div className="g2">
                 <input className="field" name="name" required placeholder={t.yourName} aria-label={t.yourName} />
@@ -70,7 +72,7 @@ export function Eligibility({ locale, bookHref, whatsapp }: { locale: "en" | "ur
             </form>
           )}
           <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginTop: 16 }}>
-            <a className="btn btn-dark" href={bookHref} onClick={() => track("booking_click")}><Calendar size={18} aria-hidden />{(locale === "ur" ? ur : en).cta.book}</a>
+            <a className="btn btn-dark" href={bookHref} onClick={() => track("booking_click")}><Calendar size={18} aria-hidden />{d.cta.book}</a>
             <button type="button" className="btn btn-outline" onClick={() => { setStep(0); setAnswers([]); setSent(false); }}>{t.restart}</button>
           </div>
           <input type="hidden" value={whatsapp} readOnly />

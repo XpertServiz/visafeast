@@ -1,11 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
-import en from "@/messages/en.json";
-import ur from "@/messages/ur.json";
+import { useDict } from "@/components/DictProvider";
 
-export function ConsentBanner({ locale }: { locale: "en" | "ur" }) {
+export function ConsentBanner() {
   const [show, setShow] = useState(false);
-  const t = (locale === "ur" ? ur : en).consent;
+  const t = useDict().consent;
   useEffect(() => { try { if (!localStorage.getItem("vf_consent")) setShow(true); } catch { setShow(true); } }, []);
   if (!show) return null;
   return (

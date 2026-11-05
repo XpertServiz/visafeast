@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { getPhotoMap } from "@/lib/media";
+import { getT } from "@/lib/i18n";
+import type { Locale } from "@/config/locales";
 
 /**
  * One component for every photo slot. Shows the chosen royalty-free photo (picked in Admin → Website → Photos, or set in
@@ -8,14 +10,14 @@ import { getPhotoMap } from "@/lib/media";
  */
 export async function Photo({
   slot, aspect = "4 / 3", sizes = "(max-width: 960px) 100vw, 33vw", priority = false, rounded = 18, locale = "en", className,
-}: { slot: string; aspect?: string; sizes?: string; priority?: boolean; rounded?: number; locale?: "en" | "ur"; className?: string }) {
+}: { slot: string; aspect?: string; sizes?: string; priority?: boolean; rounded?: number; locale?: Locale; className?: string }) {
   const p = (await getPhotoMap())[slot];
   const alt = (locale === "ur" && p?.alt_ur) || p?.alt || "";
   const style = { aspectRatio: aspect, borderRadius: rounded, overflow: "hidden", position: "relative" as const, width: "100%" };
   if (!p?.src) {
     return (
       <div className={`photo-ph ${className ?? ""}`} style={style} role="img" aria-label={alt}>
-        <span>Photo coming soon</span>
+        <span>{getT(locale)("ui.photoSoon")}</span>
       </div>
     );
   }

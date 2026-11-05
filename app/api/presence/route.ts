@@ -1,3 +1,4 @@
+import { isLocale } from "@/config/locales";
 import { NextResponse, type NextRequest } from "next/server";
 import { isbot } from "isbot";
 import { UAParser } from "ua-parser-js";
@@ -25,7 +26,7 @@ export async function POST(req: NextRequest) {
       session_id: String(b.sid).slice(0, 64), visitor_hash: visitorHash(req), path: String(b.path || "/").slice(0, 200),
       country: req.headers.get("x-vercel-ip-country"), city: dec(req.headers.get("x-vercel-ip-city")),
       device: t === "mobile" ? "mobile" : t === "tablet" ? "tablet" : "desktop", browser_language: String(b.lang || "").slice(0, 20),
-      site_locale: b.locale === "ur" ? "ur" : "en", referrer_host: ref, last_seen: new Date().toISOString(),
+      site_locale: isLocale(b.locale) ? b.locale : "en", referrer_host: ref, last_seen: new Date().toISOString(),
     });
     await db.from("live_presence").delete().lt("last_seen", new Date(Date.now() - 10 * 60_000).toISOString());
   } catch (e) { console.error("[presence]", e); }

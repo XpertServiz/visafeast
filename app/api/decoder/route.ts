@@ -4,8 +4,10 @@ import { clientIp, rateLimit, verifyTurnstile, visitorHash } from "@/lib/server/
 import { decodeByRules, scrub } from "@/lib/decoder-rules";
 import { DECODER_SYSTEM, llm, llmAvailable } from "@/lib/server/llm";
 import { serviceClient } from "@/lib/supabase";
+import { LOCALE_CODES, localeMeta, type Locale } from "@/config/locales";
+import { getT } from "@/lib/i18n";
 
-const schema = z.object({ text: z.string().trim().min(20).max(6000), locale: z.enum(["en", "ur"]).default("en"), turnstile: z.string().optional() });
+const schema = z.object({ text: z.string().trim().min(20).max(6000), locale: z.enum(LOCALE_CODES as [Locale, ...Locale[]]).default("en"), turnstile: z.string().optional() });
 
 /** Nothing is stored. Only an anonymous `decoder_used` event is logged (brief §8.4). */
 export async function POST(req: NextRequest) {
@@ -15,11 +17,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "You have used today's 3 free decodes. Please book a free file review." }, { status: 429 });
   if (!(await verifyTurnstile(p.data.turnstile, req))) return NextResponse.json({ ok: false, error: "Bot check failed." }, { status: 400 });
 
-  const text = scrub(p.data.text), lang = p.data.locale;
-  let result: ReturnType<typeof decodeByRules> | { points: unknown[]; honest_view: string; language: string; mode: "llm" } = decodeByRules(text, lang);
+  const text = scrub(p.data.text), lang = p.data.locale, t = getT(lang);
+  let result: ReturnType<typeof decodeByRules> | { points: unknown[]; honest_view: string; language: string; mode: "llm" } = decodeByRules(text, lang === "ur" ? "ur" : "en");
+  if (lang !== "en" && lang !== "ur") result = { ...result, points: result.points.map((pt) => { const r = pt as { id: string }; return { ...pt, heading: t(`decoderRules.${r.id}.heading`), meaning: t(`decoderRules.${r.id}.meaning`), fix: t(`decoderRules.${r.id}.fix`) }; }) } as typeof result;
 
   if (llmAvailable()) {
-    const out = await llm(DECODER_SYSTEM(lang === "ur" ? "Urdu" : "English"), `LETTER_TEXT: ${text}`, 700);
+    const out = await llm(DECODER_SYSTEM(localeMeta(lang).english), `LETTER_TEXT: ${text}`, 700);
     try {
       const j = out && JSON.parse(out.replace(/^```json\s*|```$/g, "").trim());
       if (j?.points && Array.isArray(j.points)) result = { ...j, mode: "llm" };

@@ -1,13 +1,14 @@
 "use client";
 import { useState } from "react";
 import { Star } from "lucide-react";
-import en from "@/messages/en.json";
-import ur from "@/messages/ur.json";
+import { useDict } from "@/components/DictProvider";
+import type { Locale } from "@/config/locales";
 import { track } from "@/lib/track-client";
 import { Turnstile } from "./Turnstile";
 
-export function ReviewForm({ locale }: { locale: "en" | "ur" }) {
-  const f = (locale === "ur" ? ur : en).form;
+export function ReviewForm({ locale }: { locale: Locale }) {
+  const d = useDict();
+  const f = d.form;
   const [rating, setRating] = useState(5);
   const [state, setState] = useState<"idle" | "busy" | "done">("idle");
   const [err, setErr] = useState("");
@@ -22,7 +23,7 @@ export function ReviewForm({ locale }: { locale: "en" | "ur" }) {
     const j = await r?.json().catch(() => ({}));
     if (r?.ok && j.ok) { setState("done"); track("review_submitted"); } else { setErr(j?.error || f.error); setState("idle"); }
   }
-  if (state === "done") return <p role="status" style={{ fontWeight: 600, color: "var(--ok)" }}>{locale === "ur" ? "شکریہ! آپ کا تبصرہ منظوری کے بعد شائع ہوگا۔" : "Thank you! Your review will appear once we approve it."}</p>;
+  if (state === "done") return <p role="status" style={{ fontWeight: 600, color: "var(--ok)" }}>{d.ui.reviewThanks}</p>;
   return (
     <form onSubmit={submit} style={{ display: "grid", gap: 14 }}>
       <div className="g2">

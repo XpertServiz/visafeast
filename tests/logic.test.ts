@@ -78,7 +78,7 @@ describe("refusal decoder word boundaries", () => {
 import { cleanUrdu, localizeCountry } from "../lib/country-ur";
 describe("Urdu overlay never changes facts", () => {
   const uk = SEED_COUNTRIES.find((c) => c.slug.startsWith("uk-visit"))!;
-  it("keeps English when there is no Urdu draft", () => { expect(localizeCountry(uk, "ur")).toBe(uk); });
+  it("keeps English when there is no Urdu draft", () => { expect(localizeCountry(uk, "ur")).toEqual({ ...uk, translated: false }); });
   it("uses Urdu text only where the structure matches, and never touches fees or dates", () => {
     const draft = { h1: "برطانیہ ویزا", intro: "تعارف", documents: [{ title: "پاسپورٹ" }], steps: uk.steps.map((s) => ({ title: "مرحلہ", detail: s.detail })) };
     const ur = localizeCountry({ ...uk, content_ur: draft }, "ur");

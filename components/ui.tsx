@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { Plane } from "lucide-react";
 import type { Country, Faq } from "@/lib/types";
-import { lp } from "@/lib/i18n";
-import type { Locale } from "@/config/site";
+import { localeMeta, lp, type Locale } from "@/config/locales";
 
 export const Flag = ({ code, size = 28 }: { code: string; size?: number }) => (
   <span className={`fi fi-${code.toLowerCase()}`} role="img" aria-label={code.toUpperCase()} style={{ width: size * 1.33, height: size, borderRadius: 4, boxShadow: "0 0 0 1px rgba(0,0,0,.1)", display: "inline-block", flex: "none", backgroundSize: "cover" }} />
@@ -11,12 +10,12 @@ export const Flag = ({ code, size = 28 }: { code: string; size?: number }) => (
 export const KIND_BASE = { visit: "visit-visa", study: "study-visa", immigration: "immigration" } as const;
 export const KIND_COLOR = { visit: "var(--stamp-blue)", study: "var(--bad)", immigration: "var(--stamp-purple)" } as const;
 
-export function BoardingPass({ c, locale, cta }: { c: Country; locale: Locale; cta: string }) {
+export function BoardingPass({ c, locale, cta, kindLabel }: { c: Country; locale: Locale; cta: string; kindLabel?: string }) {
   return (
     <Link href={lp(locale, `/${KIND_BASE[c.kind]}/${c.slug}`)} className="card lift" style={{ textDecoration: "none", color: "var(--ink)", display: "block", overflow: "hidden" }}>
       <div style={{ padding: "18px 20px 14px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span className="eyebrow" style={{ color: KIND_COLOR[c.kind], fontSize: 12 }}>{c.kind.toUpperCase()}</span>
+          <span className="eyebrow" style={{ color: KIND_COLOR[c.kind], fontSize: 12 }}>{kindLabel ?? c.kind.toUpperCase()}</span>
           <Flag code={c.flag} size={22} />
         </div>
         <div className="mono" dir="ltr" style={{ display: "flex", alignItems: "center", gap: 8, margin: "10px 0 6px", fontSize: 14, color: "var(--muted-2)" }}>
@@ -86,4 +85,4 @@ export function CalEmbed({ link, title }: { link: string; title: string }) {
   return <iframe title={title} src={`https://cal.com/${link}?embed=true&theme=light`} loading="lazy" style={{ width: "100%", height: 640, border: "1px solid var(--line)", borderRadius: 18, background: "#fff" }} />;
 }
 
-export const fmtDate = (d: string | null, locale: Locale) => (d ? new Date(d).toLocaleDateString(locale === "ur" ? "ur-PK" : "en-GB", { day: "numeric", month: "short", year: "numeric" }) : "");
+export const fmtDate = (d: string | null, locale: Locale) => (d ? new Date(d).toLocaleDateString(localeMeta(locale).intl, { day: "numeric", month: "short", year: "numeric" }) : "");

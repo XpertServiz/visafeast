@@ -1,11 +1,14 @@
 "use client";
+import { useDict } from "@/components/DictProvider";
+import type { Locale } from "@/config/locales";
 import { useEffect, useState } from "react";
 import { Download } from "lucide-react";
 import type { Item } from "@/lib/types";
 import { track } from "@/lib/track-client";
 import { Turnstile } from "@/components/tools/Turnstile";
 
-export function Checklist({ slug, docs, locale, whatsapp }: { slug: string; docs: Item[]; locale: "en" | "ur"; whatsapp: string }) {
+export function Checklist({ slug, docs, locale, whatsapp }: { slug: string; docs: Item[]; locale: Locale; whatsapp: string }) {
+  const u = useDict().ui;
   const key = `vf_check_${slug}`;
   const [ticked, setTicked] = useState<number[]>([]);
   const [open, setOpen] = useState(false);
@@ -30,10 +33,10 @@ export function Checklist({ slug, docs, locale, whatsapp }: { slug: string; docs
     } catch (x) { setErr(x instanceof Error ? x.message : "Error"); } finally { setBusy(false); }
   }
 
-  if (!docs.length) return <p style={{ color: "var(--muted)" }}>{locale === "ur" ? "دستاویزات کی فہرست کی تصدیق جاری ہے — واٹس ایپ پر پوچھیں۔" : "The official document list is being verified. WhatsApp us for your personal checklist."}</p>;
+  if (!docs.length) return <p style={{ color: "var(--muted)" }}>{u.docsVerifying}</p>;
   return (
     <div>
-      <p className="mono" aria-live="polite" style={{ color: "var(--muted-2)", fontSize: 14 }}>{ticked.length} / {docs.length} {locale === "ur" ? "تیار" : "ready"}</p>
+      <p className="mono" aria-live="polite" style={{ color: "var(--muted-2)", fontSize: 14 }}>{ticked.length} / {docs.length} {u.ready}</p>
       <ul style={{ listStyle: "none", padding: 0, display: "grid", gap: 10 }}>
         {docs.map((d, i) => (
           <li key={d.title} className="card" style={{ padding: "12px 16px" }}>
@@ -45,10 +48,10 @@ export function Checklist({ slug, docs, locale, whatsapp }: { slug: string; docs
         ))}
       </ul>
       {!open ? (
-        <button type="button" className="btn btn-dark" onClick={() => setOpen(true)}><Download size={18} aria-hidden />{locale === "ur" ? "یہ چیک لسٹ PDF میں لیں" : "Get this checklist as a PDF"}</button>
+        <button type="button" className="btn btn-dark" onClick={() => setOpen(true)}><Download size={18} aria-hidden />{u.getPdf}</button>
       ) : (
         <form onSubmit={getPdf} className="card" style={{ padding: 18, display: "grid", gap: 10 }}>
-          <div className="g2"><input className="field" name="name" required placeholder={locale === "ur" ? "آپ کا نام" : "Your name"} aria-label="Name" /><input className="field" name="phone" required type="tel" dir="ltr" placeholder="WhatsApp +92…" aria-label="WhatsApp number" /></div>
+          <div className="g2"><input className="field" name="name" required placeholder={u.yourName} aria-label="Name" /><input className="field" name="phone" required type="tel" dir="ltr" placeholder="WhatsApp +92…" aria-label="WhatsApp number" /></div>
           <Turnstile onToken={setToken} />
           {err && <p role="alert" style={{ color: "var(--bad)", margin: 0 }}>{err}</p>}
           <button className="btn btn-primary" disabled={busy} type="submit"><Download size={18} aria-hidden />PDF</button>

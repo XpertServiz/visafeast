@@ -1,14 +1,14 @@
 "use client";
 import { useState } from "react";
 import { Check, Search } from "lucide-react";
-import en from "@/messages/en.json";
-import ur from "@/messages/ur.json";
+import { useDict } from "@/components/DictProvider";
+import type { Locale } from "@/config/locales";
 import { Turnstile } from "./Turnstile";
 
 interface Result { ref: string; decision: string | null; next: string; timeline: { stage: string; label: string; state: "done" | "current" | "todo" }[] }
 
-export function TrackForm({ locale }: { locale: "en" | "ur" }) {
-  const t = (locale === "ur" ? ur : en).track;
+export function TrackForm({ locale }: { locale: Locale }) {
+  const t = useDict().track;
   const [state, setState] = useState<"idle" | "busy" | "error">("idle");
   const [err, setErr] = useState(""); const [res, setRes] = useState<Result | null>(null); const [token, setToken] = useState("");
 
@@ -19,7 +19,7 @@ export function TrackForm({ locale }: { locale: "en" | "ur" }) {
     try {
       const r = await fetch("/api/track-case", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ref: fd.get("ref"), last4: fd.get("last4"), locale, turnstile: token }) });
       const j = await r.json();
-      if (!r.ok || !j.ok) { setErr(locale === "ur" ? t.notFound : j.error || t.notFound); setState("error"); return; }
+      if (!r.ok || !j.ok) { setErr(locale === "en" ? j.error || t.notFound : t.notFound); setState("error"); return; }
       setRes(j); setState("idle");
     } catch { setErr(t.notFound); setState("error"); }
   }

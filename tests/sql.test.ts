@@ -20,7 +20,7 @@ create publication supabase_realtime;
 beforeAll(async () => {
   db = new PGlite({ extensions: { pgcrypto } });
   await db.exec(STUBS);
-  for (const f of ["0001_core", "0002_backoffice", "0003_ledger_functions", "0004_rls", "0005_recurring_and_media", "0006_client_portal"]) await db.exec(sql(`migrations/${f}.sql`));
+  for (const f of ["0001_core", "0002_backoffice", "0003_ledger_functions", "0004_rls", "0005_recurring_and_media", "0006_client_portal", "0007_chat_cache"]) await db.exec(sql(`migrations/${f}.sql`));
 }, 60000);
 
 const one = async <T = Record<string, unknown>>(q: string, p: unknown[] = []) => (await db.query<T>(q, p)).rows[0];

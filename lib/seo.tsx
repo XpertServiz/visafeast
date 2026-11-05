@@ -1,4 +1,7 @@
-import { siteConfig } from "@/config/site";
+import type { Metadata } from "next";
+import { siteConfig, type Locale } from "@/config/site";
+import { LOCALES, localeMeta, lp } from "@/config/locales";
+import { getT, seoReady } from "./i18n";
 import type { SiteSettings } from "./types";
 
 export function JsonLd({ data }: { data: unknown }) {
@@ -27,7 +30,7 @@ export function orgJsonLd(s: SiteSettings) {
         "@id": `${siteConfig.url}/#site`,
         url: siteConfig.url,
         name: siteConfig.name,
-        inLanguage: ["en-PK", "ur-PK"],
+        inLanguage: LOCALES.map((l) => l.hreflang),
         potentialAction: { "@type": "SearchAction", target: `${siteConfig.url}/news?q={search_term_string}`, "query-input": "required name=search_term_string" },
       },
     ],
@@ -58,11 +61,22 @@ export function videoJsonLd(v: { video_id: string; title: string | null }) {
   };
 }
 
-/** Alternates incl. hreflang for a locale-neutral path like "/visit-visa/x". */
-export function alternates(path: string, locale: "en" | "ur") {
-  const en = path, ur = `/ur${path === "/" ? "" : path}`;
+/** Canonical address plus the address in every language (hreflang), for a path without language like "/visit-visa/x". */
+export function alternates(path: string, locale: Locale, available?: Locale[]) {
+  const list = available ?? LOCALES.map((l) => l.code);
   return {
-    canonical: locale === "ur" ? ur : en,
-    languages: { "en-PK": en, "ur-PK": ur, "x-default": en },
+    canonical: lp(locale, path),
+    languages: { ...Object.fromEntries(list.map((c) => [localeMeta(c).hreflang, lp(c, path)])), "x-default": path },
+  };
+}
+
+/** Title, description and social card of a page in its language. A page whose text is not translated yet stays out of Google until it is. */
+export function seoMeta(locale: Locale, key: string, path: string): Metadata {
+  const t = getT(locale);
+  const title = t(`seo.${key}.t`), description = t(`seo.${key}.d`);
+  return {
+    title, description, alternates: alternates(path, locale),
+    openGraph: { title, description, url: lp(locale, path), siteName: siteConfig.name, type: "website", locale: localeMeta(locale).og, images: ["/logo.jpg"] },
+    robots: seoReady(locale, key) ? undefined : { index: false, follow: true },
   };
 }

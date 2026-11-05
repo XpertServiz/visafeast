@@ -5,6 +5,7 @@ import { serviceClient } from "@/lib/supabase";
 import { notifyOwner } from "@/lib/server/notify";
 import { createRecurringExpenses, morningSummary, purgeExpiredDocuments } from "@/lib/server/daily";
 import { pullSearchConsole } from "@/lib/server/gsc";
+import { translateContent } from "@/lib/server/translate";
 
 export const maxDuration = 60;
 
@@ -15,13 +16,14 @@ export async function GET(req: NextRequest) {
   const out: Record<string, unknown> = {};
   const step = async (name: string, fn: () => Promise<unknown>) => { try { out[name] = await fn(); } catch (e) { out[name] = { error: e instanceof Error ? e.message : "failed" }; } };
 
-  await step("news", async () => { const r = await fetchAllNews(); revalidatePath("/news"); revalidatePath("/ur/news"); revalidatePath("/"); return r; });
+  await step("news", async () => { const r = await fetchAllNews(); revalidatePath("/news"); revalidatePath("/[locale]/news", "page"); revalidatePath("/[locale]", "page"); return r; });
   const db = serviceClient();
   if (db) {
     let made = 0;
     await step("recurring", async () => (made = await createRecurringExpenses(db)));
     await step("documentsDeleted", () => purgeExpiredDocuments(db));
     await step("searchConsole", pullSearchConsole);
+    await step("translate", async () => { const r = await translateContent(db, 15000); if (r.done) revalidatePath("/[locale]", "layout"); return r; });
     await step("morningEmail", async () => { const m = await morningSummary(db, made); return { sent: await notifyOwner(m.subject, m.html), ...m.data }; });
   }
   return NextResponse.json({ ok: true, ...out });

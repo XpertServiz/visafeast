@@ -1,3 +1,4 @@
+import { LOCALE_CODES, type Locale } from "@/config/locales";
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import React from "react";
@@ -8,7 +9,7 @@ import { getCountry } from "@/lib/data";
 import { siteConfig } from "@/config/site";
 
 export const runtime = "nodejs";
-const schema = z.object({ name: z.string().trim().min(2).max(80), phone: z.string().trim().min(7).max(20), turnstile: z.string().optional(), locale: z.enum(["en", "ur"]).default("en"), website: z.string().max(0).optional() });
+const schema = z.object({ name: z.string().trim().min(2).max(80), phone: z.string().trim().min(7).max(20), turnstile: z.string().optional(), locale: z.enum(LOCALE_CODES as [Locale, ...Locale[]]).default("en").transform((l) => (l === "ur" ? "ur" as const : "en" as const)), website: z.string().max(0).optional() });
 
 const s = StyleSheet.create({
   page: { padding: 40, fontSize: 11, color: "#0F172A" },

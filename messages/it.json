@@ -1,0 +1,439 @@
+{
+  "nav": {
+    "visas": "Visti e immigrazione",
+    "eligibility": "Verifica le possibilità",
+    "decoder": "Capire un rifiuto",
+    "news": "Notizie visti",
+    "reviews": "Recensioni",
+    "book": "Chiamata gratuita",
+    "menu": "Menu"
+  },
+  "hero": {
+    "eyebrow": "Consulenti per visita, studio e immigrazione · Karachi · per tutto il Pakistan",
+    "h1": "Il tuo visto, preparato bene al primo colpo.",
+    "sub": "Visti di visita, di studio e percorsi di immigrazione per Regno Unito, Canada, USA, Australia, Nuova Zelanda, Europa e Asia, con tariffe e tempi pubblicati apertamente.",
+    "tick1": "Tariffe con data dell'ultimo controllo",
+    "tick2": "Un solo consulente, dall'inizio alla decisione",
+    "tick3": "Aggiornamenti su WhatsApp",
+    "handle": "Destinazioni",
+    "watch": "Guarda il globo 3D",
+    "label": "Globo animato con voli dal Pakistan verso le destinazioni",
+    "europe": "Europa",
+    "baku": "Baku",
+    "routeVisit": "visita",
+    "routeStudy": "studio",
+    "routeEvisa": "e-visa",
+    "routeAll": "8 destinazioni"
+  },
+  "cta": {
+    "eligibility": "Verifica le possibilità: gratis",
+    "book": "Prenota una chiamata gratuita",
+    "whatsapp": "WhatsApp",
+    "enquiry": "Preferisci scrivere? Invia una richiesta →",
+    "enquiryBtn": "Invia una richiesta",
+    "guide": "Apri la guida →",
+    "qualify": "Ho i requisiti? →"
+  },
+  "steps": {
+    "title": "Il tuo visto in 3 semplici passi",
+    "s1": "Parla con noi",
+    "s1d": "Chiamata gratuita o WhatsApp",
+    "s2": "Prepariamo la tua pratica",
+    "s2d": "Documenti controllati",
+    "s3": "Parti",
+    "s3d": "Decide l'ambasciata"
+  },
+  "videos": {
+    "eyebrow": "Guarda · consigli sui visti di Visafeast",
+    "all": "Vedi tutto su YouTube →"
+  },
+  "elig": {
+    "title": "Gratis · 60 secondi",
+    "h2": "Verifica le tue possibilità",
+    "sub": "Sei domande rapide. Senza registrazione.",
+    "q": "Domanda",
+    "of": "di",
+    "back": "Indietro",
+    "restart": "Ricomincia",
+    "disclaimer": "È un'indicazione, non una decisione: decide solo l'ambasciata.",
+    "strong": "SOLIDO",
+    "moderate": "MEDIO",
+    "needs": "DA MIGLIORARE",
+    "strongT": "Il tuo profilo sembra solido sulla carta. Il passo successivo è una pratica all'altezza: documenti coerenti, un piano di viaggio chiaro e una lettera ben scritta.",
+    "moderateT": "Hai una discreta possibilità, con alcuni punti deboli. In una chiamata gratuita ti diremo cosa rafforzare prima di pagare la tariffa dell'ambasciata.",
+    "needsT": "Fare domanda ora comporta un alto rischio di rifiuto. Pianifichiamo prima i passi, come costruire una storia di viaggi o documentare i fondi, per partire bene.",
+    "sendChecklist": "Inviami la lista su WhatsApp",
+    "yourWhatsapp": "Il tuo numero WhatsApp",
+    "yourName": "Il tuo nome"
+  },
+  "eligQ": {
+    "dest": "Dove vuoi andare?",
+    "dest_0": "Regno Unito",
+    "dest_1": "Canada o USA",
+    "dest_2": "Schengen / Europa",
+    "dest_3": "Australia o Nuova Zelanda",
+    "dest_4": "Asia (Thailandia, Baku, Singapore)",
+    "dest_5": "Studiare all'estero",
+    "purpose": "Qual è lo scopo principale?",
+    "purpose_0": "Turismo",
+    "purpose_1": "Visita alla famiglia",
+    "purpose_2": "Affari",
+    "purpose_3": "Studio",
+    "travel": "Viaggi negli ultimi 5 anni?",
+    "travel_0": "Regno Unito / USA / Canada / Schengen / Australia",
+    "travel_1": "Golfo / Turchia / Malesia o simili",
+    "travel_2": "Nessuno",
+    "work": "Che lavoro fai?",
+    "work_0": "Dipendente, con buste paga",
+    "work_1": "Imprenditore, con dichiarazioni dei redditi",
+    "work_2": "Studente / casalinga con garante",
+    "work_3": "Non lavoro, nessun garante",
+    "bank": "I tuoi estratti conto degli ultimi 6 mesi?",
+    "bank_0": "Reddito regolare, saldo stabile",
+    "bank_1": "Conto del garante",
+    "bank_2": "Grosso deposito recente",
+    "refusal": "Visto rifiutato in passato?",
+    "refusal_0": "Mai",
+    "refusal_1": "Una volta",
+    "refusal_2": "Più di una volta"
+  },
+  "decoder": {
+    "title": "Hai ricevuto una lettera di rifiuto?",
+    "h2": "Decodificatore della lettera di rifiuto",
+    "sub": "Incolla il testo. Ricevi una spiegazione semplice.",
+    "label": "Testo della lettera (togli nome e riferimento)",
+    "btn": "Spiegamelo semplice",
+    "privacy": "Il testo non viene salvato, a meno che tu non ci chieda di esaminare il caso.",
+    "disclaimer": "Questo spiega la lettera in parole semplici. Non è una consulenza legale; decide solo l'ambasciata.",
+    "meaning": "Cosa significa",
+    "fix": "Cosa correggere",
+    "honest": "Parere onesto",
+    "review": "Prenota un esame gratuito della pratica",
+    "send": "Invia a un consulente",
+    "consent": "Accetto di inviare questo testo a Visafeast perché un consulente esamini il mio caso.",
+    "tooLong": "Incolla al massimo 6.000 caratteri.",
+    "empty": "Prima incolla il testo della lettera."
+  },
+  "problems": {
+    "bank": {
+      "a": "Il mio estratto conto non bastava",
+      "b": "Le ambasciate guardano la storia dei redditi e l'origine del denaro, non un solo saldo. I depositi improvvisi sono un motivo comune di rifiuto.",
+      "c": "Esaminiamo con te sei mesi di estratti e spieghiamo i fondi nella lettera."
+    },
+    "papers": {
+      "a": "Non sapevo quali documenti",
+      "b": "Ogni paese chiede cose diverse e le liste online spesso sono vecchie di anni.",
+      "c": "Una lista personale per il tuo caso, confrontata con la fonte ufficiale e con la data di verifica."
+    },
+    "sad": {
+      "a": "Sono stato rifiutato: e adesso?",
+      "b": "Ripresentare la stessa pratica spreca di nuovo la tariffa e aggiunge un altro rifiuto alla tua storia.",
+      "c": "Leggiamo la lettera, correggiamo ogni punto e ti diciamo onestamente se conviene già ripresentare domanda."
+    }
+  },
+  "why": {
+    "title": "Perché i visti vengono rifiutati",
+    "fix": "Come risolviamo"
+  },
+  "mid": {
+    "h2": "Non sai a che punto è la tua pratica? Una chiamata di 15 minuti è gratuita. Anche una risposta onesta."
+  },
+  "choose": {
+    "title": "Scegli la tua pagina visto",
+    "visit": "Visti di visita",
+    "study": "Visti di studio",
+    "immigration": "Immigrazione",
+    "immNote": "Le regole sull'immigrazione cambiano spesso: ogni pagina mostra la fonte ufficiale e la data dell'ultimo controllo. Dove la legge richiede un rappresentante autorizzato (ad esempio un RCIC per il Canada o un agente registrato per l'Australia), le pratiche sono presentate con i nostri partner autorizzati."
+  },
+  "reviews": {
+    "title": "Recensioni dei clienti",
+    "note": "Ogni recensione viene da un cliente reale. I clienti scrivono la propria recensione; la approviamo per fermare lo spam: non cambiamo mai le parole né nascondiamo critiche giuste.",
+    "empty": "Ancora nessuna recensione pubblicata. Sii il primo a condividere la tua esperienza.",
+    "write": "Lascia una recensione",
+    "google": "Vedi le recensioni Google →"
+  },
+  "whyUs": {
+    "title": "Perché Visafeast",
+    "i1": "Tariffe pubblicate",
+    "i1d": "Tariffe e tempi con la data del nostro controllo.",
+    "i2": "Un solo consulente",
+    "i2d": "La stessa persona, dalla prima chiamata alla decisione.",
+    "i3": "Nessun documento falso",
+    "i3d": "Non procuriamo mai estratti conto o lettere.",
+    "i4": "La tua lingua",
+    "i4d": "Il sito, ogni lista e i nostri aggiornamenti nella lingua che preferisci."
+  },
+  "news": {
+    "title": "Radar delle notizie sui visti",
+    "official": "Fonte ufficiale",
+    "report": "Articolo di stampa",
+    "digest": "Riepilogo settimanale",
+    "none": "Ancora nessuna notizia: il radar si riempie da solo ogni giorno.",
+    "all": "Tutte le notizie →"
+  },
+  "faq": {
+    "title": "Domande frequenti"
+  },
+  "book": {
+    "title": "Prenota una chiamata gratuita di 15 minuti",
+    "or": "Oppure invia una richiesta",
+    "send": "Invia la richiesta",
+    "sent": "Grazie! Ti contatteremo presto su WhatsApp."
+  },
+  "form": {
+    "name": "Il tuo nome",
+    "whatsapp": "Numero WhatsApp",
+    "email": "Email (facoltativa)",
+    "service": "Servizio",
+    "country": "Paese",
+    "nationality": "Paese del passaporto",
+    "residence": "Dove vivi ora?",
+    "refused": "Già rifiutato?",
+    "no": "No",
+    "once": "Una volta",
+    "more": "Più di una volta",
+    "message": "Messaggio (facoltativo)",
+    "visit": "Visto di visita",
+    "study": "Visto di studio",
+    "immigration": "Immigrazione",
+    "city": "Città",
+    "rating": "Valutazione",
+    "consent": "Accetto la pubblicazione",
+    "submit": "Invia",
+    "error": "Qualcosa è andato storto. Riprova o scrivici su WhatsApp."
+  },
+  "footer": {
+    "visitStudy": "Visita e studio",
+    "immigration": "Immigrazione",
+    "contact": "Contatti",
+    "legal": "Note legali",
+    "rights": "Tutti i diritti riservati."
+  },
+  "fallback": "In verifica: chiedici su WhatsApp l'importo di oggi",
+  "chat": {
+    "open": "Chatta con noi",
+    "title": "Zara · assistente Visafeast",
+    "greeting": "Ciao! Sono Zara. Chiedimi di tariffe, documenti o tempi. Gli errori di battitura non sono un problema.",
+    "placeholder": "Scrivi la tua domanda…",
+    "send": "Invia",
+    "q1": "Tariffa visto visita Regno Unito",
+    "q2": "Documenti visita Canada",
+    "q3": "Parla con un consulente",
+    "wa": "Continua su WhatsApp",
+    "subtitle": "Assistente automatica · di solito subito",
+    "disclaimer": "Zara risponde in base a questo sito. Per il tuo caso, parla con un consulente."
+  },
+  "consent": {
+    "text": "Usiamo un piccolo cookie per contare le visite, senza salvare il tuo indirizzo IP.",
+    "ok": "OK"
+  },
+  "splash": {
+    "skip": "Salta"
+  },
+  "common": {
+    "lastChecked": "Ultimo controllo",
+    "source": "Fonte",
+    "onThisPage": "In questa pagina",
+    "related": "Guide correlate",
+    "readMore": "Leggi di più",
+    "home": "Home"
+  },
+  "extras": {
+    "destinations": "destinazioni",
+    "checkedPages": "guide con tariffe da fonti ufficiali",
+    "lastChecked": "Ultimo controllo",
+    "askTitle": "Chiedi a Zara tutto sul tuo visto",
+    "askPlaceholder": "es. tariffa visto Regno Unito",
+    "ask1": "Tariffa visto visita Regno Unito",
+    "ask2": "Documenti Schengen",
+    "ask3": "Studiare in Germania, saldo bancario",
+    "compareTitle": "Confronta i visti fianco a fianco",
+    "compareNote": "Cifre ufficiali con data di controllo. Se una cifra non è confermata, lo diciamo.",
+    "visit": "Visita",
+    "study": "Studio",
+    "choose": "Scegli una destinazione",
+    "fee": "Tariffa ufficiale",
+    "time": "Tempo di decisione",
+    "stay": "Soggiorno",
+    "apply": "Quando presentare",
+    "unknown": "In verifica: scrivici su WhatsApp",
+    "open": "Apri la guida completa",
+    "fileTitle": "La tua pratica visto, online",
+    "file1": "Invia i documenti in sicurezza",
+    "file1d": "Caricali dal telefono. Solo tu e il tuo consulente potete vederli.",
+    "file2": "Vedi lo stato quando vuoi",
+    "file2d": "Sappi a che punto è la pratica e cosa succede dopo.",
+    "file3": "Chatta con il consulente",
+    "file3d": "Fai domande e vedi quali documenti mancano.",
+    "fileCta": "Apri la mia pratica"
+  },
+  "ui": {
+    "whatItMeans": "Cosa significa:",
+    "visa": "Visto",
+    "embassyFee": "Tariffa ambasciata",
+    "decisionTime": "Tempo di decisione",
+    "stay": "Soggiorno",
+    "applyWindow": "Periodo di domanda",
+    "biometrics": "Biometria",
+    "whoFor": "A chi è rivolto questo visto",
+    "documents": "Lista dei documenti",
+    "funds": "Quanto saldo bancario?",
+    "howItWorks": "Come funziona con Visafeast",
+    "refusals": "Motivi comuni di rifiuto",
+    "totalCost": "Costo totale",
+    "latestNews": "Ultime notizie",
+    "faq": "FAQ",
+    "contactQuote": "Contattaci per un preventivo",
+    "from": "da",
+    "licensedPartner": "Partner autorizzato:",
+    "item": "Voce",
+    "paidTo": "Pagato a",
+    "amount": "Importo",
+    "checked": "Controllato",
+    "embassyGovFee": "Tariffa ambasciata / governo",
+    "vfsFee": "Tariffa centro visti (VFS)",
+    "serviceFee": "Compenso di servizio Visafeast",
+    "embassy": "Ambasciata",
+    "visaCentre": "Centro visti",
+    "toVerify": "Da verificare",
+    "docsVerifying": "La lista ufficiale dei documenti è in verifica. Scrivici su WhatsApp per la tua lista personale.",
+    "ready": "pronti",
+    "getPdf": "Ricevi questa lista in PDF",
+    "yourName": "Il tuo nome",
+    "yourWhatsapp": "Il tuo numero WhatsApp",
+    "openPage": "Apri la pagina",
+    "chatError": "Mi dispiace, ora non riesco a rispondere. Scrivici su WhatsApp.",
+    "chatLimit": "Hai raggiunto il limite di messaggi di oggi. Continua su WhatsApp con il nostro consulente.",
+    "teaser": "Ciao! Sono Zara. Chiedimi tutto sui visti.",
+    "askZara": "Chiedi a Zara, la nostra assistente",
+    "close": "Chiudi",
+    "photoSoon": "Foto in arrivo",
+    "reviewThanks": "Grazie! La tua recensione apparirà dopo l'approvazione.",
+    "visitIn": "Visita: {country}",
+    "studyIn": "Studio: {country}",
+    "allVisit": "Tutti i visti di visita →",
+    "allStudy": "Tutti i visti di studio →",
+    "feeEstimator": "Stima delle tariffe",
+    "about": "Chi siamo",
+    "contact": "Contatti",
+    "privacy": "Privacy",
+    "terms": "Termini",
+    "disclaimer": "Avvertenze",
+    "languages": "Lingue",
+    "disclaimerShort": "Visafeast è una consulenza privata, non un'ambasciata né un ente pubblico. I visti sono decisi solo dall'ambasciata o dall'autorità di immigrazione competente.",
+    "autoNote": "Tradotto per comodità. In caso di differenze valgono la fonte ufficiale e la pagina inglese.",
+    "kindVisit": "Visita",
+    "kindStudy": "Studio",
+    "kindImmigration": "Immigrazione",
+    "newStamp": "Nuovo",
+    "chooseVisa": "Scegli il tuo visto",
+    "totalApprox": "Totale (circa)",
+    "lastChecked": "Ultimo controllo",
+    "notVerified": "Non ancora verificato",
+    "pkrNote": "Gli importi in PKR sono inseriti da Visafeast.",
+    "approxNote": "Le cifre ≈ usano il cambio di oggi e sono solo indicative.",
+    "notFoundTitle": "Questa pagina è volata via",
+    "notFoundBody": "La pagina cercata non è qui. Prova una di queste:",
+    "contactUs": "Contattaci",
+    "immCanada": "Canada Express Entry",
+    "immAustralia": "Australia: visti qualificati",
+    "immGermany": "Germania: Chancenkarte",
+    "immUk": "UK Skilled Worker"
+  },
+  "hub": {
+    "visitH1": "Visti di visita dal Pakistan",
+    "visitIntro": "Scegli un paese per vedere documenti, tariffe e tempi, ciascuno con la data di controllo.",
+    "studyH1": "Visti di studio dal Pakistan",
+    "studyIntro": "Scegli un paese per vedere come funziona il visto di studio e cosa preparare.",
+    "immH1": "Percorsi di immigrazione dal Pakistan",
+    "immIntro": "Percorsi per lavoratori qualificati, famiglie e imprese. Le regole cambiano spesso: ogni pagina mostra la fonte ufficiale e la data di controllo."
+  },
+  "seo": {
+    "home": {
+      "t": "Consulente visti a Karachi: visita e studio | Visafeast",
+      "d": "Visti di visita, di studio e percorsi di immigrazione dal Pakistan, con tariffe e tempi pubblicati. Verifica gratuita e chiamata di 15 minuti."
+    },
+    "hubVisit": {
+      "t": "Visti di visita dal Pakistan: UK, Canada, USA, Schengen | Visafeast",
+      "d": "Scegli la destinazione: visti di visita dal Pakistan per Regno Unito, Canada, USA, Australia, Nuova Zelanda, Schengen, Azerbaigian, Thailandia e Singapore."
+    },
+    "hubStudy": {
+      "t": "Studiare all'estero dal Pakistan: guide al visto | Visafeast",
+      "d": "Studia in Germania, Regno Unito, Canada, USA, Australia, Italia, Grecia ed Europa: guide con fonti ufficiali."
+    },
+    "hubImm": {
+      "t": "Consulente immigrazione in Pakistan: residenza e lavoro | Visafeast",
+      "d": "Percorsi di immigrazione dal Pakistan verso Canada, Australia, Regno Unito, USA, Germania, Nuova Zelanda ed Europa, con fonti ufficiali e date."
+    },
+    "eligibility": {
+      "t": "Verifica gratuita del visto dal Pakistan | Visafeast",
+      "d": "Rispondi a sei domande rapide e scopri quanto è solida la tua pratica. Gratis, 60 secondi, senza registrazione. Un'indicazione, non una decisione."
+    },
+    "decoder": {
+      "t": "Decodificatore lettera di rifiuto del visto | Visafeast",
+      "d": "Incolla la lettera di rifiuto e ricevi una spiegazione semplice di ogni motivo e di cosa correggere. Nulla viene salvato senza tua richiesta."
+    },
+    "book": {
+      "t": "Prenota una chiamata gratuita di 15 minuti | Visafeast",
+      "d": "Prenota una chiamata gratuita di 15 minuti con un consulente Visafeast o invia una richiesta: rispondiamo su WhatsApp."
+    },
+    "contact": {
+      "t": "Contatta Visafeast: consulenti visti a Karachi",
+      "d": "Contatta Visafeast su WhatsApp, email o Facebook, oppure invia una richiesta. Consulenze online in tutto il Pakistan."
+    },
+    "reviews": {
+      "t": "Recensioni dei clienti | Visafeast",
+      "d": "Recensioni di veri clienti Visafeast, approvate prima della pubblicazione. Non cambiamo le parole né nascondiamo critiche giuste."
+    },
+    "news": {
+      "t": "Notizie sui visti per richiedenti dal Pakistan | Visafeast",
+      "d": "Aggiornamenti quotidiani da fonti ufficiali e un riepilogo settimanale su cosa significano per i richiedenti dal Pakistan."
+    }
+  },
+  "pages": {
+    "contactTitle": "Contattaci",
+    "facebookPage": "Pagina Facebook →",
+    "newsIntro": "Notizie quotidiane da fonti ufficiali e stampa. Controlla sempre la pagina ufficiale prima di agire.",
+    "newsAll": "Tutte",
+    "noDigests": "Ancora nessun riepilogo pubblicato.",
+    "published": "Pubblicato",
+    "sources": "Fonti",
+    "reviewsAvg": "Media {avg} / 5 su {count} recensioni"
+  },
+  "faqs": [
+    {
+      "q": "Garantite il visto?",
+      "a": "No. Nessun consulente onesto può farlo: decide solo l'ambasciata. Promettiamo una pratica completa e coerente e un parere onesto sulle tue possibilità prima che tu paghi la tariffa dell'ambasciata."
+    },
+    {
+      "q": "Quanto saldo serve per un visto di visita nel Regno Unito?",
+      "a": "Non c'è un importo ufficiale fisso. Il funzionario controlla che i fondi coprano il viaggio e corrispondano ai tuoi redditi. Esaminiamo gli estratti nella chiamata gratuita."
+    },
+    {
+      "q": "Sono stato rifiutato. Potete aiutarmi?",
+      "a": "Sì. Inviaci la lettera di rifiuto; affrontiamo ogni punto e ti diciamo onestamente se è meglio aspettare."
+    },
+    {
+      "q": "Non vivo a Karachi. Posso usare Visafeast?",
+      "a": "Sì. Le consulenze si svolgono su video WhatsApp o telefono; la biometria si fa al centro VFS o visti più vicino."
+    },
+    {
+      "q": "Quanto dura la lavorazione?",
+      "a": "Dipende dal paese e dalla stagione; ogni pagina mostra il tempo ufficiale attuale con la data del nostro controllo."
+    },
+    {
+      "q": "Aiutate con immigrazione e residenza permanente?",
+      "a": "Sì: percorsi per lavoratori qualificati, famiglie e imprese verso Canada, Australia, Regno Unito, USA, Germania, Nuova Zelanda e parte dell'Europa. Dove la legge richiede un rappresentante autorizzato, il caso è presentato con i nostri partner autorizzati."
+    },
+    {
+      "q": "Posso leggere il sito nella mia lingua?",
+      "a": "Sì. Il sito si apre nella lingua del tuo paese. Puoi cambiarla in alto, e tutte le lingue sono elencate in fondo."
+    }
+  ],
+  "portal": {
+    "navLink": "Area clienti"
+  },
+  "track": {
+    "title": "Segui la tua pratica"
+  }
+}

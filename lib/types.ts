@@ -2,6 +2,8 @@ export type Kind = "visit" | "study" | "immigration";
 export type Item = { title: string; detail?: string };
 
 export interface Country {
+  /** Set when served: does this page have its text in the visitor's language? Only such pages are offered to Google. */
+  translated?: boolean;
   id: string;
   slug: string;
   kind: Kind;

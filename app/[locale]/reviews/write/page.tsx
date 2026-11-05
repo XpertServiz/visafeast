@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import { pageCtx } from "@/lib/page";
+import { seoMeta } from "@/lib/seo";
 import { PageHeader } from "@/components/PageHeader";
 import { ReviewForm } from "@/components/tools/ReviewForm";
 
 type P = { params: Promise<{ locale: string }> };
-export const metadata: Metadata = { title: "Write a Review | Visafeast", description: "Share your experience with Visafeast. Reviews are approved before they appear.", robots: { index: false, follow: true } };
+export async function generateMetadata({ params }: P): Promise<Metadata> {
+  const { locale } = await pageCtx(params);
+  return seoMeta(locale, "reviewsWrite", "/reviews/write");
+}
 export default async function Page({ params }: P) {
   const { locale, t } = await pageCtx(params);
   return (

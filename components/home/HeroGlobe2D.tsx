@@ -1,5 +1,8 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import { geoGraticule10, geoOrthographic, geoPath, type GeoPermissibleObjects } from "d3-geo";
+import { feature, mesh } from "topojson-client";
+import type { Topology, GeometryCollection } from "topojson-specification";
 
 const D = Math.PI / 180;
 const C: Record<string, [number, number]> = {
@@ -49,6 +52,20 @@ export function HeroGlobe2D({ onArrive, onRoute, staticFrame = false, mobile = f
     const pts: V3[] = [];
     for (let i = 0; i < N; i++) { const y = 1 - (i / (N - 1)) * 2, r = Math.sqrt(1 - y * y), th = i * 2.399963229728653; pts.push([Math.cos(th) * r, y, Math.sin(th) * r]); }
     const cam = { lon: 60, lat: 22 };
+    // Real continents and borders (Natural Earth). The dots above only show for the moment before this file arrives.
+    const projection = geoOrthographic().clipAngle(90).precision(0.6);
+    const path = geoPath(projection, ctx);
+    const grid = geoGraticule10();
+    let world: { land: GeoPermissibleObjects; borders: GeoPermissibleObjects; pakistan?: GeoPermissibleObjects } | null = null;
+    fetch("/globe/countries-110m.json").then((r) => r.json()).then((t: Topology<{ countries: GeometryCollection; land: GeometryCollection }>) => {
+      const countries = feature(t, t.objects.countries);
+      world = {
+        land: feature(t, t.objects.land) as GeoPermissibleObjects,
+        borders: mesh(t, t.objects.countries, (a, b) => a !== b),
+        pakistan: countries.features.find((c) => String(c.id) === "586"),
+      };
+      if (staticFrame) draw(1, routes.length - 1, true);
+    }).catch(() => { /* keep the dotted globe */ });
     let w = 0, h = 0, dpr = 1, raf = 0, visible = true, last = performance.now();
     let idx = 0, elapsed = 0, arrived = false;
 
@@ -79,7 +96,18 @@ export function HeroGlobe2D({ onArrive, onRoute, staticFrame = false, mobile = f
       g.addColorStop(0, "#1B4176"); g.addColorStop(1, "#081629");
       ctx!.fillStyle = g; ctx!.beginPath(); ctx!.arc(cx, cy, R, 0, 7); ctx!.fill();
       ctx!.strokeStyle = "rgba(120,170,235,.35)"; ctx!.lineWidth = 1; ctx!.stroke();
-      for (const p of pts) { const q = proj(p, R, cx, cy); if (q[2] > 0) { ctx!.fillStyle = `rgba(150,190,240,${0.12 + q[2] * 0.55})`; ctx!.fillRect(q[0], q[1], 1.6, 1.6); } }
+      if (world) {
+        projection.scale(R).translate([cx, cy]).rotate([-cam.lon, -cam.lat]);
+        const c = ctx!;
+        c.beginPath(); path(grid); c.strokeStyle = "rgba(150,190,240,.07)"; c.lineWidth = 0.6; c.stroke();
+        c.beginPath(); path(world.land);
+        const lg = c.createRadialGradient(cx - R * 0.3, cy - R * 0.35, R * 0.1, cx, cy, R * 1.05);
+        lg.addColorStop(0, "#6FA6DE"); lg.addColorStop(1, "#2C5C94");
+        c.fillStyle = lg; c.fill();
+        c.strokeStyle = "rgba(205,226,250,.55)"; c.lineWidth = 0.7; c.stroke();
+        c.beginPath(); path(world.borders); c.strokeStyle = "rgba(10,26,51,.4)"; c.lineWidth = 0.5; c.stroke();
+        if (world.pakistan) { c.beginPath(); path(world.pakistan); c.fillStyle = "rgba(242,169,59,.9)"; c.fill(); }
+      } else for (const p of pts) { const q = proj(p, R, cx, cy); if (q[2] > 0) { ctx!.fillStyle = `rgba(150,190,240,${0.12 + q[2] * 0.55})`; ctx!.fillRect(q[0], q[1], 1.6, 1.6); } }
       const done = showAll ? routes.length : activeIdx;
       for (let i = 0; i < done; i++) strokeArc(i, 1, 0.22, 1.2, R, cx, cy);
       if (!showAll) strokeArc(activeIdx, progress, 1, 2.4, R, cx, cy);

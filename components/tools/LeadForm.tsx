@@ -2,14 +2,15 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { Send } from "lucide-react";
-import en from "@/messages/en.json";
-import ur from "@/messages/ur.json";
+import { useDict } from "@/components/DictProvider";
+import type { Locale } from "@/config/locales";
 import { Turnstile } from "./Turnstile";
 
 export function LeadForm({ locale, countries, defaultService, defaultCountry, dark = true, source = "enquiry" }: {
-  locale: "en" | "ur"; countries: string[]; defaultService?: "visit" | "study" | "immigration"; defaultCountry?: string; dark?: boolean; source?: string;
+  locale: Locale; countries: string[]; defaultService?: "visit" | "study" | "immigration"; defaultCountry?: string; dark?: boolean; source?: string;
 }) {
-  const f = (locale === "ur" ? ur : en).form, b = (locale === "ur" ? ur : en).book;
+  const d = useDict();
+  const f = d.form, b = d.book;
   const path = usePathname();
   const [state, setState] = useState<"idle" | "busy" | "done" | "error">("idle");
   const [err, setErr] = useState("");

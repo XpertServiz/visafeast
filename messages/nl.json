@@ -1,0 +1,439 @@
+{
+  "nav": {
+    "visas": "Visa en immigratie",
+    "eligibility": "Kansen controleren",
+    "decoder": "Weigering begrijpen",
+    "news": "Visanieuws",
+    "reviews": "Beoordelingen",
+    "book": "Gratis gesprek",
+    "menu": "Menu"
+  },
+  "hero": {
+    "eyebrow": "Adviseurs voor bezoek, studie en immigratie · Karachi · voor heel Pakistan",
+    "h1": "Uw visum, in één keer goed voorbereid.",
+    "sub": "Bezoek- en studievisa en immigratieroutes voor het VK, Canada, de VS, Australië, Nieuw-Zeeland, Europa en Azië, met openbaar gepubliceerde tarieven en termijnen.",
+    "tick1": "Tarieven met datum van laatste controle",
+    "tick2": "Eén adviseur, van begin tot beslissing",
+    "tick3": "Updates via WhatsApp",
+    "handle": "Bestemmingen",
+    "watch": "Bekijk de 3D-wereldbol",
+    "label": "Bewegende wereldbol met vluchten van Pakistan naar visumbestemmingen",
+    "europe": "Europa",
+    "baku": "Bakoe",
+    "routeVisit": "bezoek",
+    "routeStudy": "studie",
+    "routeEvisa": "e-visum",
+    "routeAll": "8 bestemmingen"
+  },
+  "cta": {
+    "eligibility": "Controleer mijn kansen: gratis",
+    "book": "Boek een gratis gesprek",
+    "whatsapp": "WhatsApp",
+    "enquiry": "Liever schrijven? Stuur een vraag →",
+    "enquiryBtn": "Stuur een vraag",
+    "guide": "Open de gids →",
+    "qualify": "Kom ik in aanmerking? →"
+  },
+  "steps": {
+    "title": "Uw visum in 3 eenvoudige stappen",
+    "s1": "Praat met ons",
+    "s1d": "Gratis gesprek of WhatsApp",
+    "s2": "Wij bereiden uw dossier voor",
+    "s2d": "Documenten gecontroleerd",
+    "s3": "U vliegt",
+    "s3d": "De ambassade beslist"
+  },
+  "videos": {
+    "eyebrow": "Bekijk · visumtips van Visafeast",
+    "all": "Alles op YouTube →"
+  },
+  "elig": {
+    "title": "Gratis · 60 seconden",
+    "h2": "Controleer uw kansen",
+    "sub": "Zes korte vragen. Geen aanmelding.",
+    "q": "Vraag",
+    "of": "van",
+    "back": "Terug",
+    "restart": "Opnieuw beginnen",
+    "disclaimer": "Dit is een indicatie, geen beslissing: alleen de ambassade beslist.",
+    "strong": "STERK",
+    "moderate": "GEMIDDELD",
+    "needs": "MOET BETER",
+    "strongT": "Uw profiel lijkt op papier sterk. De volgende stap is een dossier dat daarbij past: consistente documenten, een duidelijk reisplan en een goede brief.",
+    "moderateT": "U maakt een redelijke kans, met enkele zwakke punten. In een gratis gesprek vertellen we wat u moet versterken voordat u de ambassadekosten betaalt.",
+    "needsT": "Nu aanvragen brengt een hoog weigeringsrisico mee. Laten we eerst de stappen plannen, zoals reisgeschiedenis opbouwen of middelen aantonen, zodat uw aanvraag sterk begint.",
+    "sendChecklist": "Stuur de lijst via WhatsApp",
+    "yourWhatsapp": "Uw WhatsApp-nummer",
+    "yourName": "Uw naam"
+  },
+  "eligQ": {
+    "dest": "Waar wilt u naartoe?",
+    "dest_0": "VK",
+    "dest_1": "Canada of VS",
+    "dest_2": "Schengen / Europa",
+    "dest_3": "Australië of Nieuw-Zeeland",
+    "dest_4": "Azië (Thailand, Bakoe, Singapore)",
+    "dest_5": "Studeren in het buitenland",
+    "purpose": "Wat is het hoofddoel?",
+    "purpose_0": "Toerisme",
+    "purpose_1": "Familiebezoek",
+    "purpose_2": "Zakelijk",
+    "purpose_3": "Studie",
+    "travel": "Reizen in de afgelopen 5 jaar?",
+    "travel_0": "VK / VS / Canada / Schengen / Australië",
+    "travel_1": "Golf / Turkije / Maleisië of vergelijkbaar",
+    "travel_2": "Geen",
+    "work": "Wat doet u?",
+    "work_0": "In loondienst, met loonstroken",
+    "work_1": "Ondernemer, met belastingaangiften",
+    "work_2": "Student / huisvrouw met sponsor",
+    "work_3": "Geen werk, geen sponsor",
+    "bank": "Uw bankafschriften van de laatste 6 maanden?",
+    "bank_0": "Regelmatig inkomen, stabiel saldo",
+    "bank_1": "Rekening van de sponsor",
+    "bank_2": "Recente grote storting",
+    "refusal": "Eerder een visum geweigerd?",
+    "refusal_0": "Nooit",
+    "refusal_1": "Eén keer",
+    "refusal_2": "Meer dan eens"
+  },
+  "decoder": {
+    "title": "Een weigeringsbrief ontvangen?",
+    "h2": "Weigeringsbrief uitgelegd",
+    "sub": "Plak de tekst. Krijg een uitleg in gewone taal.",
+    "label": "Tekst van de brief (verwijder uw naam en referentie)",
+    "btn": "Leg het eenvoudig uit",
+    "privacy": "De tekst wordt niet bewaard, tenzij u ons vraagt uw zaak te bekijken.",
+    "disclaimer": "Dit legt uw brief uit in gewone taal. Het is geen juridisch advies; alleen de ambassade beslist.",
+    "meaning": "Wat het betekent",
+    "fix": "Wat te verbeteren",
+    "honest": "Eerlijke mening",
+    "review": "Boek een gratis dossiercontrole",
+    "send": "Stuur naar een adviseur",
+    "consent": "Ik ga akkoord dat deze tekst naar Visafeast gaat zodat een adviseur mijn zaak bekijkt.",
+    "tooLong": "Plak maximaal 6.000 tekens.",
+    "empty": "Plak eerst de tekst van uw brief."
+  },
+  "problems": {
+    "bank": {
+      "a": "Mijn bankafschrift was niet genoeg",
+      "b": "Ambassades kijken naar inkomensgeschiedenis en herkomst van geld, niet naar één saldo. Plotselinge stortingen zijn een veelvoorkomende reden voor weigering.",
+      "c": "We bekijken zes maanden afschriften met u en leggen de middelen goed uit in de brief."
+    },
+    "papers": {
+      "a": "Ik wist niet welke documenten",
+      "b": "Elk land vraagt iets anders en online lijsten zijn vaak jaren verouderd.",
+      "c": "Een persoonlijke lijst voor uw zaak, vergeleken met de officiële bron en met controledatum."
+    },
+    "sad": {
+      "a": "Ik ben geweigerd, wat nu?",
+      "b": "Opnieuw aanvragen met hetzelfde dossier verspilt de kosten weer en voegt nog een weigering toe aan uw geschiedenis.",
+      "c": "We lezen de brief, verbeteren elk punt en zeggen eerlijk of opnieuw aanvragen al zinvol is."
+    }
+  },
+  "why": {
+    "title": "Waarom visa worden geweigerd",
+    "fix": "Hoe wij het oplossen"
+  },
+  "mid": {
+    "h2": "Weet u niet hoe uw dossier ervoor staat? Een gesprek van 15 minuten is gratis. Een eerlijk antwoord ook."
+  },
+  "choose": {
+    "title": "Kies uw visumpagina",
+    "visit": "Bezoekvisa",
+    "study": "Studievisa",
+    "immigration": "Immigratie",
+    "immNote": "Immigratieregels veranderen vaak: elke pagina toont de officiële bron en de datum van onze laatste controle. Waar de wet een erkende vertegenwoordiger eist (bijvoorbeeld een RCIC voor Canada of een geregistreerde migratieagent voor Australië), worden zaken ingediend via onze erkende partners."
+  },
+  "reviews": {
+    "title": "Klantbeoordelingen",
+    "note": "Elke beoordeling komt van een echte klant. Klanten schrijven hun eigen beoordeling; wij keuren die goed om spam te stoppen. We wijzigen nooit woorden en verbergen geen eerlijke kritiek.",
+    "empty": "Nog geen beoordelingen gepubliceerd. Deel als eerste uw ervaring.",
+    "write": "Schrijf een beoordeling",
+    "google": "Bekijk onze Google-beoordelingen →"
+  },
+  "whyUs": {
+    "title": "Waarom Visafeast",
+    "i1": "Gepubliceerde tarieven",
+    "i1d": "Tarieven en termijnen met de datum van onze controle.",
+    "i2": "Eén adviseur",
+    "i2d": "Dezelfde persoon, van eerste gesprek tot beslissing.",
+    "i3": "Geen valse documenten",
+    "i3d": "We regelen nooit bankafschriften of brieven.",
+    "i4": "Uw taal",
+    "i4d": "De site, elke lijst en onze updates in de taal die u verkiest."
+  },
+  "news": {
+    "title": "Visanieuwsradar",
+    "official": "Officiële bron",
+    "report": "Nieuwsbericht",
+    "digest": "Weekoverzicht",
+    "none": "Nog geen nieuws: de radar vult zich dagelijks automatisch.",
+    "all": "Al het nieuws →"
+  },
+  "faq": {
+    "title": "Veelgestelde vragen"
+  },
+  "book": {
+    "title": "Boek een gratis gesprek van 15 minuten",
+    "or": "Of stuur een vraag",
+    "send": "Vraag versturen",
+    "sent": "Bedankt! We nemen binnenkort contact op via WhatsApp."
+  },
+  "form": {
+    "name": "Uw naam",
+    "whatsapp": "WhatsApp-nummer",
+    "email": "E-mail (optioneel)",
+    "service": "Dienst",
+    "country": "Land",
+    "nationality": "Land van uw paspoort",
+    "residence": "Waar woont u nu?",
+    "refused": "Eerder geweigerd?",
+    "no": "Nee",
+    "once": "Eén keer",
+    "more": "Meer dan eens",
+    "message": "Bericht (optioneel)",
+    "visit": "Bezoekvisum",
+    "study": "Studievisum",
+    "immigration": "Immigratie",
+    "city": "Stad",
+    "rating": "Beoordeling",
+    "consent": "Ik ga akkoord met publicatie",
+    "submit": "Versturen",
+    "error": "Er ging iets mis. Probeer het opnieuw of stuur ons een WhatsApp."
+  },
+  "footer": {
+    "visitStudy": "Bezoek en studie",
+    "immigration": "Immigratie",
+    "contact": "Contact",
+    "legal": "Juridisch",
+    "rights": "Alle rechten voorbehouden."
+  },
+  "fallback": "Wordt gecontroleerd: vraag via WhatsApp het bedrag van vandaag",
+  "chat": {
+    "open": "Chat met ons",
+    "title": "Zara · Visafeast-assistent",
+    "greeting": "Hallo! Ik ben Zara. Vraag me naar kosten, documenten of termijnen. Typefouten zijn geen probleem.",
+    "placeholder": "Typ uw vraag…",
+    "send": "Versturen",
+    "q1": "Kosten bezoekvisum VK",
+    "q2": "Documenten bezoek Canada",
+    "q3": "Praten met een adviseur",
+    "wa": "Verder op WhatsApp",
+    "subtitle": "Automatische assistent · meestal direct",
+    "disclaimer": "Zara antwoordt op basis van deze website. Praat voor uw eigen zaak met een adviseur."
+  },
+  "consent": {
+    "text": "We gebruiken een klein cookie om bezoeken te tellen, zonder uw IP-adres op te slaan.",
+    "ok": "OK"
+  },
+  "splash": {
+    "skip": "Overslaan"
+  },
+  "common": {
+    "lastChecked": "Laatst gecontroleerd",
+    "source": "Bron",
+    "onThisPage": "Op deze pagina",
+    "related": "Verwante gidsen",
+    "readMore": "Lees meer",
+    "home": "Home"
+  },
+  "extras": {
+    "destinations": "bestemmingen",
+    "checkedPages": "gidsen met kosten uit officiële bronnen",
+    "lastChecked": "Laatst gecontroleerd",
+    "askTitle": "Vraag Zara alles over uw visum",
+    "askPlaceholder": "bijv. kosten visum VK",
+    "ask1": "Kosten bezoekvisum VK",
+    "ask2": "Schengen-documenten",
+    "ask3": "Studeren in Duitsland, banksaldo",
+    "compareTitle": "Vergelijk visa naast elkaar",
+    "compareNote": "Officiële bedragen met controledatum. Is een bedrag niet bevestigd, dan zeggen we dat.",
+    "visit": "Bezoek",
+    "study": "Studie",
+    "choose": "Kies een bestemming",
+    "fee": "Officiële kosten",
+    "time": "Beslistermijn",
+    "stay": "Verblijf",
+    "apply": "Wanneer aanvragen",
+    "unknown": "Wordt gecontroleerd: stuur ons een WhatsApp",
+    "open": "Open de volledige gids",
+    "fileTitle": "Uw visumdossier, online",
+    "file1": "Stuur documenten veilig",
+    "file1d": "Upload vanaf uw telefoon. Alleen u en uw adviseur kunnen ze zien.",
+    "file2": "Bekijk uw status altijd",
+    "file2d": "Weet in welke fase uw dossier zit en wat er volgt.",
+    "file3": "Chat met uw adviseur",
+    "file3d": "Stel vragen en zie welke documenten nog nodig zijn.",
+    "fileCta": "Open mijn dossier"
+  },
+  "ui": {
+    "whatItMeans": "Wat het betekent:",
+    "visa": "Visum",
+    "embassyFee": "Ambassadekosten",
+    "decisionTime": "Beslistermijn",
+    "stay": "Verblijf",
+    "applyWindow": "Aanvraagperiode",
+    "biometrics": "Biometrie",
+    "whoFor": "Voor wie dit visum is",
+    "documents": "Documentenlijst",
+    "funds": "Hoeveel banksaldo?",
+    "howItWorks": "Zo werkt het met Visafeast",
+    "refusals": "Veelvoorkomende redenen voor weigering",
+    "totalCost": "Totale kosten",
+    "latestNews": "Laatste nieuws",
+    "faq": "Vragen",
+    "contactQuote": "Prijs op aanvraag",
+    "from": "vanaf",
+    "licensedPartner": "Erkende partner:",
+    "item": "Post",
+    "paidTo": "Betaald aan",
+    "amount": "Bedrag",
+    "checked": "Gecontroleerd",
+    "embassyGovFee": "Ambassade- / overheidskosten",
+    "vfsFee": "Kosten visumcentrum (VFS)",
+    "serviceFee": "Servicekosten Visafeast",
+    "embassy": "Ambassade",
+    "visaCentre": "Visumcentrum",
+    "toVerify": "Nog te controleren",
+    "docsVerifying": "De officiële documentenlijst wordt gecontroleerd. Stuur ons een WhatsApp voor uw persoonlijke lijst.",
+    "ready": "klaar",
+    "getPdf": "Ontvang deze lijst als PDF",
+    "yourName": "Uw naam",
+    "yourWhatsapp": "Uw WhatsApp-nummer",
+    "openPage": "Pagina openen",
+    "chatError": "Sorry, ik kon nu niet antwoorden. Stuur ons een WhatsApp.",
+    "chatLimit": "U hebt de berichtenlimiet van vandaag bereikt. Ga verder op WhatsApp met onze adviseur.",
+    "teaser": "Hallo! Ik ben Zara. Vraag me alles over visa.",
+    "askZara": "Vraag Zara, onze assistent",
+    "close": "Sluiten",
+    "photoSoon": "Foto volgt binnenkort",
+    "reviewThanks": "Bedankt! Uw beoordeling verschijnt na goedkeuring.",
+    "visitIn": "Bezoek: {country}",
+    "studyIn": "Studeren: {country}",
+    "allVisit": "Alle bezoekvisa →",
+    "allStudy": "Alle studievisa →",
+    "feeEstimator": "Kostenschatter",
+    "about": "Over ons",
+    "contact": "Contact",
+    "privacy": "Privacy",
+    "terms": "Voorwaarden",
+    "disclaimer": "Disclaimer",
+    "languages": "Talen",
+    "disclaimerShort": "Visafeast is een particulier adviesbureau, geen ambassade of overheidsinstantie. Over visa beslist alleen de betreffende ambassade of immigratiedienst.",
+    "autoNote": "Vertaald voor uw gemak. Bij verschillen gelden de officiële bron en de Engelse pagina.",
+    "kindVisit": "Bezoek",
+    "kindStudy": "Studie",
+    "kindImmigration": "Immigratie",
+    "newStamp": "Nieuw",
+    "chooseVisa": "Kies uw visum",
+    "totalApprox": "Totaal (ongeveer)",
+    "lastChecked": "Laatst gecontroleerd",
+    "notVerified": "Nog niet gecontroleerd",
+    "pkrNote": "PKR-bedragen worden door Visafeast ingevoerd.",
+    "approxNote": "≈-bedragen gebruiken de koers van vandaag en zijn alleen een indicatie.",
+    "notFoundTitle": "Deze pagina is weggevlogen",
+    "notFoundBody": "De gezochte pagina is er niet. Probeer een van deze:",
+    "contactUs": "Contact",
+    "immCanada": "Canada Express Entry",
+    "immAustralia": "Australië: geschoolde visa",
+    "immGermany": "Duitsland: Chancenkarte",
+    "immUk": "VK Skilled Worker"
+  },
+  "hub": {
+    "visitH1": "Bezoekvisa vanuit Pakistan",
+    "visitIntro": "Kies een land voor documenten, kosten en termijnen, elk met controledatum.",
+    "studyH1": "Studievisa vanuit Pakistan",
+    "studyIntro": "Kies een land om te zien hoe het studievisum werkt en wat u moet voorbereiden.",
+    "immH1": "Immigratieroutes vanuit Pakistan",
+    "immIntro": "Routes voor geschoolden, gezinnen en ondernemers. Regels veranderen vaak: elke pagina toont de officiële bron en controledatum."
+  },
+  "seo": {
+    "home": {
+      "t": "Visumadviseur in Karachi: bezoek en studie | Visafeast",
+      "d": "Bezoek- en studievisa en immigratieroutes vanuit Pakistan, met gepubliceerde kosten en termijnen. Gratis controle en gesprek van 15 minuten."
+    },
+    "hubVisit": {
+      "t": "Bezoekvisa vanuit Pakistan: VK, Canada, VS, Schengen | Visafeast",
+      "d": "Kies uw bestemming: bezoekvisa vanuit Pakistan voor het VK, Canada, de VS, Australië, Nieuw-Zeeland, Schengen, Azerbeidzjan, Thailand en Singapore."
+    },
+    "hubStudy": {
+      "t": "Studeren in het buitenland vanuit Pakistan: visumgidsen | Visafeast",
+      "d": "Studeer in Duitsland, het VK, Canada, de VS, Australië, Italië, Griekenland en Europa: gidsen met officiële bronnen."
+    },
+    "hubImm": {
+      "t": "Immigratieadviseur in Pakistan: verblijf en werkvisa | Visafeast",
+      "d": "Immigratieroutes vanuit Pakistan naar Canada, Australië, het VK, de VS, Duitsland, Nieuw-Zeeland en Europa, met officiële bronnen en data."
+    },
+    "eligibility": {
+      "t": "Gratis visumcontrole vanuit Pakistan | Visafeast",
+      "d": "Beantwoord zes korte vragen en zie hoe sterk uw dossier is. Gratis, 60 seconden, zonder aanmelding. Een indicatie, geen beslissing."
+    },
+    "decoder": {
+      "t": "Visumweigeringsbrief uitgelegd in gewone taal | Visafeast",
+      "d": "Plak uw weigeringsbrief en krijg een eenvoudige uitleg van elke reden en wat te verbeteren. Niets wordt bewaard tenzij u het vraagt."
+    },
+    "book": {
+      "t": "Boek een gratis visumgesprek van 15 minuten | Visafeast",
+      "d": "Boek een gratis gesprek van 15 minuten met een Visafeast-adviseur, of stuur een vraag en we antwoorden via WhatsApp."
+    },
+    "contact": {
+      "t": "Contact Visafeast: visumadviseurs in Karachi",
+      "d": "Neem contact op met Visafeast via WhatsApp, e-mail of Facebook, of stuur een vraag. Online advies in heel Pakistan."
+    },
+    "reviews": {
+      "t": "Klantbeoordelingen | Visafeast",
+      "d": "Beoordelingen van echte Visafeast-klanten, goedgekeurd vóór publicatie. We wijzigen geen woorden en verbergen geen eerlijke kritiek."
+    },
+    "news": {
+      "t": "Visanieuws voor aanvragers uit Pakistan | Visafeast",
+      "d": "Dagelijkse visumupdates uit officiële bronnen en een weekoverzicht van wat ze betekenen voor aanvragers uit Pakistan."
+    }
+  },
+  "pages": {
+    "contactTitle": "Contact",
+    "facebookPage": "Facebook-pagina →",
+    "newsIntro": "Dagelijkse berichten uit officiële bronnen en het nieuws. Controleer altijd de officiële pagina voordat u iets doet.",
+    "newsAll": "Alles",
+    "noDigests": "Nog geen weekoverzichten gepubliceerd.",
+    "published": "Gepubliceerd",
+    "sources": "Bronnen",
+    "reviewsAvg": "Gemiddeld {avg} / 5 uit {count} beoordelingen"
+  },
+  "faqs": [
+    {
+      "q": "Garandeert u een visum?",
+      "a": "Nee. Geen enkele eerlijke adviseur kan dat: alleen de ambassade beslist. Wij beloven een volledig, consistent dossier en een eerlijke mening over uw kansen voordat u de ambassadekosten betaalt."
+    },
+    {
+      "q": "Hoeveel banksaldo heb ik nodig voor een bezoekvisum voor het VK?",
+      "a": "Er is geen vast officieel bedrag. De ambtenaar controleert of uw middelen de reis dekken en bij uw inkomensgeschiedenis passen. We bekijken uw afschriften in het gratis gesprek."
+    },
+    {
+      "q": "Ik ben eerder geweigerd. Kunt u helpen?",
+      "a": "Ja. Stuur ons de weigeringsbrief; we pakken elk punt aan en zeggen eerlijk of wachten beter is."
+    },
+    {
+      "q": "Ik woon niet in Karachi. Kan ik Visafeast toch gebruiken?",
+      "a": "Ja. Gesprekken lopen via WhatsApp-video of telefoon; biometrie doet u bij het dichtstbijzijnde VFS- of visumcentrum."
+    },
+    {
+      "q": "Hoe lang duurt de behandeling?",
+      "a": "Dat hangt af van land en seizoen; elke landenpagina toont de actuele officiële termijn met onze controledatum."
+    },
+    {
+      "q": "Helpt u met immigratie en permanent verblijf?",
+      "a": "Ja: routes voor geschoolden, gezinnen en ondernemers naar Canada, Australië, het VK, de VS, Duitsland, Nieuw-Zeeland en delen van Europa. Waar de wet een erkende vertegenwoordiger eist, wordt uw zaak ingediend via onze erkende partners."
+    },
+    {
+      "q": "Kan ik de website in mijn taal lezen?",
+      "a": "Ja. De website opent in de taal van uw land. U kunt bovenaan wisselen en onderaan staan alle talen."
+    }
+  ],
+  "portal": {
+    "navLink": "Klantenlogin"
+  },
+  "track": {
+    "title": "Volg uw visumdossier"
+  }
+}

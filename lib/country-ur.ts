@@ -1,4 +1,6 @@
 import type { Country, Item } from "./types";
+import type { Locale } from "@/config/locales";
+import { applyRow, countrySource, type TranslationRow } from "./translate";
 
 /** The text parts of a country page that get an Urdu version. Numbers, dates, fees and links are NOT here: they stay as published. */
 export interface CountryUrText {
@@ -27,15 +29,20 @@ export function cleanUrdu(raw: unknown, c: Country): CountryUrText {
   };
 }
 
-/** Urdu visitors see the saved Urdu text where it exists; everything else (all the facts) stays exactly as published. */
-export function localizeCountry(c: Country, locale: "en" | "ur"): Country {
-  if (locale !== "ur" || !c.content_ur) return c;
+/** Visitors see the text of their language where it exists. Owner-saved Urdu wins over automatic translation. A translation made from older English is ignored. */
+export function localizeCountry(c: Country, locale: Locale, row?: TranslationRow): Country {
+  if (locale === "en") return { ...c, translated: true };
+  const auto = applyRow(countrySource(c), row);
+  const base: Country = auto.translated ? { ...c, ...auto.text } : c;
+  const approved = locale === "ur" && c.ur_status === "approved";
+  if (locale !== "ur" || !c.content_ur) return { ...base, translated: auto.translated };
   const u = cleanUrdu(c.content_ur, c);
   return {
-    ...c,
-    h1: u.h1 ?? c.h1, meta_title: u.meta_title ?? c.meta_title, meta_description: u.meta_description ?? c.meta_description,
-    intro: u.intro ?? c.intro, funds_md: u.funds_md ?? c.funds_md, who_for_md: u.who_for_md ?? c.who_for_md,
-    documents: u.documents ?? c.documents, steps: u.steps ?? c.steps, refusal_reasons: u.refusal_reasons ?? c.refusal_reasons,
+    ...base,
+    h1: u.h1 ?? base.h1, meta_title: u.meta_title ?? base.meta_title, meta_description: u.meta_description ?? base.meta_description,
+    intro: u.intro ?? base.intro, funds_md: u.funds_md ?? base.funds_md, who_for_md: u.who_for_md ?? base.who_for_md,
+    documents: u.documents ?? base.documents, steps: u.steps ?? base.steps, refusal_reasons: u.refusal_reasons ?? base.refusal_reasons,
+    translated: auto.translated || approved,
   };
 }
 

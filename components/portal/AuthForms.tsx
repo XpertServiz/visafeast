@@ -2,13 +2,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import { LogOut } from "lucide-react";
-import en from "@/messages/en.json";
-import ur from "@/messages/ur.json";
+import { useDict } from "@/components/DictProvider";
+import { lp, type Locale } from "@/config/locales";
 import { Turnstile } from "@/components/tools/Turnstile";
 
-type L = "en" | "ur";
-const dict = (l: L) => (l === "ur" ? ur : en).portal;
-const home = (l: L) => (l === "ur" ? "/ur/portal" : "/portal");
+type L = Locale;
+const home = (l: L) => lp(l, "/portal");
 const post = async (url: string, body: unknown) => {
   const r = await fetch(url, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
   const j = await r.json().catch(() => ({}));
@@ -29,7 +28,7 @@ const Text = ({ id, label, ...p }: { id: string; label: string } & React.InputHT
 );
 
 export function LoginForm({ locale, code }: { locale: L; code?: string }) {
-  const t = dict(locale);
+  const t = useDict().portal;
   const [busy, setBusy] = useState(false); const [err, setErr] = useState("");
   return (
     <>
@@ -37,7 +36,7 @@ export function LoginForm({ locale, code }: { locale: L; code?: string }) {
         setBusy(true); setErr("");
         const r = await post("/api/portal/login", { email: fd.get("email"), password: fd.get("password") });
         if (r.ok) { location.href = code ? `${home(locale)}/join?code=${encodeURIComponent(code)}` : home(locale); return; }
-        setErr(locale === "ur" ? t.wrong : r.error || t.wrong); setBusy(false);
+        setErr(locale === "en" ? r.error || t.wrong : t.wrong); setBusy(false);
       }}>
         <Text id="pl-e" name="email" type="email" label={t.email} autoComplete="email" dir="ltr" />
         <Text id="pl-p" name="password" type="password" label={t.password} autoComplete="current-password" dir="ltr" />
@@ -49,7 +48,7 @@ export function LoginForm({ locale, code }: { locale: L; code?: string }) {
 }
 
 export function SignupForm({ locale, code }: { locale: L; code?: string }) {
-  const t = dict(locale);
+  const t = useDict().portal;
   const [busy, setBusy] = useState(false); const [err, setErr] = useState(""); const [token, setToken] = useState("");
   return (
     <>
@@ -72,7 +71,7 @@ export function SignupForm({ locale, code }: { locale: L; code?: string }) {
 }
 
 export function JoinButton({ locale, code }: { locale: L; code: string }) {
-  const t = dict(locale);
+  const t = useDict().portal;
   const [busy, setBusy] = useState(false); const [err, setErr] = useState("");
   return (
     <Shell err={err} busy={busy} button={t.linkFile} onSubmit={async () => {
@@ -85,7 +84,7 @@ export function JoinButton({ locale, code }: { locale: L; code: string }) {
 }
 
 export function ResetForm({ locale, code }: { locale: L; code: string }) {
-  const t = dict(locale);
+  const t = useDict().portal;
   const [busy, setBusy] = useState(false); const [err, setErr] = useState(""); const [done, setDone] = useState(false);
   if (done) return <div className="card" style={{ padding: 24, maxWidth: 480 }}><p role="status" style={{ marginTop: 0, color: "var(--ok)" }}>{t.resetDone}</p><Link className="btn btn-primary" href={`${home(locale)}/login`}>{t.signIn}</Link></div>;
   return (
@@ -99,7 +98,7 @@ export function ResetForm({ locale, code }: { locale: L; code: string }) {
 }
 
 export function SignOutButton({ locale }: { locale: L }) {
-  const t = dict(locale);
+  const t = useDict().portal;
   return (
     <button type="button" className="btn btn-ghost" style={{ minHeight: 44 }} onClick={async () => { await fetch("/api/portal/login", { method: "DELETE" }); location.href = `${home(locale)}/login`; }}>
       <LogOut size={18} aria-hidden />{t.signOut}

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { pageCtx } from "@/lib/page";
-import { getCountries, getSettings } from "@/lib/data";
-import { alternates } from "@/lib/seo";
+import { getCountriesFor, getSettings } from "@/lib/data";
+import { seoMeta } from "@/lib/seo";
 import { PageHeader } from "@/components/PageHeader";
 import { CalEmbed } from "@/components/ui";
 import { LeadForm } from "@/components/tools/LeadForm";
@@ -9,11 +9,11 @@ import { LeadForm } from "@/components/tools/LeadForm";
 type P = { params: Promise<{ locale: string }> };
 export async function generateMetadata({ params }: P): Promise<Metadata> {
   const { locale } = await pageCtx(params);
-  return { title: "Book a Free 15-Minute Visa Call | Visafeast", description: "Book a free 15-minute call with a Visafeast consultant, or send an enquiry and we will reply on WhatsApp.", alternates: alternates("/book", locale) };
+  return seoMeta(locale, "book", "/book");
 }
 export default async function Page({ params }: P) {
   const { locale, t } = await pageCtx(params);
-  const [s, list] = await Promise.all([getSettings(), getCountries()]);
+  const [s, list] = await Promise.all([getSettings(), getCountriesFor(locale)]);
   return (
     <>
       <PageHeader locale={locale} home={t("common.home")} title={t("book.title")} path="/book" />

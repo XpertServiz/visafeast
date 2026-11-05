@@ -2,15 +2,16 @@
 import { useState } from "react";
 import { Calendar, MessageCircle, Search } from "lucide-react";
 import { scrub, type Point } from "@/lib/decoder-rules";
-import en from "@/messages/en.json";
-import ur from "@/messages/ur.json";
+import { useDict } from "@/components/DictProvider";
+import type { Locale } from "@/config/locales";
 import { waLink } from "@/config/site";
 import { Turnstile } from "./Turnstile";
 
 interface Result { points: Point[]; honest_view: string }
 
-export function Decoder({ locale, bookHref, whatsapp }: { locale: "en" | "ur"; bookHref: string; whatsapp: string }) {
-  const t = (locale === "ur" ? ur : en).decoder;
+export function Decoder({ locale, bookHref, whatsapp }: { locale: Locale; bookHref: string; whatsapp: string }) {
+  const d = useDict();
+  const t = d.decoder;
   const [text, setText] = useState("");
   const [res, setRes] = useState<Result | null>(null);
   const [busy, setBusy] = useState(false);
@@ -27,12 +28,12 @@ export function Decoder({ locale, bookHref, whatsapp }: { locale: "en" | "ur"; b
     try {
       const r = await fetch("/api/decoder", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ text: scrub(text), locale, turnstile: token }) });
       const j = await r.json();
-      if (!r.ok || !j.ok) setErr(j.error || (locale === "ur" ? ur : en).form.error); else setRes(j);
-    } catch { setErr((locale === "ur" ? ur : en).form.error); } finally { setBusy(false); }
+      if (!r.ok || !j.ok) setErr(j.error || d.form.error); else setRes(j);
+    } catch { setErr(d.form.error); } finally { setBusy(false); }
   }
   async function sendToConsultant() {
     // Only with an explicit consent tick is the (scrubbed) text sent as a lead.
-    const name = prompt(locale === "ur" ? "آپ کا نام؟" : "Your name?"); const phone = name && prompt(locale === "ur" ? "واٹس ایپ نمبر؟" : "Your WhatsApp number?");
+    const name = prompt(d.ui.yourName); const phone = name && prompt(d.ui.yourWhatsapp);
     if (!name || !phone) return;
     const r = await fetch("/api/leads", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ name, phone, source: "decoder", message: scrub(text).slice(0, 1500), turnstile: token, website: "" }) });
     if (r.ok) setSent(true);
@@ -68,7 +69,7 @@ export function Decoder({ locale, bookHref, whatsapp }: { locale: "en" | "ur"; b
             <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} style={{ width: 22, height: 22, marginTop: 3 }} />{t.consent}
           </label>
           {consent && !sent && <button type="button" className="btn btn-outline" style={{ marginTop: 10 }} onClick={sendToConsultant}>{t.send}</button>}
-          {sent && <p style={{ color: "var(--ok)", fontWeight: 600 }}>{(locale === "ur" ? ur : en).book.sent}</p>}
+          {sent && <p style={{ color: "var(--ok)", fontWeight: 600 }}>{d.book.sent}</p>}
         </div>
       )}
       <p style={{ fontSize: 14, color: "var(--muted)", marginTop: 18 }}>{t.disclaimer}</p>

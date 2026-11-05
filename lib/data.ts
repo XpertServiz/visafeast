@@ -1,3 +1,7 @@
+import type { Locale } from "@/config/locales";
+import { localizeCountry } from "./country-ur";
+import { regionName, staticFaq } from "./i18n";
+import { applyRow, faqSource, postSource, type TranslationRow } from "./translate";
 import "server-only";
 import { cache } from "react";
 import { anonClient } from "./supabase";
@@ -108,3 +112,49 @@ export function isStale(lastChecked: string | null, days = 90): boolean {
   const ms = Date.now() - new Date(lastChecked).getTime();
   return ms > days * 86400_000;
 }
+
+// ---------- content in the visitor's language
+const ROW_KEY = (entity: string, id: string) => `${entity}:${id}`;
+
+export const getTranslationRows = cache(async (locale: Locale): Promise<Map<string, TranslationRow>> => {
+  const out = new Map<string, TranslationRow>();
+  const db = anonClient();
+  if (locale === "en" || !db) return out;
+  try {
+    const { data } = await db.from("content_translations").select("entity,entity_id,locale,source_hash,content").eq("locale", locale);
+    for (const r of (data ?? []) as TranslationRow[]) out.set(ROW_KEY(r.entity, r.entity_id), r);
+  } catch { /* English is shown instead */ }
+  return out;
+});
+
+/** Which languages each item is translated into right now (fingerprint included). Used for the sitemap and language links. */
+export const getTranslationIndex = cache(async (): Promise<Pick<TranslationRow, "entity" | "entity_id" | "locale" | "source_hash">[]> => {
+  const db = anonClient();
+  if (!db) return [];
+  try {
+    const { data } = await db.from("content_translations").select("entity,entity_id,locale,source_hash").limit(5000);
+    return (data ?? []) as Pick<TranslationRow, "entity" | "entity_id" | "locale" | "source_hash">[];
+  } catch { return []; }
+});
+
+export const getCountriesFor = cache(async (locale: Locale, kind?: Kind): Promise<Country[]> => {
+  const [list, rows] = await Promise.all([getCountries(kind), getTranslationRows(locale)]);
+  return list.map((c) => ({ ...localizeCountry(c, locale, rows.get(ROW_KEY("country", c.id))), country_name: regionName(c.country_code, locale, c.country_name) }));
+});
+
+export const getCountryFor = cache(async (locale: Locale, slug: string): Promise<Country | null> => (await getCountriesFor(locale)).find((c) => c.slug === slug) ?? null);
+
+export const getFaqsFor = cache(async (locale: Locale, countrySlug: string | null): Promise<Faq[]> => {
+  const [list, rows] = await Promise.all([getFaqs(countrySlug), getTranslationRows(locale)]);
+  return list.map((f) => {
+    const written = staticFaq(locale, f.question, f.answer_md);
+    if (written) return { ...f, ...written };
+    const a = applyRow(faqSource(f), f.id ? rows.get(ROW_KEY("faq", f.id)) : undefined);
+    return { ...f, ...a.text };
+  });
+});
+
+export const getPostsFor = cache(async (locale: Locale, type?: Post["type"]): Promise<Post[]> => {
+  const [list, rows] = await Promise.all([getPosts(type), getTranslationRows(locale)]);
+  return list.map((p) => ({ ...p, ...applyRow(postSource(p), rows.get(ROW_KEY("post", p.id))).text }));
+});

@@ -12,7 +12,7 @@ function sessionId(): string {
 const cookie = (n: string) => document.cookie.split("; ").find((c) => c.startsWith(n + "="))?.split("=")[1];
 
 /** First-party analytics beacon (brief §12): page view per route change, 30 s presence heartbeat, time-on-page on hide. */
-export function Tracker({ locale }: { locale: "en" | "ur" }) {
+export function Tracker({ locale }: { locale: string }) {
   const path = usePathname();
   const start = useRef(Date.now());
   const first = useRef(true);

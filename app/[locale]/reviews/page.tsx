@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { pageCtx } from "@/lib/page";
 import { getReviews, getSettings } from "@/lib/data";
-import { alternates } from "@/lib/seo";
+import { seoMeta } from "@/lib/seo";
 import { lp } from "@/lib/i18n";
 import { PageHeader } from "@/components/PageHeader";
 import { fmtDate } from "@/components/ui";
@@ -12,7 +12,7 @@ type P = { params: Promise<{ locale: string }> };
 export const revalidate = 600;
 export async function generateMetadata({ params }: P): Promise<Metadata> {
   const { locale } = await pageCtx(params);
-  return { title: "Client Reviews | Visafeast", description: "Reviews from real Visafeast clients, approved before publishing. We never edit the words or hide fair criticism.", alternates: alternates("/reviews", locale) };
+  return seoMeta(locale, "reviews", "/reviews");
 }
 export default async function Page({ params }: P) {
   const { locale, t } = await pageCtx(params);
@@ -23,7 +23,7 @@ export default async function Page({ params }: P) {
     <>
       <PageHeader locale={locale} home={t("common.home")} title={t("reviews.title")} intro={t("reviews.note")} path="/reviews" />
       <div className="wrap" style={{ paddingBlock: 40 }}>
-        {avg && <p className="mono" style={{ color: "var(--muted-2)" }}>Average {avg} / 5 from {reviews.length} reviews</p>}
+        {avg && <p className="mono" style={{ color: "var(--muted-2)" }}>{t("pages.reviewsAvg", { avg, count: reviews.length })}</p>}
         {reviews.length === 0 ? (
           <div className="card" style={{ padding: 24, maxWidth: 640 }}><p style={{ margin: 0 }}>{t("reviews.empty")}</p></div>
         ) : (

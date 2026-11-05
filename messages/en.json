@@ -16,7 +16,14 @@
     "tick2": "One consultant, start to decision",
     "tick3": "Updates on WhatsApp",
     "handle": "We handle",
-    "watch": "Watch the 3D globe"
+    "watch": "Watch the 3D globe",
+    "label": "Animated globe showing flights from Pakistan to visa destinations",
+    "europe": "Europe",
+    "baku": "Baku",
+    "routeVisit": "visit",
+    "routeStudy": "study",
+    "routeEvisa": "e-visa",
+    "routeAll": "8 destinations"
   },
   "cta": {
     "eligibility": "Check my eligibility — free",
@@ -105,8 +112,8 @@
     "i2d": "The same person, from first call to decision.",
     "i3": "No fake documents",
     "i3d": "We never arrange bank statements or letters.",
-    "i4": "English and Urdu",
-    "i4d": "The whole site, every checklist and our WhatsApp updates — in the language you prefer."
+    "i4": "Your language",
+    "i4d": "The site, every checklist and our updates, in the language you prefer."
   },
   "news": {
     "title": "Visa news radar",
@@ -157,14 +164,16 @@
   "fallback": "Being verified — WhatsApp us for today's figure",
   "chat": {
     "open": "Chat with us",
-    "title": "Visafeast assistant",
-    "greeting": "Assalam-o-Alaikum! I'm the Visafeast assistant. Ask me about visit, study or immigration — in English or Urdu. For your own case, I'll connect you to our consultant on WhatsApp.",
-    "placeholder": "Type your question",
+    "title": "Zara · Visafeast assistant",
+    "greeting": "Assalam-o-Alaikum! I'm Zara. Ask me about fees, documents or timelines. Spelling mistakes are fine.",
+    "placeholder": "Type your question…",
     "send": "Send",
-    "q1": "UK visit visa documents",
-    "q2": "Do you guarantee a visa?",
+    "q1": "UK visit visa fee",
+    "q2": "Canada visit documents",
     "q3": "Talk to a consultant",
-    "wa": "Continue on WhatsApp"
+    "wa": "Continue on WhatsApp",
+    "subtitle": "Automated assistant · usually instant",
+    "disclaimer": "Zara answers from this website. For your own case, please talk to a consultant."
   },
   "consent": {
     "text": "We use a small cookie to count visitors, without storing your IP address.",
@@ -254,5 +263,367 @@
     "approved": "Your visa was approved. Congratulations!",
     "refused": "A decision has been made. Please talk to your consultant about next steps.",
     "withdrawn": "This application was withdrawn."
-  }
+  },
+  "extras": {
+    "destinations": "destinations covered",
+    "checkedPages": "guides with fees from official sources",
+    "lastChecked": "Last checked",
+    "askTitle": "Ask Zara anything about your visa",
+    "askPlaceholder": "e.g. uk visa fee kitni hai?",
+    "ask1": "UK visit visa fee",
+    "ask2": "Schengen documents",
+    "ask3": "Study in Germany bank balance",
+    "compareTitle": "Compare visas side by side",
+    "compareNote": "Official figures with their check date. If we have not confirmed a figure, we say so.",
+    "visit": "Visit",
+    "study": "Study",
+    "choose": "Choose a destination",
+    "fee": "Official fee",
+    "time": "Decision time",
+    "stay": "Stay",
+    "apply": "When to apply",
+    "unknown": "Being verified — WhatsApp us",
+    "open": "Open full guide",
+    "fileTitle": "Your visa file, online",
+    "file1": "Send documents safely",
+    "file1d": "Upload from your phone. Only you and your consultant can see them.",
+    "file2": "See your status anytime",
+    "file2d": "Know which stage your file is at and what happens next.",
+    "file3": "Chat with your consultant",
+    "file3d": "Ask questions and see exactly which documents are still needed.",
+    "fileCta": "Open my file"
+  },
+  "problems": {
+    "bank": {
+      "a": "My bank statement wasn't enough",
+      "b": "Embassies look at income history and where money came from, not one balance. Sudden deposits are a common refusal reason.",
+      "c": "We review six months of statements with you and explain funds properly in the cover letter."
+    },
+    "papers": {
+      "a": "I didn't know which documents",
+      "b": "Every country asks for something different, and online lists are often years out of date.",
+      "c": "A personal checklist for your case, checked against the official source with the date we last verified it."
+    },
+    "sad": {
+      "a": "I was refused once — now what?",
+      "b": "Re-applying with the same file wastes the embassy fee again and adds another refusal to your history.",
+      "c": "We read the refusal letter, fix each point raised, and tell you honestly if it's worth applying again yet."
+    }
+  },
+  "eligQ": {
+    "dest": "Where do you want to go?",
+    "dest_0": "UK",
+    "dest_1": "Canada or USA",
+    "dest_2": "Schengen / Europe",
+    "dest_3": "Australia or NZ",
+    "dest_4": "Asia (Thailand, Baku, Singapore)",
+    "dest_5": "Study abroad",
+    "purpose": "What is the main purpose?",
+    "purpose_0": "Tourism",
+    "purpose_1": "Visiting family",
+    "purpose_2": "Business",
+    "purpose_3": "Study",
+    "travel": "Travel in the last 5 years?",
+    "travel_0": "UK / USA / Canada / Schengen / Australia",
+    "travel_1": "Gulf / Turkey / Malaysia or similar",
+    "travel_2": "None",
+    "work": "What do you do?",
+    "work_0": "Salaried, with payslips",
+    "work_1": "Business owner, with tax returns",
+    "work_2": "Student / homemaker with a sponsor",
+    "work_3": "Not working, no sponsor",
+    "bank": "Your last 6 months of bank statements?",
+    "bank_0": "Regular income, steady balance",
+    "bank_1": "Sponsor's account",
+    "bank_2": "Large recent deposit",
+    "refusal": "Visa refused before?",
+    "refusal_0": "Never",
+    "refusal_1": "Once",
+    "refusal_2": "More than once"
+  },
+  "ui": {
+    "whatItMeans": "What it means:",
+    "visa": "Visa",
+    "embassyFee": "Embassy fee",
+    "decisionTime": "Decision time",
+    "stay": "Stay",
+    "applyWindow": "Apply window",
+    "biometrics": "Biometrics",
+    "whoFor": "Who this visa is for",
+    "documents": "Documents checklist",
+    "funds": "How much bank balance?",
+    "howItWorks": "How it works with Visafeast",
+    "refusals": "Common refusal reasons",
+    "totalCost": "Total cost",
+    "latestNews": "Latest news",
+    "faq": "FAQ",
+    "contactQuote": "Contact for quote",
+    "from": "from",
+    "licensedPartner": "Licensed partner:",
+    "item": "Item",
+    "paidTo": "Paid to",
+    "amount": "Amount",
+    "checked": "Checked",
+    "embassyGovFee": "Embassy / government fee",
+    "vfsFee": "Visa centre (VFS) fee",
+    "serviceFee": "Visafeast service fee",
+    "embassy": "Embassy",
+    "visaCentre": "Visa centre",
+    "toVerify": "To be verified",
+    "docsVerifying": "The official document list is being verified. WhatsApp us for your personal checklist.",
+    "ready": "ready",
+    "getPdf": "Get this checklist as a PDF",
+    "yourName": "Your name",
+    "yourWhatsapp": "Your WhatsApp number",
+    "openPage": "Open page",
+    "chatError": "Sorry, I couldn't answer just now. Please WhatsApp us.",
+    "chatLimit": "You've reached today's message limit. Please continue on WhatsApp with our consultant.",
+    "teaser": "Assalam-o-Alaikum! I'm Zara. Ask me anything about visas.",
+    "askZara": "Ask Zara, our assistant",
+    "close": "Close",
+    "photoSoon": "Photo coming soon",
+    "reviewThanks": "Thank you! Your review will appear once we approve it.",
+    "visitIn": "{country} visit",
+    "studyIn": "Study in {country}",
+    "allVisit": "All visit visas →",
+    "allStudy": "All study visas →",
+    "feeEstimator": "Fee estimator",
+    "about": "About",
+    "contact": "Contact",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "disclaimer": "Disclaimer",
+    "languages": "Languages",
+    "disclaimerShort": "Visafeast is a private consultancy, not an embassy or government agency. Visa decisions are made only by the relevant embassy or immigration authority.",
+    "autoNote": "Translated for your convenience. The official source and the English page decide if anything differs.",
+    "kindVisit": "Visit",
+    "kindStudy": "Study",
+    "kindImmigration": "Immigration",
+    "newStamp": "New",
+    "chooseVisa": "Choose your visa",
+    "totalApprox": "Total (approx.)",
+    "lastChecked": "Last checked",
+    "notVerified": "Not yet verified",
+    "pkrNote": "PKR amounts are entered by Visafeast.",
+    "approxNote": "≈ figures use today's exchange rate and are only a guide.",
+    "notFoundTitle": "This page has flown away",
+    "notFoundBody": "The page you wanted is not here. Try one of these:",
+    "contactUs": "Contact us",
+    "immCanada": "Canada Express Entry",
+    "immAustralia": "Australia skilled visas",
+    "immGermany": "Germany Opportunity Card",
+    "immUk": "UK Skilled Worker"
+  },
+  "hub": {
+    "visitH1": "Visit Visas from Pakistan",
+    "visitIntro": "Pick a country to see documents, fees and timelines — each with the date we last checked it.",
+    "studyH1": "Study Visas from Pakistan",
+    "studyIntro": "Pick a country to see how the student visa works and what to prepare.",
+    "immH1": "Immigration Pathways from Pakistan",
+    "immIntro": "Skilled, family and business pathways. Rules change often — every page shows its official source and the date we last checked it."
+  },
+  "seo": {
+    "home": {
+      "t": "Visa Consultant in Karachi — Visit & Study | Visafeast",
+      "d": "Visit visas, study visas and immigration pathways from Pakistan, with fees and timelines published openly. Free eligibility check and 15-minute call."
+    },
+    "hubVisit": {
+      "t": "Visit Visas from Pakistan: UK, Canada, USA, Schengen | Visafeast",
+      "d": "Choose your destination: UK, Canada, USA, Australia, New Zealand, Schengen, Azerbaijan, Thailand and Singapore visit visas from Pakistan."
+    },
+    "hubStudy": {
+      "t": "Study Abroad from Pakistan: Student Visa Guides | Visafeast",
+      "d": "Study in Germany, the UK, Canada, USA, Australia, Italy, Greece and Europe from Pakistan: student visa guides with official sources."
+    },
+    "hubImm": {
+      "t": "Immigration Consultant in Pakistan: PR & Work Visas | Visafeast",
+      "d": "Immigration pathways from Pakistan for Canada, Australia, the UK, USA, Germany, New Zealand and Europe, shown with official sources and dates."
+    },
+    "eligibility": {
+      "t": "Free Visa Eligibility Check from Pakistan | Visafeast",
+      "d": "Answer six quick questions and see how strong your visa file looks. Free, 60 seconds, no sign-up. An indicative guide, not a decision."
+    },
+    "decoder": {
+      "t": "Visa Refusal Letter Decoder — Plain Words | Visafeast",
+      "d": "Paste your visa refusal letter and get a plain-words explanation of each reason and what to fix. Nothing is saved unless you ask."
+    },
+    "book": {
+      "t": "Book a Free 15-Minute Visa Call | Visafeast",
+      "d": "Book a free 15-minute call with a Visafeast consultant, or send an enquiry and we will reply on WhatsApp."
+    },
+    "contact": {
+      "t": "Contact Visafeast — Visa Consultants in Karachi",
+      "d": "Contact Visafeast on WhatsApp, email or Facebook, or send an enquiry. Consultations online across Pakistan."
+    },
+    "reviews": {
+      "t": "Client Reviews | Visafeast",
+      "d": "Reviews from real Visafeast clients, approved before publishing. We never edit the words or hide fair criticism."
+    },
+    "news": {
+      "t": "Visa News for Pakistani Applicants | Visafeast",
+      "d": "Daily visa updates from official sources plus a weekly digest explaining what they mean for Pakistani applicants."
+    },
+    "about": {
+      "t": "About Visafeast — Visa Consultants Karachi",
+      "d": "How Visafeast works: one consultant from first call to decision, published fees, no fake documents, and immigration cases filed with licensed partners."
+    },
+    "privacy": {
+      "t": "Privacy Policy | Visafeast",
+      "d": "What Visafeast collects, why, and how long we keep it."
+    },
+    "terms": {
+      "t": "Terms of Use | Visafeast",
+      "d": "Terms for using the Visafeast website and services."
+    },
+    "disclaimer": {
+      "t": "Disclaimer | Visafeast",
+      "d": "Visafeast is a private consultancy, not an embassy or government agency."
+    },
+    "karachi": {
+      "t": "Visa Consultant in Karachi | Visafeast",
+      "d": "Visa consultant in Karachi for visit, study and immigration files. Free 15-minute call; consultations online across Pakistan."
+    },
+    "checklists": {
+      "t": "Visa Document Checklists (PDF) from Pakistan | Visafeast",
+      "d": "Interactive document checklists for visit and study visas, downloadable as PDF with the date we last checked them."
+    },
+    "feeEstimator": {
+      "t": "Visa Fee Estimator | Visafeast",
+      "d": "Estimate embassy fee, visa centre fee and service fee for your visa, each with the date we last checked it."
+    },
+    "reviewsWrite": {
+      "t": "Write a Review | Visafeast",
+      "d": "Share your experience with Visafeast. Reviews are approved before they appear."
+    }
+  },
+  "pages": {
+    "contactTitle": "Contact us",
+    "facebookPage": "Facebook page →",
+    "newsIntro": "Daily items from official sources and news reports. Always check the official page before acting.",
+    "newsAll": "All",
+    "noDigests": "No digests published yet.",
+    "published": "Published",
+    "sources": "Sources",
+    "reviewsAvg": "Average {avg} / 5 from {count} reviews",
+    "checklistsTitle": "Document checklists",
+    "checklistsIntro": "Open a country, tick off what you have, and download the checklist as a PDF.",
+    "feeTitle": "Fee estimator",
+    "feeIntro": "Pick your visa. Every amount shows the date we last checked it.",
+    "aboutTitle": "About Visafeast",
+    "aboutIntro": "A private visa consultancy in Karachi serving all of Pakistan.",
+    "aboutApproach": "Our approach",
+    "about1b": "No guarantees.",
+    "about1": "Only the embassy decides. We give you an honest opinion of your chances before you pay embassy fees.",
+    "about2b": "No fake documents.",
+    "about2": "We never arrange bank statements, letters or funds. A false document can lead to a long ban.",
+    "about3b": "Published fees.",
+    "about3": "Fees and timelines are shown with the date we last checked them and a link to the official source.",
+    "about4b": "Your data.",
+    "about4": "We keep only what we need, never publish your story without consent, and delete case documents after the case closes.",
+    "aboutImm": "Immigration cases",
+    "aboutFounder": "Founder",
+    "aboutFounderSoon": "Founder story coming soon.",
+    "aboutCredits": "Image credits",
+    "aboutCreditsText": "Photos are royalty-free, from Pexels, Unsplash and Pixabay. World map data: Natural Earth (public domain).",
+    "aboutCreditsNone": "Credits will be listed here as photos are added.",
+    "discTitle": "Disclaimer",
+    "disc1": "Nothing on this website is legal advice. The eligibility check and the refusal decoder are indicative guides only. Where the law requires a licensed immigration representative, cases are filed with our licensed partners.",
+    "privTitle": "Privacy Policy",
+    "privIntro": "Last updated: 5 November 2026. This is a plain-language summary.",
+    "privCollect": "What we collect",
+    "privForms": "Forms:",
+    "privFormsT": "the details you type into an enquiry, review, checklist or booking form.",
+    "privChat": "Chat:",
+    "privChatT": "messages sent to the website assistant.",
+    "privStats": "Visit statistics:",
+    "privStatsT": "pages viewed, approximate city and country (from your connection), device and browser type, and a daily anonymous hash. We never store your IP address.",
+    "privCookies": "Language and currency:",
+    "privCookiesT": "small cookies remember your country and your language choice, so the site opens in your language and shows fees in your currency.",
+    "privWhy": "Why",
+    "privWhyT": "To answer you, prepare your file, and improve the website.",
+    "privLong": "How long",
+    "privLongT": "Chat logs and enquiries are kept for up to 12 months. Case documents are deleted a set number of months after your case closes. Visit statistics are kept for 13 months.",
+    "privRights": "Your rights",
+    "privRightsT": "Ask us on WhatsApp or by email at {email} to see, correct or delete your data.",
+    "privDecoder": "Refusal letter decoder",
+    "privDecoderT": "Text you paste is not saved unless you tick the consent box and choose to send it to a consultant.",
+    "termsTitle": "Terms of Use",
+    "termsIntro": "Last updated: 5 November 2026.",
+    "termsDo": "What we do",
+    "termsDoT": "Visafeast prepares and reviews files for visit, study and immigration applications. We do not decide visas and cannot guarantee outcomes.",
+    "termsInfo": "Information on this site",
+    "termsInfoT": "Fees, times and requirements are shown with the date we last checked them and an official source. Always confirm on the official website before paying.",
+    "termsFees": "Fees",
+    "termsFeesT": "Our service fees are agreed in writing before work starts. Embassy and visa-centre fees paid on your behalf are client money and are not our income.",
+    "khiTitle": "Visa Consultant in Karachi",
+    "khiIntro": "Visit, study and immigration files — prepared properly the first time.",
+    "khiHow": "How a consultation works",
+    "khiHowT": "Start with a free 15-minute call or a WhatsApp message. We look at your travel history, income documents and plan, and tell you honestly what to prepare. Consultations run by phone or WhatsApp video, so you can use Visafeast from anywhere in Pakistan.",
+    "khiOffice": "Office hours and location",
+    "khiCentres": "Visa application centres in Karachi",
+    "khiCentresT": "Centre addresses and appointment rules change. Karachi VFS / visa centre details are being verified against official sources and will be added here with the date we checked them.",
+    "khiLocal": "Local content for Lahore and Islamabad will be added only when we have real local information."
+  },
+  "decoderRules": {
+    "funds": {
+      "heading": "Funds or source of money",
+      "meaning": "The officer was not satisfied that you have enough money for the trip, or that the money's source is clear.",
+      "fix": "Show 6 months of statements with a steady balance, explain any large deposits with documents, and match funds to your income."
+    },
+    "ties": {
+      "heading": "Ties to Pakistan",
+      "meaning": "The officer was not convinced you will return home after your visit.",
+      "fix": "Show job or business, family, property and other reasons that connect you to Pakistan, plus a clear return plan."
+    },
+    "purpose": {
+      "heading": "Purpose of the trip",
+      "meaning": "The officer was not clear about why you are travelling or whether it is a genuine visit.",
+      "fix": "Give a clear day-by-day travel plan and a short cover letter explaining who, where, why and for how long."
+    },
+    "credibility": {
+      "heading": "Credibility or inconsistent information",
+      "meaning": "Some details did not match across your documents, or the officer doubted the information.",
+      "fix": "Check every date, job title and amount for consistency. If the letter mentions deception, a ban or false documents, speak to a consultant or lawyer before doing anything."
+    },
+    "history": {
+      "heading": "Previous travel or immigration history",
+      "meaning": "Your past travel or earlier applications influenced the decision.",
+      "fix": "Be honest about earlier refusals, explain what has changed, and show clean, consistent travel history where you have it."
+    },
+    "documents": {
+      "heading": "Missing or insufficient documents",
+      "meaning": "The documents you sent did not prove what the application needed to show.",
+      "fix": "Use the official document list, add what was missing, and explain each document in the cover letter."
+    }
+  },
+  "faqs": [
+    {
+      "q": "Do you guarantee a visa?",
+      "a": "No. No honest consultant can — only the embassy decides. What we promise is a complete, consistent file and an honest opinion of your chances before you pay embassy fees."
+    },
+    {
+      "q": "How much bank balance do I need for a UK visit visa?",
+      "a": "There is no fixed official amount. The officer checks that your funds cover the trip and match your income history. We review your statements in the free call."
+    },
+    {
+      "q": "I was refused before. Can you help?",
+      "a": "Yes. Send us the refusal letter; we address every point raised and tell you honestly if it's better to wait."
+    },
+    {
+      "q": "I live outside Karachi. Can I still use Visafeast?",
+      "a": "Yes. Consultations run on WhatsApp video or phone; you attend biometrics at your nearest VFS/visa centre."
+    },
+    {
+      "q": "How long does processing take?",
+      "a": "Depends on the country and season; each country page shows the current official time with the date we last checked it."
+    },
+    {
+      "q": "Do you help with immigration and PR?",
+      "a": "Yes — skilled, family and business pathways for Canada, Australia, the UK, USA, Germany, New Zealand and parts of Europe. Where the law requires a licensed representative, your case is filed with our licensed partners."
+    },
+    {
+      "q": "Can I read the website in my language?",
+      "a": "Yes. The website opens in your country's language. You can switch at the top, and all languages are listed at the bottom."
+    }
+  ]
 }

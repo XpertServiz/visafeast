@@ -1,0 +1,439 @@
+{
+  "nav": {
+    "visas": "Vize ve göçmenlik",
+    "eligibility": "Şansımı kontrol et",
+    "decoder": "Ret mektubunu anla",
+    "news": "Vize haberleri",
+    "reviews": "Yorumlar",
+    "book": "Ücretsiz görüşme",
+    "menu": "Menü"
+  },
+  "hero": {
+    "eyebrow": "Ziyaret, öğrenci ve göçmenlik danışmanları · Karaçi · tüm Pakistan'a hizmet",
+    "h1": "Vizeniz, ilk seferde doğru hazırlanmış.",
+    "sub": "İngiltere, Kanada, ABD, Avustralya, Yeni Zelanda, Avrupa ve Asya için ziyaret ve öğrenci vizeleri ile göçmenlik yolları — ücretler ve süreler açıkça yayımlanır.",
+    "tick1": "Ücretler son kontrol tarihiyle gösterilir",
+    "tick2": "Baştan karara kadar tek danışman",
+    "tick3": "WhatsApp'tan bilgilendirme",
+    "handle": "Hedeflerimiz",
+    "watch": "3D küreyi izle",
+    "label": "Pakistan'dan vize hedeflerine uçuşları gösteren hareketli küre",
+    "europe": "Avrupa",
+    "baku": "Bakü",
+    "routeVisit": "ziyaret",
+    "routeStudy": "öğrenci",
+    "routeEvisa": "e-vize",
+    "routeAll": "8 hedef"
+  },
+  "cta": {
+    "eligibility": "Şansımı kontrol et — ücretsiz",
+    "book": "Ücretsiz görüşme ayırt",
+    "whatsapp": "WhatsApp",
+    "enquiry": "Yazmayı mı tercih edersiniz? Soru gönderin →",
+    "enquiryBtn": "Soru gönder",
+    "guide": "Rehberi aç →",
+    "qualify": "Uygun muyum? →"
+  },
+  "steps": {
+    "title": "3 kolay adımda vizeniz",
+    "s1": "Bizimle konuşun",
+    "s1d": "Ücretsiz arama veya WhatsApp",
+    "s2": "Dosyanızı hazırlarız",
+    "s2d": "Belgeler kontrol edilir",
+    "s3": "Yola çıkarsınız",
+    "s3d": "Kararı konsolosluk verir"
+  },
+  "videos": {
+    "eyebrow": "İzleyin · Visafeast'ten vize ipuçları",
+    "all": "Tümünü YouTube'da gör →"
+  },
+  "elig": {
+    "title": "Ücretsiz · 60 saniye",
+    "h2": "Şansınızı kontrol edin",
+    "sub": "Altı kısa soru. Kayıt gerekmez.",
+    "q": "Soru",
+    "of": "/",
+    "back": "Geri",
+    "restart": "Yeniden başla",
+    "disclaimer": "Bu bir yol gösterici, karar değildir — kararı yalnızca konsolosluk verir.",
+    "strong": "GÜÇLÜ",
+    "moderate": "ORTA",
+    "needs": "GELİŞTİRİLMELİ",
+    "strongT": "Profiliniz kâğıt üzerinde güçlü görünüyor. Sıradaki adım dosyanın buna uyması: tutarlı belgeler, net bir seyahat planı ve iyi yazılmış bir mektup.",
+    "moderateT": "Bazı zayıf noktalarla makul bir şansınız var. Ücretsiz görüşmede konsolosluk ücreti ödemeden önce neyi güçlendirmeniz gerektiğini söyleriz.",
+    "needsT": "Şimdi başvurmak yüksek ret riski taşır. Önce adımları planlayalım — örneğin seyahat geçmişi oluşturmak veya parayı belgelemek — ki başvurunuz güçlü başlasın.",
+    "sendChecklist": "Listeyi WhatsApp'tan gönder",
+    "yourWhatsapp": "WhatsApp numaranız",
+    "yourName": "Adınız"
+  },
+  "eligQ": {
+    "dest": "Nereye gitmek istiyorsunuz?",
+    "dest_0": "İngiltere",
+    "dest_1": "Kanada veya ABD",
+    "dest_2": "Schengen / Avrupa",
+    "dest_3": "Avustralya veya Yeni Zelanda",
+    "dest_4": "Asya (Tayland, Bakü, Singapur)",
+    "dest_5": "Yurt dışında eğitim",
+    "purpose": "Ana amaç nedir?",
+    "purpose_0": "Turizm",
+    "purpose_1": "Aile ziyareti",
+    "purpose_2": "İş",
+    "purpose_3": "Eğitim",
+    "travel": "Son 5 yıldaki seyahatleriniz?",
+    "travel_0": "İngiltere / ABD / Kanada / Schengen / Avustralya",
+    "travel_1": "Körfez / Türkiye / Malezya veya benzeri",
+    "travel_2": "Yok",
+    "work": "Ne iş yapıyorsunuz?",
+    "work_0": "Maaşlı, bordrolu",
+    "work_1": "İşletme sahibi, vergi beyanlı",
+    "work_2": "Öğrenci / ev hanımı, sponsorlu",
+    "work_3": "Çalışmıyorum, sponsor yok",
+    "bank": "Son 6 aylık banka hesap özetleriniz?",
+    "bank_0": "Düzenli gelir, istikrarlı bakiye",
+    "bank_1": "Sponsorun hesabı",
+    "bank_2": "Yakın zamanda büyük yatırma",
+    "refusal": "Daha önce vize reddi aldınız mı?",
+    "refusal_0": "Hiç",
+    "refusal_1": "Bir kez",
+    "refusal_2": "Birden fazla"
+  },
+  "decoder": {
+    "title": "Ret mektubu mu aldınız?",
+    "h2": "Ret mektubu çözücü",
+    "sub": "Metni yapıştırın. Sade bir açıklama alın.",
+    "label": "Ret mektubu metni (adınızı ve referansı silin)",
+    "btn": "Basitçe açıkla",
+    "privacy": "Dosyanızı incelememizi istemediğiniz sürece metin kaydedilmez.",
+    "disclaimer": "Bu, mektubunuzu sade sözlerle açıklar. Hukuki tavsiye değildir; kararı yalnızca konsolosluk verir.",
+    "meaning": "Anlamı",
+    "fix": "Düzeltilecekler",
+    "honest": "Dürüst görüş",
+    "review": "Ücretsiz dosya incelemesi ayırt",
+    "send": "Danışmana gönder",
+    "consent": "Danışmanın dosyamı incelemesi için bu metni Visafeast'e göndermeyi kabul ediyorum.",
+    "tooLong": "Lütfen en fazla 6.000 karakter yapıştırın.",
+    "empty": "Önce mektup metnini yapıştırın."
+  },
+  "problems": {
+    "bank": {
+      "a": "Banka özetim yeterli olmadı",
+      "b": "Konsolosluklar tek bir bakiyeye değil, gelir geçmişine ve paranın kaynağına bakar. Ani yatırmalar sık görülen bir ret nedenidir.",
+      "c": "Altı aylık özetleri sizinle inceler, parayı mektupta düzgünce açıklarız."
+    },
+    "papers": {
+      "a": "Hangi belgeler gerektiğini bilmiyordum",
+      "b": "Her ülke farklı şey ister ve internetteki listeler çoğu zaman yıllarca eskidir.",
+      "c": "Dosyanıza özel, resmi kaynakla karşılaştırılmış ve kontrol tarihi belirtilmiş bir liste."
+    },
+    "sad": {
+      "a": "Bir kez reddedildim, şimdi ne olacak?",
+      "b": "Aynı dosyayla yeniden başvurmak ücreti yine boşa harcar ve geçmişinize bir ret daha ekler.",
+      "c": "Ret mektubunu okur, her noktayı düzeltir ve yeniden başvurmanın şimdi değip değmeyeceğini dürüstçe söyleriz."
+    }
+  },
+  "why": {
+    "title": "Vizeler neden reddedilir",
+    "fix": "Nasıl çözeriz"
+  },
+  "mid": {
+    "h2": "Dosyanızın durumundan emin değil misiniz? 15 dakikalık görüşme ücretsiz. Dürüst cevap da öyle."
+  },
+  "choose": {
+    "title": "Vize sayfanızı seçin",
+    "visit": "Ziyaret vizeleri",
+    "study": "Öğrenci vizeleri",
+    "immigration": "Göçmenlik",
+    "immNote": "Göçmenlik kuralları sık değişir — her sayfa resmi kaynağı ve son kontrol tarihimizi gösterir. Yasanın lisanslı temsilci istediği yerlerde (örneğin Kanada için RCIC veya Avustralya için kayıtlı göçmenlik acentesi) başvurular lisanslı ortaklarımızla yapılır."
+  },
+  "reviews": {
+    "title": "Müşteri yorumları",
+    "note": "Buradaki her yorum gerçek bir müşteriden gelir. Müşteriler kendi yorumunu yazar; spam'i önlemek için onaylarız — sözleri asla değiştirmez, haklı eleştiriyi gizlemeyiz.",
+    "empty": "Henüz yorum yayımlanmadı. Deneyiminizi ilk paylaşan siz olun.",
+    "write": "Yorum yaz",
+    "google": "Google yorumlarımızı gör →"
+  },
+  "whyUs": {
+    "title": "Neden Visafeast",
+    "i1": "Yayımlanmış ücretler",
+    "i1d": "Ücretler ve süreler kontrol tarihiyle gösterilir.",
+    "i2": "Tek danışman",
+    "i2d": "İlk aramadan karara kadar aynı kişi.",
+    "i3": "Sahte belge yok",
+    "i3d": "Asla banka özeti veya mektup ayarlamayız.",
+    "i4": "Sizin diliniz",
+    "i4d": "Site, her liste ve bilgilendirmelerimiz tercih ettiğiniz dilde."
+  },
+  "news": {
+    "title": "Vize haber radarı",
+    "official": "Resmi kaynak",
+    "report": "Haber",
+    "digest": "Haftalık özet",
+    "none": "Henüz haber yok — radar her gün otomatik dolar.",
+    "all": "Tüm haberler →"
+  },
+  "faq": {
+    "title": "Sık sorulan sorular"
+  },
+  "book": {
+    "title": "15 dakikalık ücretsiz görüşme ayırtın",
+    "or": "Veya soru gönderin",
+    "send": "Soruyu gönder",
+    "sent": "Teşekkürler! Yakında WhatsApp'tan ulaşacağız."
+  },
+  "form": {
+    "name": "Adınız",
+    "whatsapp": "WhatsApp numarası",
+    "email": "E-posta (isteğe bağlı)",
+    "service": "Hizmet",
+    "country": "Ülke",
+    "nationality": "Pasaportunuzun ülkesi",
+    "residence": "Şu an nerede yaşıyorsunuz?",
+    "refused": "Daha önce ret aldınız mı?",
+    "no": "Hayır",
+    "once": "Bir kez",
+    "more": "Birden fazla",
+    "message": "Mesaj (isteğe bağlı)",
+    "visit": "Ziyaret vizesi",
+    "study": "Öğrenci vizesi",
+    "immigration": "Göçmenlik",
+    "city": "Şehir",
+    "rating": "Puan",
+    "consent": "Yayımlanmasını kabul ediyorum",
+    "submit": "Gönder",
+    "error": "Bir sorun oluştu. Yeniden deneyin veya WhatsApp'tan yazın."
+  },
+  "footer": {
+    "visitStudy": "Ziyaret ve eğitim",
+    "immigration": "Göçmenlik",
+    "contact": "İletişim",
+    "legal": "Yasal",
+    "rights": "Tüm hakları saklıdır."
+  },
+  "fallback": "Doğrulanıyor — güncel tutar için WhatsApp'tan sorun",
+  "chat": {
+    "open": "Bize yazın",
+    "title": "Zara · Visafeast asistanı",
+    "greeting": "Merhaba! Ben Zara. Ücretler, belgeler veya süreler hakkında sorun. Yazım hataları sorun değil.",
+    "placeholder": "Sorunuzu yazın…",
+    "send": "Gönder",
+    "q1": "İngiltere ziyaret vizesi ücreti",
+    "q2": "Kanada ziyaret belgeleri",
+    "q3": "Danışmanla konuş",
+    "wa": "WhatsApp'ta devam et",
+    "subtitle": "Otomatik asistan · genellikle anında",
+    "disclaimer": "Zara bu siteden yanıt verir. Kendi durumunuz için danışmanla konuşun."
+  },
+  "consent": {
+    "text": "IP adresinizi saklamadan ziyaretleri saymak için küçük bir çerez kullanıyoruz.",
+    "ok": "Tamam"
+  },
+  "splash": {
+    "skip": "Geç"
+  },
+  "common": {
+    "lastChecked": "Son kontrol",
+    "source": "Kaynak",
+    "onThisPage": "Bu sayfada",
+    "related": "İlgili rehberler",
+    "readMore": "Devamını oku",
+    "home": "Ana sayfa"
+  },
+  "extras": {
+    "destinations": "hedef",
+    "checkedPages": "resmi kaynaklı ücretli rehber",
+    "lastChecked": "Son kontrol",
+    "askTitle": "Vizenizle ilgili Zara'ya her şeyi sorun",
+    "askPlaceholder": "örn. İngiltere vize ücreti",
+    "ask1": "İngiltere ziyaret vizesi ücreti",
+    "ask2": "Schengen belgeleri",
+    "ask3": "Almanya'da eğitim banka bakiyesi",
+    "compareTitle": "Vizeleri yan yana karşılaştırın",
+    "compareNote": "Kontrol tarihli resmi rakamlar. Doğrulamadığımız rakamı açıkça söyleriz.",
+    "visit": "Ziyaret",
+    "study": "Eğitim",
+    "choose": "Hedef seçin",
+    "fee": "Resmi ücret",
+    "time": "Karar süresi",
+    "stay": "Kalış",
+    "apply": "Ne zaman başvurulur",
+    "unknown": "Doğrulanıyor — WhatsApp'tan yazın",
+    "open": "Tam rehberi aç",
+    "fileTitle": "Vize dosyanız çevrimiçi",
+    "file1": "Belgeleri güvenle gönderin",
+    "file1d": "Telefonunuzdan yükleyin. Yalnızca siz ve danışmanınız görebilir.",
+    "file2": "Durumunuzu her an görün",
+    "file2d": "Dosyanızın hangi aşamada olduğunu ve sırada ne olduğunu bilin.",
+    "file3": "Danışmanınızla yazışın",
+    "file3d": "Soru sorun ve hangi belgelerin kaldığını görün.",
+    "fileCta": "Dosyamı aç"
+  },
+  "ui": {
+    "whatItMeans": "Anlamı:",
+    "visa": "Vize",
+    "embassyFee": "Konsolosluk ücreti",
+    "decisionTime": "Karar süresi",
+    "stay": "Kalış",
+    "applyWindow": "Başvuru dönemi",
+    "biometrics": "Biyometri",
+    "whoFor": "Bu vize kimler için",
+    "documents": "Belge listesi",
+    "funds": "Ne kadar banka bakiyesi?",
+    "howItWorks": "Visafeast ile süreç",
+    "refusals": "Sık ret nedenleri",
+    "totalCost": "Toplam maliyet",
+    "latestNews": "Son haberler",
+    "faq": "SSS",
+    "contactQuote": "Fiyat için iletişime geçin",
+    "from": "başlayan",
+    "licensedPartner": "Lisanslı ortak:",
+    "item": "Kalem",
+    "paidTo": "Ödenen yer",
+    "amount": "Tutar",
+    "checked": "Kontrol",
+    "embassyGovFee": "Konsolosluk / devlet ücreti",
+    "vfsFee": "Vize merkezi (VFS) ücreti",
+    "serviceFee": "Visafeast hizmet ücreti",
+    "embassy": "Konsolosluk",
+    "visaCentre": "Vize merkezi",
+    "toVerify": "Doğrulanacak",
+    "docsVerifying": "Resmi belge listesi doğrulanıyor. Kişisel listeniz için WhatsApp'tan yazın.",
+    "ready": "hazır",
+    "getPdf": "Bu listeyi PDF olarak alın",
+    "yourName": "Adınız",
+    "yourWhatsapp": "WhatsApp numaranız",
+    "openPage": "Sayfayı aç",
+    "chatError": "Üzgünüm, şu an yanıt veremedim. Lütfen WhatsApp'tan yazın.",
+    "chatLimit": "Bugünkü mesaj sınırına ulaştınız. Lütfen danışmanımızla WhatsApp'ta devam edin.",
+    "teaser": "Merhaba! Ben Zara. Vizeler hakkında her şeyi sorun.",
+    "askZara": "Asistanımız Zara'ya sorun",
+    "close": "Kapat",
+    "photoSoon": "Fotoğraf yakında",
+    "reviewThanks": "Teşekkürler! Yorumunuz onaylandıktan sonra görünecek.",
+    "visitIn": "{country} ziyareti",
+    "studyIn": "{country}: eğitim",
+    "allVisit": "Tüm ziyaret vizeleri →",
+    "allStudy": "Tüm öğrenci vizeleri →",
+    "feeEstimator": "Ücret hesaplayıcı",
+    "about": "Hakkımızda",
+    "contact": "İletişim",
+    "privacy": "Gizlilik",
+    "terms": "Koşullar",
+    "disclaimer": "Sorumluluk reddi",
+    "languages": "Diller",
+    "disclaimerShort": "Visafeast özel bir danışmanlıktır; konsolosluk veya devlet kurumu değildir. Vize kararlarını yalnızca ilgili konsolosluk veya göçmenlik makamı verir.",
+    "autoNote": "Kolaylık için çevrildi. Farklılık varsa resmi kaynak ve İngilizce sayfa geçerlidir.",
+    "kindVisit": "Ziyaret",
+    "kindStudy": "Eğitim",
+    "kindImmigration": "Göçmenlik",
+    "newStamp": "Yeni",
+    "chooseVisa": "Vizenizi seçin",
+    "totalApprox": "Toplam (yaklaşık)",
+    "lastChecked": "Son kontrol",
+    "notVerified": "Henüz doğrulanmadı",
+    "pkrNote": "PKR tutarlarını Visafeast girer.",
+    "approxNote": "≈ rakamlar bugünkü kurla hesaplanır ve yalnızca yol göstericidir.",
+    "notFoundTitle": "Bu sayfa uçup gitti",
+    "notFoundBody": "Aradığınız sayfa burada değil. Bunları deneyin:",
+    "contactUs": "İletişim",
+    "immCanada": "Kanada Express Entry",
+    "immAustralia": "Avustralya nitelikli vizeler",
+    "immGermany": "Almanya Chancenkarte",
+    "immUk": "İngiltere Skilled Worker"
+  },
+  "hub": {
+    "visitH1": "Pakistan'dan ziyaret vizeleri",
+    "visitIntro": "Belgeleri, ücretleri ve süreleri görmek için ülke seçin — hepsi son kontrol tarihiyle.",
+    "studyH1": "Pakistan'dan öğrenci vizeleri",
+    "studyIntro": "Öğrenci vizesinin nasıl işlediğini ve neler hazırlamanız gerektiğini görmek için ülke seçin.",
+    "immH1": "Pakistan'dan göçmenlik yolları",
+    "immIntro": "Nitelikli, aile ve iş yolları. Kurallar sık değişir — her sayfa resmi kaynağını ve kontrol tarihini gösterir."
+  },
+  "seo": {
+    "home": {
+      "t": "Karaçi'de vize danışmanı — ziyaret ve eğitim | Visafeast",
+      "d": "Pakistan'dan ziyaret ve öğrenci vizeleri ile göçmenlik yolları; ücretler ve süreler açıkça yayımlanır. Ücretsiz kontrol ve 15 dakikalık görüşme."
+    },
+    "hubVisit": {
+      "t": "Pakistan'dan ziyaret vizeleri: İngiltere, Kanada, ABD, Schengen | Visafeast",
+      "d": "Hedefinizi seçin: İngiltere, Kanada, ABD, Avustralya, Yeni Zelanda, Schengen, Azerbaycan, Tayland ve Singapur ziyaret vizeleri."
+    },
+    "hubStudy": {
+      "t": "Pakistan'dan yurt dışı eğitim: öğrenci vizesi rehberleri | Visafeast",
+      "d": "Almanya, İngiltere, Kanada, ABD, Avustralya, İtalya, Yunanistan ve Avrupa'da eğitim: resmi kaynaklı rehberler."
+    },
+    "hubImm": {
+      "t": "Pakistan'da göçmenlik danışmanı: oturum ve çalışma vizeleri | Visafeast",
+      "d": "Pakistan'dan Kanada, Avustralya, İngiltere, ABD, Almanya, Yeni Zelanda ve Avrupa'ya göçmenlik yolları, resmi kaynaklar ve tarihlerle."
+    },
+    "eligibility": {
+      "t": "Pakistan'dan ücretsiz vize şansı kontrolü | Visafeast",
+      "d": "Altı kısa soruyu yanıtlayın, dosyanızın ne kadar güçlü olduğunu görün. Ücretsiz, 60 saniye, kayıtsız. Yol gösterici, karar değil."
+    },
+    "decoder": {
+      "t": "Vize ret mektubu çözücü — sade anlatım | Visafeast",
+      "d": "Ret mektubunuzu yapıştırın; her nedenin ve düzeltilecek şeylerin sade açıklamasını alın. İstemediğiniz sürece kaydedilmez."
+    },
+    "book": {
+      "t": "15 dakikalık ücretsiz vize görüşmesi | Visafeast",
+      "d": "Visafeast danışmanıyla 15 dakikalık ücretsiz görüşme ayırtın veya soru gönderin; WhatsApp'tan yanıtlarız."
+    },
+    "contact": {
+      "t": "Visafeast iletişim — Karaçi'de vize danışmanları",
+      "d": "Visafeast'e WhatsApp, e-posta veya Facebook'tan ulaşın ya da soru gönderin. Tüm Pakistan'da çevrimiçi danışmanlık."
+    },
+    "reviews": {
+      "t": "Müşteri yorumları | Visafeast",
+      "d": "Gerçek Visafeast müşterilerinin yorumları, yayından önce onaylanır. Sözleri değiştirmez, haklı eleştiriyi gizlemeyiz."
+    },
+    "news": {
+      "t": "Pakistanlı başvuru sahipleri için vize haberleri | Visafeast",
+      "d": "Resmi kaynaklardan günlük vize güncellemeleri ve Pakistanlı başvuru sahipleri için anlamlarını açıklayan haftalık özet."
+    }
+  },
+  "pages": {
+    "contactTitle": "İletişim",
+    "facebookPage": "Facebook sayfası →",
+    "newsIntro": "Resmi kaynaklardan ve haberlerden günlük bilgiler. İşlem yapmadan önce her zaman resmi sayfayı kontrol edin.",
+    "newsAll": "Tümü",
+    "noDigests": "Henüz haftalık özet yok.",
+    "published": "Yayımlandı",
+    "sources": "Kaynaklar",
+    "reviewsAvg": "{count} yorumdan ortalama {avg} / 5"
+  },
+  "faqs": [
+    {
+      "q": "Vize garantisi veriyor musunuz?",
+      "a": "Hayır. Dürüst hiçbir danışman veremez — kararı yalnızca konsolosluk verir. Söz verdiğimiz şey, eksiksiz ve tutarlı bir dosya ile konsolosluk ücretini ödemeden önce şansınız hakkında dürüst bir görüştür."
+    },
+    {
+      "q": "İngiltere ziyaret vizesi için ne kadar banka bakiyesi gerekir?",
+      "a": "Sabit bir resmi tutar yoktur. Memur, paranızın seyahati karşıladığını ve gelir geçmişinize uyduğunu kontrol eder. Özetlerinizi ücretsiz görüşmede inceleriz."
+    },
+    {
+      "q": "Daha önce reddedildim. Yardım edebilir misiniz?",
+      "a": "Evet. Ret mektubunu gönderin; her noktayı ele alır, beklemenin daha iyi olup olmadığını dürüstçe söyleriz."
+    },
+    {
+      "q": "Karaçi dışında yaşıyorum. Visafeast'i kullanabilir miyim?",
+      "a": "Evet. Danışmanlık WhatsApp görüntülü arama veya telefonla yapılır; biyometri en yakın VFS veya vize merkezinde verilir."
+    },
+    {
+      "q": "İşlem ne kadar sürer?",
+      "a": "Ülkeye ve döneme bağlıdır; her ülke sayfası güncel resmi süreyi son kontrol tarihimizle gösterir."
+    },
+    {
+      "q": "Göçmenlik ve oturum konusunda yardım ediyor musunuz?",
+      "a": "Evet — Kanada, Avustralya, İngiltere, ABD, Almanya, Yeni Zelanda ve Avrupa'nın bazı bölgeleri için nitelikli, aile ve iş yolları. Yasanın lisanslı temsilci istediği yerlerde dosyanız lisanslı ortaklarımızla sunulur."
+    },
+    {
+      "q": "Siteyi kendi dilimde okuyabilir miyim?",
+      "a": "Evet. Site ülkenizin dilinde açılır. Üstten değiştirebilirsiniz, tüm diller altta listelenir."
+    }
+  ],
+  "portal": {
+    "navLink": "Müşteri girişi"
+  },
+  "track": {
+    "title": "Vize dosyanızı takip edin"
+  }
+}

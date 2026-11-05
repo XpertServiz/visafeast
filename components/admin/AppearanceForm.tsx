@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { HEADING_FONTS, BODY_FONTS, URDU_FONTS } from "@/lib/font-lists";
 import { THEMES, contrast, type ThemeKey } from "@/lib/themes";
-import { Splash } from "@/components/splash/Splash";
+import { SplashPreview } from "@/components/splash/SplashPreview";
 
 const VAR: Record<string, string> = {
   Fraunces: "--f-fraunces", Sora: "--f-sora", "Playfair Display": "--f-playfair", "DM Serif Display": "--f-dmserif", "Plus Jakarta Sans": "--f-jakarta", Poppins: "--f-poppins",
@@ -45,7 +45,7 @@ export function AppearanceForm({ s, save, reset }: { s: S; save: (fd: FormData) 
         <label className="lbl">Style<select name="splash_style" className="field" value={splash} onChange={(e) => setSplash(e.target.value)}>{SPLASH.map(([k, l]) => <option key={k} value={k}>{l}</option>)}</select></label>
         <label className="lbl">How long: {(dur / 1000).toFixed(1)} s<input name="splash_duration_ms" type="range" min={1000} max={3000} step={100} value={dur} onChange={(e) => setDur(Number(e.target.value))} style={{ width: "100%" }} /></label>
         <label><input type="checkbox" name="splash_once" defaultChecked={s.splash_once_per_session} style={{ width: 20, height: 20, marginInlineEnd: 8 }} />Show only once per visit</label>
-        <button type="button" className="btn btn-outline" onClick={() => { try { sessionStorage.removeItem("vf_splash"); } catch { /* ignore */ } setPlay((n) => n + 1); }}>Play preview</button>
+        <button type="button" className="btn btn-outline" onClick={() => { setPlay((n) => n + 1); }}>Play preview</button>
         <label className="lbl">Globe style<select name="globe" className="field" defaultValue={s.hero_globe_style}><option value="realistic">Realistic Earth</option><option value="dotted">Dotted ball</option></select></label>
 
         {msg && <p role="status" style={{ margin: 0, fontWeight: 600 }}>{msg}</p>}
@@ -64,7 +64,7 @@ export function AppearanceForm({ s, save, reset }: { s: S; save: (fd: FormData) 
           <p dir="rtl" style={{ fontFamily: `var(${VAR[u]})`, lineHeight: 1.9, marginBottom: 0 }}>آپ کا ویزا، پہلی ہی بار درست تیاری کے ساتھ</p>
         </div>
       </div>
-      {play > 0 && <Splash key={play} style={splash} duration={dur} oncePerSession={false} skipLabel="Skip" />}
+      {play > 0 && <SplashPreview key={play} style={splash} duration={dur} skipLabel="Skip" />}
     </div>
   );
 }

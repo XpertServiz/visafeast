@@ -1,3 +1,7 @@
+import { LOCALE_CODES, isLocale, type Locale } from "./locales";
+
+export { isLocale, type Locale };
+
 // ONE config file: every brand string, contact detail, social link and opening hour lives here.
 // The admin "Settings" screen overrides these values at runtime (see lib/settings.ts).
 export const siteConfig = {
@@ -14,15 +18,12 @@ export const siteConfig = {
   ntn: "" as string,
   calcom: "visa-feast-pvus5i/15min", // [ASK #4]
   serviceFeeMode: "quote" as "exact" | "from" | "quote", // [ASK #5]
-  locales: ["en", "ur"] as const,
+  locales: LOCALE_CODES,
   defaultLocale: "en" as const,
   logo: "/logo.jpg",
   disclaimer:
     "Visafeast is a private consultancy, not an embassy or government agency. Visa decisions are made only by the relevant embassy or immigration authority.",
 };
-
-export type Locale = (typeof siteConfig.locales)[number];
-export const isLocale = (v: string): v is Locale => (siteConfig.locales as readonly string[]).includes(v);
 
 export const waLink = (text?: string, number: string = siteConfig.whatsapp) =>
   `https://wa.me/${number.replace(/\D/g, "")}${text ? `?text=${encodeURIComponent(text)}` : ""}`;

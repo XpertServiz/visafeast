@@ -126,7 +126,7 @@ export const SEED_FAQS: Faq[] = [
   { q: "I live outside Karachi. Can I still use Visafeast?", a: "Yes. Consultations run on WhatsApp video or phone; you attend biometrics at your nearest VFS/visa centre." },
   { q: "How long does processing take?", a: "Depends on the country and season; each country page shows the current official time with the date we last checked it." },
   { q: "Do you help with immigration and PR?", a: "Yes — skilled, family and business pathways for Canada, Australia, the UK, USA, Germany, New Zealand and parts of Europe. Where the law requires a licensed representative, your case is filed with our licensed partners." },
-  { q: "Can I read the website in Urdu?", a: "Yes. Use the EN / اردو switch at the top. Checklists and WhatsApp updates are available in Urdu too." },
+  { q: "Can I read the website in my language?", a: "Yes. The website opens in your country's language. You can switch at the top, and all languages are listed at the bottom." },
 ].map((f, i) => ({ id: `faq-${i}`, country_slug: null, question: f.q, answer_md: f.a, sort_order: i }));
 
 export const SEED_UK_FAQS: Faq[] = [

@@ -1,3 +1,4 @@
+import { isLocale } from "@/config/locales";
 import { NextResponse, type NextRequest } from "next/server";
 import { isbot } from "isbot";
 import { UAParser } from "ua-parser-js";
@@ -33,7 +34,7 @@ export async function POST(req: NextRequest) {
         country, region: dec(req.headers.get("x-vercel-ip-country-region")), city: dec(req.headers.get("x-vercel-ip-city")),
         device: t === "mobile" ? "mobile" : t === "tablet" ? "tablet" : "desktop", visitor_hash: vh, session_id: String(b.sid || ""),
         browser: p.browser.name, os: p.os.name, screen: String(b.screen || "").slice(0, 20), browser_language: String(b.lang || "").slice(0, 20),
-        accept_language: (req.headers.get("accept-language") || "").split(",")[0].slice(0, 20), site_locale: b.locale === "ur" ? "ur" : "en",
+        accept_language: (req.headers.get("accept-language") || "").split(",")[0].slice(0, 20), site_locale: isLocale(b.locale) ? b.locale : "en",
         is_new_visitor: !b.returning, landing: Boolean(b.landing),
       });
     } else if (b.type === "duration") {

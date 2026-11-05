@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { Calendar, ChevronRight, MessageCircle, Plane, BadgeCheck, Search } from "lucide-react";
 import type { Country } from "@/lib/types";
-import { siteConfig, waLink, type Locale } from "@/config/site";
+import { waLink, type Locale } from "@/config/site";
 import { getT, lp } from "@/lib/i18n";
-import { getCountries, getFaqs, getNews, getSettings, isStale } from "@/lib/data";
+import { getCountriesFor, getFaqsFor, getNews, getSettings, isStale } from "@/lib/data";
+import { LocalPrice } from "@/components/LocalPrice";
 import { BreadcrumbItems } from "./Breadcrumb";
 import { breadcrumbJsonLd, faqJsonLd, JsonLd } from "@/lib/seo";
 import { BoardingPass, FaqList, Flag, Md, fmtDate, KIND_BASE } from "@/components/ui";
@@ -12,37 +13,38 @@ import { Photo } from "@/components/Photo";
 
 export async function CountryPage({ c, locale }: { c: Country; locale: Locale }) {
   const t = getT(locale);
-  const [settings, faqs, news, all] = await Promise.all([getSettings(), getFaqs(c.slug), getNews({ country: c.country_code, limit: 3 }), getCountries()]);
+  const [settings, faqs, news, all] = await Promise.all([getSettings(), getFaqsFor(locale, c.slug), getNews({ country: c.country_code, limit: 3 }), getCountriesFor(locale)]);
   const base = KIND_BASE[c.kind];
   const stale = isStale(c.facts_last_checked);
   const wa = (q: string) => waLink(q, settings.whatsapp_number);
   const Unknown = () => <a href={wa(`Hi, what's the current ${c.visa_name} fee?`)} style={{ fontSize: 15 }}>{t("fallback")}</a>;
   const val = (v: string | null) => (v && !stale ? v : <Unknown />);
+  const fee = (v: string | null) => (v && !stale ? <>{v}<LocalPrice text={v} locale={locale} /></> : <Unknown />);
   const domain = c.facts_source_url ? new URL(c.facts_source_url).hostname : null;
-  const hubLabel = c.kind === "visit" ? "Visit visas" : c.kind === "study" ? "Study visas" : "Immigration";
+  const hubLabel = t(c.kind === "visit" ? "choose.visit" : c.kind === "study" ? "choose.study" : "choose.immigration");
   const related = c.related_slugs.map((s) => all.find((x) => x.slug === s)).filter(Boolean) as Country[];
   const counterpart = all.find((x) => x.country_code === c.country_code && x.kind !== c.kind && x.slug !== c.slug);
 
   const facts: [string, React.ReactNode][] = [
-    [locale === "ur" ? "ویزا" : "Visa", c.visa_name],
-    [locale === "ur" ? "سفارت خانے کی فیس" : "Embassy fee", val(c.embassy_fee_text)],
-    [locale === "ur" ? "فیصلے کا وقت" : "Decision time", val(c.processing_time_text)],
-    [locale === "ur" ? "قیام" : "Stay", val(c.max_stay_text)],
-    [locale === "ur" ? "درخواست کی مدت" : "Apply window", val(c.apply_window_text)],
-    [locale === "ur" ? "بایومیٹرکس" : "Biometrics", val(c.biometrics_text)],
+    [t("ui.visa"), c.visa_name],
+    [t("ui.embassyFee"), fee(c.embassy_fee_text)],
+    [t("ui.decisionTime"), val(c.processing_time_text)],
+    [t("ui.stay"), val(c.max_stay_text)],
+    [t("ui.applyWindow"), val(c.apply_window_text)],
+    [t("ui.biometrics"), val(c.biometrics_text)],
   ];
   const anchors = [
-    ["who", locale === "ur" ? "یہ ویزا کس کے لیے" : "Who this visa is for"], ["documents", locale === "ur" ? "دستاویزات" : "Documents checklist"],
-    ...(c.funds_md ? [["funds", locale === "ur" ? "بینک بیلنس کتنا؟" : "How much bank balance?"]] : []),
-    ["steps", locale === "ur" ? "ہمارے ساتھ کیسے" : "How it works with Visafeast"],
-    ...(c.refusal_reasons.length ? [["refusals", locale === "ur" ? "انکار کی وجوہات" : "Common refusal reasons"]] : []),
-    ["cost", locale === "ur" ? "کل لاگت" : "Total cost"], ["news", locale === "ur" ? "تازہ خبریں" : "Latest news"], ["faq", "FAQ"],
+    ["who", t("ui.whoFor")], ["documents", t("ui.documents")],
+    ...(c.funds_md ? [["funds", t("ui.funds")]] : []),
+    ["steps", t("ui.howItWorks")],
+    ...(c.refusal_reasons.length ? [["refusals", t("ui.refusals")]] : []),
+    ["cost", t("ui.totalCost")], ["news", t("ui.latestNews")], ["faq", t("ui.faq")],
   ];
   const feeRow = (label: string, who: string, amount: React.ReactNode) => (
     <tr key={label} style={{ borderTop: "1px solid var(--line)" }}><td style={{ padding: "12px 10px" }}>{label}</td><td style={{ padding: "12px 10px" }}>{who}</td><td style={{ padding: "12px 10px" }}>{amount}</td><td className="mono" style={{ padding: "12px 10px", fontSize: 13 }}>{c.facts_last_checked ? fmtDate(c.facts_last_checked, locale) : "—"}</td></tr>
   );
-  const svc = settings.service_fee_mode === "quote" || !c.service_fee_pkr ? (locale === "ur" ? "قیمت کے لیے رابطہ کریں" : "Contact for quote") : `${settings.service_fee_mode === "from" ? "from " : ""}PKR ${c.service_fee_pkr.toLocaleString("en-PK")}`;
-  const crumbs = [{ name: "Home", path: lp(locale, "/") }, { name: hubLabel, path: lp(locale, `/${base}`) }, { name: c.country_name, path: lp(locale, `/${base}/${c.slug}`) }];
+  const svc = settings.service_fee_mode === "quote" || !c.service_fee_pkr ? t("ui.contactQuote") : `${settings.service_fee_mode === "from" ? `${t("ui.from")} ` : ""}PKR ${c.service_fee_pkr.toLocaleString("en-PK")}`;
+  const crumbs = [{ name: t("common.home"), path: lp(locale, "/") }, { name: hubLabel, path: lp(locale, `/${base}`) }, { name: c.country_name, path: lp(locale, `/${base}/${c.slug}`) }];
 
   return (
     <>
@@ -57,7 +59,7 @@ export async function CountryPage({ c, locale }: { c: Country; locale: Locale })
           <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 16 }}><Flag code={c.flag} size={30} /><h1 className="disp h1" style={{ margin: 0, fontSize: 52, lineHeight: 1.1, fontWeight: 600 }}>{c.h1}</h1></div>
           <p style={{ fontSize: 19, color: "var(--on-navy)", maxWidth: 720, marginTop: 16 }}>{c.intro}</p>
           <p className="mono" style={{ fontSize: 12, letterSpacing: ".08em", color: "var(--on-navy-2)" }}>
-            {t("common.lastChecked").toUpperCase()} {c.facts_last_checked ? fmtDate(c.facts_last_checked, locale).toUpperCase() : "—"} · {t("common.source").toUpperCase()}: {domain ? <a href={c.facts_source_url!} rel="nofollow noopener" style={{ color: "var(--amber)" }}>{domain}</a> : "TO BE VERIFIED"}
+            {t("common.lastChecked").toUpperCase()} {c.facts_last_checked ? fmtDate(c.facts_last_checked, locale).toUpperCase() : "—"} · {t("common.source").toUpperCase()}: {domain ? <a href={c.facts_source_url!} rel="nofollow noopener" style={{ color: "var(--amber)" }}>{domain}</a> : t("ui.toVerify")}
           </p>
         </div>
       </header>
@@ -97,7 +99,7 @@ export async function CountryPage({ c, locale }: { c: Country; locale: Locale })
               ))}
             </ol>
 
-            {c.licensed_partner && <aside className="card" style={{ padding: 18, borderColor: "var(--stamp-purple)" }}><b>Licensed partner:</b> {c.licensed_partner}</aside>}
+            {c.licensed_partner && <aside className="card" style={{ padding: 18, borderColor: "var(--stamp-purple)" }}><b>{t("ui.licensedPartner")}</b> {c.licensed_partner}</aside>}
             {c.kind === "immigration" && !c.licensed_partner && <aside className="card" style={{ padding: 18 }}>{t("choose.immNote")}</aside>}
 
             {c.refusal_reasons.length > 0 && (<>
@@ -110,11 +112,11 @@ export async function CountryPage({ c, locale }: { c: Country; locale: Locale })
             <h2 id="cost">{anchors.find((a) => a[0] === "cost")![1]}</h2>
             <div style={{ overflowX: "auto" }}>
               <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 520 }}>
-                <thead><tr className="mono" style={{ textAlign: "start", fontSize: 12, color: "var(--muted-2)" }}><th style={{ padding: 10, textAlign: "start" }}>Item</th><th style={{ padding: 10, textAlign: "start" }}>Paid to</th><th style={{ padding: 10, textAlign: "start" }}>Amount</th><th style={{ padding: 10, textAlign: "start" }}>Checked</th></tr></thead>
+                <thead><tr className="mono" style={{ textAlign: "start", fontSize: 12, color: "var(--muted-2)" }}><th style={{ padding: 10, textAlign: "start" }}>{t("ui.item")}</th><th style={{ padding: 10, textAlign: "start" }}>{t("ui.paidTo")}</th><th style={{ padding: 10, textAlign: "start" }}>{t("ui.amount")}</th><th style={{ padding: 10, textAlign: "start" }}>{t("ui.checked")}</th></tr></thead>
                 <tbody>
-                  {feeRow("Embassy / government fee", "Embassy", val(c.embassy_fee_text))}
-                  {feeRow("Visa centre (VFS) fee", "Visa centre", val(c.vfs_fee_text))}
-                  {feeRow("Visafeast service fee", "Visafeast", svc)}
+                  {feeRow(t("ui.embassyGovFee"), t("ui.embassy"), fee(c.embassy_fee_text))}
+                  {feeRow(t("ui.vfsFee"), t("ui.visaCentre"), fee(c.vfs_fee_text))}
+                  {feeRow(t("ui.serviceFee"), "Visafeast", svc)}
                 </tbody>
               </table>
             </div>
@@ -123,7 +125,7 @@ export async function CountryPage({ c, locale }: { c: Country; locale: Locale })
             {news.length ? <ul>{news.map((n) => <li key={n.id}><a href={n.url} rel="nofollow noopener" target="_blank">{n.title}</a> <span className="mono" style={{ fontSize: 12, color: "var(--muted-2)" }}>· {n.source} · {fmtDate(n.published_at, locale)}</span></li>)}</ul>
               : <p style={{ color: "var(--muted)" }}>{t("news.none")}</p>}
 
-            {faqs.length > 0 && (<><h2 id="faq">FAQ</h2><FaqList faqs={faqs} /></>)}
+            {faqs.length > 0 && (<><h2 id="faq">{t("ui.faq")}</h2><FaqList faqs={faqs} /></>)}
           </article>
 
           {/* Sidebar — not sticky (brief §6.2) */}
@@ -138,11 +140,11 @@ export async function CountryPage({ c, locale }: { c: Country; locale: Locale })
               </div>
             </div>
             {counterpart && <Link className="card" style={{ padding: 18, textDecoration: "none" }} href={lp(locale, `/${KIND_BASE[counterpart.kind]}/${counterpart.slug}`)}><b>{counterpart.h1} →</b></Link>}
-            {related.length > 0 && <div><p className="eyebrow" style={{ color: "var(--muted-2)" }}>{t("common.related")}</p><div style={{ display: "grid", gap: 12 }}>{related.slice(0, 3).map((r) => <BoardingPass key={r.slug} c={r} locale={locale} cta={t("cta.guide")} />)}</div></div>}
+            {related.length > 0 && <div><p className="eyebrow" style={{ color: "var(--muted-2)" }}>{t("common.related")}</p><div style={{ display: "grid", gap: 12 }}>{related.slice(0, 3).map((r) => <BoardingPass key={r.slug} c={r} locale={locale} cta={t("cta.guide")} kindLabel={t(r.kind === "visit" ? "ui.kindVisit" : r.kind === "study" ? "ui.kindStudy" : "ui.kindImmigration")} />)}</div></div>}
           </aside>
         </div>
       </div>
-      <p style={{ textAlign: "center", color: "var(--muted)", fontSize: 14, marginTop: 40 }} className="wrap">{siteConfig.disclaimer}</p>
+      <p style={{ textAlign: "center", color: "var(--muted)", fontSize: 14, marginTop: 40 }} className="wrap">{t("ui.disclaimerShort")}</p>
     </>
   );
 }

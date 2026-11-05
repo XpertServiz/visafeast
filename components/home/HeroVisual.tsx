@@ -1,12 +1,12 @@
 "use client";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { STAMPS, LABELS, ROUTES } from "./HeroGlobe2D";
+import { STAMPS, ROUTES } from "./HeroGlobe2D";
 
 const Globe = dynamic(() => import("./HeroGlobe2D").then((m) => m.HeroGlobe2D), { ssr: false });
 
 /** Globe + passport with stamps. Loads after idle so the H1 stays the LCP element (brief §7). */
-export function HeroVisual({ label }: { label: string }) {
+export function HeroVisual({ label, routeLabels, allLabel }: { label: string; routeLabels: string[]; allLabel: string }) {
   const [ready, setReady] = useState(false);
   const [reduced, setReduced] = useState(false);
   const [mobile, setMobile] = useState(false);
@@ -33,7 +33,7 @@ export function HeroVisual({ label }: { label: string }) {
       )}
       <div className="mono" style={{ position: "absolute", left: 8, top: 8, display: "flex", alignItems: "center", gap: 10, padding: "8px 14px", borderRadius: 999, background: "rgba(10,26,51,.72)", border: "1px solid rgba(242,169,59,.35)", color: "#fff", fontSize: 13, letterSpacing: ".04em" }}>
         <span style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--amber)" }} />
-        <span>{reduced ? "KHI → WORLD" : `${f} → ${t}`}</span><span style={{ color: "var(--on-navy-2)" }}>·</span><span style={{ color: "var(--amber)" }}>{reduced ? "8 destinations" : LABELS[route]}</span>
+        <span>{reduced ? "KHI → WORLD" : `${f} → ${t}`}</span><span style={{ color: "var(--on-navy-2)" }}>·</span><span style={{ color: "var(--amber)" }}>{reduced ? allLabel : routeLabels[route]}</span>
       </div>
       <div className="paper" style={{ position: "absolute", right: 0, bottom: 4, width: 272, height: 340, borderRadius: 10, transform: `rotate(-4deg) scale(${mobile ? 0.72 : 1})`, transformOrigin: "bottom right", boxShadow: "0 24px 50px rgba(0,0,0,.45), inset 0 0 0 1px rgba(0,0,0,.06)", overflow: "hidden" }} aria-hidden>
         <div style={{ position: "absolute", insetInline: 0, top: 0, padding: "12px 16px", display: "flex", justifyContent: "space-between", borderBottom: "1px solid rgba(31,78,140,.18)" }}>
