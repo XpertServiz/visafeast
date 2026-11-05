@@ -6,7 +6,7 @@ import { useDict } from "@/components/DictProvider";
 import { Icon } from "@/components/ui";
 import type { Locale } from "@/config/locales";
 import { waLink } from "@/config/site";
-import { Turnstile } from "./Turnstile";
+import { Turnstile, useBotCheck } from "./Turnstile";
 
 interface Result { points: Point[]; honest_view: string }
 
@@ -18,7 +18,7 @@ export function Decoder({ locale, bookHref, whatsapp, split = false, picture }: 
   const [res, setRes] = useState<Result | null>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
-  const [token, setToken] = useState("");
+  const bot = useBotCheck();
   const [consent, setConsent] = useState(false);
   const [sent, setSent] = useState(false);
 
@@ -28,7 +28,7 @@ export function Decoder({ locale, bookHref, whatsapp, split = false, picture }: 
     if (text.length > 6000) return setErr(t.tooLong);
     setBusy(true);
     try {
-      const r = await fetch("/api/decoder", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ text: scrub(text), locale, turnstile: token }) });
+      const r = await fetch("/api/decoder", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ text: scrub(text), locale, turnstile: await bot.take() }) });
       const j = await r.json();
       if (!r.ok || !j.ok) setErr(j.error || d.form.error); else setRes(j);
     } catch { setErr(d.form.error); } finally { setBusy(false); }
@@ -37,7 +37,7 @@ export function Decoder({ locale, bookHref, whatsapp, split = false, picture }: 
     // Only with an explicit consent tick is the (scrubbed) text sent as a lead.
     const name = prompt(d.ui.yourName); const phone = name && prompt(d.ui.yourWhatsapp);
     if (!name || !phone) return;
-    const r = await fetch("/api/leads", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ name, phone, source: "decoder", message: scrub(text).slice(0, 1500), turnstile: token, website: "" }) });
+    const r = await fetch("/api/leads", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ name, phone, source: "decoder", message: scrub(text).slice(0, 1500), turnstile: await bot.take(), website: "" }) });
     if (r.ok) setSent(true);
   }
 
@@ -57,7 +57,7 @@ export function Decoder({ locale, bookHref, whatsapp, split = false, picture }: 
           <label htmlFor="dec-text" style={{ display: "block", marginTop: 22, fontWeight: 600 }}>{h.decLabel}</label>
           <textarea id="dec-text" rows={5} value={text} onChange={(e) => setText(e.target.value)} maxLength={6500} placeholder={h.decPlaceholder}
             style={{ display: "block", width: "100%", marginTop: 8, padding: 14, border: "1.5px solid #D9D1C3", borderRadius: 12, background: "#fff", resize: "vertical", font: "inherit" }} />
-          <Turnstile onToken={setToken} />
+          <Turnstile bot={bot} />
           {err && <p role="alert" style={{ color: "var(--bad)", margin: "10px 0 0" }}>{err}</p>}
           <button className="btn btn-primary" type="submit" disabled={busy} style={{ marginTop: 14, padding: "15px 24px", minHeight: 52, gap: 10 }}><Icon name="magnifier" size={24} />{h.decBtn}</button>
           <p className="mono" style={{ margin: "10px 0 0", fontSize: 12, color: "var(--muted-2)" }}>{h.decPrivate}</p>
@@ -99,7 +99,7 @@ export function Decoder({ locale, bookHref, whatsapp, split = false, picture }: 
         <label className="lbl" htmlFor="dec-text">{t.label}</label>
         <textarea id="dec-text" className="field" rows={8} value={text} onChange={(e) => setText(e.target.value)} maxLength={6500} />
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, color: "var(--muted-2)" }}><span>{t.privacy}</span><span dir="ltr">{text.length} / 6000</span></div>
-        <Turnstile onToken={setToken} />
+        <Turnstile bot={bot} />
         {err && <p role="alert" style={{ color: "var(--bad)", margin: 0 }}>{err}</p>}
         <button className="btn btn-dark" type="submit" disabled={busy}><Search size={18} aria-hidden />{t.btn}</button>
       </form>

@@ -13,7 +13,8 @@ export default async function Page({ params }: P) {
   const { locale, t } = await pageCtx(params);
   return (
     <>
-      <PageHeader locale={locale} home={t("common.home")} title={t("reviews.write")} intro={t("reviews.note")} path="/reviews/write" />
+      <PageHeader locale={locale} home={t("common.home")} title={t("reviews.write")} intro={t("reviews.note")} path="/reviews/write" guide={false} />
+      <span className="no-guide" hidden />
       <div className="wrap" style={{ paddingBlock: 40, maxWidth: 720 }}><div className="card" style={{ padding: 24 }}><ReviewForm locale={locale} /></div></div>
     </>
   );

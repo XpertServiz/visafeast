@@ -7,6 +7,14 @@ import { UrduWord } from "@/components/ui";
 const remember = (l: Locale) => { try { document.cookie = `vf_lang=${l};path=/;max-age=31536000;samesite=lax`; } catch { /* ignore */ } };
 const readCookie = (name: string) => { try { return document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`))?.[1] ?? null; } catch { return null; } };
 
+/** English pages run internally under /en. Language links need the visitor's real address, without that part. */
+const pagePath = (pathname: string | null) => {
+  const p = pathname || "/";
+  if (p === "/en") return "/";
+  if (p.startsWith("/en/")) return p.slice(3);
+  return splitLocale(p).path;
+};
+
 /** A plain link on purpose: a full page load changes the language, direction and fonts together, and the choice is remembered. */
 function LangLink({ to, path, style, children }: { to: Locale; path: string; style?: React.CSSProperties; children: React.ReactNode }) {
   return <a href={lp(to, path)} hrefLang={localeMeta(to).hreflang} lang={to} onClick={() => remember(to)} style={style}>{children}</a>;
@@ -14,7 +22,7 @@ function LangLink({ to, path, style, children }: { to: Locale; path: string; sty
 
 /** Header switch: English and the visitor's own language (from their country), as two buttons. */
 export function LangSwitch({ locale }: { locale: Locale }) {
-  const { path } = splitLocale(usePathname() || "/");
+  const path = pagePath(usePathname());
   const [local, setLocal] = useState<Locale>(locale === "en" ? "ur" : locale);
   useEffect(() => {
     if (locale !== "en") return;
@@ -34,7 +42,7 @@ export function LangSwitch({ locale }: { locale: Locale }) {
 
 /** Footer list of every language. Ordinary links, so visitors can pick any language and Google can find all of them. */
 export function LangLinks({ locale }: { locale: Locale }) {
-  const { path } = splitLocale(usePathname() || "/");
+  const path = pagePath(usePathname());
   return (
     <span style={{ display: "flex", flexWrap: "wrap", gap: "6px 14px" }}>
       {LOCALES.map((l) => <LangLink key={l.code} to={l.code} path={path} style={{ color: l.code === locale ? "var(--amber)" : "var(--on-navy)", textDecoration: "none", fontWeight: l.code === locale ? 600 : 400 }}>{l.native}</LangLink>)}

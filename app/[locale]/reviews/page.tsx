@@ -21,7 +21,8 @@ export default async function Page({ params }: P) {
   // NOTE: no AggregateRating JSON-LD for own-site reviews (brief §6.6).
   return (
     <>
-      <PageHeader locale={locale} home={t("common.home")} title={t("reviews.title")} intro={t("reviews.note")} path="/reviews" />
+      <PageHeader locale={locale} home={t("common.home")} title={t("reviews.title")} intro={t("reviews.note")} path="/reviews" guide={false} />
+      <span className="no-guide" hidden />
       <div className="wrap" style={{ paddingBlock: 40 }}>
         {avg && <p className="mono" style={{ color: "var(--muted-2)" }}>{t("pages.reviewsAvg", { avg, count: reviews.length })}</p>}
         {reviews.length === 0 ? (

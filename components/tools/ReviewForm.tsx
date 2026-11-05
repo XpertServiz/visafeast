@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useDict } from "@/components/DictProvider";
 import type { Locale } from "@/config/locales";
 import { track } from "@/lib/track-client";
-import { Turnstile } from "./Turnstile";
+import { Turnstile, useBotCheck } from "./Turnstile";
 
 export function ReviewForm({ locale }: { locale: Locale }) {
   const d = useDict();
@@ -11,7 +11,7 @@ export function ReviewForm({ locale }: { locale: Locale }) {
   const [rating, setRating] = useState(0);
   const [state, setState] = useState<"idle" | "busy" | "done">("idle");
   const [err, setErr] = useState("");
-  const [token, setToken] = useState("");
+  const bot = useBotCheck();
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -19,7 +19,7 @@ export function ReviewForm({ locale }: { locale: Locale }) {
     setState("busy"); setErr("");
     const fd = new FormData(e.currentTarget);
     const r = await fetch("/api/reviews", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({
-      name: fd.get("name"), city: fd.get("city") || undefined, visa_type: fd.get("visa_type"), rating, body: fd.get("body"), consent: fd.get("consent") === "on", website: "", turnstile: token,
+      name: fd.get("name"), city: fd.get("city") || undefined, visa_type: fd.get("visa_type"), rating, body: fd.get("body"), consent: fd.get("consent") === "on", website: "", turnstile: await bot.take(),
     }) }).catch(() => null);
     const j = await r?.json().catch(() => ({}));
     if (r?.ok && j.ok) { setState("done"); track("review_submitted"); } else { setErr(j?.error || f.error); setState("idle"); }
@@ -45,7 +45,7 @@ export function ReviewForm({ locale }: { locale: Locale }) {
       </div>
       <div><label className="lbl" htmlFor="rv-body">{h.rvBody}</label><textarea id="rv-body" className="field" name="body" required minLength={10} maxLength={1500} rows={3} placeholder={h.rvBodyPh} style={{ resize: "vertical" }} /></div>
       <label style={{ display: "flex", gap: 10, alignItems: "flex-start", fontSize: 14 }}><input type="checkbox" name="consent" required style={{ width: 20, height: 20, marginTop: 1, flex: "none" }} />{f.consent}</label>
-      <Turnstile onToken={setToken} />
+      <Turnstile bot={bot} />
       {err && <p role="alert" style={{ color: "var(--bad)", margin: 0 }}>{err}</p>}
       <div><button className="btn btn-dark" type="submit" disabled={state === "busy"} style={{ padding: "14px 22px", fontSize: 15 }}>{h.rvSubmit}</button></div>
     </form>

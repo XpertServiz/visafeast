@@ -48,7 +48,7 @@ describe("language files", () => {
 });
 
 describe("language from the visitor's country", () => {
-  it.each([["DE", "de"], ["AT", "de"], ["CN", "zh"], ["FR", "fr"], ["ES", "es"], ["MX", "es"], ["SA", "ar"], ["AE", "ar"], ["PK", "ur"], ["IN", "hi"], ["TR", "tr"], ["IT", "it"], ["BR", "pt"], ["NL", "nl"], ["PL", "pl"], ["US", "en"], ["GB", "en"], ["AU", "en"], [null, "en"], ["XX", "en"]])("%s opens in %s", (country, lang) => {
+  it.each([["DE", "de"], ["AT", "de"], ["CN", "zh"], ["FR", "fr"], ["ES", "es"], ["MX", "es"], ["SA", "ar"], ["AE", "ar"], ["PK", "en"], ["IN", "hi"], ["TR", "tr"], ["IT", "it"], ["BR", "pt"], ["NL", "nl"], ["PL", "pl"], ["US", "en"], ["GB", "en"], ["AU", "en"], [null, "en"], ["XX", "en"]])("%s opens in %s", (country, lang) => {
     expect(localeForCountry(country)).toBe(lang);
   });
   it("uses the browser language to choose in countries with several languages", () => {

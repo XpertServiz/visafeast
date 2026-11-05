@@ -12,7 +12,7 @@ const CHROME = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KH
 const GOOGLE = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)";
 
 // --- which language opens
-for (const [country, lang] of [["DE", "de"], ["CN", "zh"], ["SA", "ar"], ["FR", "fr"], ["ES", "es"], ["IN", "hi"], ["TR", "tr"], ["IT", "it"], ["BR", "pt"], ["NL", "nl"], ["PL", "pl"], ["PK", "ur"]]) {
+for (const [country, lang] of [["DE", "de"], ["CN", "zh"], ["SA", "ar"], ["FR", "fr"], ["ES", "es"], ["IN", "hi"], ["TR", "tr"], ["IT", "it"], ["BR", "pt"], ["NL", "nl"], ["PL", "pl"]]) {
   const r = await hit("/", { "x-vercel-ip-country": country, "user-agent": CHROME });
   ok(`${country} redirects to /${lang}`, r.status === 307 && new URL(r.headers.get("location"), BASE).pathname === `/${lang}`, `${r.status} ${r.headers.get("location")}`);
   ok(`${country} remembers the country`, (r.headers.get("set-cookie") || "").includes(`vf_cc=${country}`));
@@ -92,7 +92,7 @@ const open = async (country, viewport) => {
   ok("English stays after coming back", new URL(page.url()).pathname === "/");
   await ctx.close();
 }
-for (const [country, lang] of [["DE", "de"], ["CN", "zh"], ["SA", "ar"], ["IN", "hi"], ["PK", "ur"], ["TR", "tr"], ["PL", "pl"], ["FR", "fr"], ["ES", "es"], ["IT", "it"], ["BR", "pt"], ["NL", "nl"], ["US", ""]]) {
+for (const [country, lang] of [["DE", "de"], ["CN", "zh"], ["SA", "ar"], ["IN", "hi"], ["PK", ""], ["TR", "tr"], ["PL", "pl"], ["FR", "fr"], ["ES", "es"], ["IT", "it"], ["BR", "pt"], ["NL", "nl"], ["US", ""]]) {
   const ctx = await open(country, { width: 360, height: 740 });
   await ctx.addInitScript(() => { try { sessionStorage.setItem("vf_splash", "1"); } catch { /* ignore */ } });
   const page = await ctx.newPage();

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import Script from "next/script";
 import "flag-icons/css/flag-icons.min.css";
 import "../globals.css";
@@ -14,8 +15,10 @@ import { Footer } from "@/components/layout/Footer";
 import { Floating } from "@/components/layout/Floating";
 import { ConsentBanner } from "@/components/layout/ConsentBanner";
 import { Tracker } from "@/components/layout/Tracker";
+import { BackFix } from "@/components/layout/BackFix";
 import { Splash } from "@/components/splash/Splash";
 import { orgJsonLd, JsonLd } from "@/lib/seo";
+import { GUIDE } from "@/lib/photos";
 
 export const revalidate = 3600;
 
@@ -62,11 +65,13 @@ export default async function LocaleLayout({ children, params }: { children: Rea
         <DictProvider dict={clientDict(locale)}>
         <Nav locale={locale} />
         <main id="main">{children}</main>
+        <Image className="side-guide" src={GUIDE.happy.src} alt="" width={GUIDE.happy.width} height={GUIDE.happy.height} unoptimized />
         <Footer locale={locale} settings={settings} />
         <Floating locale={locale} whatsapp={settings.whatsapp_number} chatbot={settings.chatbot_enabled} />
         <ConsentBanner />
         </DictProvider>
         <Tracker locale={locale} />
+        <BackFix />
         <JsonLd data={orgJsonLd(settings)} />
         {process.env.NEXT_PUBLIC_GA_ID ? (
           <>

@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { Send } from "lucide-react";
 import { useDict } from "@/components/DictProvider";
 import type { Locale } from "@/config/locales";
-import { Turnstile } from "./Turnstile";
+import { Turnstile, useBotCheck } from "./Turnstile";
 
 /** `compact`: the homepage version from the approved prototype (one column for name and number, no message box). */
 export function LeadForm({ locale, countries, defaultService, defaultCountry, dark = true, source = "enquiry", compact = false }: {
@@ -15,7 +15,7 @@ export function LeadForm({ locale, countries, defaultService, defaultCountry, da
   const path = usePathname();
   const [state, setState] = useState<"idle" | "busy" | "done" | "error">("idle");
   const [err, setErr] = useState("");
-  const [token, setToken] = useState("");
+  const bot = useBotCheck();
   const cls = `field ${dark ? "field-dark" : ""}`;
   const lbl = { color: dark ? (compact ? "#fff" : "var(--on-navy)") : "inherit", ...(compact ? { fontWeight: 400 } : {}) };
   const row = compact ? { gap: 12 } : undefined;
@@ -25,7 +25,7 @@ export function LeadForm({ locale, countries, defaultService, defaultCountry, da
     const fd = new FormData(e.currentTarget);
     setState("busy"); setErr("");
     try {
-      const body = { ...Object.fromEntries([...fd.entries()].filter(([, v]) => v !== "")), source: source === "enquiry" && fd.get("visa_type") === "immigration" ? "immigration" : source, page_path: path, turnstile: token };
+      const body = { ...Object.fromEntries([...fd.entries()].filter(([, v]) => v !== "")), source: source === "enquiry" && fd.get("visa_type") === "immigration" ? "immigration" : source, page_path: path, turnstile: await bot.take() };
       const r = await fetch("/api/leads", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
       const j = await r.json();
       if (!r.ok || !j.ok) { setErr(j.error || f.error); setState("error"); return; }
@@ -58,7 +58,7 @@ export function LeadForm({ locale, countries, defaultService, defaultCountry, da
       <div><label className="lbl" style={lbl} htmlFor="lf-ref">{f.refused}</label>
         <select id="lf-ref" className={cls} name="prior_refusal" defaultValue="no"><option value="no">{f.no}</option><option value="once">{f.once}</option><option value="more">{f.more}</option></select></div>
       {!compact && <div><label className="lbl" style={lbl} htmlFor="lf-msg">{f.message}</label><textarea id="lf-msg" className={cls} name="message" rows={3} maxLength={1500} /></div>}
-      <Turnstile onToken={setToken} />
+      <Turnstile bot={bot} />
       {err && <p role="alert" style={{ color: dark ? "var(--amber)" : "var(--bad)", margin: 0 }}>{err}</p>}
       <button className="btn btn-primary" type="submit" disabled={state === "busy"} style={compact ? { marginTop: 6, padding: "14px 22px" } : undefined}>{!compact && <Send size={18} aria-hidden />}{b.send}</button>
     </form>

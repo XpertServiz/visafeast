@@ -38,7 +38,6 @@ export function splitLocale(pathname: string): { locale: Locale | null; path: st
 
 // Languages spoken in each country. The first is the default; browser language picks between them in multilingual countries.
 const LANG_GROUPS: [Locale[], string][] = [
-  [["ur"], "PK"],
   [["ar"], "SA AE QA KW BH OM EG JO IQ LB YE SY PS LY SD TN DZ MA MR"],
   [["de"], "DE AT LI"],
   [["fr"], "FR MC SN CI ML BF NE GN TG BJ CD CG GA CM"],

@@ -3,21 +3,21 @@ import { useState } from "react";
 import { Check, Search } from "lucide-react";
 import { useDict } from "@/components/DictProvider";
 import type { Locale } from "@/config/locales";
-import { Turnstile } from "./Turnstile";
+import { Turnstile, useBotCheck } from "./Turnstile";
 
 interface Result { ref: string; decision: string | null; next: string; timeline: { stage: string; label: string; state: "done" | "current" | "todo" }[] }
 
 export function TrackForm({ locale }: { locale: Locale }) {
   const t = useDict().track;
   const [state, setState] = useState<"idle" | "busy" | "error">("idle");
-  const [err, setErr] = useState(""); const [res, setRes] = useState<Result | null>(null); const [token, setToken] = useState("");
+  const [err, setErr] = useState(""); const [res, setRes] = useState<Result | null>(null); const bot = useBotCheck();
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     setState("busy"); setErr(""); setRes(null);
     try {
-      const r = await fetch("/api/track-case", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ref: fd.get("ref"), last4: fd.get("last4"), locale, turnstile: token }) });
+      const r = await fetch("/api/track-case", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ref: fd.get("ref"), last4: fd.get("last4"), locale, turnstile: await bot.take() }) });
       const j = await r.json();
       if (!r.ok || !j.ok) { setErr(locale === "en" ? j.error || t.notFound : t.notFound); setState("error"); return; }
       setRes(j); setState("idle");
@@ -29,7 +29,7 @@ export function TrackForm({ locale }: { locale: Locale }) {
       <form onSubmit={submit} className="card" style={{ padding: 24, display: "grid", gap: 14 }}>
         <div><label className="lbl" htmlFor="tr-ref">{t.ref}</label><input id="tr-ref" name="ref" className="field mono" placeholder="VF-1001" required maxLength={20} autoComplete="off" dir="ltr" /></div>
         <div><label className="lbl" htmlFor="tr-l4">{t.last4}</label><input id="tr-l4" name="last4" className="field mono" inputMode="numeric" pattern="\d{4}" maxLength={4} minLength={4} placeholder="1234" required autoComplete="off" dir="ltr" /></div>
-        <Turnstile onToken={setToken} />
+        <Turnstile bot={bot} />
         {err && <p role="alert" style={{ color: "var(--bad)", margin: 0 }}>{err}</p>}
         <button className="btn btn-primary" disabled={state === "busy"}><Search size={18} aria-hidden />{t.button}</button>
       </form>

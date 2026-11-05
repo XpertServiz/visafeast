@@ -36,7 +36,7 @@ export async function Footer({ locale, settings }: { locale: Locale; settings: S
           <a href={waLink(undefined, settings.whatsapp_number)}><span dir="ltr">WhatsApp {settings.whatsapp_number}</span></a>
           <a href={`mailto:${settings.email}`}>{settings.email}</a>
           <a href={settings.facebook_url} rel="noopener">Facebook · /visafeast</a>
-          <Link prefetch={false} href={lp(locale, "/#book")}>{t("nav.book")}</Link>
+          <a href={lp(locale, "/#book")}>{t("nav.book")}</a>
         </div>
       </div>
       <div className="pad32" style={{ ...wrap, paddingBlock: "18px 32px", borderTop: "1px solid rgba(255,255,255,.1)", fontSize: 13, lineHeight: 1.6, color: "var(--on-navy-2)" }}>

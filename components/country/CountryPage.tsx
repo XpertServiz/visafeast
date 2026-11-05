@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Calendar, ChevronRight, MessageCircle, Plane, BadgeCheck, Search } from "lucide-react";
 import type { Country } from "@/lib/types";
@@ -10,6 +11,7 @@ import { breadcrumbJsonLd, faqJsonLd, JsonLd } from "@/lib/seo";
 import { BoardingPass, FaqList, Flag, Md, fmtDate, KIND_BASE } from "@/components/ui";
 import { Checklist } from "./Checklist";
 import { Photo } from "@/components/Photo";
+import { GUIDE } from "@/lib/photos";
 
 export async function CountryPage({ c, locale }: { c: Country; locale: Locale }) {
   const t = getT(locale);
@@ -50,8 +52,9 @@ export async function CountryPage({ c, locale }: { c: Country; locale: Locale })
     <>
       <JsonLd data={breadcrumbJsonLd(crumbs)} />
       {faqs.length > 0 && <JsonLd data={faqJsonLd(faqs)} />}
-      <header className="sky" style={{ paddingBlock: "36px 90px", color: "#fff" }}>
-        <div className="wrap">
+      <header className="sky" style={{ paddingBlock: "36px 90px", color: "#fff", position: "relative", overflow: "hidden" }}>
+        <Image className="page-guide" src={GUIDE.happy.src} alt="" width={GUIDE.happy.width} height={GUIDE.happy.height} unoptimized />
+        <div className="wrap" style={{ position: "relative" }}>
           <BreadcrumbItems items={[{ label: t("common.home"), href: lp(locale, "/") }, { label: hubLabel, href: lp(locale, `/${base}`) }, { label: c.country_name }]} />
           <div className="mono" dir="ltr" style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 22, color: "var(--amber)", fontSize: 18, maxWidth: 420 }}>
             <span>{c.from_code}</span><span style={{ flex: 1, borderTop: "2px dashed rgba(242,169,59,.6)" }} /><Plane aria-hidden /><span style={{ flex: 1, borderTop: "2px dashed rgba(242,169,59,.6)" }} /><span>{c.to_code}</span>
@@ -131,6 +134,7 @@ export async function CountryPage({ c, locale }: { c: Country; locale: Locale })
           {/* Sidebar — not sticky (brief §6.2) */}
           <aside style={{ flex: "0 0 320px", maxWidth: "100%", display: "grid", gap: 18 }}>
             <div className="card" style={{ padding: 22 }}>
+              <Image src="/photos/guide-happy-bust.webp" alt="" width={84} height={84} unoptimized style={{ display: "block", borderRadius: "50%", background: "#FBE9C9", marginBottom: 10 }} />
               <h2 className="disp" style={{ margin: "0 0 12px", fontSize: 22 }}>{t("cta.eligibility")}</h2>
               <div style={{ display: "grid", gap: 10 }}>
                 <Link className="btn btn-primary" href={lp(locale, "/tools/eligibility")}><Search size={18} aria-hidden />{t("elig.h2")}</Link>

@@ -68,13 +68,13 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             <h1 className="disp h1" style={{ margin: 0, fontSize: 60, lineHeight: 1.04, fontWeight: 600, letterSpacing: "-.015em" }}>{t("hero.h1")}</h1>
             <p style={{ margin: "22px 0 0", fontSize: 19, lineHeight: 1.6, color: "var(--on-navy)", maxWidth: 560 }}>{t("home.heroSub")}</p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginTop: 30 }}>
-              <Link prefetch={false} className="btn btn-primary" href={L("/#eligibility")} style={{ padding: "16px 24px", minHeight: 52 }}>{t("cta.eligibility")}</Link>
-              <Link prefetch={false} className="btn btn-ghost" href={book} style={{ padding: "16px 22px", minHeight: 52 }}>
+              <a className="btn btn-primary" href={L("/#eligibility")} style={{ padding: "16px 24px", minHeight: 52 }}>{t("cta.eligibility")}</a>
+              <a className="btn btn-ghost" href={book} style={{ padding: "16px 22px", minHeight: 52 }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 10h18M8 3v4M16 3v4" /></svg>{t("cta.book")}
-              </Link>
+              </a>
               <a className="btn btn-wa" href={whatsapp} aria-label="WhatsApp us" style={{ padding: "16px 20px", minHeight: 52 }}><WaIcon />{t("cta.whatsapp")}</a>
             </div>
-            <Link prefetch={false} href={book} style={{ display: "inline-block", marginTop: 16, color: "var(--amber)", fontWeight: 600, textDecoration: "underline" }}>{t("cta.enquiry")}</Link>
+            <a href={book} style={{ display: "inline-block", marginTop: 16, color: "var(--amber)", fontWeight: 600, textDecoration: "underline" }}>{t("cta.enquiry")}</a>
             <ul style={{ listStyle: "none", padding: 0, margin: "32px 0 0", display: "flex", flexWrap: "wrap", gap: 20, fontSize: 14, color: "var(--on-navy)" }}>
               {[["money-bag", "home.tick1"], ["handshake", "home.tick2"], ["phone", "home.tick3"]].map(([icon, k]) => <li key={k} style={{ display: "flex", alignItems: "center", gap: 10 }}><Icon name={icon} size={28} />{t(k)}</li>)}
             </ul>
@@ -82,9 +82,17 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <HeroVisual label={t("hero.label")} allLabel={t("hero.routeAll")} routeLabels={[["GB", "United Kingdom", t("hero.routeVisit")], ["CA", "Canada", t("home.routeImm")], ["US", "USA", "B1/B2"], ["AU", "Australia", t("home.routeSkilled")], ["DE", "Germany", t("hero.routeStudy")], ["AZ", "Azerbaijan", t("hero.routeEvisa")], ["NZ", "New Zealand", t("hero.routeVisit")], ["TH", "Thailand", t("hero.routeVisit")]].map(([code, name, kind]) => `${regionName(code, locale, name)} · ${kind}`)} />
         </div>
         <div style={{ borderTop: "1px solid rgba(255,255,255,.08)" }}>
-          <div className="pad32" style={{ maxWidth: 1280, margin: "0 auto", paddingBlock: 16, display: "flex", flexWrap: "wrap", gap: "10px 28px", alignItems: "center", fontSize: 14 }}>
-            <span className="mono" style={{ letterSpacing: ".1em", color: "var(--amber)", fontSize: 12, textTransform: "uppercase" }}>{t("hero.handle")}</span>
-            {HANDLE.map(([f, n]) => <span key={n} style={{ display: "inline-flex", alignItems: "center", gap: 8, color: "#E6ECF5" }}><Flag code={f} size={22} width={30} />{f === "eu" ? t("hero.europe") : f === "az" ? t("hero.baku") : regionName(f, locale, n)}</span>)}
+          <div className="ticker">
+            <span className="mono ticker-label">{t("hero.handle")}</span>
+            <div className="ticker-view">
+              <div className="ticker-track" dir="ltr">
+                {[0, 1].map((copy) => (
+                  <div key={copy} className="ticker-group" aria-hidden={copy === 1 ? true : undefined}>
+                    {HANDLE.map(([f, n]) => <span key={n} style={{ display: "inline-flex", alignItems: "center", gap: 8, color: "#E6ECF5", whiteSpace: "nowrap" }}><Flag code={f} size={22} width={30} />{f === "eu" ? t("hero.europe") : f === "az" ? t("hero.baku") : regionName(f, locale, n)}</span>)}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -154,8 +162,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             </div>
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-            <Link prefetch={false} className="btn btn-primary" href={book} style={pill}><Icon name="calendar" size={22} />{t("cta.book")}</Link>
-            <Link prefetch={false} className="btn btn-ghost" href={book} style={pill}><Icon name="envelope" size={22} />{t("cta.enquiryBtn")}</Link>
+            <a className="btn btn-primary" href={book} style={pill}><Icon name="calendar" size={22} />{t("cta.book")}</a>
+            <a className="btn btn-ghost" href={book} style={pill}><Icon name="envelope" size={22} />{t("cta.enquiryBtn")}</a>
             <a className="btn btn-wa" href={waLink(undefined, settings.whatsapp_number)} style={pill}>{t("cta.whatsapp")}</a>
           </div>
         </div>
@@ -174,11 +182,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <div style={{ flex: "1 1 420px", minWidth: 0 }}>
             <Eyebrow>{t("reviews.title")}</Eyebrow>
             <H2 mb={18}>{t("home.reviewsTitle")}</H2>
-            <div style={{ display: "flex", gap: 16, alignItems: "flex-end" }}>
-              <div style={{ width: 170 }}><Photo slot="review-client-1" aspect="1 / 1" locale={locale} rounded="50%" tint="#E3ECF7" sizes="170px" /></div>
-              <div style={{ width: 150 }}><Photo slot="review-client-2" aspect="1 / 1" locale={locale} rounded="50%" tint="#FBE9C9" sizes="150px" /></div>
-            </div>
-            <div style={{ marginTop: 20, background: "#fff", border: "1px dashed #CFC6B6", borderRadius: 16, padding: 18, color: "var(--muted-2)", display: "flex", gap: 12, alignItems: "center" }}>
+            <div style={{ background: "#fff", border: "1px dashed #CFC6B6", borderRadius: 16, padding: 18, color: "var(--muted-2)", display: "flex", gap: 12, alignItems: "center" }}>
               <Icon name="check" size={32} />
               <p style={{ margin: 0, fontSize: 15 }}><strong style={{ color: "var(--ink)" }}>{t("home.reviewsReal")}</strong> {t("home.reviewsNote")}</p>
             </div>
@@ -221,8 +225,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           ))}
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 26, justifyContent: "center" }}>
-          <Link prefetch={false} className="btn btn-dark" href={book} style={pill}><Icon name="calendar" size={22} />{t("cta.book")}</Link>
-          <Link prefetch={false} className="btn btn-outline" href={book} style={pill}><Icon name="envelope" size={22} />{t("cta.enquiryBtn")}</Link>
+          <a className="btn btn-dark" href={book} style={pill}><Icon name="calendar" size={22} />{t("cta.book")}</a>
+          <a className="btn btn-outline" href={book} style={pill}><Icon name="envelope" size={22} />{t("cta.enquiryBtn")}</a>
         </div>
       </section>
 

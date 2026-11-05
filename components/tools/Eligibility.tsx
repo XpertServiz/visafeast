@@ -6,7 +6,7 @@ import { useDict } from "@/components/DictProvider";
 import { Icon } from "@/components/ui";
 import type { Locale } from "@/config/locales";
 import { track } from "@/lib/track-client";
-import { Turnstile } from "./Turnstile";
+import { Turnstile, useBotCheck } from "./Turnstile";
 
 /** `split`: the homepage layout from the approved prototype (navy panel with the title and progress, white card with the question). */
 export function Eligibility({ locale, bookHref, whatsapp, split = false }: { locale: Locale; bookHref: string; whatsapp: string; split?: boolean }) {
@@ -16,7 +16,7 @@ export function Eligibility({ locale, bookHref, whatsapp, split = false }: { loc
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [sent, setSent] = useState(false);
-  const [token, setToken] = useState("");
+  const bot = useBotCheck();
   const [busy, setBusy] = useState(false);
   const done = step >= QUESTIONS.length;
   const total = done ? score(answers) : 0;
@@ -34,7 +34,7 @@ export function Eligibility({ locale, bookHref, whatsapp, split = false }: { loc
     const fd = new FormData(e.currentTarget);
     const res = await fetch("/api/leads", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({
       name: fd.get("name"), phone: fd.get("phone"), source: "eligibility", visa_type: answers[0] === 5 ? "study" : "visit",
-      destination: QUESTIONS[0].opts[answers[0]].en, eligibility: { answers: answers.map((a, i) => ({ q: QUESTIONS[i].id, a: QUESTIONS[i].opts[a].en })), score: total, band }, turnstile: token, website: "",
+      destination: QUESTIONS[0].opts[answers[0]].en, eligibility: { answers: answers.map((a, i) => ({ q: QUESTIONS[i].id, a: QUESTIONS[i].opts[a].en })), score: total, band }, turnstile: await bot.take(), website: "",
     }) }).catch(() => null);
     setBusy(false); if (res?.ok) setSent(true);
   }
@@ -51,7 +51,7 @@ export function Eligibility({ locale, bookHref, whatsapp, split = false }: { loc
             <input className="field" name="name" required placeholder={t.yourName} aria-label={t.yourName} />
             <input className="field" name="phone" required type="tel" placeholder={t.yourWhatsapp} aria-label={t.yourWhatsapp} dir="ltr" />
           </div>
-          <Turnstile onToken={setToken} />
+          <Turnstile bot={bot} />
           <button className="btn btn-wa" disabled={busy} type="submit"><MessageCircle size={18} aria-hidden />{t.sendChecklist}</button>
         </form>
       )}

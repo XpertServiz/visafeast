@@ -5,7 +5,7 @@ import { breadcrumbJsonLd, JsonLd } from "@/lib/seo";
 import { lp } from "@/lib/i18n";
 import type { Locale } from "@/config/site";
 
-export function PageHeader({ locale, home, title, intro, path, guide }: { locale: Locale; home: string; title: string; intro?: string; path: string; guide?: "happy" | "sad" }) {
+export function PageHeader({ locale, home, title, intro, path, guide = "happy" }: { locale: Locale; home: string; title: string; intro?: string; path: string; guide?: "happy" | "sad" | false }) {
   return (
     <header className="sky" style={{ paddingBlock: "36px 56px", color: "#fff", position: "relative", overflow: "hidden" }}>
       {guide && <Image className="page-guide" src={GUIDE[guide].src} alt="" width={GUIDE[guide].width} height={GUIDE[guide].height} unoptimized />}
