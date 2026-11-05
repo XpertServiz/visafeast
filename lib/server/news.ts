@@ -24,7 +24,7 @@ export function parseFeed(xml: string): ParsedItem[] {
   return list.filter(Boolean).map((e: Record<string, unknown>) => {
     const d = text(e.updated ?? e.published ?? e.pubDate ?? e["dc:date"]);
     return {
-      title: strip(text(e.title)).replace(/[2010-2015]/g, "-").slice(0, 300),
+      title: strip(text(e.title)).replace(/[‐-―]/g, "-").slice(0, 300),
       url: linkOf(e.link) || text(e.guid),
       published_at: d && !isNaN(Date.parse(d)) ? new Date(d).toISOString() : null,
       summary: strip(text(e.summary ?? e.description ?? e.content)).slice(0, 300), // excerpt only — never republish full text
