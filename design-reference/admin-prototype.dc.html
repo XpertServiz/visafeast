@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Visafeast Admin</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&amp;family=Inter:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@500;600&amp;family=Fraunces:opsz,wght@9..144,600&amp;family=Playfair+Display:wght@600&amp;family=DM+Serif+Display&amp;family=Plus+Jakarta+Sans:wght@400;600&amp;family=Poppins:wght@400;600&amp;family=Manrope:wght@400;600&amp;family=DM+Sans:wght@400;600&amp;family=Noto+Nastaliq+Urdu:wght@500&amp;family=Noto+Naskh+Arabic:wght@500&amp;family=Gulzar&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3F1EC;font-family:Inter,system-ui,sans-serif;color:#0F172A}
+a{color:#8A5300}a:hover{color:#5E3800}
+*{box-sizing:border-box}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.disp{font-family:Sora,Inter,sans-serif}
+.side button:hover{background:rgba(255,255,255,.08)}
+.bar:hover{opacity:.75}
+@media (max-width: 960px){
+.g4,.g3,.g2{grid-template-columns:minmax(0,1fr) !important}
+}
+</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 1700px; width: 100%">
+
+<aside class="side" style="flex: 1 1 240px; max-width: 100%; background: #0A1A33; color: #FFFFFF; padding: 24px 16px">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; padding: 0 8px 24px">
+<svg width="30" height="30" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="none" stroke="#F2A93B" stroke-width="2"></circle><path d="M10 18 L24 12 L20 17 L24 22 Z" fill="#F2A93B"></path></svg>
+<span class="disp" style="font-size: 20px; font-weight: 700; color: #FFFFFF">visafeast <span class="mono" style="font-size: 11px; color: #F2A93B; font-weight: 500">ADMIN</span></span>
+</a>
+<nav aria-label="Admin" style="display: flex; flex-direction: column; gap: 4px">
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="5">
+<button type="button" onClick="{{n.go}}" aria-current="{{n.cur}}" style="display: flex; justify-content: space-between; align-items: center; border: 0; cursor: pointer; text-align: left; padding: 12px 14px; border-radius: 10px; font-size: 15px; font-weight: 500; background: {{n.bg}}; color: {{n.fg}}; min-height: 44px">
+<span>{{n.label}}</span><span class="mono" style="font-size: 12px; color: #F2A93B">{{n.badge}}</span>
+</button>
+</sc-for>
+</nav>
+<p style="margin: 28px 8px 0; font-size: 13px; color: #9FB0C8; line-height: 1.5">Signed in as Ather · Owner</p>
+</aside>
+
+<main style="flex: 999 1 640px; min-width: 0; padding: 28px 32px 48px">
+<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 24px">
+<h1 class="disp" style="margin: 0; font-size: 30px; letter-spacing: -.02em">{{title}}</h1>
+<span class="mono" style="font-size: 12px; padding: 6px 10px; border-radius: 8px; background: #FBF1DF; color: #8A5300; letter-spacing: .06em">PROTOTYPE · DEMO DATA</span>
+</div>
+
+<sc-if value="{{v.dash}}" hint-placeholder-val="{{true}}">
+<div class="g4" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #E4DED3; border-radius: 14px; padding: 18px">
+<p style="margin: 0; font-size: 14px; color: #475569">{{k.label}}</p>
+<p class="disp" style="margin: 6px 0 0; font-size: 30px; font-weight: 700">{{k.value}}</p>
+<p class="mono" style="margin: 4px 0 0; font-size: 12px; color: #5B6474">{{k.sub}}</p>
+</div>
+</sc-for>
+</div>
+<div class="g3" style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-top: 16px">
+<div style="background: #FFFFFF; border: 1px solid #E4DED3; border-radius: 14px; padding: 20px">
+<p style="margin: 0; font-weight: 600">Visitors per day · last 30 days</p>
+<p style="margin: 2px 0 16px; font-size: 13px; color: #5B6474">Hover a bar for the day's count</p>
+<div style="display: flex; align-items: flex-end; gap: 4px; height: 200px; border-bottom: 1px solid #E4DED3">
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="30">
+<div class="bar" title="{{b.tip}}" style="flex: 1 1 0; height: {{b.h}}; background: {{b.c}}; border-radius: 3px 3px 0 0"></div>
+</sc-for>
+</div>
+<div class="mono" style="display: flex; justify-content: space-between; font-size: 11.5px; color: #5B6474; margin-top: 6px"><span>24 Sep</span><span>8 Oct</span><span>23 Oct</span></div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E4DED3; border-radius: 14px; padding: 20px">
+<p style="margin: 0 0 14px; font-weight: 600">Visitors by country</p>
+<sc-for list="{{countries}}" as="c" hint-placeholder-count="6">
+<div style="margin-bottom: 12px">
+<div style="display: flex; justify-content: space-between; font-size: 14px"><span>{{c.name}}</span><span class="mono">{{c.n}}</span></div>
+<div style="height: 6px; background: #EFEAE0; border-radius: 3px; margin-top: 5px"><div style="height: 6px; width: {{c.w}}; background: #0A1A33; border-radius: 3px"></div></div>
+</div>
+</sc-for>
+<p style="margin: 10px 0 0; font-size: 13px; color: #5B6474">Cities, devices, pages and sources open on click.</p>
+</div>
+</div>
+<div class="g2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 16px">
+<div style="background: #FFFFFF; border: 1px solid #E4DED3; border-radius: 14px; padding: 20px">
+<p style="margin: 0 0 12px; font-weight: 600">Top pages</p>
+<table style="width: 100%; border-collapse: collapse; font-size: 14px">
+<tbody>
+<tr style="border-top: 1px solid #EFEAE0"><td style="padding: 9px 0">/visit-visa/uk-visit-visa-from-pakistan</td><td class="mono" style="text-align: right">[n]</td></tr>
+<tr style="border-top: 1px solid #EFEAE0"><td style="padding: 9px 0">/study-visa/study-in-germany-from-pakistan</td><td class="mono" style="text-align: right">[n]</td></tr>
+<tr style="border-top: 1px solid #EFEAE0"><td style="padding: 9px 0">/visit-visa/canada-visit-visa-from-pakistan</td><td class="mono" style="text-align: right">[n]</td></tr>
+<tr style="border-top: 1px solid #EFEAE0"><td style="padding: 9px 0">/news/</td><td class="mono" style="text-align: right">[n]</td></tr>
+</tbody>
+</table>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E4DED3; border-radius: 14px; padding: 20px">
+<p style="margin: 0 0 12px; font-weight: 600">Where visitors came from</p>
+<table style="width: 100%; border-collapse: collapse; font-size: 14px">
+<tbody>
+<tr style="border-top: 1px solid #EFEAE0"><td style="padding: 9px 0">Google search</td><td class="mono" style="text-align: right">[%]</td></tr>
+<tr style="border-top: 1px solid #EFEAE0"><td style="padding: 9px 0">Facebook</td><td class="mono" style="text-align: right">[%]</td></tr>
+<tr style="border-top: 1px solid #EFEAE0"><td style="padding: 9px 0">WhatsApp shares</td><td class="mono" style="text-align: right">[%]</td></tr>
+<tr style="border-top: 1px solid #EFEAE0"><td style="padding: 9px 0">Direct</td><td class="mono" style="text-align: right">[%]</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{v.leads}}" hint-placeholder-val="{{false}}">
+<div style="background: #FFFFFF; border: 1px solid #E4DED3; border-radius: 14px; overflow-x: auto">
+<table style="width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 760px">
+<thead><tr style="background: #F7F4EE; text-align: left"><th style="padding: 14px 16px">Lead</th><th style="padding: 14px 16px">City</th><th style="padding: 14px 16px">Interest</th><th style="padding: 14px 16px">Source</th><th style="padding: 14px 16px">Received</th><th style="padding: 14px 16px">Status</th></tr></thead>
+<tbody>
+<sc-for list="{{leads}}" as="l" hint-placeholder-count="6">
+<tr style="border-top: 1px solid #EFEAE0">
+<td style="padding: 14px 16px; font-weight: 600">{{l.name}}</td><td style="padding: 14px 16px">{{l.city}}</td><td style="padding: 14px 16px">{{l.want}}</td><td style="padding: 14px 16px">{{l.src}}</td><td class="mono" style="padding: 14px 16px; font-size: 13px">{{l.when}}</td>
+<td style="padding: 10px 16px"><button type="button" onClick="{{l.next}}" title="Click to move to the next stage" style="border: 0; cursor: pointer; border-radius: 999px; padding: 8px 12px; font-size: 13px; font-weight: 600; background: {{l.bg}}; color: {{l.fg}}; min-height: 36px">{{l.status}} →</button></td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<p style="margin: 12px 0 0; font-size: 13px; color: #5B6474">Every enquiry form, chatbot hand-off, checklist download and Cal.com booking lands here. Click a status to move it on.</p>
+</sc-if>
+
+<sc-if value="{{v.reviews}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<sc-for list="{{reviews}}" as="r" hint-placeholder-count="2">
+<div style="background: #FFFFFF; border: 1px solid #E4DED3; border-radius: 14px; padding: 20px; display: flex; gap: 20px; flex-wrap: wrap; align-items: center">
+<div style="flex: 1 1 360px; min-width: 0">
+<p style="margin: 0; font-weight: 600">{{r.who}} <span class="mono" style="font-weight: 500; font-size: 12px; color: #5B6474">· {{r.meta}}</span></p>
+<p style="margin: 6px 0 0; color: #475569">{{r.text}}</p>
+</div>
+<sc-if value="{{r.pending}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; gap: 8px">
+<button type="button" onClick="{{r.approve}}" style="border: 0; cursor: pointer; border-radius: 999px; padding: 10px 16px; font-weight: 600; background: #2F6B3A; color: #FFFFFF; min-height: 44px">Approve</button>
+<button type="button" onClick="{{r.reject}}" style="border: 1.5px solid #D9D1C3; cursor: pointer; border-radius: 999px; padding: 10px 16px; font-weight: 600; background: #FFFFFF; color: #0F172A; min-height: 44px">Reject</button>
+</div>
+</sc-if>
+<sc-if value="{{r.decided}}" hint-placeholder-val="{{false}}">
+<span class="mono" style="padding: 6px 12px; border: 2px solid {{r.c}}; color: {{r.c}}; border-radius: 8px; transform: rotate(-3deg); font-size: 13px; letter-spacing: .08em">{{r.state}}</span>
+</sc-if>
+</div>
+</sc-for>
+</div>
+<div style="margin-top: 18px; background: #FFFFFF; border: 1px dashed #CFC6B6; border-radius: 14px; padding: 20px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between">
+<div><p style="margin: 0; font-weight: 600">Ask a past client for a review</p><p style="margin: 4px 0 0; font-size: 14px; color: #475569">Creates a WhatsApp message with a one-tap link to the review form.</p></div>
+<a href="https://wa.me/?text=Please%20review%20Visafeast" style="background: #25D366; color: #06371B; padding: 12px 18px; border-radius: 999px; font-weight: 600; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center">Create WhatsApp request</a>
+</div>
+</sc-if>
+
+<sc-if value="{{v.news}}" hint-placeholder-val="{{false}}">
+<div style="background: #0A1A33; color: #FFFFFF; border-radius: 14px; padding: 22px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between">
+<div style="flex: 1 1 420px; min-width: 0">
+<p class="mono" style="margin: 0; font-size: 12px; letter-spacing: .1em; color: #F2A93B">WEEKLY DIGEST · DRAFT · WRITTEN BY AI MON 20 OCT</p>
+<p class="disp" style="margin: 8px 0 4px; font-size: 20px; font-weight: 600">Visa updates this week: what they mean for Pakistani applicants</p>
+<p style="margin: 0; color: #C9D3E2; font-size: 14px">Built from {{newsCount}} filtered official items + confirmed YouTube reports · 1 AI call</p>
+</div>
+<sc-if value="{{digest.pending}}" hint-placeholder-val="{{true}}">
+<button type="button" onClick="{{digest.publish}}" style="border: 0; cursor: pointer; border-radius: 999px; padding: 12px 20px; font-weight: 600; background: #F2A93B; color: #0A1A33; min-height: 44px">Review and publish</button>
+</sc-if>
+<sc-if value="{{digest.done}}" hint-placeholder-val="{{false}}">
+<span class="mono" style="padding: 8px 12px; border: 2px solid #F2A93B; color: #F2A93B; border-radius: 8px; letter-spacing: .08em">PUBLISHED · SHARED TO FACEBOOK</span>
+</sc-if>
+</div>
+<div class="g2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 16px">
+<div style="background: #FFFFFF; border: 1px solid #E4DED3; border-radius: 14px; padding: 20px">
+<p style="margin: 0 0 4px; font-weight: 600">Official feeds · fetched daily</p>
+<p style="margin: 0 0 12px; font-size: 13px; color: #5B6474">Free RSS/Atom · no API cost</p>
+<sc-for list="{{feeds}}" as="fd" hint-placeholder-count="6">
+<div style="display: flex; justify-content: space-between; gap: 10px; padding: 9px 0; border-top: 1px solid #EFEAE0; font-size: 14px"><span>{{fd.name}}</span><span class="mono" style="font-size: 12px; color: {{fd.c}}">{{fd.status}}</span></div>
+</sc-for>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E4DED3; border-radius: 14px; padding: 20px">
+<p style="margin: 0 0 4px; font-weight: 600">YouTube watchlist · claims checked against official sources</p>
+<p style="margin: 0 0 12px; font-size: 13px; color: #5B6474">Channels you add here · new videos read from free channel feeds</p>
+<sc-for list="{{yt}}" as="y" hint-placeholder-count="3">
+<div style="padding: 12px 0; border-top: 1px solid #EFEAE0">
+<p style="margin: 0; font-size: 14px"><span class="mono" style="font-size: 12px; color: #5B6474">{{y.ch}}</span> · “{{y.claim}}”</p>
+<p style="margin: 6px 0 0; font-size: 13.5px; font-weight: 600; color: {{y.c}}">{{y.result}}</p>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{v.pages}}" hint-placeholder-val="{{false}}">
+<div style="background: #FFFFFF; border: 1px solid #E4DED3; border-radius: 14px; overflow-x: auto">
+<table style="width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 700px">
+<thead><tr style="background: #F7F4EE; text-align: left"><th style="padding: 14px 16px">Country page</th><th style="padding: 14px 16px">Type</th><th style="padding: 14px 16px">Embassy fee</th><th style="padding: 14px 16px">Last checked</th><th style="padding: 14px 16px"></th></tr></thead>
+<tbody>
+<sc-for list="{{pages}}" as="p" hint-placeholder-count="6">
+<tr style="border-top: 1px solid #EFEAE0"><td style="padding: 14px 16px; font-weight: 600">{{p.name}}</td><td style="padding: 14px 16px">{{p.type}}</td><td style="padding: 14px 16px">{{p.fee}}</td><td class="mono" style="padding: 14px 16px; font-size: 13px; color: {{p.c}}">{{p.checked}}</td><td style="padding: 14px 16px"><a href="{{p.href}}" style="font-weight: 600">Edit</a></td></tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<p style="margin: 12px 0 0; font-size: 13px; color: #5B6474">Dates older than 60 days turn red so fees never go stale. “Add country” creates a new page from the template.</p>
+</sc-if>
+
+<sc-if value="{{v.look}}" hint-placeholder-val="{{false}}">
+<div class="g2" style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #E4DED3; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 16px">
+<p style="margin: 0; font-weight: 600">Website fonts</p>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 500">Heading font
+<select value="{{look.hf}}" onChange="{{look.setH}}" style="padding: 12px; border: 1px solid #D9D1C3; border-radius: 10px; min-height: 44px; background: #FFFFFF"><option>Fraunces</option><option>Sora</option><option>Playfair Display</option><option>DM Serif Display</option><option>Plus Jakarta Sans</option><option>Poppins</option></select></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 500">Body font
+<select value="{{look.bf}}" onChange="{{look.setB}}" style="padding: 12px; border: 1px solid #D9D1C3; border-radius: 10px; min-height: 44px; background: #FFFFFF"><option>Inter</option><option>Manrope</option><option>DM Sans</option><option>Plus Jakarta Sans</option><option>Poppins</option></select></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 500">Urdu font
+<select value="{{look.uf}}" onChange="{{look.setU}}" style="padding: 12px; border: 1px solid #D9D1C3; border-radius: 10px; min-height: 44px; background: #FFFFFF"><option>Noto Nastaliq Urdu</option><option>Noto Naskh Arabic</option><option>Gulzar</option></select></label>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<button type="button" onClick="{{look.save}}" style="border: 0; cursor: pointer; border-radius: 999px; padding: 12px 18px; font-weight: 600; background: #0A1A33; color: #FFFFFF; min-height: 44px">Save and publish</button>
+<button type="button" onClick="{{look.reset}}" style="border: 1.5px solid #D9D1C3; cursor: pointer; border-radius: 999px; padding: 12px 18px; font-weight: 600; background: #FFFFFF; color: #0F172A; min-height: 44px">Reset to default</button>
+</div>
+<sc-if value="{{look.saved}}" hint-placeholder-val="{{false}}"><p style="margin: 0; color: #2F6B3A; font-weight: 600; font-size: 14px">Saved — the live site now uses {{look.hf}} + {{look.bf}}.</p></sc-if>
+<p style="margin: 0; font-size: 13px; color: #5B6474; line-height: 1.5">Only these hand-picked fonts are offered, so the site stays fast. Default: Fraunces headings, Inter body, Noto Nastaliq Urdu.</p>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E4DED3; border-radius: 14px; padding: 22px">
+<p class="mono" style="margin: 0 0 12px; font-size: 12px; letter-spacing: .1em; color: #5B6474">LIVE PREVIEW</p>
+<div style="background: #0A1A33; color: #FFFFFF; border-radius: 12px; padding: 26px; font-family: {{look.bodyCss}}">
+<p style="margin: 0; font-size: 12px; letter-spacing: .12em; color: #F2A93B">VISIT, STUDY &amp; IMMIGRATION CONSULTANTS</p>
+<p style="margin: 10px 0 0; font-family: {{look.headCss}}; font-size: 38px; font-weight: 600; line-height: 1.1">Your visa, prepared right the first time.</p>
+<p style="margin: 12px 0 0; color: #C9D3E2; line-height: 1.6">Visit visas, study visas and immigration pathways — with fees and timelines published openly.</p>
+<span style="display: inline-block; margin-top: 16px; background: #F2A93B; color: #0A1A33; padding: 12px 18px; border-radius: 999px; font-weight: 600">Check my eligibility — free</span>
+</div>
+<p dir="rtl" style="margin: 18px 0 0; font-family: {{look.urCss}}; font-size: 26px; line-height: 2.1; color: #0F172A">آپ کا ویزا، پہلی ہی بار درست تیاری کے ساتھ</p>
+</div>
+</div>
+</sc-if>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1700}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { view: 'dash', leadStage: [0, 1, 0, 2, 3, 0], rev: ['pending', 'pending'], digest: 'pending', hf: 'Fraunces', bf: 'Inter', uf: 'Noto Nastaliq Urdu', saved: false };
+    this.stages = [['New', '#E8EEF7', '#1F4E8C'], ['Contacted', '#FBF1DF', '#8A5300'], ['Docs received', '#EFE7F7', '#6B3FA0'], ['Submitted', '#E3ECF5', '#0A1A33'], ['Approved', '#E7F2EA', '#2F6B3A'], ['Refused', '#F7E6E8', '#8C1F2C']];
+  }
+  renderVals() {
+    const s = this.state;
+    const views = [['dash', 'Dashboard', ''], ['leads', 'Leads', '6'], ['reviews', 'Reviews', '2'], ['news', 'News & digest', '1'], ['pages', 'Country pages', ''], ['look', 'Appearance · fonts', '']];
+    const nav = views.map((v) => ({ label: v[1], badge: v[2], cur: s.view === v[0] ? 'page' : 'false', bg: s.view === v[0] ? 'rgba(242,169,59,.16)' : 'transparent', fg: s.view === v[0] ? '#FFFFFF' : '#C9D3E2', go: () => this.setState({ view: v[0] }) }));
+    const title = (views.find((v) => v[0] === s.view) || views[0])[1];
+    const v = { dash: s.view === 'dash', leads: s.view === 'leads', reviews: s.view === 'reviews', news: s.view === 'news', pages: s.view === 'pages', look: s.view === 'look' };
+    const kpis = [{ label: 'Visitors · 30 days', value: '[n]', sub: 'demo' }, { label: 'New leads · 30 days', value: '[n]', sub: 'forms + chat + bookings' }, { label: 'WhatsApp clicks', value: '[n]', sub: 'tracked per page' }, { label: 'Calls booked', value: '[n]', sub: 'via Cal.com' }];
+    const shape = [22, 30, 26, 35, 41, 38, 29, 33, 45, 52, 48, 40, 36, 44, 58, 61, 55, 47, 50, 63, 70, 66, 59, 62, 74, 80, 72, 68, 77, 85];
+    const max = 85;
+    const bars = shape.map((n, i) => ({ h: Math.round((n / max) * 100) + '%', c: i === shape.length - 1 ? '#F2A93B' : '#0A1A33', tip: 'Day ' + (i + 1) + ' · demo' }));
+    const cdata = [['Pakistan', 100], ['United Arab Emirates', 34], ['Saudi Arabia', 21], ['United Kingdom', 12], ['Canada', 9], ['Qatar', 7]];
+    const countries = cdata.map((c) => ({ name: c[0], n: 'demo', w: c[1] + '%' }));
+    const leadRows = [['Lead 1042', 'Karachi', 'UK visit · family', 'Enquiry form', 'Today 14:10'], ['Lead 1041', 'Lahore', 'Germany study', 'Chatbot', 'Today 11:32'], ['Lead 1040', 'Islamabad', 'Canada visit', 'Cal.com', 'Yesterday'], ['Lead 1039', 'Dubai', 'New Zealand visit', 'WhatsApp', 'Yesterday'], ['Lead 1038', 'Karachi', 'Schengen visit', 'Checklist PDF', '21 Oct'], ['Lead 1037', 'Faisalabad', 'UK study', 'Eligibility check', '20 Oct']];
+    const leads = leadRows.map((l, i) => { const st = this.stages[s.leadStage[i] % this.stages.length]; return { name: l[0], city: l[1], want: l[2], src: l[3], when: l[4], status: st[0], bg: st[1], fg: st[2], next: () => { const ls = s.leadStage.slice(); ls[i] = (ls[i] + 1) % this.stages.length; this.setState({ leadStage: ls }); } }; });
+    const revRows = [['[Client name]', 'Karachi · UK visit visa · 5 stars', '[The client’s own words appear here exactly as submitted.]'], ['[Client name]', 'Lahore · Germany study visa · 4 stars', '[Submitted via the website form — awaiting your approval.]']];
+    const reviews = revRows.map((r, i) => ({ who: r[0], meta: r[1], text: r[2], pending: s.rev[i] === 'pending', decided: s.rev[i] !== 'pending', state: s.rev[i] === 'ok' ? 'APPROVED · LIVE' : 'REJECTED', c: s.rev[i] === 'ok' ? '#2F6B3A' : '#8C1F2C', approve: () => { const a = s.rev.slice(); a[i] = 'ok'; this.setState({ rev: a }); }, reject: () => { const a = s.rev.slice(); a[i] = 'no'; this.setState({ rev: a }); } }));
+    const feeds = [['GOV.UK · UK Visas and Immigration', 'OK · tested'], ['Canada.ca · IRCC', 'OK · tested'], ['Australia · Home Affairs', 'to connect'], ['New Zealand · Immigration NZ', 'to connect'], ['USA · travel.state.gov', 'to connect'], ['Germany · Federal Foreign Office / DAAD', 'to connect'], ['EU · Schengen / home affairs', 'to connect'], ['Google News · Thailand, Baku, Singapore', 'to connect']];
+    const feedsOut = feeds.map((f) => ({ name: f[0], status: f[1], c: f[1].indexOf('OK') === 0 ? '#2F6B3A' : '#8A5300' }));
+    const yt = [
+      { ch: '[Channel A]', claim: 'UK visit visa fee has gone up', result: 'Confirmed — GOV.UK lists £135. Added to digest in our own words.', c: '#2F6B3A' },
+      { ch: '[Channel B]', claim: 'Canada visit visas now decided in 10 days', result: 'Not confirmed by IRCC — not published.', c: '#8C1F2C' },
+      { ch: '[Channel C]', claim: 'New Germany study visa appointment system', result: 'Checking — waiting for an official source.', c: '#8A5300' }
+    ];
+    const pageRows = [['UK visit visa', 'Visit', '£135', '23 Oct 2026', '#2F6B3A', 'Country.dc.html'], ['Canada visit visa', 'Visit', '[admin]', '[date]', '#5B6474', '#'], ['USA visit visa', 'Visit', '[admin]', '[date]', '#5B6474', '#'], ['Schengen visa', 'Visit', '[admin]', '[date]', '#5B6474', '#'], ['Study in Germany', 'Study', '[admin]', '[date]', '#5B6474', '#'], ['Azerbaijan e-visa', 'Visit', '[admin]', '[date]', '#5B6474', '#']];
+    const pages = pageRows.map((p) => ({ name: p[0], type: p[1], fee: p[2], checked: p[3], c: p[4], href: p[5] }));
+    const digest = { pending: s.digest === 'pending', done: s.digest === 'done', publish: () => this.setState({ digest: 'done' }) };
+    const serifs = ['Fraunces', 'Playfair Display', 'DM Serif Display'];
+    const look = {
+      hf: s.hf, bf: s.bf, uf: s.uf, saved: s.saved,
+      headCss: "'" + s.hf + "', " + (serifs.indexOf(s.hf) >= 0 ? 'Georgia, serif' : 'system-ui, sans-serif'),
+      bodyCss: "'" + s.bf + "', system-ui, sans-serif", urCss: "'" + s.uf + "', serif",
+      setH: (e) => this.setState({ hf: e.target.value, saved: false }), setB: (e) => this.setState({ bf: e.target.value, saved: false }), setU: (e) => this.setState({ uf: e.target.value, saved: false }),
+      save: () => this.setState({ saved: true }), reset: () => this.setState({ hf: 'Fraunces', bf: 'Inter', uf: 'Noto Nastaliq Urdu', saved: false })
+    };
+    return { nav, title, v, kpis, bars, countries, leads, reviews, feeds: feedsOut, yt, pages, digest, newsCount: '[n]', look };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+{
+  "name": "visafeast",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@react-pdf/renderer": "^4.9.0",
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.2",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.119.0",
+    "embla-carousel-react": "^8.6.0",
+    "fast-xml-parser": "^5.12.0",
+    "flag-icons": "^7.6.0",
+    "framer-motion": "^14.9.1",
+    "isbot": "^5.2.2",
+    "lucide-react": "^1.68.0",
+    "next": "^16.4.5",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "server-only": "^0.0.1",
+    "three": "^0.187.0",
+    "ua-parser-js": "^2.0.10",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.4",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.187.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.4.5",
+    "playwright-core": "^1.64.1",
+    "postcss": "^8.5.32",
+    "tailwindcss": "^4.3.4",
+    "typescript": "^6.0.3",
+    "vitest": "^5.1.0"
+  }
+}
