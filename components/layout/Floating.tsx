@@ -6,7 +6,7 @@ import { dirOf } from "@/config/locales";
 import { useDict } from "@/components/DictProvider";
 import { WaIcon } from "@/components/ui";
 import { track } from "@/lib/track-client";
-import { ZaraAvatar } from "./Avatar";
+import { AimanAvatar } from "./Avatar";
 
 const ChatPanel = dynamic(() => import("./ChatPanel").then((m) => m.ChatPanel), { ssr: false });
 
@@ -27,9 +27,9 @@ export function Floating({ locale, whatsapp, chatbot }: { locale: Locale; whatsa
     <>
       <div style={{ position: "fixed", bottom: 24, display: "flex", gap: 12, zIndex: 40, ...side }}>
         {chatbot && (
-          <button type="button" className="zara-btn" aria-label={u.askZara} onClick={() => { setFirst(undefined); setOpen(true); track("chat_open"); }}
+          <button type="button" className="aiman-btn" aria-label={u.askAiman} onClick={() => { setFirst(undefined); setOpen(true); track("chat_open"); }}
             style={{ width: 60, height: 60, padding: 0, borderRadius: "50%", border: "2px solid var(--amber)", cursor: "pointer", background: "var(--navy)", boxShadow: "0 10px 24px rgba(10,26,51,.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <ZaraAvatar size={56} />
+            <AimanAvatar size={56} />
           </button>
         )}
         <a href={waLink("Hi Visafeast, I have a question about a visa.", whatsapp)} aria-label="WhatsApp us" className="pulse" onClick={() => track("whatsapp_click")}

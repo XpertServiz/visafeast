@@ -212,8 +212,8 @@
   "fallback": "核实中——请通过 WhatsApp 询问今日数额",
   "chat": {
     "open": "与我们聊天",
-    "title": "Zara · Visafeast 助手",
-    "greeting": "您好！我是 Zara。可以问我费用、文件或时间。打错字也没关系。",
+    "title": "Aiman · Visafeast 助手",
+    "greeting": "您好！我是 Aiman。可以问我费用、文件或时间。打错字也没关系。",
     "placeholder": "输入您的问题…",
     "send": "发送",
     "q1": "英国访问签证费用",
@@ -221,7 +221,7 @@
     "q3": "与顾问交谈",
     "wa": "转到 WhatsApp",
     "subtitle": "自动助手 · 通常即时回复",
-    "disclaimer": "Zara 根据本网站内容回答。您的具体情况请咨询顾问。"
+    "disclaimer": "Aiman 根据本网站内容回答。您的具体情况请咨询顾问。"
   },
   "consent": {
     "text": "我们使用一个小 Cookie 统计访问量，不会保存您的 IP 地址。",
@@ -242,7 +242,7 @@
     "destinations": "个目的地",
     "checkedPages": "份指南含官方来源费用",
     "lastChecked": "最后核查",
-    "askTitle": "向 Zara 询问任何签证问题",
+    "askTitle": "向 Aiman 询问任何签证问题",
     "askPlaceholder": "例如：英国签证费用",
     "ask1": "英国访问签证费用",
     "ask2": "申根文件",
@@ -304,8 +304,8 @@
     "openPage": "打开页面",
     "chatError": "抱歉，暂时无法回答。请通过 WhatsApp 联系我们。",
     "chatLimit": "您已达到今日消息上限。请通过 WhatsApp 联系我们的顾问。",
-    "teaser": "您好！我是 Zara。有任何签证问题都可以问我。",
-    "askZara": "询问我们的助手 Zara",
+    "teaser": "您好！我是 Aiman。有任何签证问题都可以问我。",
+    "askAiman": "询问我们的助手 Aiman",
     "close": "关闭",
     "photoSoon": "图片即将上线",
     "reviewThanks": "谢谢！您的评价审核后将会显示。",
@@ -505,6 +505,7 @@
     "readOn": "我们于 {date} 阅读了这些官方页面。规则、费用和状态可能变化，申请前请先查看官方页面。",
     "officialPage": "官方页面",
     "verifyNote": "部分信息正在核实中。如需最新信息，请通过 WhatsApp 联系我们。",
+    "originNote": "您正在从{country}访问。本页的费用、材料和步骤是针对从巴基斯坦申请的人士的官方信息，这是我们的主要服务。您的要求可能不同，请通过 WhatsApp 联系我们咨询您的具体情况。",
     "programmes": "项目",
     "officialPages": "官方页面",
     "photosOf": "{country}的照片",

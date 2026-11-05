@@ -212,8 +212,8 @@
   "fallback": "En verificación: pregúntenos por WhatsApp el importe de hoy",
   "chat": {
     "open": "Chatear con nosotros",
-    "title": "Zara · asistente de Visafeast",
-    "greeting": "¡Hola! Soy Zara. Pregúnteme por tasas, documentos o plazos. Los errores de escritura no son problema.",
+    "title": "Aiman · asistente de Visafeast",
+    "greeting": "¡Hola! Soy Aiman. Pregúnteme por tasas, documentos o plazos. Los errores de escritura no son problema.",
     "placeholder": "Escriba su pregunta…",
     "send": "Enviar",
     "q1": "Tasa visado visita Reino Unido",
@@ -221,7 +221,7 @@
     "q3": "Hablar con un asesor",
     "wa": "Seguir en WhatsApp",
     "subtitle": "Asistente automática · respuesta rápida",
-    "disclaimer": "Zara responde con información de este sitio. Para su caso, hable con un asesor."
+    "disclaimer": "Aiman responde con información de este sitio. Para su caso, hable con un asesor."
   },
   "consent": {
     "text": "Usamos una pequeña cookie para contar visitas, sin guardar su dirección IP.",
@@ -242,7 +242,7 @@
     "destinations": "destinos cubiertos",
     "checkedPages": "guías con tasas de fuentes oficiales",
     "lastChecked": "Última comprobación",
-    "askTitle": "Pregúntele a Zara lo que quiera sobre su visado",
+    "askTitle": "Pregúntele a Aiman lo que quiera sobre su visado",
     "askPlaceholder": "p. ej.: tasa visado Reino Unido",
     "ask1": "Tasa visado visita Reino Unido",
     "ask2": "Documentos Schengen",
@@ -304,8 +304,8 @@
     "openPage": "Abrir página",
     "chatError": "Lo siento, no he podido responder ahora. Escríbanos por WhatsApp.",
     "chatLimit": "Ha alcanzado el límite de mensajes de hoy. Continúe por WhatsApp con nuestro asesor.",
-    "teaser": "¡Hola! Soy Zara. Pregúnteme lo que quiera sobre visados.",
-    "askZara": "Preguntar a Zara, nuestra asistente",
+    "teaser": "¡Hola! Soy Aiman. Pregúnteme lo que quiera sobre visados.",
+    "askAiman": "Preguntar a Aiman, nuestra asistente",
     "close": "Cerrar",
     "photoSoon": "Foto próximamente",
     "reviewThanks": "¡Gracias! Su opinión aparecerá cuando la aprobemos.",
@@ -505,6 +505,7 @@
     "readOn": "Leímos estas páginas oficiales el {date}. Las normas, tasas y estado pueden cambiar: revisa la página antes de solicitar.",
     "officialPage": "Página oficial",
     "verifyNote": "Algunos detalles se están verificando. Para la información más reciente, escríbenos por WhatsApp.",
+    "originNote": "Nos visita desde {country}. Las tasas, los documentos y los pasos de esta página son los oficiales para solicitantes desde Pakistán, nuestro servicio principal. Los requisitos pueden ser distintos para usted; escríbanos por WhatsApp sobre su caso.",
     "programmes": "Programas",
     "officialPages": "Páginas oficiales",
     "photosOf": "Fotos de {country}",

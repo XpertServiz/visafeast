@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Plane } from "lucide-react";
 import type { Country, Faq } from "@/lib/types";
 import { localeMeta, lp, type Locale } from "@/config/locales";
+import { OriginCode, OriginText } from "@/components/geo/Origin";
 
 export const Flag = ({ code, size = 28, width }: { code: string; size?: number; width?: number }) => (
   <span className={`fi fi-${code.toLowerCase()}`} role="img" aria-label={code.toUpperCase()} style={{ width: width ?? size * 1.33, height: size, borderRadius: 4, boxShadow: "0 0 0 1px rgba(0,0,0,.08)", display: "inline-block", flex: "none", backgroundSize: "cover" }} />
@@ -38,14 +39,14 @@ export function BoardingPass({ c, locale, cta, kindLabel }: { c: Country; locale
           <Flag code={c.flag} size={22} />
         </div>
         <div className="mono" dir="ltr" style={{ display: "flex", alignItems: "center", gap: 8, margin: "10px 0 6px", fontSize: 14, color: "var(--muted-2)" }}>
-          <span>{c.from_code}</span><span style={{ flex: 1, borderTop: "1.5px dashed #C9C0AE" }} /><Plane size={16} aria-hidden /><span style={{ flex: 1, borderTop: "1.5px dashed #C9C0AE" }} /><span>{c.to_code}</span>
+          <span><OriginCode fallback={c.from_code} /></span><span style={{ flex: 1, borderTop: "1.5px dashed #C9C0AE" }} /><Plane size={16} aria-hidden /><span style={{ flex: 1, borderTop: "1.5px dashed #C9C0AE" }} /><span>{c.to_code}</span>
         </div>
         <p className="disp" style={{ margin: 0, fontSize: 22, fontWeight: 600 }}>{c.country_name}</p>
-        <p style={{ margin: "2px 0 0", color: "var(--muted)", fontSize: 15 }}>{c.visa_name}</p>
+        <p style={{ margin: "2px 0 0", color: "var(--muted)", fontSize: 15 }}>{c.visa_name ? <OriginText text={c.visa_name} /> : null}</p>
       </div>
       <div className="perf" />
       <div style={{ padding: "12px 20px", display: "flex", justifyContent: "space-between", fontSize: 14 }}>
-        <span className="mono" style={{ color: "var(--muted-2)", fontSize: 12 }}>{c.card_note}</span>
+        <span className="mono" style={{ color: "var(--muted-2)", fontSize: 12 }}>{c.card_note ? <OriginText text={c.card_note} /> : null}</span>
         <span style={{ color: "var(--amber-text)", fontWeight: 600 }}>{cta}</span>
       </div>
     </Link>

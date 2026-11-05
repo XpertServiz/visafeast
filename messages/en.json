@@ -164,8 +164,8 @@
   "fallback": "Being verified — WhatsApp us for today's figure",
   "chat": {
     "open": "Chat with us",
-    "title": "Zara · Visafeast assistant",
-    "greeting": "Assalam-o-Alaikum! I'm Zara. Ask me about fees, documents or timelines. Spelling mistakes are fine.",
+    "title": "Aiman · Visafeast assistant",
+    "greeting": "Assalam-o-Alaikum! I'm Aiman. Ask me about fees, documents or timelines. Spelling mistakes are fine.",
     "placeholder": "Type your question…",
     "send": "Send",
     "q1": "UK visit visa fee",
@@ -173,7 +173,7 @@
     "q3": "Talk to a consultant",
     "wa": "Continue on WhatsApp",
     "subtitle": "Automated assistant · usually instant",
-    "disclaimer": "Zara answers from this website. For your own case, please talk to a consultant."
+    "disclaimer": "Aiman answers from this website. For your own case, please talk to a consultant."
   },
   "consent": {
     "text": "We use a small cookie to count visitors, without storing your IP address.",
@@ -268,7 +268,7 @@
     "destinations": "destinations covered",
     "checkedPages": "guides with fees from official sources",
     "lastChecked": "Last checked",
-    "askTitle": "Ask Zara anything about your visa",
+    "askTitle": "Ask Aiman anything about your visa",
     "askPlaceholder": "e.g. uk visa fee kitni hai?",
     "ask1": "UK visit visa fee",
     "ask2": "Schengen documents",
@@ -378,8 +378,8 @@
     "openPage": "Open page",
     "chatError": "Sorry, I couldn't answer just now. Please WhatsApp us.",
     "chatLimit": "You've reached today's message limit. Please continue on WhatsApp with our consultant.",
-    "teaser": "Assalam-o-Alaikum! I'm Zara. Ask me anything about visas.",
-    "askZara": "Ask Zara, our assistant",
+    "teaser": "Assalam-o-Alaikum! I'm Aiman. Ask me anything about visas.",
+    "askAiman": "Ask Aiman, our assistant",
     "close": "Close",
     "photoSoon": "Photo coming soon",
     "reviewThanks": "Thank you! Your review will appear once we approve it.",
@@ -695,6 +695,7 @@
     "readOn": "We read these official pages on {date}. Rules, fees and status can change, so check the page before you apply.",
     "officialPage": "Official page",
     "verifyNote": "Some details are being verified. For the latest information, WhatsApp us.",
+    "originNote": "You are visiting from {country}. The fees, documents and steps on this page are the official ones for applicants from Pakistan, our main service. Requirements can differ for you, so WhatsApp us for your case.",
     "programmes": "Programmes",
     "officialPages": "Official pages",
     "photosOf": "Photos of {country}",

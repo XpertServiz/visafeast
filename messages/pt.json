@@ -212,8 +212,8 @@
   "fallback": "Em verificação: pergunte pelo WhatsApp o valor de hoje",
   "chat": {
     "open": "Fale conosco",
-    "title": "Zara · assistente da Visafeast",
-    "greeting": "Olá! Sou a Zara. Pergunte sobre taxas, documentos ou prazos. Erros de digitação não são problema.",
+    "title": "Aiman · assistente da Visafeast",
+    "greeting": "Olá! Sou a Aiman. Pergunte sobre taxas, documentos ou prazos. Erros de digitação não são problema.",
     "placeholder": "Digite sua pergunta…",
     "send": "Enviar",
     "q1": "Taxa visto de visita Reino Unido",
@@ -221,7 +221,7 @@
     "q3": "Falar com um consultor",
     "wa": "Continuar no WhatsApp",
     "subtitle": "Assistente automática · geralmente na hora",
-    "disclaimer": "A Zara responde com base neste site. Para o seu caso, fale com um consultor."
+    "disclaimer": "A Aiman responde com base neste site. Para o seu caso, fale com um consultor."
   },
   "consent": {
     "text": "Usamos um pequeno cookie para contar visitas, sem guardar seu endereço IP.",
@@ -242,7 +242,7 @@
     "destinations": "destinos",
     "checkedPages": "guias com taxas de fontes oficiais",
     "lastChecked": "Última verificação",
-    "askTitle": "Pergunte à Zara tudo sobre seu visto",
+    "askTitle": "Pergunte à Aiman tudo sobre seu visto",
     "askPlaceholder": "ex.: taxa visto Reino Unido",
     "ask1": "Taxa visto de visita Reino Unido",
     "ask2": "Documentos Schengen",
@@ -304,8 +304,8 @@
     "openPage": "Abrir página",
     "chatError": "Desculpe, não consegui responder agora. Fale conosco pelo WhatsApp.",
     "chatLimit": "Você atingiu o limite de mensagens de hoje. Continue no WhatsApp com nosso consultor.",
-    "teaser": "Olá! Sou a Zara. Pergunte tudo sobre vistos.",
-    "askZara": "Pergunte à Zara, nossa assistente",
+    "teaser": "Olá! Sou a Aiman. Pergunte tudo sobre vistos.",
+    "askAiman": "Pergunte à Aiman, nossa assistente",
     "close": "Fechar",
     "photoSoon": "Foto em breve",
     "reviewThanks": "Obrigado! Sua avaliação aparecerá após a aprovação.",
@@ -505,6 +505,7 @@
     "readOn": "Lemos estas páginas oficiais em {date}. Regras, taxas e estado podem mudar: confira a página antes de se candidatar.",
     "officialPage": "Página oficial",
     "verifyNote": "Alguns detalhes estão em verificação. Para as informações mais recentes, fale conosco no WhatsApp.",
+    "originNote": "Está a visitar-nos a partir de {country}. As taxas, os documentos e os passos desta página são os oficiais para quem se candidata a partir do Paquistão, o nosso serviço principal. Os requisitos podem ser diferentes para si; escreva-nos no WhatsApp sobre o seu caso.",
     "programmes": "Programas",
     "officialPages": "Páginas oficiais",
     "photosOf": "Fotos de {country}",

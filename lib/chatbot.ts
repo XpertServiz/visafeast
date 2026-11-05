@@ -1,4 +1,4 @@
-// Zara, the website assistant. This file answers from the site's own content with NO paid API: it fixes typos, understands
+// Aiman, the website assistant. This file answers from the site's own content with NO paid API: it fixes typos, understands
 // Roman Urdu and Urdu keywords, and finds the right facts. Only questions it cannot answer may go to GPT (see app/api/chat).
 import type { Country, Faq } from "./types";
 
@@ -173,7 +173,7 @@ export function answerFromSite(question: string, opts: { kb: KbDoc[]; countries:
   const has = (list: string[]) => hasNear(content, list);
 
   if (!code && !topic && toks.length <= 4 && has(THANKS)) return { kind: "smalltalk", answer: T(loc, "You're welcome! Anything else about your visa?", "کوئی بات نہیں! ویزا کے بارے میں اور کچھ؟") };
-  if (!code && !topic && toks.length <= 4 && toks.some((w) => GREET.some((g) => near(w, g)))) return { kind: "smalltalk", answer: T(loc, "Assalam-o-Alaikum! I'm Zara. Ask me about fees, documents or timelines for any country.", "السلام علیکم! میں زارا ہوں۔ کسی بھی ملک کی فیس، دستاویزات یا وقت کے بارے میں پوچھیں۔"), suggest: [T(loc, "UK visit visa fee", "یوکے ویزا فیس"), T(loc, "Canada documents", "کینیڈا دستاویزات"), T(loc, "Schengen time", "شینگن وقت")] };
+  if (!code && !topic && toks.length <= 4 && toks.some((w) => GREET.some((g) => near(w, g)))) return { kind: "smalltalk", answer: T(loc, "Assalam-o-Alaikum! I'm Aiman. Ask me about fees, documents or timelines for any country.", "السلام علیکم! میں ایمن ہوں۔ کسی بھی ملک کی فیس، دستاویزات یا وقت کے بارے میں پوچھیں۔"), suggest: [T(loc, "UK visit visa fee", "یوکے ویزا فیس"), T(loc, "Canada documents", "کینیڈا دستاویزات"), T(loc, "Schengen time", "شینگن وقت")] };
   if (has(CHANCE)) return { kind: "kb", answer: T(loc, "Nobody can honestly guarantee a visa: only the embassy decides. Our free check shows your strengths and what to improve.", "کوئی بھی ویزا کی گارنٹی نہیں دے سکتا: فیصلہ صرف ایمبیسی کرتی ہے۔ ہمارا مفت چیک آپ کی مضبوطیاں اور بہتری کے نکات بتاتا ہے۔"), link: `${p}/tools/eligibility` };
   if (has(TRACK)) return { kind: "kb", answer: T(loc, "Clients can sign in to upload documents, see their file status and chat with their consultant.", "کلائنٹس سائن ان کر کے دستاویزات بھیج سکتے ہیں، فائل کی صورتحال دیکھ سکتے ہیں اور کنسلٹنٹ سے چیٹ کر سکتے ہیں۔"), link: `${p}/portal` };
   if (has(DECODE) && topic === "refusal") return { kind: "kb", answer: T(loc, "Paste your refusal letter in our free decoder: it explains each reason in plain language.", "اپنا انکار کا خط ہمارے مفت ڈیکوڈر میں ڈالیں: یہ ہر وجہ آسان زبان میں بتاتا ہے۔"), link: `${p}/tools/refusal-decoder` };

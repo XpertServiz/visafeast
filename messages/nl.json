@@ -212,8 +212,8 @@
   "fallback": "Wordt gecontroleerd: vraag via WhatsApp het bedrag van vandaag",
   "chat": {
     "open": "Chat met ons",
-    "title": "Zara · Visafeast-assistent",
-    "greeting": "Hallo! Ik ben Zara. Vraag me naar kosten, documenten of termijnen. Typefouten zijn geen probleem.",
+    "title": "Aiman · Visafeast-assistent",
+    "greeting": "Hallo! Ik ben Aiman. Vraag me naar kosten, documenten of termijnen. Typefouten zijn geen probleem.",
     "placeholder": "Typ uw vraag…",
     "send": "Versturen",
     "q1": "Kosten bezoekvisum VK",
@@ -221,7 +221,7 @@
     "q3": "Praten met een adviseur",
     "wa": "Verder op WhatsApp",
     "subtitle": "Automatische assistent · meestal direct",
-    "disclaimer": "Zara antwoordt op basis van deze website. Praat voor uw eigen zaak met een adviseur."
+    "disclaimer": "Aiman antwoordt op basis van deze website. Praat voor uw eigen zaak met een adviseur."
   },
   "consent": {
     "text": "We gebruiken een klein cookie om bezoeken te tellen, zonder uw IP-adres op te slaan.",
@@ -242,7 +242,7 @@
     "destinations": "bestemmingen",
     "checkedPages": "gidsen met kosten uit officiële bronnen",
     "lastChecked": "Laatst gecontroleerd",
-    "askTitle": "Vraag Zara alles over uw visum",
+    "askTitle": "Vraag Aiman alles over uw visum",
     "askPlaceholder": "bijv. kosten visum VK",
     "ask1": "Kosten bezoekvisum VK",
     "ask2": "Schengen-documenten",
@@ -304,8 +304,8 @@
     "openPage": "Pagina openen",
     "chatError": "Sorry, ik kon nu niet antwoorden. Stuur ons een WhatsApp.",
     "chatLimit": "U hebt de berichtenlimiet van vandaag bereikt. Ga verder op WhatsApp met onze adviseur.",
-    "teaser": "Hallo! Ik ben Zara. Vraag me alles over visa.",
-    "askZara": "Vraag Zara, onze assistent",
+    "teaser": "Hallo! Ik ben Aiman. Vraag me alles over visa.",
+    "askAiman": "Vraag Aiman, onze assistent",
     "close": "Sluiten",
     "photoSoon": "Foto volgt binnenkort",
     "reviewThanks": "Bedankt! Uw beoordeling verschijnt na goedkeuring.",
@@ -505,6 +505,7 @@
     "readOn": "We lazen deze officiële pagina's op {date}. Regels, kosten en status kunnen veranderen: controleer de pagina voordat u aanvraagt.",
     "officialPage": "Officiële pagina",
     "verifyNote": "Sommige details worden nog gecontroleerd. Stuur ons voor de nieuwste informatie een bericht via WhatsApp.",
+    "originNote": "U bezoekt ons vanuit {country}. De kosten, documenten en stappen op deze pagina zijn de officiële gegevens voor aanvragers vanuit Pakistan, onze hoofddienst. De vereisten kunnen voor u anders zijn; stuur ons een WhatsApp-bericht over uw situatie.",
     "programmes": "Programma's",
     "officialPages": "Officiële pagina's",
     "photosOf": "Foto's van {country}",

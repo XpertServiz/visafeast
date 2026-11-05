@@ -212,8 +212,8 @@
   "fallback": "En cours de vérification — demandez-nous le montant du jour sur WhatsApp",
   "chat": {
     "open": "Discuter avec nous",
-    "title": "Zara · assistante Visafeast",
-    "greeting": "Bonjour ! Je suis Zara. Posez-moi vos questions sur les frais, les documents ou les délais. Les fautes de frappe ne posent pas de problème.",
+    "title": "Aiman · assistante Visafeast",
+    "greeting": "Bonjour ! Je suis Aiman. Posez-moi vos questions sur les frais, les documents ou les délais. Les fautes de frappe ne posent pas de problème.",
     "placeholder": "Écrivez votre question…",
     "send": "Envoyer",
     "q1": "Frais visa visite Royaume-Uni",
@@ -221,7 +221,7 @@
     "q3": "Parler à un conseiller",
     "wa": "Continuer sur WhatsApp",
     "subtitle": "Assistante automatique · réponse rapide",
-    "disclaimer": "Zara répond à partir de ce site. Pour votre cas, parlez à un conseiller."
+    "disclaimer": "Aiman répond à partir de ce site. Pour votre cas, parlez à un conseiller."
   },
   "consent": {
     "text": "Nous utilisons un petit cookie pour compter les visites, sans enregistrer votre adresse IP.",
@@ -242,7 +242,7 @@
     "destinations": "destinations couvertes",
     "checkedPages": "guides avec frais de sources officielles",
     "lastChecked": "Dernière vérification",
-    "askTitle": "Demandez tout à Zara sur votre visa",
+    "askTitle": "Demandez tout à Aiman sur votre visa",
     "askPlaceholder": "ex. : frais visa Royaume-Uni",
     "ask1": "Frais visa visite Royaume-Uni",
     "ask2": "Documents Schengen",
@@ -304,8 +304,8 @@
     "openPage": "Ouvrir la page",
     "chatError": "Désolée, je n'ai pas pu répondre. Écrivez-nous sur WhatsApp.",
     "chatLimit": "Vous avez atteint la limite de messages du jour. Continuez sur WhatsApp avec notre conseiller.",
-    "teaser": "Bonjour ! Je suis Zara. Posez-moi vos questions sur les visas.",
-    "askZara": "Demander à Zara, notre assistante",
+    "teaser": "Bonjour ! Je suis Aiman. Posez-moi vos questions sur les visas.",
+    "askAiman": "Demander à Aiman, notre assistante",
     "close": "Fermer",
     "photoSoon": "Photo bientôt disponible",
     "reviewThanks": "Merci ! Votre avis apparaîtra après approbation.",
@@ -505,6 +505,7 @@
     "readOn": "Nous avons lu ces pages officielles le {date}. Les règles, les frais et le statut peuvent changer : vérifiez la page avant de déposer votre demande.",
     "officialPage": "Page officielle",
     "verifyNote": "Certains détails sont en cours de vérification. Pour les informations les plus récentes, écrivez-nous sur WhatsApp.",
+    "originNote": "Vous nous visitez depuis {country}. Les frais, documents et étapes de cette page sont ceux officiels pour les demandeurs depuis le Pakistan, notre service principal. Les exigences peuvent différer pour vous : écrivez-nous sur WhatsApp pour votre cas.",
     "programmes": "Programmes",
     "officialPages": "Pages officielles",
     "photosOf": "Photos : {country}",

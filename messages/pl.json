@@ -212,8 +212,8 @@
   "fallback": "W trakcie weryfikacji: zapytaj na WhatsAppie o dzisiejszą kwotę",
   "chat": {
     "open": "Napisz do nas",
-    "title": "Zara · asystentka Visafeast",
-    "greeting": "Cześć! Jestem Zara. Zapytaj o opłaty, dokumenty lub terminy. Literówki to nie problem.",
+    "title": "Aiman · asystentka Visafeast",
+    "greeting": "Cześć! Jestem Aiman. Zapytaj o opłaty, dokumenty lub terminy. Literówki to nie problem.",
     "placeholder": "Wpisz pytanie…",
     "send": "Wyślij",
     "q1": "Opłata za wizę do Wielkiej Brytanii",
@@ -221,7 +221,7 @@
     "q3": "Rozmowa z doradcą",
     "wa": "Kontynuuj na WhatsAppie",
     "subtitle": "Automatyczna asystentka · zwykle od razu",
-    "disclaimer": "Zara odpowiada na podstawie tej strony. W swojej sprawie porozmawiaj z doradcą."
+    "disclaimer": "Aiman odpowiada na podstawie tej strony. W swojej sprawie porozmawiaj z doradcą."
   },
   "consent": {
     "text": "Używamy małego pliku cookie do liczenia wizyt, bez zapisywania adresu IP.",
@@ -242,7 +242,7 @@
     "destinations": "kierunków",
     "checkedPages": "poradników z opłatami z oficjalnych źródeł",
     "lastChecked": "Ostatnio sprawdzono",
-    "askTitle": "Zapytaj Zarę o wszystko w sprawie wizy",
+    "askTitle": "Zapytaj Aiman o wszystko w sprawie wizy",
     "askPlaceholder": "np. opłata za wizę do Wielkiej Brytanii",
     "ask1": "Opłata za wizę do Wielkiej Brytanii",
     "ask2": "Dokumenty Schengen",
@@ -304,8 +304,8 @@
     "openPage": "Otwórz stronę",
     "chatError": "Przepraszam, nie mogłam teraz odpowiedzieć. Napisz na WhatsAppie.",
     "chatLimit": "Osiągnięto dzisiejszy limit wiadomości. Kontynuuj na WhatsAppie z naszym doradcą.",
-    "teaser": "Cześć! Jestem Zara. Zapytaj mnie o wizy.",
-    "askZara": "Zapytaj Zarę, naszą asystentkę",
+    "teaser": "Cześć! Jestem Aiman. Zapytaj mnie o wizy.",
+    "askAiman": "Zapytaj Aiman, naszą asystentkę",
     "close": "Zamknij",
     "photoSoon": "Zdjęcie wkrótce",
     "reviewThanks": "Dziękujemy! Opinia pojawi się po zatwierdzeniu.",
@@ -505,6 +505,7 @@
     "readOn": "Przeczytaliśmy te oficjalne strony {date}. Zasady, opłaty i status mogą się zmienić, więc sprawdź stronę przed złożeniem wniosku.",
     "officialPage": "Oficjalna strona",
     "verifyNote": "Niektóre szczegóły są w trakcie weryfikacji. Aby poznać najnowsze informacje, napisz do nas na WhatsApp.",
+    "originNote": "Odwiedzasz nas z kraju: {country}. Opłaty, dokumenty i kroki na tej stronie to oficjalne informacje dla wnioskodawców z Pakistanu, naszej głównej usługi. Wymagania mogą być inne w Twoim przypadku, napisz do nas na WhatsApp.",
     "programmes": "Programy",
     "officialPages": "Oficjalne strony",
     "photosOf": "Zdjęcia: {country}",

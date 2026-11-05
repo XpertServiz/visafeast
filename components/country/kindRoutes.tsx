@@ -14,6 +14,7 @@ import type { Kind } from "@/lib/types";
 import { CountryPage } from "./CountryPage";
 import { BoardingPass, Section } from "@/components/ui";
 import { BreadcrumbItems } from "./Breadcrumb";
+import { OriginText } from "@/components/geo/Origin";
 import { IMMIGRATION_HUB } from "@/lib/seed";
 import { Flag } from "@/components/ui";
 import { getImmigrationGuide, IMMIGRATION_GUIDES, immigrationCountry } from "@/lib/guides";
@@ -43,7 +44,7 @@ export function hubRoute(kind: Kind) {
           <Image className="page-guide" src={GUIDE.happy.src} alt="" width={GUIDE.happy.width} height={GUIDE.happy.height} unoptimized />
           <div className="wrap" style={{ position: "relative" }}>
             <BreadcrumbItems items={[{ label: t("common.home"), href: lp(locale, "/") }, { label: t(HUB[kind].h1) }]} />
-            <h1 className="disp h1" style={{ margin: "18px 0 8px", fontSize: 52, fontWeight: 600 }}>{t(HUB[kind].h1)}</h1>
+            <h1 className="disp h1" style={{ margin: "18px 0 8px", fontSize: 52, fontWeight: 600 }}><OriginText text={t(HUB[kind].h1)} /></h1>
             <p style={{ color: "var(--on-navy)", fontSize: 19, maxWidth: 720, margin: 0 }}>{t(HUB[kind].intro)}</p>
           </div>
         </header>

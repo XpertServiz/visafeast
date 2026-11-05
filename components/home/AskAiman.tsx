@@ -1,15 +1,15 @@
 "use client";
 import { useState } from "react";
 import { Send } from "lucide-react";
-import { ZaraAvatar } from "@/components/layout/Avatar";
+import { AimanAvatar } from "@/components/layout/Avatar";
 
-/** Ask right on the page: opens Zara with the question already sent. Typos are fine. */
-export function AskZara({ title, placeholder, send, chips }: { title: string; placeholder: string; send: string; chips: string[] }) {
+/** Ask right on the page: opens Aiman with the question already sent. Typos are fine. */
+export function AskAiman({ title, placeholder, send, chips }: { title: string; placeholder: string; send: string; chips: string[] }) {
   const [q, setQ] = useState("");
   const ask = (text: string) => window.dispatchEvent(new CustomEvent("vf-ask", { detail: text }));
   return (
     <div className="card" style={{ padding: 20, display: "flex", gap: 16, alignItems: "flex-start", maxWidth: 860, marginInline: "auto", boxShadow: "0 14px 34px rgba(10,26,51,.1)" }}>
-      <ZaraAvatar size={60} />
+      <AimanAvatar size={60} />
       <div style={{ flex: 1, minWidth: 0 }}>
         <h2 style={{ margin: "0 0 10px", fontSize: 22 }}>{title}</h2>
         <form onSubmit={(e) => { e.preventDefault(); if (q.trim()) { ask(q.trim()); setQ(""); } }} style={{ display: "flex", gap: 8 }}>

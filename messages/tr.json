@@ -212,8 +212,8 @@
   "fallback": "Doğrulanıyor — güncel tutar için WhatsApp'tan sorun",
   "chat": {
     "open": "Bize yazın",
-    "title": "Zara · Visafeast asistanı",
-    "greeting": "Merhaba! Ben Zara. Ücretler, belgeler veya süreler hakkında sorun. Yazım hataları sorun değil.",
+    "title": "Aiman · Visafeast asistanı",
+    "greeting": "Merhaba! Ben Aiman. Ücretler, belgeler veya süreler hakkında sorun. Yazım hataları sorun değil.",
     "placeholder": "Sorunuzu yazın…",
     "send": "Gönder",
     "q1": "İngiltere ziyaret vizesi ücreti",
@@ -221,7 +221,7 @@
     "q3": "Danışmanla konuş",
     "wa": "WhatsApp'ta devam et",
     "subtitle": "Otomatik asistan · genellikle anında",
-    "disclaimer": "Zara bu siteden yanıt verir. Kendi durumunuz için danışmanla konuşun."
+    "disclaimer": "Aiman bu siteden yanıt verir. Kendi durumunuz için danışmanla konuşun."
   },
   "consent": {
     "text": "IP adresinizi saklamadan ziyaretleri saymak için küçük bir çerez kullanıyoruz.",
@@ -242,7 +242,7 @@
     "destinations": "hedef",
     "checkedPages": "resmi kaynaklı ücretli rehber",
     "lastChecked": "Son kontrol",
-    "askTitle": "Vizenizle ilgili Zara'ya her şeyi sorun",
+    "askTitle": "Vizenizle ilgili Aiman'a her şeyi sorun",
     "askPlaceholder": "örn. İngiltere vize ücreti",
     "ask1": "İngiltere ziyaret vizesi ücreti",
     "ask2": "Schengen belgeleri",
@@ -304,8 +304,8 @@
     "openPage": "Sayfayı aç",
     "chatError": "Üzgünüm, şu an yanıt veremedim. Lütfen WhatsApp'tan yazın.",
     "chatLimit": "Bugünkü mesaj sınırına ulaştınız. Lütfen danışmanımızla WhatsApp'ta devam edin.",
-    "teaser": "Merhaba! Ben Zara. Vizeler hakkında her şeyi sorun.",
-    "askZara": "Asistanımız Zara'ya sorun",
+    "teaser": "Merhaba! Ben Aiman. Vizeler hakkında her şeyi sorun.",
+    "askAiman": "Asistanımız Aiman'a sorun",
     "close": "Kapat",
     "photoSoon": "Fotoğraf yakında",
     "reviewThanks": "Teşekkürler! Yorumunuz onaylandıktan sonra görünecek.",
@@ -505,6 +505,7 @@
     "readOn": "Bu resmî sayfaları {date} tarihinde okuduk. Kurallar, ücretler ve durum değişebilir; başvurmadan önce sayfayı kontrol edin.",
     "officialPage": "Resmî sayfa",
     "verifyNote": "Bazı ayrıntılar doğrulanıyor. En güncel bilgi için bize WhatsApp'tan yazın.",
+    "originNote": "{country} ülkesinden ziyaret ediyorsunuz. Bu sayfadaki ücretler, belgeler ve adımlar, ana hizmetimiz olan Pakistan'dan başvuranlar için resmî bilgilerdir. Gereklilikler sizin için farklı olabilir; durumunuz için bize WhatsApp'tan yazın.",
     "programmes": "Programlar",
     "officialPages": "Resmî sayfalar",
     "photosOf": "{country} fotoğrafları",

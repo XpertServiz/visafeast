@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { waLink, type Locale } from "@/config/site";
 import { useDict } from "@/components/DictProvider";
-import { ZaraAvatar } from "./Avatar";
+import { AimanAvatar } from "./Avatar";
 
 type Msg = { role: "user" | "assistant"; content: string; link?: string; suggest?: string[]; handoff?: boolean };
 
@@ -49,7 +49,7 @@ export function ChatPanel({ locale, whatsapp, onClose, firstQuestion }: { locale
       style={{ position: "fixed", zIndex: 60, bottom: 0, insetInlineEnd: 0, width: "min(390px, 100vw)", height: "min(600px, 92vh)", background: "#fff", border: "1px solid var(--line)", borderRadius: "18px 18px 0 0", boxShadow: "0 -10px 40px rgba(10,26,51,.25)", display: "flex", flexDirection: "column" }}>
       <div className="sky" style={{ padding: "10px 12px 10px 14px", color: "#fff", display: "flex", justifyContent: "space-between", alignItems: "center", borderRadius: "18px 18px 0 0", gap: 10 }}>
         <span style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
-          <ZaraAvatar size={44} />
+          <AimanAvatar size={44} />
           <span style={{ minWidth: 0 }}><strong style={{ display: "block" }}>{t.title}</strong><small style={{ color: "var(--on-navy)" }}>{t.subtitle}</small></span>
         </span>
         <button type="button" onClick={onClose} aria-label="Close" style={{ background: "none", border: 0, color: "#fff", cursor: "pointer", minWidth: 44, minHeight: 44 }}><X /></button>

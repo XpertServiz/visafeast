@@ -212,8 +212,8 @@
   "fallback": "In verifica: chiedici su WhatsApp l'importo di oggi",
   "chat": {
     "open": "Chatta con noi",
-    "title": "Zara · assistente Visafeast",
-    "greeting": "Ciao! Sono Zara. Chiedimi di tariffe, documenti o tempi. Gli errori di battitura non sono un problema.",
+    "title": "Aiman · assistente Visafeast",
+    "greeting": "Ciao! Sono Aiman. Chiedimi di tariffe, documenti o tempi. Gli errori di battitura non sono un problema.",
     "placeholder": "Scrivi la tua domanda…",
     "send": "Invia",
     "q1": "Tariffa visto visita Regno Unito",
@@ -221,7 +221,7 @@
     "q3": "Parla con un consulente",
     "wa": "Continua su WhatsApp",
     "subtitle": "Assistente automatica · di solito subito",
-    "disclaimer": "Zara risponde in base a questo sito. Per il tuo caso, parla con un consulente."
+    "disclaimer": "Aiman risponde in base a questo sito. Per il tuo caso, parla con un consulente."
   },
   "consent": {
     "text": "Usiamo un piccolo cookie per contare le visite, senza salvare il tuo indirizzo IP.",
@@ -242,7 +242,7 @@
     "destinations": "destinazioni",
     "checkedPages": "guide con tariffe da fonti ufficiali",
     "lastChecked": "Ultimo controllo",
-    "askTitle": "Chiedi a Zara tutto sul tuo visto",
+    "askTitle": "Chiedi a Aiman tutto sul tuo visto",
     "askPlaceholder": "es. tariffa visto Regno Unito",
     "ask1": "Tariffa visto visita Regno Unito",
     "ask2": "Documenti Schengen",
@@ -304,8 +304,8 @@
     "openPage": "Apri la pagina",
     "chatError": "Mi dispiace, ora non riesco a rispondere. Scrivici su WhatsApp.",
     "chatLimit": "Hai raggiunto il limite di messaggi di oggi. Continua su WhatsApp con il nostro consulente.",
-    "teaser": "Ciao! Sono Zara. Chiedimi tutto sui visti.",
-    "askZara": "Chiedi a Zara, la nostra assistente",
+    "teaser": "Ciao! Sono Aiman. Chiedimi tutto sui visti.",
+    "askAiman": "Chiedi a Aiman, la nostra assistente",
     "close": "Chiudi",
     "photoSoon": "Foto in arrivo",
     "reviewThanks": "Grazie! La tua recensione apparirà dopo l'approvazione.",
@@ -505,6 +505,7 @@
     "readOn": "Abbiamo letto queste pagine ufficiali il {date}. Regole, costi e stato possono cambiare: controlla la pagina prima di presentare la domanda.",
     "officialPage": "Pagina ufficiale",
     "verifyNote": "Alcuni dettagli sono in fase di verifica. Per le informazioni più recenti, scrivici su WhatsApp.",
+    "originNote": "Ci visita da {country}. Costi, documenti e passaggi di questa pagina sono quelli ufficiali per chi presenta la domanda dal Pakistan, il nostro servizio principale. I requisiti possono essere diversi per lei: ci scriva su WhatsApp per il suo caso.",
     "programmes": "Programmi",
     "officialPages": "Pagine ufficiali",
     "photosOf": "Foto: {country}",

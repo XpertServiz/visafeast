@@ -7,6 +7,7 @@ import { getT, lp } from "@/lib/i18n";
 import { getCountriesFor, getFaqsFor, getNews, getSettings, isStale } from "@/lib/data";
 import { LocalPrice } from "@/components/LocalPrice";
 import { BreadcrumbItems } from "./Breadcrumb";
+import { OriginCode, OriginNote, OriginText } from "@/components/geo/Origin";
 import { breadcrumbJsonLd, faqJsonLd, JsonLd } from "@/lib/seo";
 import { BoardingPass, FaqList, Flag, Md, fmtDate, KIND_BASE } from "@/components/ui";
 import { Checklist } from "./Checklist";
@@ -98,10 +99,11 @@ export async function CountryPage({ c, locale }: { c: Country; locale: Locale })
         <div className="wrap" style={{ position: "relative" }}>
           <BreadcrumbItems items={[{ label: t("common.home"), href: lp(locale, "/") }, { label: hubLabel, href: lp(locale, `/${base}`) }, { label: c.country_name }]} />
           <div className="mono" dir="ltr" style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 22, color: "var(--amber)", fontSize: 18, maxWidth: 420 }}>
-            <span>{c.from_code}</span><span style={{ flex: 1, borderTop: "2px dashed rgba(242,169,59,.6)" }} /><Plane aria-hidden /><span style={{ flex: 1, borderTop: "2px dashed rgba(242,169,59,.6)" }} /><span>{c.to_code}</span>
+            <span><OriginCode fallback={c.from_code} /></span><span style={{ flex: 1, borderTop: "2px dashed rgba(242,169,59,.6)" }} /><Plane aria-hidden /><span style={{ flex: 1, borderTop: "2px dashed rgba(242,169,59,.6)" }} /><span>{c.to_code}</span>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 16 }}><Flag code={c.flag} size={30} /><h1 className="disp h1" style={{ margin: 0, fontSize: 52, lineHeight: 1.1, fontWeight: 600 }}>{c.h1}</h1></div>
-          <p style={{ fontSize: 19, color: "var(--on-navy)", maxWidth: 720, marginTop: 16 }}>{c.intro}</p>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 16 }}><Flag code={c.flag} size={30} /><h1 className="disp h1" style={{ margin: 0, fontSize: 52, lineHeight: 1.1, fontWeight: 600 }}><OriginText text={c.h1} /></h1></div>
+          <p style={{ fontSize: 19, color: "var(--on-navy)", maxWidth: 720, marginTop: 16 }}>{c.intro ? <OriginText text={c.intro} /> : null}</p>
+          <OriginNote text={t("guide.originNote", { country: "{country}" })} />
           <p className="mono" style={{ fontSize: 12, letterSpacing: ".08em", color: "var(--on-navy-2)" }}>
             {t("common.lastChecked").toUpperCase()} {metaDate ? fmtDate(metaDate, locale).toUpperCase() : "—"} · {t("common.source").toUpperCase()}: {domain && metaUrl ? <a href={metaUrl} rel="nofollow noopener" style={{ color: "var(--amber)" }}>{domain}</a> : t("ui.toVerify")}
           </p>
@@ -214,7 +216,7 @@ export async function CountryPage({ c, locale }: { c: Country; locale: Locale })
                 <Link href={lp(locale, "/tools/refusal-decoder")} style={{ textAlign: "center" }}>{t("nav.decoder")} →</Link>
               </div>
             </div>
-            {siblings.slice(0, 3).map((s) => <Link key={s.href} className="card" style={{ padding: 18, textDecoration: "none" }} href={s.href}><b>{s.label} →</b></Link>)}
+            {siblings.slice(0, 3).map((s) => <Link key={s.href} className="card" style={{ padding: 18, textDecoration: "none" }} href={s.href}><b><OriginText text={s.label} /> →</b></Link>)}
             {related.length > 0 && <div><p className="eyebrow" style={{ color: "var(--muted-2)" }}>{t("common.related")}</p><div style={{ display: "grid", gap: 12 }}>{related.slice(0, 3).map((r) => <BoardingPass key={r.slug} c={r} locale={locale} cta={t("cta.guide")} kindLabel={t(r.kind === "visit" ? "ui.kindVisit" : r.kind === "study" ? "ui.kindStudy" : "ui.kindImmigration")} />)}</div></div>}
           </aside>
         </div>

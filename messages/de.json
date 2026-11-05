@@ -212,8 +212,8 @@
   "fallback": "Wird geprüft – fragen Sie uns per WhatsApp nach dem aktuellen Betrag",
   "chat": {
     "open": "Mit uns chatten",
-    "title": "Zara · Visafeast-Assistentin",
-    "greeting": "Hallo! Ich bin Zara. Fragen Sie mich nach Gebühren, Dokumenten oder Fristen. Tippfehler sind kein Problem.",
+    "title": "Aiman · Visafeast-Assistentin",
+    "greeting": "Hallo! Ich bin Aiman. Fragen Sie mich nach Gebühren, Dokumenten oder Fristen. Tippfehler sind kein Problem.",
     "placeholder": "Ihre Frage eingeben…",
     "send": "Senden",
     "q1": "Gebühr Besuchsvisum Großbritannien",
@@ -221,7 +221,7 @@
     "q3": "Mit einem Berater sprechen",
     "wa": "Auf WhatsApp weiter",
     "subtitle": "Automatische Assistentin · meist sofort",
-    "disclaimer": "Zara antwortet anhand dieser Website. Für Ihren Fall sprechen Sie bitte mit einem Berater."
+    "disclaimer": "Aiman antwortet anhand dieser Website. Für Ihren Fall sprechen Sie bitte mit einem Berater."
   },
   "consent": {
     "text": "Wir nutzen ein kleines Cookie, um Besuche zu zählen, ohne Ihre IP-Adresse zu speichern.",
@@ -242,7 +242,7 @@
     "destinations": "Reiseziele",
     "checkedPages": "Ratgeber mit Gebühren aus offiziellen Quellen",
     "lastChecked": "Zuletzt geprüft",
-    "askTitle": "Fragen Sie Zara alles zu Ihrem Visum",
+    "askTitle": "Fragen Sie Aiman alles zu Ihrem Visum",
     "askPlaceholder": "z. B. Gebühr Visum Großbritannien",
     "ask1": "Gebühr Besuchsvisum Großbritannien",
     "ask2": "Schengen-Dokumente",
@@ -304,8 +304,8 @@
     "openPage": "Seite öffnen",
     "chatError": "Entschuldigung, ich konnte gerade nicht antworten. Bitte schreiben Sie uns per WhatsApp.",
     "chatLimit": "Sie haben das heutige Nachrichtenlimit erreicht. Bitte schreiben Sie unserem Berater per WhatsApp.",
-    "teaser": "Hallo! Ich bin Zara. Fragen Sie mich alles rund ums Visum.",
-    "askZara": "Zara fragen, unsere Assistentin",
+    "teaser": "Hallo! Ich bin Aiman. Fragen Sie mich alles rund ums Visum.",
+    "askAiman": "Aiman fragen, unsere Assistentin",
     "close": "Schließen",
     "photoSoon": "Foto folgt in Kürze",
     "reviewThanks": "Danke! Ihre Bewertung erscheint nach unserer Freigabe.",
@@ -505,6 +505,7 @@
     "readOn": "Wir haben diese offiziellen Seiten am {date} gelesen. Regeln, Gebühren und Status können sich ändern. Prüfen Sie die Seite vor Ihrem Antrag.",
     "officialPage": "Offizielle Seite",
     "verifyNote": "Einige Angaben werden noch geprüft. Für die aktuellsten Informationen schreiben Sie uns auf WhatsApp.",
+    "originNote": "Sie besuchen uns aus {country}. Gebühren, Unterlagen und Schritte auf dieser Seite sind die offiziellen Angaben für Antragsteller aus Pakistan, unser Hauptangebot. Für Sie können die Anforderungen abweichen. Schreiben Sie uns auf WhatsApp zu Ihrem Fall.",
     "programmes": "Programme",
     "officialPages": "Offizielle Seiten",
     "photosOf": "Fotos von {country}",
