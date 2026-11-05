@@ -5,7 +5,7 @@ import { Plus } from "lucide-react";
 import { parseYouTube } from "@/lib/youtube";
 
 /** One box: paste a YouTube link (unlisted is fine), press Add. The video goes to the end of the list. */
-export function VideoAdd({ action }: { action: (fd: FormData) => Promise<void> }) {
+export function VideoAdd({ action }: { action: (fd: FormData) => Promise<{ error?: string }> }) {
   const [url, setUrl] = useState("");
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
@@ -16,8 +16,8 @@ export function VideoAdd({ action }: { action: (fd: FormData) => Promise<void> }
     <form ref={form} style={{ display: "grid", gap: 12 }}
       action={async (fd) => {
         setBusy(true); setMsg(null);
-        try { await action(fd); setMsg({ ok: true, text: "Added. It is now on the homepage." }); setUrl(""); form.current?.reset(); }
-        catch (e) { setMsg({ ok: false, text: e instanceof Error ? e.message : "Could not add the video." }); }
+        try { const r = await action(fd); if (r.error) setMsg({ ok: false, text: r.error }); else { setMsg({ ok: true, text: "Added. It is now on the homepage." }); setUrl(""); form.current?.reset(); } }
+        catch { setMsg({ ok: false, text: "Could not add the video. Please try again." }); }
         setBusy(false);
       }}>
       <label className="lbl">YouTube link

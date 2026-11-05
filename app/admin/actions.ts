@@ -277,19 +277,20 @@ export async function addWhatsappReview(fd: FormData) {
   refreshSite(); revalidatePath("/admin/reviews");
 }
 /** Videos tab: add ONE video to the end of the list (any YouTube link, including unlisted ones). */
-export async function addVideo(fd: FormData) {
+export async function addVideo(fd: FormData): Promise<{ error?: string }> {
   const { a, db } = await need(can.website);
   const url = s(fd, "url");
   const p = parseYouTube(url);
-  if (!p) throw new Error("This is not a YouTube link we recognise. Paste the link from the Share button.");
+  if (!p) return { error: "This is not a YouTube link we recognise. Paste the link from the Share button." };
   const { data: all } = await db.from("hero_videos").select("video_id,sort_order").order("sort_order", { ascending: false });
-  if (all?.some((r) => r.video_id === p.id)) throw new Error("This video is already in the list.");
+  if (all?.some((r) => r.video_id === p.id)) return { error: "This video is already in the list." };
   let title = s(fd, "title").slice(0, 120);
   if (!title) { try { const r = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent(url)}&format=json`); if (r.ok) title = String((await r.json()).title ?? "").slice(0, 120); } catch { /* optional */ } }
   const { error } = await db.from("hero_videos").insert({ youtube_url: url, video_id: p.id, title: title || null, caption: s(fd, "caption").slice(0, 160) || null, is_short: p.isShort || s(fd, "short") === "1", is_active: true, sort_order: (all?.[0]?.sort_order ?? 0) + 10 });
-  if (error) throw new Error("Could not save the video. Please try again.");
+  if (error) return { error: "Could not save the video. Please try again." };
   await log(db, a, "add_video", "hero_videos", p.id);
   refreshSite(); revalidatePath("/admin/videos");
+  return {};
 }
 /** Videos tab: show/hide, move up/down or remove one video. */
 export async function changeVideo(fd: FormData) {
