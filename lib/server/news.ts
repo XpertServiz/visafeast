@@ -57,7 +57,10 @@ export async function fetchAllNews(): Promise<{ fetched: number; kept: number; e
           fetched++;
         }
       } else {
+        const news = s.kind === "google_news_rss"; // news-search feeds: headline + outlet only (no excerpt), newest 15 that pass the visa filter
+        let used = 0;
         for (const it of parseFeed(xml).slice(0, 60)) {
+          if (news && used >= 15) break;
           fetched++;
           if (!isRelevant(it)) continue;
           const hay = `${it.title} ${it.summary}`.toLowerCase();
@@ -68,8 +71,8 @@ export async function fetchAllNews(): Promise<{ fetched: number; kept: number; e
           const { data: dup } = await db.from("news_items").select("id").eq("source_id", s.id).eq("title", it.title).limit(1);
           if (dup?.length) continue;
           const topics = ["visit", "study", "fee", "processing", "policy"].filter((t) => hay.includes(t === "fee" ? "fee" : t));
-          const { error } = await db.from("news_items").upsert({ source_id: s.id, title: it.title, url: it.url, published_at: it.published_at, summary: it.summary, country_codes: [...codes], topics }, { onConflict: "url", ignoreDuplicates: true });
-          if (!error) kept++;
+          const { error } = await db.from("news_items").upsert({ source_id: s.id, title: it.title, url: it.url, published_at: it.published_at, summary: news ? "" : it.summary, country_codes: [...codes], topics }, { onConflict: "url", ignoreDuplicates: true });
+          if (!error) { kept++; used++; }
         }
       }
       await db.from("news_sources").update({ last_fetched_at: new Date().toISOString(), last_status: "ok" }).eq("id", s.id);
