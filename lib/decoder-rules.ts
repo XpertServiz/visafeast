@@ -6,7 +6,7 @@ const RULES: Rule[] = [
   { id: "funds", keywords: /(funds|financ|bank|source of (money|income)|sufficient (money|means)|maintain|savings|deposit)/i,
     en: { heading: "Funds or source of money", meaning: "The officer was not satisfied that you have enough money for the trip, or that the money's source is clear.", fix: "Show 6 months of statements with a steady balance, explain any large deposits with documents, and match funds to your income." },
     ur: { heading: "رقم یا رقم کا ذریعہ", meaning: "افسر مطمئن نہیں ہوا کہ سفر کے لیے کافی رقم ہے یا رقم کا ذریعہ واضح ہے۔", fix: "6 ماہ کی اسٹیٹمنٹ، بڑی رقوم کی دستاویزی وضاحت، اور آمدن کے مطابق رقم دکھائیں۔" } },
-  { id: "ties", keywords: /(ties|return (to )?(your )?(home|country|pakistan)|leave (the )?(uk|country|canada|schengen)|intention to (return|depart)|not satisfied that you (will|intend))/i,
+  { id: "ties", keywords: /(\bties\b|return (to )?(your )?(home|country|pakistan)|leave (the )?(uk|country|canada|schengen)|intention to (return|depart)|not satisfied that you (will|intend))/i,
     en: { heading: "Ties to Pakistan", meaning: "The officer was not convinced you will return home after your visit.", fix: "Show job or business, family, property and other reasons that connect you to Pakistan, plus a clear return plan." },
     ur: { heading: "پاکستان سے تعلق", meaning: "افسر کو یقین نہیں آیا کہ آپ سفر کے بعد واپس آئیں گے۔", fix: "ملازمت یا کاروبار، خاندان، جائیداد اور دیگر تعلقات اور واپسی کا واضح منصوبہ دکھائیں۔" } },
   { id: "purpose", keywords: /(purpose|itinerary|travel plan|reason for (your )?(visit|travel|trip)|genuine visitor|bona fide)/i,

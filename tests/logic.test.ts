@@ -48,3 +48,46 @@ describe("misc", () => {
     expect(uk.embassy_fee_text).toContain("£135"); expect(uk.facts_last_checked).toBe("2026-10-23");
   });
 });
+
+import { buildTimeline, last4Matches, nextStep, normRef, validRef } from "../lib/track";
+
+describe("client file tracker", () => {
+  it("validates references and matches only the last 4 digits of the phone", () => {
+    expect(validRef(" vf-1042 ")).toBe(true);
+    expect(normRef(" vf-1042 ")).toBe("VF-1042");
+    expect(validRef("1042; drop table")).toBe(false);
+    expect(last4Matches("+92 300 1234567", "4567")).toBe(true);
+    expect(last4Matches("+92 300 1234567", "4568")).toBe(false);
+    expect(last4Matches(null, "4567")).toBe(false);
+    expect(last4Matches("+923001234567", "567")).toBe(false);
+  });
+  it("builds a done/current/todo timeline", () => {
+    const tl = buildTimeline([{ stage: "b", label_en: "B", label_ur: "ب", sort: 2 }, { stage: "a", label_en: "A", label_ur: "ا", sort: 1 }, { stage: "c", label_en: "C", label_ur: "ج", sort: 3 }], "b", "en");
+    expect(tl.map((x) => x.state)).toEqual(["done", "current", "todo"]);
+    expect(nextStep("submitted", "en").length).toBeGreaterThan(10);
+  });
+});
+
+describe("refusal decoder word boundaries", () => {
+  it("does not treat 'properties' or 'parties' as the ties reason", () => {
+    const r = decodeByRules("The properties of the parties involved were reviewed in this letter about your application and nothing else.", "en");
+    expect(r.points).toEqual([]);
+  });
+});
+
+import { cleanUrdu, localizeCountry } from "../lib/country-ur";
+describe("Urdu overlay never changes facts", () => {
+  const uk = SEED_COUNTRIES.find((c) => c.slug.startsWith("uk-visit"))!;
+  it("keeps English when there is no Urdu draft", () => { expect(localizeCountry(uk, "ur")).toBe(uk); });
+  it("uses Urdu text only where the structure matches, and never touches fees or dates", () => {
+    const draft = { h1: "برطانیہ ویزا", intro: "تعارف", documents: [{ title: "پاسپورٹ" }], steps: uk.steps.map((s) => ({ title: "مرحلہ", detail: s.detail })) };
+    const ur = localizeCountry({ ...uk, content_ur: draft }, "ur");
+    expect(ur.h1).toBe("برطانیہ ویزا");
+    expect(ur.documents).toEqual(uk.documents); // wrong length → ignored, English kept
+    expect(ur.steps.length).toBe(uk.steps.length);
+    expect(ur.embassy_fee_text).toBe(uk.embassy_fee_text);
+    expect(ur.facts_last_checked).toBe(uk.facts_last_checked);
+    expect(localizeCountry({ ...uk, content_ur: draft }, "en").h1).toBe(uk.h1);
+    expect(cleanUrdu("garbage", uk)).toEqual(expect.objectContaining({ h1: undefined }));
+  });
+});

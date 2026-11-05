@@ -1,7 +1,8 @@
 import { db } from "@/lib/server/admin-data";
 import { isStale } from "@/lib/data";
 import { Badge, Card, Field, Grid, day } from "@/components/admin/ui";
-import { approveUrdu, markFactsChecked, saveCountryFacts, toggleCountry } from "../../../actions";
+import { llmAvailable } from "@/lib/server/llm";
+import { approveUrdu, draftUrdu, markFactsChecked, saveCountryFacts, toggleCountry } from "../../../actions";
 
 export const dynamic = "force-dynamic";
 
@@ -38,6 +39,7 @@ export default async function Countries() {
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap", paddingBottom: 14 }}>
               <form action={markFactsChecked}><input type="hidden" name="id" value={c.id} /><button className="btn btn-outline">Mark facts checked today</button></form>
               <form action={toggleCountry}><input type="hidden" name="id" value={c.id} /><input type="hidden" name="publish" value={c.is_published ? "0" : "1"} /><button className="btn btn-dark">{c.is_published ? "Take offline" : "Publish page"}</button></form>
+              {llmAvailable() && <form action={draftUrdu}><input type="hidden" name="id" value={c.id} /><button className="btn btn-outline">{c.content_ur ? "Redo Urdu draft (AI)" : "Draft Urdu (AI)"}</button></form>}
               <form action={approveUrdu} style={{ display: "flex", gap: 6 }}><input type="hidden" name="id" value={c.id} /><select name="status" defaultValue={c.ur_status} className="field" style={{ width: 160 }} aria-label="Urdu status"><option value="none">Urdu: none</option><option value="draft">Urdu: draft</option><option value="approved">Urdu: approved</option></select><button className="btn btn-outline">Set</button></form>
             </div>
           </details>

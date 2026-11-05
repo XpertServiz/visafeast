@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { getAdmin, can } from "@/lib/server/admin-auth";
 import { Title } from "@/components/admin/ui";
 
-const TABS = [["reviews", "Reviews"], ["videos", "Videos"], ["countries", "Pages & countries"], ["news", "News & digest"], ["faqs", "FAQs"], ["appearance", "Appearance"], ["visitors", "Visitors — live"], ["seo", "SEO"]] as const;
+const TABS = [["reviews", "Reviews"], ["videos", "Videos"], ["countries", "Pages & countries"], ["news", "News & digest"], ["faqs", "FAQs"], ["photos", "Photos"], ["appearance", "Appearance"], ["visitors", "Visitors — live"], ["seo", "SEO"]] as const;
 
 export default async function WebsiteLayout({ children }: { children: React.ReactNode }) {
   const a = await getAdmin();

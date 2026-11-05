@@ -21,7 +21,7 @@ Other commands: `npm run typecheck` · `npm run lint` · `npm test` · `npm run 
 
 1. Go to supabase.com → **New project**. Choose a region near Pakistan (e.g. Mumbai or Singapore). Save the database password.
 2. In the project, open **SQL Editor** → **New query**. Paste, in this order, the contents of each file and press **Run**:
-   `supabase/migrations/0001_core.sql`, `0002_backoffice.sql`, `0003_ledger_functions.sql`, `0004_rls.sql`, then `supabase/seed.sql`.
+   `supabase/migrations/0001_core.sql`, `0002_backoffice.sql`, `0003_ledger_functions.sql`, `0004_rls.sql`, `0005_recurring_and_media.sql`, then `supabase/seed.sql`.
 3. **Project settings → API**: copy the *Project URL*, *anon public* key and *service_role* key.
 4. Copy `.env.example` to `.env.local` and paste them into `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`. (Never share the service_role key.)
 5. **Authentication → Users → Add user** → your email + a strong password (tick "auto confirm").
@@ -41,7 +41,9 @@ Other commands: `npm run typecheck` · `npm run lint` · `npm test` · `npm run 
 | Cloudflare Turnstile | Stops spam bots on forms. Dashboard → Turnstile → Add site | `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` |
 | Cal.com | Booking calendar. Create a "15 min" event, put `yourname/15min` in Admin → Settings | (in Admin) |
 | Google Analytics | Backup analytics | `NEXT_PUBLIC_GA_ID` |
-| Pexels | Photo search | `PEXELS_API_KEY` |
+| Pexels | Photo search in Admin → Website → Photos. pexels.com/api → sign up → copy the key | `PEXELS_API_KEY` |
+| Google Search Console API | Shows which Google searches bring visitors. Google Cloud → create a *service account* → download its JSON key → encode it as base64 → paste. Then in Search Console → Settings → Users add the service account's email as a *Restricted* user | `GOOGLE_SEARCH_CONSOLE_CREDENTIALS`, `GSC_SITE_URL` (e.g. `sc-domain:visafeast.com`) |
+| IndexNow | Tells Bing about new pages instantly. Invent any 16+ letter/number text | `INDEXNOW_KEY` |
 | Gemini or Anthropic key | Chatbot, decoder AI mode, weekly digest. **Optional** — everything works without | `LLM_PROVIDER`, key |
 
 Also set `CRON_SECRET` and `DAILY_SALT_SECRET` to any long random text.
@@ -51,7 +53,7 @@ Also set `CRON_SECRET` and `DAILY_SALT_SECRET` to any long random text.
 1. Push this folder to a **GitHub** repository (github.com → New repository → follow "push an existing repository").
 2. vercel.com → **Add New → Project** → import the repository → add every variable from `.env.local` under **Environment Variables** → **Deploy**.
 3. **Settings → Domains** → add `visafeast.com` and `www.visafeast.com`; change DNS at your registrar to what Vercel shows. Set `NEXT_PUBLIC_SITE_URL=https://www.visafeast.com`.
-4. The two daily/weekly jobs in `vercel.json` register automatically once `CRON_SECRET` is set. In Admin → Website → News press **Fetch news now** once.
+4. The two jobs in `vercel.json` register automatically once `CRON_SECRET` is set: a **daily job at 9am Karachi time** (fetches visa news, adds repeating monthly expenses, pulls Search Console numbers and emails you a morning summary) and a weekly news digest. In Admin → Website → News press **Fetch news now** once.
 5. **Google Search Console**: add the domain, verify by DNS, submit `https://www.visafeast.com/sitemap.xml`. Do the same in Bing Webmaster Tools.
 6. In the Cal.com event, add a webhook to `https://www.visafeast.com/api/calcom/webhook` with your `CALCOM_WEBHOOK_SECRET`.
 7. **Important:** Vercel's free *Hobby* plan is for non-commercial use only. Before you take clients, move to **Pro** (about US$20/month).
@@ -83,3 +85,13 @@ app/api/              forms, tracking, chat, decoder, crons
 app/admin/            admin panel
 supabase/migrations/  database
 ```
+
+## 8. Added after the first build
+
+- **Client file tracker** — `/track` (and `/ur/track`). A client types their reference (VF-1001) and the last 4 digits of their phone, and sees only the stage timeline and the next step. Never documents or money. Wrong details always give the same answer, so references cannot be guessed.
+- **Invoice and receipt PDFs** — Admin → Money → *PDF* on each invoice, *Receipt PDF* on each payment, and a *WhatsApp* button that opens a ready message. PDFs are **English only** for now (the PDF tool cannot join Urdu letters properly); an Urdu invoice would look broken, so it is not offered.
+- **Case board** — Admin → Cases on a computer: drag a card to another column (or use the small drop-down on each card). On a phone you get the simple list.
+- **Photos** — Admin → Website → Photos: search free Pexels photos or upload your own. The site converts them to a light format and saves the credit and licence automatically.
+- **Urdu draft** — Admin → Website → Pages: *Draft Urdu (AI)* translates the text only (never fees, dates or numbers). It needs an AI key (section 3); you then read it and set *Approved* — only approved Urdu pages are shown to Google.
+- **Tests** — `npm test` (money engine, the real database SQL run in an in-memory Postgres, tracker, Urdu rules) and `npm run e2e` (opens the real site in Edge on desktop and a 360px phone).
+- **Vercel free plan allows 2 cron jobs**, so everything daily runs in one job (`/api/cron/daily`).

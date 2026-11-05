@@ -1,44 +1,196 @@
 {
-  "nav": { "visas": "Visas & immigration", "eligibility": "Eligibility check", "decoder": "Refusal decoder", "news": "Visa news", "reviews": "Reviews", "book": "Book a free call", "menu": "Menu" },
+  "nav": {
+    "visas": "Visas & immigration",
+    "eligibility": "Eligibility check",
+    "decoder": "Refusal decoder",
+    "news": "Visa news",
+    "reviews": "Reviews",
+    "book": "Book a free call",
+    "menu": "Menu"
+  },
   "hero": {
     "eyebrow": "Visit, study & immigration consultants · Karachi · serving all Pakistan",
     "h1": "Your visa, prepared right the first time.",
     "sub": "Visit visas, study visas and immigration pathways for the UK, Canada, USA, Australia, New Zealand, Europe and Asia — with fees and timelines published openly.",
-    "tick1": "Fees shown with a \"last checked\" date", "tick2": "One consultant, start to decision", "tick3": "Updates on WhatsApp",
-    "handle": "We handle", "watch": "Watch the 3D globe"
+    "tick1": "Fees shown with a \"last checked\" date",
+    "tick2": "One consultant, start to decision",
+    "tick3": "Updates on WhatsApp",
+    "handle": "We handle",
+    "watch": "Watch the 3D globe"
   },
-  "cta": { "eligibility": "Check my eligibility — free", "book": "Book a free call", "whatsapp": "WhatsApp", "enquiry": "Prefer to write? Send an enquiry →", "enquiryBtn": "Send an enquiry", "guide": "Open guide →", "qualify": "Check if I qualify →" },
-  "steps": { "title": "Your visa in 3 easy steps", "s1": "Talk to us", "s1d": "Free call or WhatsApp", "s2": "We prepare your file", "s2d": "Documents checked", "s3": "You fly", "s3d": "Decision from the embassy" },
-  "videos": { "eyebrow": "Watch · visa tips from Visafeast", "all": "See all on YouTube →" },
+  "cta": {
+    "eligibility": "Check my eligibility — free",
+    "book": "Book a free call",
+    "whatsapp": "WhatsApp",
+    "enquiry": "Prefer to write? Send an enquiry →",
+    "enquiryBtn": "Send an enquiry",
+    "guide": "Open guide →",
+    "qualify": "Check if I qualify →"
+  },
+  "steps": {
+    "title": "Your visa in 3 easy steps",
+    "s1": "Talk to us",
+    "s1d": "Free call or WhatsApp",
+    "s2": "We prepare your file",
+    "s2d": "Documents checked",
+    "s3": "You fly",
+    "s3d": "Decision from the embassy"
+  },
+  "videos": {
+    "eyebrow": "Watch · visa tips from Visafeast",
+    "all": "See all on YouTube →"
+  },
   "elig": {
-    "title": "Free · 60 seconds", "h2": "Check your chances", "sub": "Six quick questions. No sign-up.", "q": "Question", "of": "of", "back": "Back", "restart": "Start again",
+    "title": "Free · 60 seconds",
+    "h2": "Check your chances",
+    "sub": "Six quick questions. No sign-up.",
+    "q": "Question",
+    "of": "of",
+    "back": "Back",
+    "restart": "Start again",
     "disclaimer": "This is an indicative guide, not a decision — only the embassy decides.",
-    "strong": "STRONG", "moderate": "MODERATE", "needs": "NEEDS WORK",
+    "strong": "STRONG",
+    "moderate": "MODERATE",
+    "needs": "NEEDS WORK",
     "strongT": "Your profile looks strong on paper. The next step is making the file match it: consistent documents, a clear travel plan and a well-written cover letter.",
     "moderateT": "You have a fair chance, with a few weak points. In a free call we will tell you exactly what to strengthen before you pay any embassy fee.",
     "needsT": "Applying right now carries a high refusal risk. Let us plan the steps first — for example building travel history or documenting funds — so your application starts strong.",
-    "sendChecklist": "Send me the checklist on WhatsApp", "yourWhatsapp": "Your WhatsApp number", "yourName": "Your name"
+    "sendChecklist": "Send me the checklist on WhatsApp",
+    "yourWhatsapp": "Your WhatsApp number",
+    "yourName": "Your name"
   },
   "decoder": {
-    "title": "Got a refusal letter?", "h2": "Refusal letter decoder", "sub": "Paste the text. Get a plain-words explanation.",
-    "label": "Refusal letter text (remove your name and reference)", "btn": "Explain it simply", "privacy": "Text isn't saved unless you ask us to review your case.",
+    "title": "Got a refusal letter?",
+    "h2": "Refusal letter decoder",
+    "sub": "Paste the text. Get a plain-words explanation.",
+    "label": "Refusal letter text (remove your name and reference)",
+    "btn": "Explain it simply",
+    "privacy": "Text isn't saved unless you ask us to review your case.",
     "disclaimer": "This explains your letter in plain words. It is not legal advice; only the embassy decides.",
-    "meaning": "What it means", "fix": "What to fix", "honest": "Honest view", "review": "Book a free file review", "send": "Send it to a consultant",
-    "consent": "I agree to send this text to Visafeast so a consultant can review my case.", "tooLong": "Please paste up to 6,000 characters.", "empty": "Paste your letter text first."
+    "meaning": "What it means",
+    "fix": "What to fix",
+    "honest": "Honest view",
+    "review": "Book a free file review",
+    "send": "Send it to a consultant",
+    "consent": "I agree to send this text to Visafeast so a consultant can review my case.",
+    "tooLong": "Please paste up to 6,000 characters.",
+    "empty": "Paste your letter text first."
   },
-  "why": { "title": "Why visas get refused", "fix": "How we fix it" },
-  "mid": { "h2": "Not sure where your file stands? A 15-minute call is free. So is an honest answer." },
-  "choose": { "title": "Choose your visa page", "visit": "Visit visas", "study": "Study visas", "immigration": "Immigration", "immNote": "Immigration rules change often — each pathway page shows the official source and the date we last checked it. Where the law requires a licensed representative (for example an RCIC for Canada or a registered migration agent for Australia), cases are filed with our licensed partners." },
-  "reviews": { "title": "Client reviews", "note": "Every review here is from a real client. Clients post their own review; we approve it before it appears to stop spam — we never edit the words or hide fair criticism.", "empty": "No reviews published yet. Be the first to share your experience.", "write": "Leave a review" },
-  "whyUs": { "title": "Why Visafeast", "i1": "Published fees", "i1d": "Fees and timelines shown with the date we checked them.", "i2": "One consultant", "i2d": "The same person, from first call to decision.", "i3": "No fake documents", "i3d": "We never arrange bank statements or letters.", "i4": "English and Urdu", "i4d": "The whole site, every checklist and our WhatsApp updates — in the language you prefer." },
-  "news": { "title": "Visa news radar", "official": "Official source", "report": "News report", "digest": "Weekly digest", "none": "No news yet — the radar fills automatically once the daily feed runs.", "all": "All news →" },
-  "faq": { "title": "Questions people ask" },
-  "book": { "title": "Book a free 15-minute call", "or": "Or send an enquiry", "send": "Send enquiry", "sent": "Thank you! We will contact you on WhatsApp soon." },
-  "form": { "name": "Your name", "whatsapp": "WhatsApp number", "email": "Email (optional)", "service": "Service", "country": "Country", "nationality": "Your passport country", "residence": "Where do you live now?", "refused": "Refused before?", "no": "No", "once": "Once", "more": "More than once", "message": "Message (optional)", "visit": "Visit visa", "study": "Study visa", "immigration": "Immigration", "city": "City", "rating": "Rating", "consent": "I agree this can be published", "submit": "Send", "error": "Something went wrong. Please try again or WhatsApp us." },
-  "footer": { "visitStudy": "Visit & study", "immigration": "Immigration", "contact": "Contact", "legal": "Legal", "rights": "All rights reserved." },
+  "why": {
+    "title": "Why visas get refused",
+    "fix": "How we fix it"
+  },
+  "mid": {
+    "h2": "Not sure where your file stands? A 15-minute call is free. So is an honest answer."
+  },
+  "choose": {
+    "title": "Choose your visa page",
+    "visit": "Visit visas",
+    "study": "Study visas",
+    "immigration": "Immigration",
+    "immNote": "Immigration rules change often — each pathway page shows the official source and the date we last checked it. Where the law requires a licensed representative (for example an RCIC for Canada or a registered migration agent for Australia), cases are filed with our licensed partners."
+  },
+  "reviews": {
+    "title": "Client reviews",
+    "note": "Every review here is from a real client. Clients post their own review; we approve it before it appears to stop spam — we never edit the words or hide fair criticism.",
+    "empty": "No reviews published yet. Be the first to share your experience.",
+    "write": "Leave a review"
+  },
+  "whyUs": {
+    "title": "Why Visafeast",
+    "i1": "Published fees",
+    "i1d": "Fees and timelines shown with the date we checked them.",
+    "i2": "One consultant",
+    "i2d": "The same person, from first call to decision.",
+    "i3": "No fake documents",
+    "i3d": "We never arrange bank statements or letters.",
+    "i4": "English and Urdu",
+    "i4d": "The whole site, every checklist and our WhatsApp updates — in the language you prefer."
+  },
+  "news": {
+    "title": "Visa news radar",
+    "official": "Official source",
+    "report": "News report",
+    "digest": "Weekly digest",
+    "none": "No news yet — the radar fills automatically once the daily feed runs.",
+    "all": "All news →"
+  },
+  "faq": {
+    "title": "Questions people ask"
+  },
+  "book": {
+    "title": "Book a free 15-minute call",
+    "or": "Or send an enquiry",
+    "send": "Send enquiry",
+    "sent": "Thank you! We will contact you on WhatsApp soon."
+  },
+  "form": {
+    "name": "Your name",
+    "whatsapp": "WhatsApp number",
+    "email": "Email (optional)",
+    "service": "Service",
+    "country": "Country",
+    "nationality": "Your passport country",
+    "residence": "Where do you live now?",
+    "refused": "Refused before?",
+    "no": "No",
+    "once": "Once",
+    "more": "More than once",
+    "message": "Message (optional)",
+    "visit": "Visit visa",
+    "study": "Study visa",
+    "immigration": "Immigration",
+    "city": "City",
+    "rating": "Rating",
+    "consent": "I agree this can be published",
+    "submit": "Send",
+    "error": "Something went wrong. Please try again or WhatsApp us."
+  },
+  "footer": {
+    "visitStudy": "Visit & study",
+    "immigration": "Immigration",
+    "contact": "Contact",
+    "legal": "Legal",
+    "rights": "All rights reserved."
+  },
   "fallback": "Being verified — WhatsApp us for today's figure",
-  "chat": { "open": "Chat with us", "title": "Visafeast assistant", "greeting": "Assalam-o-Alaikum! I'm the Visafeast assistant. Ask me about visit, study or immigration — in English or Urdu. For your own case, I'll connect you to our consultant on WhatsApp.", "placeholder": "Type your question", "send": "Send", "q1": "UK visit visa documents", "q2": "Do you guarantee a visa?", "q3": "Talk to a consultant", "wa": "Continue on WhatsApp" },
-  "consent": { "text": "We use a small cookie to count visitors, without storing your IP address.", "ok": "OK" },
-  "splash": { "skip": "Skip" },
-  "common": { "lastChecked": "Last checked", "source": "Source", "onThisPage": "On this page", "related": "Related guides", "readMore": "Read more", "home": "Home" }
+  "chat": {
+    "open": "Chat with us",
+    "title": "Visafeast assistant",
+    "greeting": "Assalam-o-Alaikum! I'm the Visafeast assistant. Ask me about visit, study or immigration — in English or Urdu. For your own case, I'll connect you to our consultant on WhatsApp.",
+    "placeholder": "Type your question",
+    "send": "Send",
+    "q1": "UK visit visa documents",
+    "q2": "Do you guarantee a visa?",
+    "q3": "Talk to a consultant",
+    "wa": "Continue on WhatsApp"
+  },
+  "consent": {
+    "text": "We use a small cookie to count visitors, without storing your IP address.",
+    "ok": "OK"
+  },
+  "splash": {
+    "skip": "Skip"
+  },
+  "common": {
+    "lastChecked": "Last checked",
+    "source": "Source",
+    "onThisPage": "On this page",
+    "related": "Related guides",
+    "readMore": "Read more",
+    "home": "Home"
+  },
+  "track": {
+    "title": "Track your visa file",
+    "intro": "Enter the reference number we gave you and the last 4 digits of your WhatsApp number.",
+    "ref": "Reference number",
+    "last4": "Last 4 digits of your phone",
+    "button": "Show my file",
+    "notFound": "We could not find a file with those details. Please check and try again, or message us on WhatsApp.",
+    "next": "What happens next",
+    "now": "you are here",
+    "approved": "Your visa was approved. Congratulations!",
+    "refused": "A decision has been made. Please talk to your consultant about next steps.",
+    "withdrawn": "This application was withdrawn."
+  }
 }

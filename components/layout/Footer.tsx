@@ -45,7 +45,7 @@ export async function Footer({ locale, settings }: { locale: Locale; settings: S
               <li style={li}><a style={a} href={settings.facebook_url} rel="noopener">Facebook</a></li>
               <li style={li}>{settings.address_line}</li>
               <li style={li}>{settings.office_hours}</li>
-              <li style={li}><Link style={a} href={lp(locale, "/about")}>About</Link> · <Link style={a} href={lp(locale, "/contact")}>Contact</Link></li>
+              <li style={li}><Link style={a} href={lp(locale, "/about")}>About</Link> · <Link style={a} href={lp(locale, "/contact")}>Contact</Link> · <Link style={a} href={lp(locale, "/track")}>{t("track.title")}</Link></li>
             </ul>
           </div>
         </div>

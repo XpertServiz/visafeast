@@ -7,6 +7,7 @@ import { alternates } from "@/lib/seo";
 import { lp } from "@/lib/i18n";
 import type { Kind } from "@/lib/types";
 import { CountryPage } from "./CountryPage";
+import { localizeCountry } from "@/lib/country-ur";
 import { BoardingPass, Section } from "@/components/ui";
 import { BreadcrumbItems } from "./Breadcrumb";
 import { IMMIGRATION_HUB } from "@/lib/seed";
@@ -68,8 +69,9 @@ export function detailRoute(kind: Kind) {
   async function generateMetadata({ params }: PS): Promise<Metadata> {
     const { locale } = await pageCtx(params);
     const { slug } = await params;
-    const c = await getCountry(slug);
-    if (!c || c.kind !== kind) return {};
+    const c0 = await getCountry(slug);
+    if (!c0 || c0.kind !== kind) return {};
+    const c = localizeCountry(c0, locale);
     const ur = locale === "ur" && c.ur_status !== "approved";
     return {
       title: c.meta_title, description: c.meta_description, alternates: alternates(`/${BASE[kind]}/${c.slug}`, locale),
@@ -82,7 +84,7 @@ export function detailRoute(kind: Kind) {
     const { slug } = await params;
     const c = await getCountry(slug);
     if (!c || c.kind !== kind) notFound();
-    return <CountryPage c={c} locale={locale} />;
+    return <CountryPage c={localizeCountry(c, locale)} locale={locale} />;
   }
   async function generateStaticParams() {
     const list = await getCountries(kind);

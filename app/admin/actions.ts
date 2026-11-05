@@ -7,6 +7,13 @@ import { parseYouTube } from "@/lib/youtube";
 import { fetchAllNews } from "@/lib/server/news";
 import { HEADING_FONTS, BODY_FONTS, URDU_FONTS } from "@/lib/font-lists";
 import { isTheme } from "@/lib/themes";
+import { pingIndexNow } from "@/lib/server/indexnow";
+import { downloadPexelsImage, getPexelsPhoto } from "@/lib/server/pexels";
+import { PHOTOS } from "@/lib/photos";
+import sharp from "sharp";
+import { llm, llmAvailable } from "@/lib/server/llm";
+import { URDU_TRANSLATE_SYSTEM, cleanUrdu, urSource } from "@/lib/country-ur";
+import type { Country } from "@/lib/types";
 
 type Check = (r: Admin["role"]) => boolean;
 async function need(check: Check = () => true): Promise<{ a: Admin; db: NonNullable<ReturnType<typeof serviceClient>> }> {
@@ -19,6 +26,12 @@ const n = (fd: FormData, k: string) => Math.max(0, Math.round(Number(s(fd, k)) |
 const log = (db: NonNullable<ReturnType<typeof serviceClient>>, a: Admin, action: string, table: string, id?: string, meta?: unknown) =>
   db.from("activity_log").insert({ actor: a.id, action, target_table: table, target_id: id, meta: meta ?? null });
 const refreshSite = () => revalidatePath("/", "layout");
+const BASE = { visit: "visit-visa", study: "study-visa", immigration: "immigration" } as const;
+/** Tell Bing/Yandex (IndexNow) that a country page changed — English and Urdu URLs. No-op until INDEXNOW_KEY is set. */
+async function pingCountry(db: NonNullable<ReturnType<typeof serviceClient>>, id: string) {
+  const { data: c } = await db.from("countries").select("slug,kind,is_published").eq("id", id).maybeSingle();
+  if (c?.is_published) { const p = `/${BASE[c.kind as keyof typeof BASE]}/${c.slug}`; await pingIndexNow([p, `/ur${p}`]); }
+}
 
 // ---------- auth ----------
 export async function signIn(_: unknown, fd: FormData) {
@@ -71,6 +84,20 @@ export async function setCaseStage(fd: FormData) {
   await db.from("cases").update(patch).eq("id", id);
   await db.from("timeline_events").insert({ case_id: id, kind: "stage_change", body: `Stage: ${stage}`, actor: a.id });
   revalidatePath(`/admin/cases/${ref}`); revalidatePath("/admin/cases");
+}
+export async function moveCase(fd: FormData) {
+  const { a, db } = await need(can.people);
+  const id = s(fd, "id"), stage = s(fd, "stage");
+  const { data: c } = await db.from("cases").select("service_type").eq("id", id).maybeSingle();
+  if (!c) return;
+  const { data: ok } = await db.from("case_stage_templates").select("stage").eq("service_type", c.service_type).eq("stage", stage).maybeSingle();
+  if (!ok) return; // only real stages of this service type
+  const patch: Record<string, unknown> = { stage };
+  if (stage === "closed") patch.closed_at = new Date().toISOString();
+  if (stage === "submitted") patch.submitted_at = new Date().toISOString().slice(0, 10);
+  await db.from("cases").update(patch).eq("id", id);
+  await db.from("timeline_events").insert({ case_id: id, kind: "stage_change", body: `Stage: ${stage}`, actor: a.id });
+  revalidatePath("/admin/cases"); revalidatePath(`/admin/cases/${s(fd, "ref")}`);
 }
 export async function recordDecision(fd: FormData) {
   const { a, db } = await need(can.people);
@@ -266,12 +293,12 @@ export async function saveCountryFacts(fd: FormData) {
     processing_time_text: t("processing_time_text"), max_stay_text: t("max_stay_text"), apply_window_text: t("apply_window_text"), biometrics_text: t("biometrics_text"),
     facts_source_url: t("facts_source_url"), facts_last_checked: new Date().toISOString().slice(0, 10), updated_at: new Date().toISOString(),
   }).eq("id", s(fd, "id"));
-  await log(db, a, "save_country_facts", "countries", s(fd, "id")); refreshSite(); revalidatePath("/admin/website/countries");
+  await log(db, a, "save_country_facts", "countries", s(fd, "id")); await pingCountry(db, s(fd, "id")); refreshSite(); revalidatePath("/admin/website/countries");
 }
 export async function toggleCountry(fd: FormData) {
   const { a, db } = await need(can.website);
   await db.from("countries").update({ is_published: s(fd, "publish") === "1", updated_at: new Date().toISOString() }).eq("id", s(fd, "id"));
-  await log(db, a, "toggle_country", "countries", s(fd, "id")); refreshSite(); revalidatePath("/admin/website/countries");
+  await log(db, a, "toggle_country", "countries", s(fd, "id")); await pingCountry(db, s(fd, "id")); refreshSite(); revalidatePath("/admin/website/countries");
 }
 export async function approveUrdu(fd: FormData) {
   const { db } = await need(can.website);
@@ -280,7 +307,9 @@ export async function approveUrdu(fd: FormData) {
 export async function publishPost(fd: FormData) {
   const { a, db } = await need(can.website);
   await db.from("posts").update({ status: s(fd, "publish") === "1" ? "published" : "draft", published_at: s(fd, "publish") === "1" ? new Date().toISOString() : null, body_md: s(fd, "body_md") || undefined }).eq("id", s(fd, "id"));
-  await log(db, a, "publish_post", "posts", s(fd, "id")); refreshSite(); revalidatePath("/admin/website/news");
+  await log(db, a, "publish_post", "posts", s(fd, "id"));
+  if (s(fd, "publish") === "1") { const { data: p } = await db.from("posts").select("slug").eq("id", s(fd, "id")).maybeSingle(); if (p?.slug) await pingIndexNow([`/news/${p.slug}`, "/news"]); }
+  refreshSite(); revalidatePath("/admin/website/news");
 }
 export async function fetchNewsNow() { const { a, db } = await need(can.website); const r = await fetchAllNews(); await log(db, a, "fetch_news", "news_items", undefined, r); refreshSite(); revalidatePath("/admin/website/news"); }
 export async function saveNewsItem(fd: FormData) {
@@ -317,4 +346,58 @@ export async function inviteTeamMember(fd: FormData) {
   await db.from("profiles").upsert({ id: data.user.id, full_name: s(fd, "name") || email, role });
   await log(db, a, "invite_member", "profiles", data.user.id, { role });
   revalidatePath("/admin/settings");
+}
+
+// ---------- photos (brief §4: royalty-free only, licence + credit recorded) ----------
+async function storePhoto(db: NonNullable<ReturnType<typeof serviceClient>>, slot: string, raw: Buffer, meta: { alt: string; source: "pexels" | "owner"; source_url?: string; photographer?: string; licence: string }) {
+  if (!(slot in PHOTOS)) throw new Error("Unknown photo place.");
+  const img = await sharp(raw).rotate().resize({ width: 1600, withoutEnlargement: true }).webp({ quality: 78 }).toBuffer({ resolveWithObject: true });
+  const path = `slots/${slot}-${Date.now()}.webp`;
+  const up = await db.storage.from("media").upload(path, img.data, { contentType: "image/webp", upsert: true });
+  if (up.error) throw new Error(up.error.message);
+  await db.from("media").delete().eq("slot", slot);
+  const { error } = await db.from("media").insert({ slot, storage_path: path, width: img.info.width, height: img.info.height, alt_en: meta.alt, source: meta.source, source_url: meta.source_url ?? null, photographer: meta.photographer ?? null, licence: meta.licence, used_on: [slot] });
+  if (error) throw new Error(error.message);
+}
+export async function choosePexelsPhoto(fd: FormData) {
+  const { a, db } = await need(can.website);
+  const slot = s(fd, "slot"), p = await getPexelsPhoto(Number(s(fd, "photo_id")));
+  if (!p) throw new Error("Could not find that photo on Pexels.");
+  const raw = await downloadPexelsImage(p.large);
+  if (!raw) throw new Error("Could not download the photo.");
+  await storePhoto(db, slot, raw, { alt: s(fd, "alt") || p.alt || PHOTOS[slot]?.alt || "", source: "pexels", source_url: p.url, photographer: p.photographer, licence: "Pexels License (free for commercial use)" });
+  await log(db, a, "photo_pexels", "media", slot, { pexels_id: p.id }); refreshSite(); revalidatePath("/admin/website/photos");
+}
+export async function uploadOwnPhoto(fd: FormData) {
+  const { a, db } = await need(can.website);
+  const file = fd.get("file");
+  if (!(file instanceof File) || file.size === 0) throw new Error("Choose a photo first.");
+  if (file.size > 10 * 1024 * 1024) throw new Error("The photo is bigger than 10 MB.");
+  if (!/^image[/](jpeg|png|webp)$/.test(file.type)) throw new Error("Please choose a JPG, PNG or WebP photo.");
+  if (s(fd, "mine") !== "on") throw new Error("Please tick the box: you own this photo or have the right to use it.");
+  const slot = s(fd, "slot");
+  await storePhoto(db, slot, Buffer.from(await file.arrayBuffer()), { alt: s(fd, "alt") || PHOTOS[slot]?.alt || "", source: "owner", licence: "Owner-supplied" });
+  await log(db, a, "photo_upload", "media", slot); refreshSite(); revalidatePath("/admin/website/photos");
+}
+export async function removePhoto(fd: FormData) {
+  const { a, db } = await need(can.website);
+  await db.from("media").delete().eq("slot", s(fd, "slot"));
+  await log(db, a, "photo_remove", "media", s(fd, "slot")); refreshSite(); revalidatePath("/admin/website/photos");
+}
+
+// ---------- Urdu draft (AI translates only; the owner approves before it is indexed) ----------
+export async function draftUrdu(fd: FormData) {
+  const { a, db } = await need(can.website);
+  if (!llmAvailable()) throw new Error("AI drafting is not switched on. Ask for it in Settings, or add the Urdu text by hand.");
+  const { data: c } = await db.from("countries").select("*").eq("id", s(fd, "id")).maybeSingle();
+  if (!c) throw new Error("Page not found");
+  const out = await llm(URDU_TRANSLATE_SYSTEM, JSON.stringify(urSource(c as Country)), 3500);
+  if (!out) throw new Error("The AI did not answer. Please try again in a minute.");
+  let parsed: unknown;
+  try { parsed = JSON.parse(out.replace(/```json|```/g, "").trim()); } catch { throw new Error("The AI answer could not be read. Please try again."); }
+  const clean = cleanUrdu(parsed, c as Country);
+  if (!clean.h1 && !clean.intro) throw new Error("The AI answer was incomplete. Please try again.");
+  await db.from("countries").update({ content_ur: clean, ur_status: "draft", updated_at: new Date().toISOString() }).eq("id", s(fd, "id"));
+  await log(db, a, "draft_urdu", "countries", s(fd, "id"));
+  refreshSite(); revalidatePath("/admin/website/countries");
 }

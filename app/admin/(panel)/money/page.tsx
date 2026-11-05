@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getAdmin, can } from "@/lib/server/admin-auth";
 import { db, today, startOfMonth } from "@/lib/server/admin-data";
 import { Badge, Card, Empty, Field, Grid, Stat, Title, day, pkr } from "@/components/admin/ui";
+import { waLink } from "@/config/site";
 import { addExpense, cancelInvoice, closeMonth, createInvoice, markCommissionPaid, receivePayment, takeMoneyOut } from "../../actions";
 
 export const dynamic = "force-dynamic";
@@ -13,18 +14,19 @@ export default async function Money({ searchParams }: { searchParams: Promise<{ 
   const from = sp.from || startOfMonth(), to = sp.to || today();
   const d = db();
   const owner = can.reports(admin.role);
-  const [accounts, cats, invoices, people, cases, commissions, profit, balances, partners] = await Promise.all([
+  const [accounts, cats, invoices, people, cases, commissions, profit, balances, partners, payments] = await Promise.all([
     d.from("money_accounts").select("id,name,kind").eq("is_active", true),
     d.from("expense_categories").select("id,name").order("name"),
-    d.from("invoices").select("id,number,status,due_date,issue_date,person:people(full_name),lines:invoice_lines(line_type,amount_pkr)").order("issue_date", { ascending: false }).limit(40),
+    d.from("invoices").select("id,number,status,due_date,issue_date,person:people(full_name,whatsapp),lines:invoice_lines(line_type,amount_pkr)").order("issue_date", { ascending: false }).limit(40),
     d.from("people").select("id,full_name").order("created_at", { ascending: false }).limit(200),
     d.from("cases").select("id,ref,person_id").is("deleted_at", null).order("created_at", { ascending: false }).limit(100),
     owner ? d.from("commissions").select("id,amount_pkr,partner:partners(name)").eq("status", "due") : Promise.resolve({ data: [] }),
     owner ? d.rpc("report_profit", { p_from: from, p_to: to }) : Promise.resolve({ data: null }),
     owner ? d.rpc("report_balances") : Promise.resolve({ data: null }),
     d.from("partners").select("id,name"),
+    d.from("payments").select("id,amount_pkr,paid_on,method,person:people(full_name),invoice:invoices(number)").order("paid_on", { ascending: false }).limit(15),
   ]);
-  type Inv = { id: string; number: string; status: string; due_date: string | null; issue_date: string; person: { full_name: string } | null; lines: { line_type: string; amount_pkr: number }[] };
+  type Inv = { id: string; number: string; status: string; due_date: string | null; issue_date: string; person: { full_name: string; whatsapp: string | null } | null; lines: { line_type: string; amount_pkr: number }[] };
   const inv = (invoices.data ?? []) as unknown as Inv[];
   const total = (i: Inv) => i.lines.reduce((s, l) => s + (l.line_type === "discount" ? -l.amount_pkr : l.amount_pkr), 0);
   const p = (profit.data as { income: number; expenses: number; profit: number }[] | null)?.[0];
@@ -101,9 +103,19 @@ export default async function Money({ searchParams }: { searchParams: Promise<{ 
       {inv.length ? <div style={{ display: "grid", gap: 10 }}>{inv.map((i) => (
         <div key={i.id} className="card" style={{ padding: 14, display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
           <span><b className="mono">{i.number}</b> · {i.person?.full_name}<br /><span style={{ color: "var(--muted)", fontSize: 14 }}>{day(i.issue_date)} · {pkr(total(i))}</span></span>
-          <span style={{ display: "flex", gap: 8, alignItems: "center" }}><Badge color={i.status === "paid" ? "var(--ok)" : i.status === "cancelled" ? "var(--muted-2)" : "var(--amber-text)"}>{i.status}</Badge>
+          <span style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+            <a className="btn btn-outline" style={{ minHeight: 44 }} href={`/admin/money/pdf?type=invoice&id=${i.id}`} target="_blank" rel="noreferrer">PDF</a>
+            {i.person?.whatsapp && <a className="btn btn-wa" style={{ minHeight: 44 }} target="_blank" rel="noreferrer" href={waLink(`Assalam-o-Alaikum ${i.person.full_name}, here is your Visafeast invoice ${i.number} for ${pkr(total(i))}. Thank you.`, i.person.whatsapp)}>WhatsApp</a>}
+            <Badge color={i.status === "paid" ? "var(--ok)" : i.status === "cancelled" ? "var(--muted-2)" : "var(--amber-text)"}>{i.status}</Badge>
             {owner && i.status !== "cancelled" && i.status !== "paid" && <form action={cancelInvoice}><input type="hidden" name="id" value={i.id} /><button className="btn btn-outline" style={{ minHeight: 44 }}>Cancel</button></form>}</span>
         </div>))}</div> : <Empty text="No invoices yet. Create one above." />}
+
+      <h2 className="disp" style={{ margin: "28px 0 12px" }}>Recent payments</h2>
+      {payments.data?.length ? <div style={{ display: "grid", gap: 10 }}>{(payments.data as unknown as { id: string; amount_pkr: number; paid_on: string; method: string | null; person: { full_name: string } | null; invoice: { number: string } | null }[]).map((p) => (
+        <div key={p.id} className="card" style={{ padding: 14, display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+          <span><b>{pkr(p.amount_pkr)}</b> · {p.person?.full_name ?? "—"}<br /><span style={{ color: "var(--muted)", fontSize: 14 }}>{day(p.paid_on)} · {p.method ?? ""} {p.invoice ? `· ${p.invoice.number}` : "· advance"}</span></span>
+          <a className="btn btn-outline" style={{ minHeight: 44 }} href={`/admin/money/pdf?type=receipt&id=${p.id}`} target="_blank" rel="noreferrer">Receipt PDF</a>
+        </div>))}</div> : <Empty text="No payments yet." />}
 
       {owner && (
         <Grid min={340}>
