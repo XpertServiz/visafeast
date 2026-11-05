@@ -91,3 +91,39 @@ describe("Urdu overlay never changes facts", () => {
     expect(cleanUrdu("garbage", uk)).toEqual(expect.objectContaining({ h1: undefined }));
   });
 });
+
+import { clientMayUpload, hashCode, newCode, normCode, pathFor, pathIsTheirs, safeFileName, uploadProblem } from "../lib/portal";
+describe("client portal rules", () => {
+  it("only allows the right file types and sizes", () => {
+    expect(uploadProblem("application/pdf", 1000)).toBeNull();
+    expect(uploadProblem("image/jpeg", 10 * 1024 * 1024)).toBeNull();
+    expect(uploadProblem("image/jpeg", 10 * 1024 * 1024 + 1)).toMatch(/10 MB/);
+    expect(uploadProblem("text/html", 100)).toMatch(/PDF/);
+    expect(uploadProblem("application/x-msdownload", 100)).toMatch(/PDF/);
+    expect(uploadProblem("image/png", 0)).toMatch(/empty/);
+  });
+  it("a storage path must belong to this client and this document", () => {
+    const uuid = "11111111-1111-1111-1111-111111111111";
+    const good = pathFor("p1", "d1", uuid, "application/pdf");
+    expect(good).toBe(`p1/d1/${uuid}.pdf`);
+    expect(pathIsTheirs(good, "p1", "d1")).toBe(true);
+    expect(pathIsTheirs(good, "p2", "d1")).toBe(false);
+    expect(pathIsTheirs(good, "p1", "d2")).toBe(false);
+    expect(pathIsTheirs(`p1/d1/../../p2/d9/${uuid}.pdf`, "p1", "d1")).toBe(false);
+    expect(pathIsTheirs("p1/d1/evil.html", "p1", "d1")).toBe(false);
+  });
+  it("cleans file names and codes", () => {
+    expect(safeFileName("../../etc/passwd")).toBe("passwd");
+    expect(safeFileName("C:\\Users\\me\\passport scan.pdf")).toBe("passport scan.pdf");
+    expect(safeFileName("<script>.pdf")).toBe("script.pdf");
+    const c = newCode();
+    expect(c).toMatch(/^[A-HJ-NP-Z2-9]{10}$/);
+    expect(hashCode(c.toLowerCase())).toBe(hashCode(c));
+    expect(normCode(" ab-cd ")).toBe("ABCD");
+  });
+  it("an approved document cannot be replaced by the client", () => {
+    expect(clientMayUpload("approved")).toBe(false);
+    expect(clientMayUpload("rejected")).toBe(true);
+    expect(clientMayUpload("missing")).toBe(true);
+  });
+});

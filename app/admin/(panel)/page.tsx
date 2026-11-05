@@ -11,6 +11,12 @@ export const dynamic = "force-dynamic";
 export default async function Today() {
   const admin = (await getAdmin())!;
   const d = db();
+  const staffCanSeeClients = can.people(admin.role);
+  const [unread, toCheck] = staffCanSeeClients ? await Promise.all([
+    d.from("client_messages").select("id,person_id,body,created_at,person:people(full_name)").eq("sender", "client").is("read_by_staff_at", null).order("id", { ascending: false }).limit(30),
+    d.from("case_documents").select("id", { count: "exact", head: true }).eq("status", "uploaded"),
+  ]) : [{ data: [] as never[] }, { count: 0 }];
+  const threads = [...new Map(((unread.data ?? []) as unknown as { person_id: string; body: string; person: { full_name: string | null } | null }[]).map((m) => [m.person_id, m])).values()];
   const [leads, reminders, overdue, pendingReviews, drafts, live, waiting] = await Promise.all([
     d.from("leads").select("id,name,phone,destination,visa_type,source,created_at").eq("status", "new").order("created_at", { ascending: false }).limit(8),
     d.from("reminders").select("id,note,due_on,person:people(full_name,whatsapp)").eq("done", false).lte("due_on", today()).limit(10),
@@ -40,6 +46,15 @@ export default async function Today() {
             </div>
           )) : <Empty text="No new enquiries. Add one when someone messages you." href="/admin/people#new" cta="Add an enquiry" />}
         </Card>
+
+        {staffCanSeeClients && (
+          <Card title={`Client messages (${threads.length})`}>
+            {threads.length ? threads.map((m) => (
+              <p key={m.person_id} style={{ margin: 0, padding: "10px 0", borderTop: "1px solid var(--line)" }}><Link href={`/admin/people/${m.person_id}`}><b>{m.person?.full_name ?? "Client"}</b></Link><br /><span dir="auto" style={{ color: "var(--muted)", fontSize: 14, overflowWrap: "anywhere" }}>{m.body.slice(0, 90)}</span></p>
+            )) : <Empty text="No new messages from clients." />}
+            <p style={{ marginBottom: 0 }}><Link href="/admin/cases/documents">Documents to check: {toCheck.count ?? 0} →</Link></p>
+          </Card>
+        )}
 
         <Card title="Follow-ups due">
           {reminders.data?.length ? (reminders.data as unknown as { id: string; note: string | null; due_on: string; person: Person }[]).map((r) => (

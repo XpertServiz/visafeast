@@ -181,9 +181,9 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <div className="card" style={{ padding: 24, maxWidth: 640, marginInline: "auto", marginTop: 24, textAlign: "center" }}>
             <Stamp color="var(--stamp-blue)">NEW</Stamp>
             <p style={{ margin: "12px 0 0" }}>{t("reviews.empty")}</p>
-            {settings.google_reviews_url && <p><a href={settings.google_reviews_url} rel="noopener">Google reviews →</a></p>}
           </div>
         )}
+        {settings.google_reviews_url && <p style={{ textAlign: "center", marginTop: 20 }}><a className="btn btn-outline" href={settings.google_reviews_url} target="_blank" rel="noopener">{t("reviews.google")}</a></p>}
         <div className="card" style={{ padding: 24, maxWidth: 720, marginInline: "auto", marginTop: 28 }}>
           <h3 className="disp" style={{ marginTop: 0, fontSize: 24 }}>{t("reviews.write")}</h3>
           <ReviewForm locale={locale} />

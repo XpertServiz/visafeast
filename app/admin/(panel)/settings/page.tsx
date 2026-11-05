@@ -42,7 +42,7 @@ export default async function SettingsPage() {
             <Field label="Facebook page"><input name="facebook_url" defaultValue={t("facebook_url")} className="field" /></Field>
             <Field label="YouTube channel link"><input name="youtube_channel_url" defaultValue={t("youtube_channel_url")} className="field" /></Field>
             <Field label="Google reviews link"><input name="google_reviews_url" defaultValue={t("google_reviews_url")} className="field" /></Field>
-            <Field label="Cal.com link (e.g. visafeast/15min)"><input name="calcom_link" defaultValue={t("calcom_link")} className="field" /></Field>
+            <Field label="Cal.com link (e.g. visa-feast-pvus5i/15min)"><input name="calcom_link" defaultValue={t("calcom_link")} className="field" /></Field>
             <Field label="Show our service fees as"><select name="service_fee_mode" defaultValue={t("service_fee_mode")} className="field"><option value="quote">Contact for quote</option><option value="from">From PKR …</option><option value="exact">Exact amount</option></select></Field>
             <Field label="Delete client documents after (months)"><input name="case_doc_retention_months" type="number" defaultValue={t("case_doc_retention_months") || "12"} className="field" /></Field>
             <label><input type="checkbox" name="chatbot_enabled" defaultChecked={v.chatbot_enabled !== false} style={{ width: 20, height: 20, marginInlineEnd: 8 }} />Show the chat assistant on the website</label>

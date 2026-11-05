@@ -13,6 +13,7 @@ export function Nav({ locale }: { locale: Locale }) {
     { href: lp(locale, "/tools/refusal-decoder"), label: t("nav.decoder") },
     { href: lp(locale, "/news"), label: t("nav.news") },
     { href: lp(locale, "/reviews"), label: t("nav.reviews") },
+    { href: lp(locale, "/portal"), label: t("portal.navLink") },
   ];
   const linkStyle = { color: "#D6DEEA", textDecoration: "none", fontWeight: 500, fontSize: 15 } as const;
   return (

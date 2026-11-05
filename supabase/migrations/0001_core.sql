@@ -10,14 +10,14 @@ create table if not exists profiles (
 
 create table if not exists settings (
   id int primary key default 1 check (id = 1),
-  whatsapp_number text not null default '+16479662297',
+  whatsapp_number text not null default '+923076777020',
   whatsapp_number_pk text,
   email text default 'visafeast@gmail.com',
   facebook_url text default 'https://www.facebook.com/visafeast/',
   address_line text default 'Karachi · consultations online across Pakistan',
   office_hours text default 'Mon–Sat 10am–7pm PKT',
   ntn text,
-  calcom_link text default 'visafeast/15min',
+  calcom_link text default 'visa-feast-pvus5i/15min',
   service_fee_mode text default 'quote' check (service_fee_mode in ('exact','from','quote')),
   digest_auto_publish boolean default false,
   chatbot_enabled boolean default true,

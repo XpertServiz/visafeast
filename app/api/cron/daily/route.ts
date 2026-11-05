@@ -3,7 +3,7 @@ import { revalidatePath } from "next/cache";
 import { fetchAllNews } from "@/lib/server/news";
 import { serviceClient } from "@/lib/supabase";
 import { notifyOwner } from "@/lib/server/notify";
-import { createRecurringExpenses, morningSummary } from "@/lib/server/daily";
+import { createRecurringExpenses, morningSummary, purgeExpiredDocuments } from "@/lib/server/daily";
 import { pullSearchConsole } from "@/lib/server/gsc";
 
 export const maxDuration = 60;
@@ -20,6 +20,7 @@ export async function GET(req: NextRequest) {
   if (db) {
     let made = 0;
     await step("recurring", async () => (made = await createRecurringExpenses(db)));
+    await step("documentsDeleted", () => purgeExpiredDocuments(db));
     await step("searchConsole", pullSearchConsole);
     await step("morningEmail", async () => { const m = await morningSummary(db, made); return { sent: await notifyOwner(m.subject, m.html), ...m.data }; });
   }

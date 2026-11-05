@@ -21,7 +21,7 @@ export default async function Cases() {
 
   return (
     <>
-      <Title sub="Each client's application, from first call to decision.">Cases</Title>
+      <Title sub="Each client's application, from first call to decision." action={<Link className="btn btn-outline" href="/admin/cases/documents">Client documents</Link>}>Cases</Title>
       {list.length > 0 && (
         <div className="hide-sm" style={{ marginBottom: 20 }}>
           <CaseBoard

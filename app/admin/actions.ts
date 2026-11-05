@@ -8,6 +8,9 @@ import { fetchAllNews } from "@/lib/server/news";
 import { HEADING_FONTS, BODY_FONTS, URDU_FONTS } from "@/lib/font-lists";
 import { isTheme } from "@/lib/themes";
 import { pingIndexNow } from "@/lib/server/indexnow";
+import { hashCode, newCode } from "@/lib/portal";
+import { docOwner } from "@/lib/server/portal";
+import { siteConfig } from "@/config/site";
 import { downloadPexelsImage, getPexelsPhoto } from "@/lib/server/pexels";
 import { PHOTOS } from "@/lib/photos";
 import sharp from "sharp";
@@ -111,8 +114,39 @@ export async function recordDecision(fd: FormData) {
 }
 export async function toggleCaseDoc(fd: FormData) {
   const { db } = await need(can.people);
-  await db.from("case_documents").update({ received: s(fd, "received") === "1", uploaded_at: new Date().toISOString() }).eq("id", s(fd, "id"));
-  revalidatePath(`/admin/cases/${s(fd, "ref")}`);
+  const got = s(fd, "received") === "1";
+  await db.from("case_documents").update({ received: got, status: got ? "approved" : "missing", uploaded_at: got ? new Date().toISOString() : null }).eq("id", s(fd, "id"));
+  revalidatePath(s(fd, "path") || "/admin/cases");
+}
+// ---------- client portal: reviewing documents and giving access ----------
+export async function reviewDoc(fd: FormData) {
+  const { a, db } = await need(can.people);
+  const id = s(fd, "id"), status = s(fd, "status") === "approved" ? "approved" : "rejected", note = s(fd, "note").slice(0, 500);
+  const found = await docOwner(db, id);
+  if (!found) return;
+  await db.from("case_documents").update({ status, received: status === "approved", review_note: status === "rejected" ? note || null : null }).eq("id", id);
+  if (status === "rejected") await db.from("client_messages").insert({ person_id: found.ownerId, sender: "staff", staff_id: a.id, body: `Please send "${found.doc.title}" again. ${note}`.trim() });
+  await log(db, a, `doc_${status}`, "case_documents", id);
+  revalidatePath(s(fd, "path") || "/admin/cases/documents"); revalidatePath("/admin");
+}
+export async function requestDoc(fd: FormData) {
+  const { a, db } = await need(can.people);
+  const personId = s(fd, "person_id"), caseId = s(fd, "case_id") || null, title = s(fd, "title").slice(0, 120);
+  if (title.length < 2) return;
+  await db.from("case_documents").insert(caseId ? { case_id: caseId, title } : { person_id: personId, title });
+  await db.from("client_messages").insert({ person_id: personId, sender: "staff", staff_id: a.id, body: `Please send this document: ${title}` });
+  await log(db, a, "doc_request", "case_documents", undefined, { title });
+  revalidatePath(s(fd, "path") || "/admin/cases");
+}
+export async function issuePortalCode(_: unknown, fd: FormData): Promise<{ link?: string; kind?: string; error?: string }> {
+  const { a, db } = await need(can.people);
+  const personId = s(fd, "person_id"), kind = s(fd, "kind") === "reset" ? "reset" : "join";
+  const code = newCode();
+  await db.from("portal_codes").delete().eq("person_id", personId).eq("kind", kind).is("used_at", null);
+  const { error } = await db.from("portal_codes").insert({ code_hash: hashCode(code), person_id: personId, kind, expires_at: new Date(Date.now() + 14 * 86400_000).toISOString(), created_by: a.id });
+  if (error) return { error: "Could not create the link. Please try again." };
+  await log(db, a, `portal_code_${kind}`, "people", personId);
+  return { link: `${siteConfig.url}/portal/${kind === "reset" ? "reset" : "join"}?code=${code}`, kind };
 }
 export async function addNote(fd: FormData) {
   const { a, db } = await need(can.people);
@@ -330,7 +364,7 @@ export async function saveSettings(fd: FormData) {
   const { a, db } = await need(can.settings);
   const t = (k: string) => s(fd, k) || null;
   await db.from("settings").update({
-    whatsapp_number: s(fd, "whatsapp_number") || "+16479662297", whatsapp_number_pk: t("whatsapp_number_pk"), email: s(fd, "email"), facebook_url: s(fd, "facebook_url"),
+    whatsapp_number: s(fd, "whatsapp_number") || "+923076777020", whatsapp_number_pk: t("whatsapp_number_pk"), email: s(fd, "email"), facebook_url: s(fd, "facebook_url"),
     address_line: s(fd, "address_line"), office_hours: s(fd, "office_hours"), ntn: t("ntn"), calcom_link: s(fd, "calcom_link"),
     service_fee_mode: ["exact", "from", "quote"].includes(s(fd, "service_fee_mode")) ? s(fd, "service_fee_mode") : "quote",
     google_reviews_url: t("google_reviews_url"), youtube_channel_url: t("youtube_channel_url"), chatbot_enabled: s(fd, "chatbot_enabled") === "on",

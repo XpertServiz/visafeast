@@ -4,7 +4,8 @@ import { db } from "@/lib/server/admin-data";
 import { getAdmin, can } from "@/lib/server/admin-auth";
 import { waLink } from "@/config/site";
 import { Badge, Card, Field, Grid, Title, day, pkr } from "@/components/admin/ui";
-import { addNote, addReminder, payEmbassyFee, recordDecision, setCaseStage, toggleCaseDoc } from "../../../actions";
+import { addNote, addReminder, payEmbassyFee, recordDecision, setCaseStage } from "../../../actions";
+import { ClientFile } from "@/components/admin/ClientFile";
 
 export const dynamic = "force-dynamic";
 
@@ -52,15 +53,7 @@ export default async function CaseDetail({ params }: { params: Promise<{ ref: st
           </div>
         </Card>
 
-        <Card title={`Documents (${(docs ?? []).filter((x) => x.received).length}/${docs?.length ?? 0} received)`}>
-          {docs?.length ? docs.map((x) => (
-            <form key={x.id} action={toggleCaseDoc} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderTop: "1px solid var(--line)" }}>
-              <input type="hidden" name="id" value={x.id} /><input type="hidden" name="ref" value={c.ref} /><input type="hidden" name="received" value={x.received ? "0" : "1"} />
-              <span style={{ textDecoration: x.received ? "line-through" : undefined }}>{x.title}</span>
-              <button className={x.received ? "btn btn-outline" : "btn btn-dark"} style={{ minHeight: 44 }}>{x.received ? "Undo" : "Got it"}</button>
-            </form>
-          )) : <p style={{ color: "var(--muted)" }}>No checklist yet. It is created from the country page's document list when you pick a country.</p>}
-        </Card>
+        <ClientFile personId={c.person?.id} caseId={c.id} path={`/admin/cases/${c.ref}`} />
 
         <Card title="Reminder">
           <form action={addReminder} style={{ display: "grid", gap: 8 }}>

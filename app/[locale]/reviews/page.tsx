@@ -25,7 +25,7 @@ export default async function Page({ params }: P) {
       <div className="wrap" style={{ paddingBlock: 40 }}>
         {avg && <p className="mono" style={{ color: "var(--muted-2)" }}>Average {avg} / 5 from {reviews.length} reviews</p>}
         {reviews.length === 0 ? (
-          <div className="card" style={{ padding: 24, maxWidth: 640 }}><p style={{ margin: 0 }}>{t("reviews.empty")}</p>{s.google_reviews_url && <p><a href={s.google_reviews_url} rel="noopener">Google reviews →</a></p>}</div>
+          <div className="card" style={{ padding: 24, maxWidth: 640 }}><p style={{ margin: 0 }}>{t("reviews.empty")}</p></div>
         ) : (
           <div className="g3">
             {reviews.map((r) => (
@@ -37,7 +37,7 @@ export default async function Page({ params }: P) {
             ))}
           </div>
         )}
-        <p style={{ marginTop: 28 }}><Link className="btn btn-primary" href={lp(locale, "/reviews/write")}>{t("reviews.write")}</Link></p>
+        <p style={{ marginTop: 28, display: "flex", gap: 10, flexWrap: "wrap" }}><Link className="btn btn-primary" href={lp(locale, "/reviews/write")}>{t("reviews.write")}</Link>{s.google_reviews_url && <a className="btn btn-outline" href={s.google_reviews_url} target="_blank" rel="noopener">{t("reviews.google")}</a>}</p>
       </div>
     </>
   );

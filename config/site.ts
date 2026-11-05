@@ -5,14 +5,14 @@ export const siteConfig = {
   tagline: "Providing visa services",
   url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   email: "visafeast@gmail.com",
-  whatsapp: "+16479662297", // [ASK #2] placeholder until the owner confirms
+  whatsapp: "+923076777020", // [ASK #2] placeholder until the owner confirms
   whatsappPk: "" as string,
   facebook: "https://www.facebook.com/visafeast/",
   youtubeChannel: "" as string,
   address: "Karachi · consultations online across Pakistan", // [ASK #3]
   officeHours: "Mon–Sat 10am–7pm PKT",
   ntn: "" as string,
-  calcom: "visafeast/15min", // [ASK #4]
+  calcom: "visa-feast-pvus5i/15min", // [ASK #4]
   serviceFeeMode: "quote" as "exact" | "from" | "quote", // [ASK #5]
   locales: ["en", "ur"] as const,
   defaultLocale: "en" as const,

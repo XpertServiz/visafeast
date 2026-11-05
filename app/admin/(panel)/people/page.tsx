@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { MessageCircle } from "lucide-react";
 import { db } from "@/lib/server/admin-data";
 import { waLink } from "@/config/site";
@@ -26,7 +27,7 @@ export default async function People({ searchParams }: { searchParams: Promise<{
         {leads?.length ? leads.map((l) => (
           <div key={l.id} className="card" style={{ padding: 16 }}>
             <div style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
-              <div><b style={{ fontSize: 18 }}>{l.name}</b> <Badge>{l.status}</Badge><br />
+              <div>{l.person_id ? <Link href={`/admin/people/${l.person_id}`} style={{ fontSize: 18, fontWeight: 700 }}>{l.name}</Link> : <b style={{ fontSize: 18 }}>{l.name}</b>} <Badge>{l.status}</Badge><br />
                 <span style={{ color: "var(--muted)" }}>{l.phone} · {l.visa_type} {l.destination ?? ""} · from {l.source} · {day(l.created_at)}</span></div>
               <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
                 {l.phone && <a className="btn btn-wa" href={waLink(`Assalam-o-Alaikum ${l.name}, thank you for contacting Visafeast.`, l.phone)}><MessageCircle size={18} aria-hidden />WhatsApp</a>}

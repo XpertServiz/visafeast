@@ -146,8 +146,8 @@ export const SEED_NEWS_SOURCES = [
 ];
 
 export const DEFAULT_SETTINGS: SiteSettings = {
-  whatsapp_number: "+16479662297", whatsapp_number_pk: null, email: "visafeast@gmail.com", facebook_url: "https://www.facebook.com/visafeast/",
-  address_line: "Karachi · consultations online across Pakistan", office_hours: "Mon–Sat 10am–7pm PKT", ntn: null, calcom_link: "visafeast/15min",
+  whatsapp_number: "+923076777020", whatsapp_number_pk: null, email: "visafeast@gmail.com", facebook_url: "https://www.facebook.com/visafeast/",
+  address_line: "Karachi · consultations online across Pakistan", office_hours: "Mon–Sat 10am–7pm PKT", ntn: null, calcom_link: "visa-feast-pvus5i/15min",
   service_fee_mode: "quote", chatbot_enabled: true, llm_provider: "none", google_reviews_url: null, youtube_channel_url: null, hero_globe_style: "realistic",
   heading_font: "Fraunces", body_font: "Inter", urdu_font: "Noto Nastaliq Urdu",
   theme: "night_flight", accent_color: "#F2A93B", splash_style: "logo_fade", splash_duration_ms: 2200, splash_once_per_session: true,

@@ -1,0 +1,77 @@
+import "server-only";
+import { randomUUID } from "node:crypto";
+import { authClient } from "./admin-auth";
+import { serviceClient } from "../supabase";
+import { pathFor, pathIsTheirs, safeFileName, uploadProblem } from "../portal";
+
+export type Db = NonNullable<ReturnType<typeof serviceClient>>;
+export const BUCKET = "case-documents";
+export interface Person { id: string; full_name: string | null; whatsapp: string | null; email: string | null; language: string | null }
+export interface PortalClient { userId: string; email: string | undefined; person: Person }
+
+/** The signed-in client and their person record, always re-verified on the server. Null if not signed in or not a client. */
+export async function getClient(): Promise<PortalClient | null> {
+  const c = await authClient();
+  const db = serviceClient();
+  if (!c || !db) return null;
+  const { data: { user } } = await c.auth.getUser();
+  if (!user) return null;
+  const { data: p } = await db.from("people").select("id,full_name,whatsapp,email,language").eq("auth_user_id", user.id).is("deleted_at", null).maybeSingle();
+  return p ? { userId: user.id, email: user.email, person: p as Person } : null;
+}
+
+export interface DocRow { id: string; title: string; status: string; case_id: string | null; person_id: string | null; file_path: string | null; file_name: string | null; review_note: string | null }
+
+/** Finds the person a document belongs to: directly, or through its case. Null when the document does not exist. */
+export async function docOwner(db: Db, id: string): Promise<{ doc: DocRow; ownerId: string } | null> {
+  const { data: doc } = await db.from("case_documents").select("id,title,status,case_id,person_id,file_path,file_name,review_note").eq("id", id).maybeSingle();
+  if (!doc) return null;
+  if (doc.person_id) return { doc: doc as DocRow, ownerId: doc.person_id };
+  if (!doc.case_id) return null;
+  const { data: c } = await db.from("cases").select("person_id").eq("id", doc.case_id).maybeSingle();
+  return c ? { doc: doc as DocRow, ownerId: c.person_id } : null;
+}
+
+/** Issues a one-file upload ticket. The browser sends the file straight to private storage, so size is not limited by the web server. */
+export async function signUpload(db: Db, ownerId: string, docId: string, mime: string, size: number) {
+  const problem = uploadProblem(mime, size);
+  if (problem) return { error: problem } as const;
+  const path = pathFor(ownerId, docId, randomUUID(), mime);
+  const { data, error } = await db.storage.from(BUCKET).createSignedUploadUrl(path);
+  if (error || !data) return { error: "Could not start the upload. Please try again." } as const;
+  return { path, token: data.token } as const;
+}
+
+/** Records a finished upload after checking the file really is in storage, then removes any older file for this document. */
+export async function finishUpload(db: Db, args: { ownerId: string; doc: DocRow; path: string; fileName: string; by: "client" | "staff" }): Promise<string | null> {
+  const { ownerId, doc, path, fileName, by } = args;
+  if (!pathIsTheirs(path, ownerId, doc.id)) return "This upload does not match your file.";
+  const dir = path.slice(0, path.lastIndexOf("/")), name = path.slice(path.lastIndexOf("/") + 1);
+  const { data: found } = await db.storage.from(BUCKET).list(dir, { search: name, limit: 1 });
+  const obj = found?.find((f) => f.name === name);
+  if (!obj) return "We could not find the uploaded file. Please try again.";
+  const meta = (obj.metadata ?? {}) as { size?: number; mimetype?: string };
+  const problem = uploadProblem(meta.mimetype ?? "", Number(meta.size ?? 0));
+  if (problem) { await db.storage.from(BUCKET).remove([path]); return problem; }
+  const { error } = await db.from("case_documents").update({
+    file_path: path, file_name: safeFileName(fileName), mime: meta.mimetype, size_bytes: meta.size, uploaded_by: by, uploaded_at: new Date().toISOString(),
+    status: by === "staff" ? "approved" : "uploaded", received: by === "staff", review_note: null,
+  }).eq("id", doc.id);
+  if (error) return "Could not save the file. Please try again.";
+  if (doc.file_path && doc.file_path !== path) await db.storage.from(BUCKET).remove([doc.file_path]);
+  await db.from("timeline_events").insert({ person_id: ownerId, case_id: doc.case_id, kind: "document", body: `${by === "client" ? "Client uploaded" : "Consultant added"}: ${doc.title}` });
+  return null;
+}
+
+/** A short-lived private link. Always downloads rather than opening inline, so an uploaded file can never run in our site. */
+export async function signedDownload(db: Db, doc: DocRow): Promise<string | null> {
+  if (!doc.file_path) return null;
+  const { data } = await db.storage.from(BUCKET).createSignedUrl(doc.file_path, 300, { download: doc.file_name || true });
+  return data?.signedUrl ?? null;
+}
+
+export interface Msg { id: number; sender: "client" | "staff"; body: string; created_at: string }
+export async function readMessages(db: Db, personId: string, after = 0, limit = 100): Promise<Msg[]> {
+  const { data } = await db.from("client_messages").select("id,sender,body,created_at").eq("person_id", personId).gt("id", after).order("id", { ascending: false }).limit(limit);
+  return ((data ?? []) as Msg[]).reverse();
+}

@@ -8,7 +8,7 @@ export async function notifyOwner(subject: string, html: string): Promise<boolea
     const r = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${key}`, "content-type": "application/json" },
-      body: JSON.stringify({ from: "Visafeast <onboarding@resend.dev>", to: [process.env.OWNER_NOTIFY_EMAIL || "visafeast@gmail.com"], subject, html }),
+      body: JSON.stringify({ from: process.env.RESEND_FROM || "Visafeast <no-reply@visafeast.com>", to: [process.env.OWNER_NOTIFY_EMAIL || "visafeast@gmail.com"], subject, html }),
     });
     return r.ok;
   } catch { return false; }

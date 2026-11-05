@@ -13,14 +13,14 @@ create schema if not exists auth;
 create table auth.users (id uuid primary key default gen_random_uuid(), email text);
 create function auth.uid() returns uuid language sql stable as $$ select null::uuid $$;
 create schema if not exists storage;
-create table storage.buckets (id text primary key, name text, public boolean default false);
+create table storage.buckets (id text primary key, name text, public boolean default false, file_size_limit bigint, allowed_mime_types text[]);
 create publication supabase_realtime;
 `;
 
 beforeAll(async () => {
   db = new PGlite({ extensions: { pgcrypto } });
   await db.exec(STUBS);
-  for (const f of ["0001_core", "0002_backoffice", "0003_ledger_functions", "0004_rls", "0005_recurring_and_media"]) await db.exec(sql(`migrations/${f}.sql`));
+  for (const f of ["0001_core", "0002_backoffice", "0003_ledger_functions", "0004_rls", "0005_recurring_and_media", "0006_client_portal"]) await db.exec(sql(`migrations/${f}.sql`));
 }, 60000);
 
 const one = async <T = Record<string, unknown>>(q: string, p: unknown[] = []) => (await db.query<T>(q, p)).rows[0];
@@ -118,5 +118,66 @@ describe("SQL migrations on real Postgres", () => {
     const n = await one<{ n: number }>("select count(*)::int n from expenses where recurring_of = $1", [t.id]);
     expect(n.n).toBe(1);
     expect((await one<{ ok: boolean }>("select ok from ledger_is_balanced()")).ok).toBe(true);
+  });
+
+  describe("client portal", () => {
+    const user = async () => (await one<{ id: string }>("insert into auth.users (email) values (gen_random_uuid()::text) returning id")).id;
+    const person = async (name: string) => (await one<{ id: string }>("insert into people (full_name) values ($1) returning id", [name])).id;
+    const code = async (personId: string, kind: string, h: string, expires = "now() + interval '1 day'") => db.query(`insert into portal_codes (code_hash, person_id, kind, expires_at) values ($1,$2,$3,${expires})`, [h, personId, kind]);
+    const owner = async (id: string) => (await one<{ auth_user_id: string | null }>("select auth_user_id from people where id=$1", [id])).auth_user_id;
+
+    it("the private documents bucket limits size and file types", async () => {
+      const b = await one<{ public: boolean; file_size_limit: string; allowed_mime_types: string[] }>("select public, file_size_limit::text, allowed_mime_types from storage.buckets where id='case-documents'");
+      expect(b.public).toBe(false);
+      expect(Number(b.file_size_limit)).toBe(10485760);
+      expect(b.allowed_mime_types).toContain("application/pdf");
+      expect(b.allowed_mime_types).not.toContain("text/html");
+    });
+    it("a code links a login to the file once, and only once", async () => {
+      const p = await person("Client A"), u = await user();
+      await code(p, "join", "h-once");
+      await db.query("select portal_claim_code('h-once',$1)", [u]);
+      expect(await owner(p)).toBe(u);
+      const other = await user();
+      await expect(db.query("select portal_claim_code('h-once',$1)", [other])).rejects.toThrow(/not valid/);
+      expect(await owner(p)).toBe(u);
+    });
+    it("expired and wrong codes do nothing", async () => {
+      const p = await person("Client B"), u = await user();
+      await code(p, "join", "h-old", "now() - interval '1 minute'");
+      await expect(db.query("select portal_claim_code('h-old',$1)", [u])).rejects.toThrow(/not valid/);
+      await expect(db.query("select portal_claim_code('nope',$1)", [u])).rejects.toThrow(/not valid/);
+      expect(await owner(p)).toBeNull();
+    });
+    it("a reset code cannot be used to take over a file", async () => {
+      const p = await person("Client C"), u = await user();
+      await code(p, "reset", "h-reset");
+      await expect(db.query("select portal_claim_code('h-reset',$1)", [u])).rejects.toThrow(/not valid/);
+      expect(await owner(p)).toBeNull();
+    });
+    it("a file already linked to one login cannot be claimed by another, and the code stays unused", async () => {
+      const p = await person("Client D"), u1 = await user(), u2 = await user();
+      await db.query("update people set auth_user_id=$1 where id=$2", [u1, p]);
+      await code(p, "join", "h-taken");
+      await expect(db.query("select portal_claim_code('h-taken',$1)", [u2])).rejects.toThrow(/already linked/);
+      expect(await owner(p)).toBe(u1);
+      expect((await one<{ used_at: string | null }>("select used_at from portal_codes where code_hash='h-taken'")).used_at).toBeNull();
+    });
+    it("self sign-up records merge into the real file, keeping messages and documents", async () => {
+      const real = await person("Real"), temp = await person("Temp"), u = await user();
+      await db.query("update people set auth_user_id=$1 where id=$2", [u, temp]);
+      await db.query("insert into client_messages (person_id,sender,body) values ($1,'client','hello')", [temp]);
+      await db.query("insert into case_documents (person_id,title) values ($1,'Passport')", [temp]);
+      await code(real, "join", "h-merge");
+      await db.query("select portal_claim_code('h-merge',$1)", [u]);
+      expect(await owner(real)).toBe(u);
+      expect(await owner(temp)).toBeNull();
+      expect((await one<{ n: number }>("select count(*)::int n from client_messages where person_id=$1", [real])).n).toBe(1);
+      expect((await one<{ n: number }>("select count(*)::int n from case_documents where person_id=$1", [real])).n).toBe(1);
+    });
+    it("new portal tables have row level security", async () => {
+      const r = await db.query<{ tablename: string }>("select tablename from pg_tables where schemaname='public' and tablename in ('portal_codes','client_messages') and not rowsecurity");
+      expect(r.rows).toEqual([]);
+    });
   });
 });
