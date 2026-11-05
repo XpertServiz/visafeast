@@ -391,5 +391,185 @@ export const DEST: Record<string, Slide[]> = {
       "creditUrl": "https://www.pexels.com/photo/erasmus-bridge-and-rotterdam-skyline-at-dusk-39922835/",
       "photographerUrl": "https://www.pexels.com/@niels-lam-2164567277"
     }
+  ],
+  "MY": [
+    {
+      "src": "/photos/dest/my-1.webp",
+      "alt": "The Petronas Twin Towers, Kuala Lumpur",
+      "credit": "Pixabay",
+      "creditUrl": "https://www.pexels.com/photo/petronas-tower-malaysia-433942/",
+      "photographerUrl": "https://www.pexels.com/@pixabay"
+    },
+    {
+      "src": "/photos/dest/my-2.webp",
+      "alt": "A beach in Langkawi, Malaysia",
+      "credit": "Shakil Ahmed",
+      "creditUrl": "https://www.pexels.com/photo/aerial-view-of-langkawi-s-lush-coastline-and-marinas-32399927/",
+      "photographerUrl": "https://www.pexels.com/@sahmed007"
+    },
+    {
+      "src": "/photos/dest/my-3.webp",
+      "alt": "George Town, Penang",
+      "credit": "ds rexy",
+      "creditUrl": "https://www.pexels.com/photo/colonial-architecture-in-penang-street-view-38205922/",
+      "photographerUrl": "https://www.pexels.com/@ds-rexy-2154705051"
+    },
+    {
+      "src": "/photos/dest/my-4.webp",
+      "alt": "Batu Caves, near Kuala Lumpur",
+      "credit": "Anna Photosmaslom",
+      "creditUrl": "https://www.pexels.com/photo/vibrant-batu-caves-temple-with-pigeons-in-kuala-lumpur-38321170/",
+      "photographerUrl": "https://www.pexels.com/@anna-photosmaslom-2162548370"
+    }
+  ],
+  "LK": [
+    {
+      "src": "/photos/dest/lk-1.webp",
+      "alt": "Sigiriya rock fortress, Sri Lanka",
+      "credit": "Andreas Schnabl",
+      "creditUrl": "https://www.pexels.com/photo/forest-under-a-cloudy-sky-3869004/",
+      "photographerUrl": "https://www.pexels.com/@andreas-schnabl-1775843"
+    },
+    {
+      "src": "/photos/dest/lk-2.webp",
+      "alt": "Galle Fort, Sri Lanka",
+      "credit": "Charith Kodagoda",
+      "creditUrl": "https://www.pexels.com/photo/buildings-by-a-sea-11116033/",
+      "photographerUrl": "https://www.pexels.com/@charithk"
+    },
+    {
+      "src": "/photos/dest/lk-3.webp",
+      "alt": "Nine Arch Bridge, Ella, Sri Lanka",
+      "credit": "Saleem Akthar",
+      "creditUrl": "https://www.pexels.com/photo/people-walking-on-bridge-with-railroad-during-day-595196/",
+      "photographerUrl": "https://www.pexels.com/@akthar"
+    },
+    {
+      "src": "/photos/dest/lk-4.webp",
+      "alt": "Kandy, Sri Lanka",
+      "credit": "Thilina Alagiyawanna",
+      "creditUrl": "https://www.pexels.com/photo/temple-of-the-tooth-relic-in-kandy-sri-lanka-40442107/",
+      "photographerUrl": "https://www.pexels.com/@thilina-alagiyawanna-3266092"
+    }
+  ],
+  "NL": [
+    {
+      "src": "/photos/dest/nl-1.webp",
+      "alt": "Canal houses in Amsterdam",
+      "credit": "Adrien Olichon",
+      "creditUrl": "https://www.pexels.com/photo/old-amsterdam-city-houses-on-canal-4237160/",
+      "photographerUrl": "https://www.pexels.com/@adrien-olichon-1257089"
+    },
+    {
+      "src": "/photos/dest/nl-2.webp",
+      "alt": "Tulip fields, Netherlands",
+      "credit": "Vladislovas Sketerskis",
+      "creditUrl": "https://www.pexels.com/photo/colorful-spring-bloom-in-scenic-garden-37515648/",
+      "photographerUrl": "https://www.pexels.com/@vladislovas-sketerskis-2157863731"
+    },
+    {
+      "src": "/photos/dest/nl-3.webp",
+      "alt": "Windmills at Kinderdijk",
+      "credit": "Dick Scholten",
+      "creditUrl": "https://www.pexels.com/photo/scenic-view-of-historic-dutch-windmills-on-a-river-35400479/",
+      "photographerUrl": "https://www.pexels.com/@dick-scholten-420532"
+    },
+    {
+      "src": "/photos/dest/nl-4.webp",
+      "alt": "Erasmus Bridge, Rotterdam",
+      "credit": "Larry Vink",
+      "creditUrl": "https://www.pexels.com/photo/a-city-skyline-at-night-11387333/",
+      "photographerUrl": "https://www.pexels.com/@larryvink"
+    }
+  ],
+  "FR": [
+    {
+      "src": "/photos/dest/fr-1.webp",
+      "alt": "The Eiffel Tower, Paris",
+      "credit": "Efrem  Efre",
+      "creditUrl": "https://www.pexels.com/photo/eiffel-tower-view-through-lush-greenery-in-paris-38523298/",
+      "photographerUrl": "https://www.pexels.com/@efrem-efre-2786187"
+    },
+    {
+      "src": "/photos/dest/fr-2.webp",
+      "alt": "The Louvre, Paris",
+      "credit": "Efrem  Efre",
+      "creditUrl": "https://www.pexels.com/photo/people-in-front-of-the-louvre-pyramid-paris-38548927/",
+      "photographerUrl": "https://www.pexels.com/@efrem-efre-2786187"
+    },
+    {
+      "src": "/photos/dest/fr-3.webp",
+      "alt": "Mont-Saint-Michel, France",
+      "credit": "Ryan Klaus",
+      "creditUrl": "https://www.pexels.com/photo/majestic-view-of-mont-saint-michel-abbey-33904921/",
+      "photographerUrl": "https://www.pexels.com/@ryank"
+    },
+    {
+      "src": "/photos/dest/fr-4.webp",
+      "alt": "Nice, French Riviera",
+      "credit": "Huy Phan",
+      "creditUrl": "https://www.pexels.com/photo/relaxed-urban-scene-on-promenade-des-anglais-28602939/",
+      "photographerUrl": "https://www.pexels.com/@huy-phan-316220"
+    }
+  ],
+  "PT": [
+    {
+      "src": "/photos/dest/pt-1.webp",
+      "alt": "A tram in Lisbon",
+      "credit": "Junior Diniz PHOTOGRAPHER IN LISBON",
+      "creditUrl": "https://www.pexels.com/photo/iconic-yellow-trams-in-graffiti-laden-lisbon-street-33324057/",
+      "photographerUrl": "https://www.pexels.com/@junior-diniz-photographer-in-lisbon-2051893"
+    },
+    {
+      "src": "/photos/dest/pt-2.webp",
+      "alt": "Porto and the Douro river",
+      "credit": "Sonny Vermeer",
+      "creditUrl": "https://www.pexels.com/photo/early-morning-view-from-the-douro-river-and-porto-portugal-17847439/",
+      "photographerUrl": "https://www.pexels.com/@sonny-vermeer-505472791"
+    },
+    {
+      "src": "/photos/dest/pt-3.webp",
+      "alt": "Belem Tower, Lisbon",
+      "credit": "Tiago Chaves",
+      "creditUrl": "https://www.pexels.com/photo/belem-tower-in-lisbon-against-clear-blue-sky-40242475/",
+      "photographerUrl": "https://www.pexels.com/@tiago-chaves-2154478168"
+    },
+    {
+      "src": "/photos/dest/pt-4.webp",
+      "alt": "Algarve coast, Portugal",
+      "credit": "Valérie Schlott",
+      "creditUrl": "https://www.pexels.com/photo/photo-of-beach-under-clear-sky-6553674/",
+      "photographerUrl": "https://www.pexels.com/@valerie-schlott-20713245"
+    }
+  ],
+  "AE": [
+    {
+      "src": "/photos/dest/ae-1.webp",
+      "alt": "Burj Khalifa, Dubai",
+      "credit": "Maria Charizani",
+      "creditUrl": "https://www.pexels.com/photo/photo-of-city-during-night-time-5577693/",
+      "photographerUrl": "https://www.pexels.com/@maria-charizani-3542905"
+    },
+    {
+      "src": "/photos/dest/ae-2.webp",
+      "alt": "Sheikh Zayed Grand Mosque, Abu Dhabi",
+      "credit": "Swiss Atlas",
+      "creditUrl": "https://www.pexels.com/photo/columns-of-sheikh-zayed-grand-mosque-16110501/",
+      "photographerUrl": "https://www.pexels.com/@swiss-atlas-485481359"
+    },
+    {
+      "src": "/photos/dest/ae-3.webp",
+      "alt": "Dubai Marina",
+      "credit": "AJ  Ahamad",
+      "creditUrl": "https://www.pexels.com/photo/vibrant-dubai-marina-skyline-at-night-30554306/",
+      "photographerUrl": "https://www.pexels.com/@aj-ahamad-767001191"
+    },
+    {
+      "src": "/photos/dest/ae-4.webp",
+      "alt": "Abu Dhabi skyline",
+      "credit": "Kevin Villaruz",
+      "creditUrl": "https://www.pexels.com/photo/aerial-view-of-city-buildings-7252277/",
+      "photographerUrl": "https://www.pexels.com/@kevinvillaruz"
+    }
   ]
 };

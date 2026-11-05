@@ -1,4 +1,5 @@
 import type { GuideContent } from "./types";
+import { MORE_GUIDES } from "./more";
 
 const CHECKED = "2026-11-05";
 const US_RESTRICTIONS = { heading: "Check before you plan: entry restrictions", md: "The US Embassy in Pakistan says that under Presidential Proclamation 10998 (in effect from 1 January 2026) the United States is suspending or limiting entry and visa issuance for nationals of 39 countries. People subject to it can still apply and attend interviews, but may be refused a visa or entry. Read the Embassy's notice and travel.state.gov to see whether it applies to your passport." };
@@ -185,3 +186,5 @@ export const GUIDES: Record<string, GuideContent> = {
     sources: [{ label: "Applying for a Schengen visa (European Commission)", url: "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en" }],
   },
 };
+
+Object.assign(GUIDES, MORE_GUIDES);

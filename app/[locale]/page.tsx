@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return seoMeta(locale, "home", "/");
 }
 
-const HANDLE = [["gb", "UK"], ["ca", "Canada"], ["us", "USA"], ["au", "Australia"], ["nz", "New Zealand"], ["eu", "Europe"], ["de", "Germany"], ["az", "Baku"], ["th", "Thailand"], ["sg", "Singapore"]];
+const HANDLE = [["gb", "UK"], ["ca", "Canada"], ["us", "USA"], ["au", "Australia"], ["nz", "New Zealand"], ["eu", "Europe"], ["de", "Germany"], ["az", "Baku"], ["th", "Thailand"], ["sg", "Singapore"], ["my", "Malaysia"], ["lk", "Sri Lanka"], ["nl", "Netherlands"], ["fr", "France"], ["pt", "Portugal"], ["ae", "UAE"]];
 
 const Eyebrow = ({ children }: { children: React.ReactNode }) => <p className="eyebrow" style={{ margin: 0, color: "var(--amber-text)" }}>{children}</p>;
 const H2 = ({ children, mb = 28 }: { children: React.ReactNode; mb?: number }) => <h2 className="disp" style={{ margin: `10px 0 ${mb}px`, fontSize: 40, fontWeight: 600 }}>{children}</h2>;
@@ -40,7 +40,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   const immCards = IMMIGRATION_HUB.map((h) => ({ name: h.code === "EU" ? t("hero.europe") : regionName(h.code, locale, h.name), flag: h.flag, chips: h.chips, href: h.slug ? L(`/immigration/${h.slug}`) : L("/immigration") }));
   const cardsOf = (list: typeof visit, base: string, label: string, color: string) => (
     <div className="g4" style={{ gap: 16 }}>
-      {list.slice(0, 8).map((c) => (
+      {list.slice(0, 16).map((c) => (
         <Link prefetch={false} key={c.slug} href={L(`/${base}/${c.slug}`)} className="lift" style={{ display: "block", textDecoration: "none", background: "#fff", border: "1px solid var(--line)", borderRadius: 16, padding: 20, color: "var(--ink)" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
             <Flag code={c.flag ?? ""} size={48} width={64} />

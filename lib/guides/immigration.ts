@@ -1,4 +1,5 @@
 import type { ImmigrationGuide } from "./types";
+import { MORE_IMMIGRATION } from "./more";
 
 const CHECKED = "2026-11-05";
 const VERIFY_FEES = "Fees and processing times change. Always check the official page before you apply.";
@@ -169,4 +170,5 @@ export const IMMIGRATION_GUIDES: ImmigrationGuide[] = [
   },
 ];
 
+IMMIGRATION_GUIDES.push(...MORE_IMMIGRATION);
 export const IMMIGRATION_SLUGS = IMMIGRATION_GUIDES.map((g) => g.slug);
