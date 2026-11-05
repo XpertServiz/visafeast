@@ -495,5 +495,22 @@
     "bookSub": "Video WhatsApp o telefono · ora del Pakistan",
     "enqSub": "Rispondiamo su WhatsApp negli orari d'ufficio.",
     "footerBrand": "Consulenza per visite, studio e immigrazione. Da Karachi, online per i clienti di tutto il Pakistan."
+  },
+  "guide": {
+    "overview": "Panoramica",
+    "optionsVisit": "Tipi di visto e percorsi",
+    "optionsStudy": "Percorsi di studio e opzioni",
+    "optionsImm": "Programmi di immigrazione",
+    "sources": "Fonti ufficiali",
+    "readOn": "Abbiamo letto queste pagine ufficiali il {date}. Regole, costi e stato possono cambiare: controlla la pagina prima di presentare la domanda.",
+    "officialPage": "Pagina ufficiale",
+    "verifyNote": "Alcuni dettagli sono in fase di verifica. Per le informazioni più recenti, scrivici su WhatsApp.",
+    "programmes": "Programmi",
+    "officialPages": "Pagine ufficiali",
+    "photosOf": "Foto: {country}",
+    "prevPhoto": "Foto precedente",
+    "nextPhoto": "Foto successiva",
+    "photo": "Foto",
+    "of": "di"
   }
 }

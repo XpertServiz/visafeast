@@ -685,5 +685,22 @@
     "bookSub": "WhatsApp video or phone · Pakistan time",
     "enqSub": "We reply on WhatsApp during office hours.",
     "footerBrand": "Visit, study and immigration consultancy. Karachi, serving clients across Pakistan online."
+  },
+  "guide": {
+    "overview": "Overview",
+    "optionsVisit": "Visa types and routes",
+    "optionsStudy": "Study routes and options",
+    "optionsImm": "Immigration programmes",
+    "sources": "Official sources",
+    "readOn": "We read these official pages on {date}. Rules, fees and status can change, so check the page before you apply.",
+    "officialPage": "Official page",
+    "verifyNote": "Some details are being verified. For the latest information, WhatsApp us.",
+    "programmes": "Programmes",
+    "officialPages": "Official pages",
+    "photosOf": "Photos of {country}",
+    "prevPhoto": "Previous photo",
+    "nextPhoto": "Next photo",
+    "photo": "Photo",
+    "of": "of"
   }
 }

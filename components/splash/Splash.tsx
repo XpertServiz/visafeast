@@ -1,4 +1,4 @@
-import { LogoMark } from "@/components/layout/Logo";
+import { LogoMark, WordMark } from "@/components/layout/Logo";
 
 type Style = "plane_stamp" | "globe_spin" | "passport_open" | "boarding_pass" | "logo_fade" | "off" | string;
 
@@ -47,7 +47,7 @@ export function SplashArt({ style, ms }: { style: Style; ms: number }) {
           <div style={{ animation: "sp-fade .6s ease-out both" }}><LogoMark size={96} /></div>
         )}
       </div>
-      <p className="disp" style={{ margin: 0, color: "#fff", fontSize: 34, fontWeight: 600, animation: "sp-fade .8s ease-out both" }}>Visafeast</p>
+      <div style={{ animation: "sp-fade .8s ease-out both" }}><WordMark height={30} /></div>
       <span aria-hidden className="vf-splash-bar"><i /></span>
     </>
   );

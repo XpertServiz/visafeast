@@ -495,5 +495,22 @@
     "bookSub": "WhatsApp-video of telefoon · Pakistaanse tijd",
     "enqSub": "We antwoorden tijdens kantooruren via WhatsApp.",
     "footerBrand": "Advies voor bezoek, studie en immigratie. Vanuit Karachi, online voor klanten in heel Pakistan."
+  },
+  "guide": {
+    "overview": "Overzicht",
+    "optionsVisit": "Soorten visum en routes",
+    "optionsStudy": "Studieroutes en opties",
+    "optionsImm": "Immigratieprogramma's",
+    "sources": "Officiële bronnen",
+    "readOn": "We lazen deze officiële pagina's op {date}. Regels, kosten en status kunnen veranderen: controleer de pagina voordat u aanvraagt.",
+    "officialPage": "Officiële pagina",
+    "verifyNote": "Sommige details worden nog gecontroleerd. Stuur ons voor de nieuwste informatie een bericht via WhatsApp.",
+    "programmes": "Programma's",
+    "officialPages": "Officiële pagina's",
+    "photosOf": "Foto's van {country}",
+    "prevPhoto": "Vorige foto",
+    "nextPhoto": "Volgende foto",
+    "photo": "Foto",
+    "of": "van"
   }
 }

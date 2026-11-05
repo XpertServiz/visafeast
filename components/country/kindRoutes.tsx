@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { siteConfig } from "@/config/site";
 import { GUIDE } from "@/lib/photos";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -15,6 +16,7 @@ import { BoardingPass, Section } from "@/components/ui";
 import { BreadcrumbItems } from "./Breadcrumb";
 import { IMMIGRATION_HUB } from "@/lib/seed";
 import { Flag } from "@/components/ui";
+import { getImmigrationGuide, IMMIGRATION_GUIDES, immigrationCountry } from "@/lib/guides";
 
 const BASE = { visit: "visit-visa", study: "study-visa", immigration: "immigration" } as const;
 type P = { params: Promise<{ locale: string }> };
@@ -35,7 +37,6 @@ export function hubRoute(kind: Kind) {
   async function Page({ params }: P) {
     const { locale, t } = await pageCtx(params);
     const list = await getCountriesFor(locale, kind);
-    const pub = new Set(list.map((c) => c.slug));
     return (
       <>
         <header className="sky" style={{ paddingBlock: "36px 56px", color: "#fff", position: "relative", overflow: "hidden" }}>
@@ -54,7 +55,7 @@ export function hubRoute(kind: Kind) {
                   <div key={h.name} className="card" style={{ padding: 22 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}><Flag code={h.flag} /><h2 className="disp" style={{ margin: 0, fontSize: 24 }}>{h.code === "EU" ? t("hero.europe") : regionName(h.code, locale, h.name)}</h2></div>
                     {h.chips.map((c) => <span key={c} className="chip">{c}</span>)}
-                    <p style={{ marginBottom: 0 }}>{h.slug && pub.has(h.slug) ? <Link prefetch={false} href={lp(locale, `/immigration/${h.slug}`)} style={{ fontWeight: 600 }}>{t("cta.guide")}</Link> : <Link prefetch={false} href={lp(locale, "/tools/eligibility")} style={{ fontWeight: 600 }}>{t("cta.qualify")}</Link>}</p>
+                    <p style={{ marginBottom: 0 }}>{h.slug ? <Link prefetch={false} href={lp(locale, `/immigration/${h.slug}`)} style={{ fontWeight: 600 }}>{t("cta.guide")}</Link> : <Link prefetch={false} href={lp(locale, "/tools/eligibility")} style={{ fontWeight: 600 }}>{t("cta.qualify")}</Link>}</p>
                   </div>
                 ))}
               </div>
@@ -74,6 +75,17 @@ export function detailRoute(kind: Kind) {
   async function generateMetadata({ params }: PS): Promise<Metadata> {
     const { locale } = await pageCtx(params);
     const { slug } = await params;
+    if (kind === "immigration") {
+      // Immigration country pages are built from the guides, not the database. Only the English page is offered to Google for now.
+      const g = getImmigrationGuide(slug);
+      if (!g) return {};
+      const path = `/immigration/${g.slug}`;
+      return {
+        title: g.metaTitle, description: g.metaDescription, alternates: alternates(path, locale, ["en"]),
+        robots: locale === "en" ? undefined : { index: false, follow: true },
+        openGraph: { title: g.metaTitle, description: g.metaDescription, url: lp(locale, path), type: "article", locale: localeMeta(locale).og, images: [{ url: siteConfig.ogImage, width: 1200, height: 630, alt: siteConfig.name }] },
+      };
+    }
     const c = await getCountryFor(locale, slug);
     if (!c || c.kind !== kind) return {};
     const path = `/${BASE[kind]}/${c.slug}`;
@@ -85,17 +97,23 @@ export function detailRoute(kind: Kind) {
     return {
       title: c.meta_title, description: c.meta_description, alternates: alternates(path, locale, available),
       robots: c.translated ? undefined : { index: false, follow: true },
-      openGraph: { title: c.meta_title, description: c.meta_description, url: lp(locale, path), type: "article", locale: localeMeta(locale).og, images: ["/logo.jpg"] },
+      openGraph: { title: c.meta_title, description: c.meta_description, url: lp(locale, path), type: "article", locale: localeMeta(locale).og, images: [{ url: siteConfig.ogImage, width: 1200, height: 630, alt: siteConfig.name }] },
     };
   }
   async function Page({ params }: PS) {
     const { locale } = await pageCtx(params);
     const { slug } = await params;
+    if (kind === "immigration") {
+      const g = getImmigrationGuide(slug);
+      if (!g) notFound();
+      return <CountryPage c={immigrationCountry(g, locale)} locale={locale} />;
+    }
     const c = await getCountryFor(locale, slug);
     if (!c || c.kind !== kind) notFound();
     return <CountryPage c={c} locale={locale} />;
   }
   async function generateStaticParams() {
+    if (kind === "immigration") return ["en", "ur"].flatMap((locale) => IMMIGRATION_GUIDES.map((g) => ({ locale, slug: g.slug })));
     const list = await getCountries(kind);
     return ["en", "ur"].flatMap((locale) => list.map((c) => ({ locale, slug: c.slug })));
   }

@@ -5,6 +5,7 @@ import { getT, lp } from "@/lib/i18n";
 import { getCountriesFor } from "@/lib/data";
 import type { SiteSettings } from "@/lib/types";
 import { LangLinks } from "./LangSwitch";
+import { Brand } from "./Logo";
 
 export async function Footer({ locale, settings }: { locale: Locale; settings: SiteSettings }) {
   const t = getT(locale);
@@ -19,7 +20,7 @@ export async function Footer({ locale, settings }: { locale: Locale; settings: S
     <footer className="sky foot" style={{ color: "var(--on-navy)", lineHeight: "normal" }}>
       <div className="g4 pad32" style={{ ...wrap, paddingBlock: "56px 28px", gap: 28, fontSize: 15 }}>
         <div>
-          <p className="disp" style={{ margin: "0 0 10px", fontSize: 24, fontWeight: 600, color: "#fff", letterSpacing: 0 }}>Visafeast</p>
+          <Link prefetch={false} href={lp(locale, "/")} style={{ display: "inline-block", marginBottom: 12 }}><Brand size={44} /></Link>
           <p style={{ margin: 0, lineHeight: 1.6 }}>{t("home.footerBrand")}</p>
         </div>
         <div style={col}>

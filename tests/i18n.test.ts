@@ -23,7 +23,7 @@ const digits = (s: string) => (s.match(/\d+/g) ?? []).join("").split("").sort().
 const slots = (s: string) => (s.match(/\{\w+\}/g) ?? []).sort().join();
 
 // Everything a visitor sees on the landing page and tools must be written in every language; the rest may fall back to English.
-const MUST_HAVE = ["nav", "hero", "cta", "steps", "videos", "elig", "eligQ", "decoder", "problems", "why", "mid", "choose", "reviews", "whyUs", "news", "faq", "book", "form", "footer", "chat", "consent", "splash", "common", "extras", "ui", "hub", "home"];
+const MUST_HAVE = ["nav", "hero", "cta", "steps", "videos", "elig", "eligQ", "decoder", "problems", "why", "mid", "choose", "reviews", "whyUs", "news", "faq", "book", "form", "footer", "chat", "consent", "splash", "common", "extras", "ui", "hub", "home", "guide"];
 
 describe("language files", () => {
   const english = new Map(flat(en));

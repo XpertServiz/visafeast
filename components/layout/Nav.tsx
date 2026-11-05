@@ -3,7 +3,7 @@ import { Menu } from "lucide-react";
 import type { Locale } from "@/config/site";
 import { getT, lp } from "@/lib/i18n";
 import { LangSwitch } from "./LangSwitch";
-import { LogoMark } from "./Logo";
+import { Brand } from "./Logo";
 import { MobileMenu } from "./MobileMenu";
 
 export function Nav({ locale }: { locale: Locale }) {
@@ -20,8 +20,7 @@ export function Nav({ locale }: { locale: Locale }) {
     <header className="sky" style={{ position: "relative", zIndex: 5, borderBottom: "1px solid rgba(255,255,255,.08)" }}>
       <nav aria-label="Main" className="pad32 nav-inner" style={{ maxWidth: 1280, margin: "0 auto", paddingBlock: 16, display: "flex", alignItems: "center", gap: 28, lineHeight: "normal" }}>
         <Link prefetch={false} href={lp(locale, "/")} style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
-          <LogoMark />
-          <span className="disp" style={{ fontSize: 24, fontWeight: 600, color: "#fff", letterSpacing: 0 }}>Visafeast</span>
+          <Brand size={40} className="brand-nav" />
         </Link>
         <div className="hide-sm" style={{ display: "flex", gap: 22, flexGrow: 1 }}>
           {links.map((l) => <a key={l.href} href={l.href} style={linkStyle}>{l.label}</a>)}

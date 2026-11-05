@@ -30,15 +30,14 @@ const H2 = ({ children, mb = 28 }: { children: React.ReactNode; mb?: number }) =
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale, t } = await pageCtx(params);
-  const [settings, visit, study, imm, videos, reviews, news, posts, faqs] = await Promise.all([
-    getSettings(), getCountriesFor(locale, "visit"), getCountriesFor(locale, "study"), getCountriesFor(locale, "immigration"), getVideos(), getReviews(), getNews({ limit: 2 }), getPostsFor(locale, "digest"), getFaqsFor(locale, null),
+  const [settings, visit, study, videos, reviews, news, posts, faqs] = await Promise.all([
+    getSettings(), getCountriesFor(locale, "visit"), getCountriesFor(locale, "study"), getVideos(), getReviews(), getNews({ limit: 2 }), getPostsFor(locale, "digest"), getFaqsFor(locale, null),
   ]);
   const L = (p: string) => lp(locale, p);
   const book = L("/#book");
   const whatsapp = waLink("Hi Visafeast, I'd like to know about a visa.", settings.whatsapp_number);
   const countryNames = [...visit, ...study].map((c) => c.country_name).filter((v, i, a) => a.indexOf(v) === i);
-  const publishedImm = new Set(imm.filter((c) => c.is_published).map((c) => c.slug));
-  const immCards = IMMIGRATION_HUB.map((h) => ({ name: h.code === "EU" ? t("hero.europe") : regionName(h.code, locale, h.name), flag: h.flag, chips: h.chips, href: h.slug && publishedImm.has(h.slug) ? L(`/immigration/${h.slug}`) : L("/immigration") }));
+  const immCards = IMMIGRATION_HUB.map((h) => ({ name: h.code === "EU" ? t("hero.europe") : regionName(h.code, locale, h.name), flag: h.flag, chips: h.chips, href: h.slug ? L(`/immigration/${h.slug}`) : L("/immigration") }));
   const cardsOf = (list: typeof visit, base: string, label: string, color: string) => (
     <div className="g4" style={{ gap: 16 }}>
       {list.slice(0, 8).map((c) => (
@@ -173,7 +172,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <section id="visas" className="sec" style={{ paddingBlock: "64px 24px" }}>
         <VisaTabs eyebrow={t("nav.visas")} title={t("home.chooseTitle")}
           visit={cardsOf(visit, "visit-visa", t("ui.kindVisit"), KIND_COLOR.visit)} study={cardsOf(study, "study-visa", t("ui.kindStudy"), KIND_COLOR.study)} immigration={immCards}
-          labels={{ visit: t("ui.kindVisit"), study: t("ui.kindStudy"), immigration: t("ui.kindImmigration") }} immLabel={t("ui.kindImmigration")} immNote={t("home.immNote")} qualify={t("cta.qualify")} />
+          labels={{ visit: t("ui.kindVisit"), study: t("ui.kindStudy"), immigration: t("ui.kindImmigration") }} immLabel={t("ui.kindImmigration")} immNote={t("home.immNote")} qualify={t("cta.guide")} />
       </section>
 
       {/* REVIEWS */}

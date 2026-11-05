@@ -196,3 +196,12 @@ html[lang="ur"] .home .mono { font-family: var(--font-mono), var(--font-urdu), s
   main:has(> .home) ~ .side-guide, main:has(.no-guide) ~ .side-guide { display: none; }
   .page-guide { display: none; }
 }
+/* The logo: mark + lettering. --bm is the height of the mark; phones use smaller values so the header never overflows. */
+.brand { display: inline-flex; align-items: center; gap: calc(var(--bm) * .26); }
+.brand .brand-mark { display: block; height: var(--bm); width: auto; flex: none; }
+.brand .brand-word { display: block; height: calc(var(--bm) * .46); width: auto; flex: none; }
+@media (max-width: 520px) { .brand-nav { --bm: 34px !important; } }
+@media (max-width: 400px) { .brand-nav { --bm: 28px !important; } }
+/* Country-page photo slideshow: wide on computers, a little taller on phones. */
+.slideshow { aspect-ratio: 21 / 9; }
+@media (max-width: 640px) { .slideshow { aspect-ratio: 16 / 9; } }

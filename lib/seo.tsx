@@ -76,7 +76,7 @@ export function seoMeta(locale: Locale, key: string, path: string): Metadata {
   const title = t(`seo.${key}.t`), description = t(`seo.${key}.d`);
   return {
     title, description, alternates: alternates(path, locale),
-    openGraph: { title, description, url: lp(locale, path), siteName: siteConfig.name, type: "website", locale: localeMeta(locale).og, images: ["/logo.jpg"] },
+    openGraph: { title, description, url: lp(locale, path), siteName: siteConfig.name, type: "website", locale: localeMeta(locale).og, images: [{ url: siteConfig.ogImage, width: 1200, height: 630, alt: siteConfig.name }] },
     robots: seoReady(locale, key) ? undefined : { index: false, follow: true },
   };
 }

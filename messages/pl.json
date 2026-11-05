@@ -495,5 +495,22 @@
     "bookSub": "Wideo WhatsApp lub telefon · czas pakistański",
     "enqSub": "Odpowiadamy na WhatsApp w godzinach pracy biura.",
     "footerBrand": "Doradztwo wizowe: odwiedziny, studia i imigracja. Z Karaczi, online dla klientów z całego Pakistanu."
+  },
+  "guide": {
+    "overview": "Przegląd",
+    "optionsVisit": "Rodzaje wiz i ścieżki",
+    "optionsStudy": "Ścieżki studiów i opcje",
+    "optionsImm": "Programy imigracyjne",
+    "sources": "Oficjalne źródła",
+    "readOn": "Przeczytaliśmy te oficjalne strony {date}. Zasady, opłaty i status mogą się zmienić, więc sprawdź stronę przed złożeniem wniosku.",
+    "officialPage": "Oficjalna strona",
+    "verifyNote": "Niektóre szczegóły są w trakcie weryfikacji. Aby poznać najnowsze informacje, napisz do nas na WhatsApp.",
+    "programmes": "Programy",
+    "officialPages": "Oficjalne strony",
+    "photosOf": "Zdjęcia: {country}",
+    "prevPhoto": "Poprzednie zdjęcie",
+    "nextPhoto": "Następne zdjęcie",
+    "photo": "Zdjęcie",
+    "of": "z"
   }
 }

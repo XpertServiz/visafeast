@@ -495,5 +495,22 @@
     "bookSub": "WhatsApp 视频或电话 · 巴基斯坦时间",
     "enqSub": "我们在办公时间通过 WhatsApp 回复。",
     "footerBrand": "探亲旅游、留学和移民咨询。位于卡拉奇，在线服务全巴基斯坦客户。"
+  },
+  "guide": {
+    "overview": "概览",
+    "optionsVisit": "签证类型与途径",
+    "optionsStudy": "留学途径与选择",
+    "optionsImm": "移民项目",
+    "sources": "官方来源",
+    "readOn": "我们于 {date} 阅读了这些官方页面。规则、费用和状态可能变化，申请前请先查看官方页面。",
+    "officialPage": "官方页面",
+    "verifyNote": "部分信息正在核实中。如需最新信息，请通过 WhatsApp 联系我们。",
+    "programmes": "项目",
+    "officialPages": "官方页面",
+    "photosOf": "{country}的照片",
+    "prevPhoto": "上一张照片",
+    "nextPhoto": "下一张照片",
+    "photo": "照片",
+    "of": "/"
   }
 }

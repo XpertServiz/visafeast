@@ -4,6 +4,7 @@ import { Document, Page, Text, View, StyleSheet, renderToBuffer, type DocumentPr
 import { getAdmin, can } from "@/lib/server/admin-auth";
 import { serviceClient } from "@/lib/supabase";
 import { siteConfig } from "@/config/site";
+import { PdfBrand } from "@/lib/pdf-brand";
 
 export const runtime = "nodejs";
 
@@ -45,7 +46,7 @@ export async function GET(req: NextRequest) {
     doc = (
       <Document title={`Invoice ${inv.number}`} author="Visafeast">
         <Page size="A4" style={s.page}>
-          <View style={s.head}><View><Text style={s.brand}>Visafeast</Text><Text style={s.meta}>{siteConfig.address}</Text></View><View><Text style={s.kind}>{inv.status === "draft" ? "QUOTE / DRAFT" : "INVOICE"}</Text><Text style={s.meta}>{inv.number}</Text></View></View>
+          <View style={s.head}><View><PdfBrand height={28} /><Text style={s.meta}>{siteConfig.address}</Text></View><View><Text style={s.kind}>{inv.status === "draft" ? "QUOTE / DRAFT" : "INVOICE"}</Text><Text style={s.meta}>{inv.number}</Text></View></View>
           <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 16 }}>
             <View><Text style={s.label}>Billed to</Text><Text>{person?.full_name}</Text><Text style={{ color: "#475569" }}>{person?.whatsapp}</Text></View>
             <View><Text style={s.label}>Issued</Text><Text>{inv.issue_date}</Text><Text style={[s.label, { marginTop: 6 }]}>Due</Text><Text>{inv.due_date ?? "On receipt"}</Text></View>
@@ -74,7 +75,7 @@ export async function GET(req: NextRequest) {
     doc = (
       <Document title="Payment receipt" author="Visafeast">
         <Page size="A5" style={s.page}>
-          <View style={s.head}><View><Text style={s.brand}>Visafeast</Text><Text style={s.meta}>{siteConfig.address}</Text></View><View><Text style={s.kind}>RECEIPT</Text><Text style={s.meta}>{pay.paid_on}</Text></View></View>
+          <View style={s.head}><View><PdfBrand height={28} /><Text style={s.meta}>{siteConfig.address}</Text></View><View><Text style={s.kind}>RECEIPT</Text><Text style={s.meta}>{pay.paid_on}</Text></View></View>
           <Text style={s.label}>Received from</Text><Text style={{ fontSize: 13, marginBottom: 12 }}>{person?.full_name ?? "Client"}</Text>
           <Text style={s.label}>Amount received</Text><Text style={{ fontSize: 22, marginBottom: 12 }}>{pkr(pay.amount_pkr)}</Text>
           <Text style={s.label}>Paid by</Text><Text style={{ marginBottom: 12 }}>{pay.method ?? "—"}{pay.reference ? ` · ref ${pay.reference}` : ""}</Text>

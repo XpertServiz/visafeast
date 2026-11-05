@@ -3,7 +3,7 @@
 // RULE (brief §9.6): NO reviews are seeded. The reviews list starts empty.
 import type { Country, Faq, Item, Kind, NewsItem, Review, HeroVideo, SiteSettings } from "./types";
 
-const OUR_STEPS: Item[] = [
+export const OUR_STEPS: Item[] = [
   { title: "Free 15-minute call", detail: "Tell us where you want to go and why. We tell you honestly what to prepare." },
   { title: "File review", detail: "We check your documents against the official list and point out weak spots before you pay any embassy fee." },
   { title: "Preparation", detail: "Your personal checklist, a clear travel plan and a cover letter that explains your funds and purpose." },
@@ -110,13 +110,13 @@ const seeds: Seed[] = [
 export const SEED_COUNTRIES: Country[] = seeds.map(mk);
 
 export const IMMIGRATION_HUB: { name: string; code: string; flag: string; slug?: string; chips: string[] }[] = [
-  { name: "Canada", code: "CA", flag: "ca", slug: "canada-express-entry-from-pakistan", chips: ["Express Entry (FSW, CEC, FST)", "Provincial Nominee Programs", "Atlantic Immigration Program", "Start-up Visa", "Spouse & family sponsorship"] },
-  { name: "Australia", code: "AU", flag: "au", slug: "australia-skilled-visa-from-pakistan", chips: ["Skilled Independent (189)", "Skilled Nominated (190)", "Skilled Work Regional (491)", "Employer Nomination (186)", "Skills in Demand (482)", "National Innovation (858)", "Partner visas"] },
-  { name: "United Kingdom", code: "GB", flag: "gb", slug: "uk-skilled-worker-visa-from-pakistan", chips: ["Skilled Worker", "Health and Care Worker", "Global Talent", "Innovator Founder", "Spouse / partner"] },
-  { name: "USA", code: "US", flag: "us", chips: ["EB-2 NIW", "EB-1A extraordinary ability", "EB-5 investor", "H-1B (employer)", "Family-based green cards"] },
-  { name: "Germany", code: "DE", flag: "de", slug: "germany-opportunity-card-from-pakistan", chips: ["EU Blue Card", "Opportunity Card (Chancenkarte)", "Skilled worker visa", "Family reunion"] },
-  { name: "New Zealand", code: "NZ", flag: "nz", chips: ["Skilled Migrant Category", "Green List Straight to Residence", "Accredited Employer Work Visa", "Partner visas"] },
-  { name: "Europe — other", code: "EU", flag: "eu", chips: ["Portugal D7 (passive income)", "Portugal job seeker visa", "Ireland Critical Skills Employment Permit", "Netherlands highly skilled migrant"] },
+  { name: "Canada", code: "CA", flag: "ca", slug: "immigrate-to-canada-from-pakistan", chips: ["Express Entry (FSW, CEC, FST)", "Provincial Nominee Programs", "Atlantic Immigration Program", "Start-up Visa", "Spouse & family sponsorship"] },
+  { name: "Australia", code: "AU", flag: "au", slug: "immigrate-to-australia-from-pakistan", chips: ["Skilled Independent (189)", "Skilled Nominated (190)", "Skilled Work Regional (491)", "Employer Nomination (186)", "Skills in Demand (482)", "National Innovation (858)", "Partner visas"] },
+  { name: "United Kingdom", code: "GB", flag: "gb", slug: "immigrate-to-uk-from-pakistan", chips: ["Skilled Worker", "Health and Care Worker", "Global Talent", "Innovator Founder", "Spouse / partner"] },
+  { name: "USA", code: "US", flag: "us", slug: "immigrate-to-usa-from-pakistan", chips: ["EB-2 NIW", "EB-1A extraordinary ability", "EB-5 investor", "H-1B (employer)", "Family-based green cards"] },
+  { name: "Germany", code: "DE", flag: "de", slug: "immigrate-to-germany-from-pakistan", chips: ["EU Blue Card", "Opportunity Card (Chancenkarte)", "Skilled worker visa", "Family reunion"] },
+  { name: "New Zealand", code: "NZ", flag: "nz", slug: "immigrate-to-new-zealand-from-pakistan", chips: ["Skilled Migrant Category", "Green List Straight to Residence", "Accredited Employer Work Visa", "Partner visas"] },
+  { name: "Europe — other", code: "EU", flag: "eu", slug: "immigrate-to-europe-from-pakistan", chips: ["Portugal D7 (passive income)", "Portugal job seeker visa", "Ireland Critical Skills Employment Permit", "Netherlands highly skilled migrant"] },
 ];
 
 export const SEED_FAQS: Faq[] = [

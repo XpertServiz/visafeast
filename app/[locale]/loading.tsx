@@ -4,7 +4,7 @@ import { LogoMark } from "@/components/layout/Logo";
 export default function Loading() {
   return (
     <div role="status" aria-label="Visafeast" style={{ minHeight: "60vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 16 }}>
-      <span className="vf-page-loader"><LogoMark size={72} /></span>
+      <span className="vf-page-loader"><LogoMark size={72} onDark={false} /></span>
       <span aria-hidden className="vf-splash-bar"><i /></span>
     </div>
   );

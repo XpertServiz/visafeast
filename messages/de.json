@@ -495,5 +495,22 @@
     "bookSub": "WhatsApp-Video oder Telefon · pakistanische Zeit",
     "enqSub": "Wir antworten während der Bürozeiten auf WhatsApp.",
     "footerBrand": "Beratung für Besuch, Studium und Einwanderung. Aus Karatschi, online für Kunden in ganz Pakistan."
+  },
+  "guide": {
+    "overview": "Überblick",
+    "optionsVisit": "Visa-Arten und Wege",
+    "optionsStudy": "Studienwege und Möglichkeiten",
+    "optionsImm": "Einwanderungsprogramme",
+    "sources": "Offizielle Quellen",
+    "readOn": "Wir haben diese offiziellen Seiten am {date} gelesen. Regeln, Gebühren und Status können sich ändern. Prüfen Sie die Seite vor Ihrem Antrag.",
+    "officialPage": "Offizielle Seite",
+    "verifyNote": "Einige Angaben werden noch geprüft. Für die aktuellsten Informationen schreiben Sie uns auf WhatsApp.",
+    "programmes": "Programme",
+    "officialPages": "Offizielle Seiten",
+    "photosOf": "Fotos von {country}",
+    "prevPhoto": "Vorheriges Foto",
+    "nextPhoto": "Nächstes Foto",
+    "photo": "Foto",
+    "of": "von"
   }
 }

@@ -32,8 +32,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: { default: "Visa Consultant in Karachi — Visit, Study & Immigration | Visafeast", template: "%s" },
   description: "Visit visas, study visas and immigration pathways from Pakistan, with fees and timelines published openly. Free eligibility check and 15-minute call.",
-  icons: { icon: "/logo.jpg", apple: "/logo.jpg" },
-  openGraph: { siteName: siteConfig.name, type: "website", images: ["/logo.jpg"] },
+  icons: siteConfig.icons,
+  manifest: siteConfig.manifest,
+  openGraph: { siteName: siteConfig.name, type: "website", images: [{ url: siteConfig.ogImage, width: 1200, height: 630, alt: siteConfig.name }] },
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
     other: process.env.BING_SITE_VERIFICATION ? { "msvalidate.01": process.env.BING_SITE_VERIFICATION } : undefined,

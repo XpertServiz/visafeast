@@ -495,5 +495,22 @@
     "bookSub": "Vídeo no WhatsApp ou telefone · horário do Paquistão",
     "enqSub": "Respondemos no WhatsApp em horário comercial.",
     "footerBrand": "Consultoria de visita, estudo e imigração. Em Karachi, online para clientes de todo o Paquistão."
+  },
+  "guide": {
+    "overview": "Visão geral",
+    "optionsVisit": "Tipos de visto e caminhos",
+    "optionsStudy": "Caminhos de estudo e opções",
+    "optionsImm": "Programas de imigração",
+    "sources": "Fontes oficiais",
+    "readOn": "Lemos estas páginas oficiais em {date}. Regras, taxas e estado podem mudar: confira a página antes de se candidatar.",
+    "officialPage": "Página oficial",
+    "verifyNote": "Alguns detalhes estão em verificação. Para as informações mais recentes, fale conosco no WhatsApp.",
+    "programmes": "Programas",
+    "officialPages": "Páginas oficiais",
+    "photosOf": "Fotos de {country}",
+    "prevPhoto": "Foto anterior",
+    "nextPhoto": "Próxima foto",
+    "photo": "Foto",
+    "of": "de"
   }
 }

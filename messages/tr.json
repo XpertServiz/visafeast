@@ -495,5 +495,22 @@
     "bookSub": "WhatsApp görüntülü veya telefon · Pakistan saati",
     "enqSub": "Mesai saatlerinde WhatsApp'tan yanıt veririz.",
     "footerBrand": "Ziyaret, eğitim ve göçmenlik danışmanlığı. Karaçi'den, tüm Pakistan'daki müşterilere çevrimiçi."
+  },
+  "guide": {
+    "overview": "Genel bakış",
+    "optionsVisit": "Vize türleri ve yollar",
+    "optionsStudy": "Eğitim yolları ve seçenekler",
+    "optionsImm": "Göçmenlik programları",
+    "sources": "Resmî kaynaklar",
+    "readOn": "Bu resmî sayfaları {date} tarihinde okuduk. Kurallar, ücretler ve durum değişebilir; başvurmadan önce sayfayı kontrol edin.",
+    "officialPage": "Resmî sayfa",
+    "verifyNote": "Bazı ayrıntılar doğrulanıyor. En güncel bilgi için bize WhatsApp'tan yazın.",
+    "programmes": "Programlar",
+    "officialPages": "Resmî sayfalar",
+    "photosOf": "{country} fotoğrafları",
+    "prevPhoto": "Önceki fotoğraf",
+    "nextPhoto": "Sonraki fotoğraf",
+    "photo": "Fotoğraf",
+    "of": "/"
   }
 }

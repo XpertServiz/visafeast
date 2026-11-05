@@ -7,6 +7,7 @@ import { clientIp, rateLimit, verifyTurnstile } from "@/lib/server/guard";
 import { createLead } from "@/lib/server/leads";
 import { getCountry } from "@/lib/data";
 import { siteConfig } from "@/config/site";
+import { PdfBrand } from "@/lib/pdf-brand";
 
 export const runtime = "nodejs";
 const schema = z.object({ name: z.string().trim().min(2).max(80), phone: z.string().trim().min(7).max(20), turnstile: z.string().optional(), locale: z.enum(LOCALE_CODES as [Locale, ...Locale[]]).default("en").transform((l) => (l === "ur" ? "ur" as const : "en" as const)), website: z.string().max(0).optional() });
@@ -35,7 +36,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ slu
   const doc = (
     <Document title={`${c.h1} — document checklist`} author="Visafeast">
       <Page size="A4" style={s.page}>
-        <View style={s.head}><Text style={s.h1}>{c.h1}</Text><Text style={s.sub}>DOCUMENT CHECKLIST · LAST CHECKED {checked}</Text></View>
+        <View style={s.head}><View style={{ marginBottom: 12 }}><PdfBrand height={26} /></View><Text style={s.h1}>{c.h1}</Text><Text style={s.sub}>DOCUMENT CHECKLIST · LAST CHECKED {checked}</Text></View>
         {c.documents.length ? c.documents.map((d) => (
           <View key={d.title} style={s.row} wrap={false}><View style={s.box} /><View style={{ flex: 1 }}><Text style={s.title}>{d.title}</Text>{d.detail ? <Text style={s.detail}>{d.detail}</Text> : null}</View></View>
         )) : <Text>The official document list for this visa is being verified. Please WhatsApp us for your personal checklist.</Text>}

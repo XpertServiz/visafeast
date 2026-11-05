@@ -6,6 +6,7 @@ import { siteConfig } from "@/config/site";
 import { PageHeader } from "@/components/PageHeader";
 import { Photo } from "@/components/Photo";
 import { PHOTOS } from "@/lib/photos";
+import { DEST } from "@/lib/destination-photos";
 
 type P = { params: Promise<{ locale: string }> };
 export async function generateMetadata({ params }: P): Promise<Metadata> {
@@ -15,6 +16,8 @@ export async function generateMetadata({ params }: P): Promise<Metadata> {
 export default async function Page({ params }: P) {
   const { locale, t } = await pageCtx(params);
   const credits = Object.entries(PHOTOS).filter(([, p]) => p.src && p.credit);
+  // Destination photos (country-page slideshows), all from Pexels, which is free to use. Each photographer is credited.
+  const destCredits = Object.values(DEST).flat();
   return (
     <>
       <PageHeader locale={locale} home={t("common.home")} title={t("pages.aboutTitle")} intro={t("pages.aboutIntro")} path="/about" />
@@ -33,7 +36,7 @@ export default async function Page({ params }: P) {
       <div className="wrap prose-vf" style={{ paddingBottom: 48 }}>
         <h2>{t("pages.aboutCredits")}</h2>
         <p>{t("pages.aboutCreditsText")}</p>
-        <ul>{credits.map(([k, p]) => <li key={k}>{p.credit} — <a href={p.sourceUrl}>{p.licence}</a></li>)}{credits.length === 0 && <li>{t("pages.aboutCreditsNone")}</li>}</ul>
+        <ul>{credits.map(([k, p]) => <li key={k}>{p.credit} — <a href={p.sourceUrl}>{p.licence}</a></li>)}{destCredits.map((p) => <li key={p.src}>{p.alt}: <a href={p.photographerUrl} rel="nofollow noopener">{p.credit}</a> on <a href={p.creditUrl} rel="nofollow noopener">Pexels</a></li>)}</ul>
       </div>
     </>
   );

@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { Home, Users, Briefcase, Wallet, Globe, Settings as Cog, Plus, LogOut, Search } from "lucide-react";
 import { getAdmin, can } from "@/lib/server/admin-auth";
 import { supabaseConfigured, serviceConfigured } from "@/lib/supabase";
-import { LogoMark } from "@/components/layout/Logo";
+import { Brand } from "@/components/layout/Logo";
 import { signOut } from "../actions";
 import { SetupNeeded } from "@/components/admin/ui";
 
@@ -32,7 +32,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
   return (
     <div style={{ display: "flex", minHeight: "100vh" }}>
       <aside className="sky hide-sm" style={{ width: 230, flex: "none", padding: 16, display: "flex", flexDirection: "column", gap: 6, position: "sticky", top: 0, height: "100vh" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "4px 8px 16px" }}><LogoMark /><span className="disp" style={{ color: "#fff", fontSize: 22, fontWeight: 600 }}>Visafeast</span></div>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "4px 8px 16px" }}><Brand size={32} /></div>
         {items.map((i) => <Link key={i.href} href={i.href} style={link}><i.icon size={20} aria-hidden />{i.label}</Link>)}
         <div style={{ marginTop: "auto" }}>
           <p style={{ color: "var(--on-navy-2)", fontSize: 13, margin: "0 8px 8px" }}>{admin.name ?? admin.email} · {r}</p>
