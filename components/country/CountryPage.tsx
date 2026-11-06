@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, ExternalLink, MessageCircle, Plane, BadgeCheck, Search } from "lucide-react";
+import { Calendar, MessageCircle, Plane, BadgeCheck, Search } from "lucide-react";
 import type { Country } from "@/lib/types";
 import { waLink, type Locale } from "@/config/site";
 import { getT, lp } from "@/lib/i18n";
@@ -105,7 +105,7 @@ export async function CountryPage({ c, locale }: { c: Country; locale: Locale })
           <p style={{ fontSize: 19, color: "var(--on-navy)", maxWidth: 720, marginTop: 16 }}>{c.intro ? <OriginText text={c.intro} /> : null}</p>
           <OriginNote text={t("guide.originNote", { country: "{country}" })} />
           <p className="mono" style={{ fontSize: 12, letterSpacing: ".08em", color: "var(--on-navy-2)" }}>
-            {t("common.lastChecked").toUpperCase()} {metaDate ? fmtDate(metaDate, locale).toUpperCase() : "—"} · {t("common.source").toUpperCase()}: {domain && metaUrl ? <a href={metaUrl} rel="nofollow noopener" style={{ color: "var(--amber)" }}>{domain}</a> : t("ui.toVerify")}
+            {t("common.lastChecked").toUpperCase()} {metaDate ? fmtDate(metaDate, locale).toUpperCase() : "—"} · {t("common.source").toUpperCase()}: {domain && metaUrl ? <span style={{ color: "var(--amber)" }}>{domain}</span> : t("ui.toVerify")}
           </p>
         </div>
       </header>
@@ -136,7 +136,6 @@ export async function CountryPage({ c, locale }: { c: Country; locale: Locale })
                       <h3 className="disp" style={{ margin: 0, fontSize: 20, lineHeight: 1.25 }}>{o.name}</h3>
                       {o.status && <p style={{ margin: 0 }}><span className="mono" style={{ display: "inline-block", fontSize: 12, padding: "3px 9px", borderRadius: 6, background: "#FBE9C9", color: "var(--amber-text)", fontWeight: 600 }}>{o.status}</span></p>}
                       <p style={{ margin: 0, color: "#1E293B", fontSize: 16, lineHeight: 1.55, flex: 1 }}>{o.summary}</p>
-                      {o.url && <a href={o.url} target="_blank" rel="noopener noreferrer nofollow" style={{ fontWeight: 600, fontSize: 15, display: "inline-flex", alignItems: "center", gap: 6 }}>{t("guide.officialPage")} <ExternalLink size={15} aria-hidden /></a>}
                     </div>
                   ))}
                 </div>
@@ -192,7 +191,7 @@ export async function CountryPage({ c, locale }: { c: Country; locale: Locale })
                 <h2 id="sources">{label("sources")}</h2>
                 <p style={{ color: "var(--muted)", marginTop: 0 }}>{t("guide.readOn", { date: fmtDate(guide.checked, locale) })}</p>
                 <ul style={{ paddingInlineStart: 20 }}>
-                  {guide.sources.map((s) => <li key={s.url}><a href={s.url} target="_blank" rel="noopener noreferrer nofollow">{s.label}</a></li>)}
+                  {guide.sources.map((s) => <li key={s.url}>{s.label}</li>)}
                 </ul>
               </>
             )}

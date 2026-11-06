@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Home, Users, Briefcase, Wallet, Globe, Settings as Cog, Plus, LogOut, Search, Eye, Video, Star, BarChart3, History } from "lucide-react";
+import { Home, Users, Briefcase, Wallet, Globe, Settings as Cog, Plus, LogOut, Search, Eye, Video, Star, BarChart3, History, Link2 } from "lucide-react";
 import { getAdmin, can } from "@/lib/server/admin-auth";
 import { supabaseConfigured, serviceConfigured } from "@/lib/supabase";
 import { Brand } from "@/components/layout/Logo";
@@ -36,6 +36,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
     { href: "/admin/visitors", label: "Visitors", icon: Eye, ok: can.website(r), badge: 0 },
     { href: "/admin/videos", label: "Videos", icon: Video, ok: can.website(r), badge: 0 },
     { href: "/admin/reviews", label: "Reviews", icon: Star, ok: can.website(r), badge: pendingReviews.count ?? 0 },
+    { href: "/admin/links", label: "Useful links", icon: Link2, ok: can.website(r), badge: 0 },
     { href: "/admin/reports", label: "Reports", icon: BarChart3, ok: can.reports(r), badge: 0 },
     { href: "/admin/activity", label: "Activity log", icon: History, ok: can.reports(r), badge: 0 },
     { href: "/admin/settings", label: "Settings", icon: Cog, ok: can.settings(r), badge: 0 },
