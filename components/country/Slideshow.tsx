@@ -38,7 +38,7 @@ export function Slideshow({ slides, labels }: { slides: Slide[]; labels: Slidesh
 
   useEffect(() => {
     if (!motion || !visible || paused || n < 2) return;
-    const id = window.setInterval(() => go(i + 1), 5500);
+    const id = window.setInterval(() => go(i + 1), 2000);
     return () => window.clearInterval(id);
   }, [motion, visible, paused, i, n, go]);
 
@@ -56,7 +56,7 @@ export function Slideshow({ slides, labels }: { slides: Slide[]; labels: Slidesh
       className="slideshow" style={{ position: "relative", width: "100%", borderRadius: 18, overflow: "hidden", background: "var(--navy)" }}
     >
       {slides.map((s, k) => (
-        <div key={s.src} role="group" aria-roledescription="slide" aria-label={`${labels.photo} ${k + 1} ${labels.of} ${n}`} aria-hidden={k !== i} style={{ position: "absolute", inset: 0, opacity: k === i ? 1 : 0, transition: "opacity .6s ease", pointerEvents: "none" }}>
+        <div key={s.src} role="group" aria-roledescription="slide" aria-label={`${labels.photo} ${k + 1} ${labels.of} ${n}`} aria-hidden={k !== i} style={{ position: "absolute", inset: 0, opacity: k === i ? 1 : 0, transition: "opacity .5s ease", pointerEvents: "none" }}>
           {seen.has(k) && <Image src={s.src} alt={k === i ? s.alt : ""} fill unoptimized priority={k === 0} sizes="(max-width: 960px) 100vw, 860px" style={{ objectFit: "cover" }} />}
         </div>
       ))}
