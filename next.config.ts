@@ -20,6 +20,8 @@ const config: NextConfig = {
       { protocol: "https", hostname: "**.supabase.co" },
     ],
   },
+  // IndexNow wants the key file at the site root as /<key>.txt
+  async rewrites() { return [{ source: "/:key([0-9a-f]{32}).txt", destination: "/api/indexnow-key" }]; },
   async redirects() {
     // these three moved out of the Website group into their own menu items
     return [

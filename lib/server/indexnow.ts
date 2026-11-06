@@ -10,7 +10,7 @@ export async function pingIndexNow(paths: string[]): Promise<boolean> {
     const host = new URL(base).host;
     const r = await fetch("https://api.indexnow.org/indexnow", {
       method: "POST", headers: { "content-type": "application/json" },
-      body: JSON.stringify({ host, key, keyLocation: `${base}/api/indexnow-key`, urlList: paths.map((p) => `${base}${p}`) }),
+      body: JSON.stringify({ host, key, keyLocation: `${base}/${key}.txt`, urlList: paths.map((p) => `${base}${p}`) }),
     });
     return r.ok || r.status === 202;
   } catch { return false; }
