@@ -102,7 +102,7 @@ export default async function Visitors({ searchParams }: { searchParams: Promise
 
   return (
     <>
-      <AutoRefresh seconds={15} />
+      <AutoRefresh seconds={60} />
       <Title sub="Who is visiting your website: how many people, from which countries, on which device and where they found you. No IP addresses are stored.">Visitors</Title>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>{RANGES.map(([k, l]) => tab(k, l))}</div>
       <p style={{ margin: "0 0 14px", fontSize: 14, color: "var(--muted)" }}>

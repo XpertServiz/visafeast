@@ -17,6 +17,14 @@ export const ipHash = (req: NextRequest) => createHash("sha256").update((process
 
 // In-memory fixed-window limiter (per server instance). Good enough as a first line; the DB table `rate_limits` is used when available.
 const mem = new Map<string, { start: number; count: number }>();
+/** Memory-only limiter for the busy tracking calls (no database round trip). Forms keep the stronger database-backed limiter below. */
+export function rateLimitFast(key: string, max: number, windowMs: number): boolean {
+  const now = Date.now();
+  const cur = mem.get(key);
+  if (!cur || now - cur.start > windowMs) { mem.set(key, { start: now, count: 1 }); return true; }
+  cur.count++;
+  return cur.count <= max;
+}
 export async function rateLimit(key: string, max: number, windowMs: number): Promise<boolean> {
   const now = Date.now();
   const cur = mem.get(key);

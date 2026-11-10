@@ -11,7 +11,7 @@ function sessionId(): string {
 }
 const cookie = (n: string) => document.cookie.split("; ").find((c) => c.startsWith(n + "="))?.split("=")[1];
 
-/** First-party analytics beacon (brief §12): page view per route change, 30 s presence heartbeat, time-on-page on hide. */
+/** First-party analytics beacon (brief §12): page view per route change, 2-minute presence heartbeat (only while the tab is visible), time-on-page on hide. */
 export function Tracker({ locale }: { locale: string }) {
   const path = usePathname();
   const start = useRef(Date.now());
@@ -36,8 +36,7 @@ export function Tracker({ locale }: { locale: string }) {
       if (document.visibilityState !== "visible" || location.pathname.startsWith("/admin")) return;
       try { navigator.sendBeacon("/api/presence", new Blob([JSON.stringify({ sid: sessionId(), path: location.pathname, lang: navigator.language, wd: navigator.webdriver === true, locale, referrer: document.referrer || null })], { type: "application/json" })); } catch { /* ignore */ }
     };
-    beat();
-    const id = setInterval(beat, 30000);
+    const id = setInterval(beat, 120000); // the page-view call already marked this visitor live
     const hide = () => {
       if (document.visibilityState === "hidden") {
         try { navigator.sendBeacon("/api/track", new Blob([JSON.stringify({ type: "duration", path: location.pathname, sid: sessionId(), ms: Date.now() - start.current })], { type: "application/json" })); } catch { /* ignore */ }

@@ -24,7 +24,7 @@ export default async function Today() {
     can.money(admin.role) ? d.from("invoices").select("id,number,due_date,person:people(full_name,whatsapp)").in("status", ["sent", "part_paid", "overdue"]).lt("due_date", today()).limit(8) : Promise.resolve({ data: [] }),
     d.from("reviews").select("id", { count: "exact", head: true }).eq("status", "pending"),
     d.from("posts").select("id,title").eq("status", "draft").eq("type", "digest").limit(3),
-    d.from("live_presence").select("country,city,path,device,browser_language").gte("last_seen", new Date(Date.now() - 2 * 60_000).toISOString()),
+    d.from("live_presence").select("country,city,path,device,browser_language").gte("last_seen", new Date(Date.now() - 5 * 60_000).toISOString()),
     d.from("cases").select("id,ref,stage").in("stage", ["docs_requested", "documents"]).is("deleted_at", null).limit(8),
   ]);
   let money: { income: number; expenses: number; profit: number } | null = null;

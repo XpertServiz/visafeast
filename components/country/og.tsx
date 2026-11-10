@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
-import { getCountry } from "@/lib/data";
-import { getImmigrationGuide, immigrationCountry } from "@/lib/guides";
+import { getCountries, getCountry } from "@/lib/data";
+import { getImmigrationGuide, IMMIGRATION_GUIDES, immigrationCountry } from "@/lib/guides";
 import { MARK_LIGHT_DATA, PDF_MARK, PDF_WORD, WORDMARK_LIGHT_DATA } from "@/lib/brand-data";
 
 export const ogSize = { width: 1200, height: 630 };
@@ -27,4 +27,10 @@ export async function countryOg(slug: string) {
     ),
     ogSize,
   );
+}
+
+/** Build every country image once (at build time) instead of drawing it each time a link preview asks for it. */
+export async function ogStaticParams(kind: "visit" | "study" | "immigration") {
+  const slugs = kind === "immigration" ? IMMIGRATION_GUIDES.map((g) => g.slug) : (await getCountries(kind)).map((c) => c.slug);
+  return ["en", "ur"].flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
 }

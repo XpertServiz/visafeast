@@ -8,14 +8,17 @@ import { addEnquiry, setLeadStatus, startCase } from "../../actions";
 export const dynamic = "force-dynamic";
 const STATUS = [["new", "New"], ["contacted", "Contacted"], ["not_interested", "Not interested"], ["closed", "Closed"]] as const;
 
-export default async function People({ searchParams }: { searchParams: Promise<{ q?: string; status?: string }> }) {
+export default async function People({ searchParams }: { searchParams: Promise<{ q?: string; status?: string; page?: string }> }) {
   const sp = await searchParams;
   const d = db();
-  let q = d.from("leads").select("id,name,phone,email,city,destination,visa_type,source,status,created_at,message,person_id,eligibility").order("created_at", { ascending: false }).limit(60);
+  const PER = 40, page = Math.max(1, Math.min(500, Number(sp.page) || 1));
+  let q = d.from("leads").select("id,name,phone,email,city,destination,visa_type,source,status,created_at,message,person_id,eligibility").order("created_at", { ascending: false }).range((page - 1) * PER, page * PER); // one extra row tells us if there is a next page
   if (sp.status) q = q.eq("status", sp.status);
   if (sp.q) q = q.or(`name.ilike.%${sp.q.replace(/[%,]/g, "")}%,phone.ilike.%${sp.q.replace(/[%,]/g, "")}%`);
-  const [{ data: leads }, { data: countries }] = await Promise.all([q, d.from("countries").select("id,country_name,kind").order("country_name")]);
+  const [{ data: rows }, { data: countries }] = await Promise.all([q, d.from("countries").select("id,country_name,kind").order("country_name")]);
 
+  const leads = rows?.slice(0, PER); const hasNext = (rows?.length ?? 0) > PER;
+  const pageHref = (n: number) => `/admin/people?${new URLSearchParams({ ...(sp.status ? { status: sp.status } : {}), ...(sp.q ? { q: sp.q } : {}), ...(n > 1 ? { page: String(n) } : {}) })}`;
   return (
     <>
       <Title sub="Everyone who asked about a visa — from the website, chat, WhatsApp or the phone.">People</Title>
@@ -53,6 +56,13 @@ export default async function People({ searchParams }: { searchParams: Promise<{
           </div>
         )) : <Empty text="No enquiries yet. They appear here automatically." />}
       </div>
+      {(page > 1 || hasNext) && (
+        <div style={{ display: "flex", gap: 10, alignItems: "center", marginTop: 16 }}>
+          {page > 1 && <Link className="btn btn-outline" href={pageHref(page - 1)}>← Newer</Link>}
+          <span style={{ color: "var(--muted)" }}>Page {page}</span>
+          {hasNext && <Link className="btn btn-outline" href={pageHref(page + 1)}>Older →</Link>}
+        </div>
+      )}
 
       <div style={{ marginTop: 24 }}>
         <Card id="new" title="Add an enquiry (e.g. someone who messaged you on WhatsApp)">

@@ -2,7 +2,8 @@ import { isLocale } from "@/config/locales";
 import { NextResponse, type NextRequest } from "next/server";
 import { isbot } from "isbot";
 import { UAParser } from "ua-parser-js";
-import { clientIp, rateLimit, visitorHash } from "@/lib/server/guard";
+import { clientIp, rateLimitFast, visitorHash } from "@/lib/server/guard";
+import { savePresence } from "@/lib/server/presence";
 import { serviceClient } from "@/lib/supabase";
 import { automated } from "@/lib/bots";
 
@@ -16,7 +17,7 @@ export async function POST(req: NextRequest) {
   try { b = JSON.parse(await req.text()); } catch { return new NextResponse(null, { status: 204 }); }
   const path = String(b.path || "/").slice(0, 200);
   if (path.startsWith("/admin") || path.startsWith("/api")) return new NextResponse(null, { status: 204 });
-  if (!(await rateLimit(`track:${clientIp(req)}`, 120, 60_000))) return new NextResponse(null, { status: 204 });
+  if (!rateLimitFast(`track:${clientIp(req)}`, 120, 60_000)) return new NextResponse(null, { status: 204 });
 
   const db = serviceClient();
   const vh = visitorHash(req);
@@ -32,14 +33,14 @@ export async function POST(req: NextRequest) {
       let ref: string | null = null;
       try { ref = b.referrer ? new URL(String(b.referrer)).hostname : null; } catch { /* ignore */ }
       const utm = (b.utm ?? {}) as Record<string, string | null>;
-      await db.from("page_views").insert({
+      await Promise.all([savePresence(db, req, ua, b).catch(() => {}), db.from("page_views").insert({
         path, referrer_host: ref, utm_source: utm.source, utm_medium: utm.medium, utm_campaign: utm.campaign,
         country, region: dec(req.headers.get("x-vercel-ip-country-region")), city: dec(req.headers.get("x-vercel-ip-city")),
         device: t === "mobile" ? "mobile" : t === "tablet" ? "tablet" : "desktop", visitor_hash: vh, session_id: String(b.sid || ""),
         browser: p.browser.name, os: p.os.name, screen: String(b.screen || "").slice(0, 20), browser_language: String(b.lang || "").slice(0, 20),
         accept_language: (req.headers.get("accept-language") || "").split(",")[0].slice(0, 20), site_locale: isLocale(b.locale) ? b.locale : "en",
         is_new_visitor: !b.returning, landing: Boolean(b.landing),
-      });
+      })]);
     } else if (b.type === "duration") {
       const ms = Math.min(Number(b.ms) || 0, 3600_000);
       await db.from("page_views").update({ duration_ms: ms }).eq("session_id", String(b.sid || "")).eq("path", path).order("ts", { ascending: false }).limit(1);
