@@ -112,7 +112,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       </section>
 
       {/* VIDEOS */}
-      <VideoStrip videos={videos} eyebrow={t("home.videosEyebrow")} title={t("home.videosTitle")} soon={t("home.videoSoon")} label={t("home.videoLabel")} muted={t("home.muted")} of={t("elig.of")} />
+      <VideoStrip videos={videos} eyebrow={t("home.videosEyebrow")} title={t("home.videosTitle")} soon={t("home.videoSoon")} label={t("home.videoLabel")} play={t("home.playVideo")} of={t("elig.of")} />
       {videos.slice(0, 3).map((v) => <JsonLd key={v.id} data={videoJsonLd(v)} />)}
 
       {/* ELIGIBILITY */}

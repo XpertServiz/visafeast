@@ -48,10 +48,10 @@ export function Decoder({ locale, bookHref, whatsapp, split = false, picture }: 
       <div className="split" style={{ gap: 28, alignItems: "stretch" }}>
         <form onSubmit={run} style={{ flex: "1 1 420px", minWidth: 0 }}>
           <div style={{ display: "flex", gap: 18, alignItems: "center" }}>
-            <div style={{ width: 132, flexShrink: 0 }}>{picture}</div>
-            <div>
+            <div style={{ width: "clamp(88px, 26vw, 132px)", flexShrink: 0 }}>{picture}</div>
+            <div style={{ minWidth: 0 }}>
               <p className="eyebrow" style={{ margin: 0, color: "var(--amber-text)" }}>{h.decEyebrow}</p>
-              <h2 className="disp" style={{ margin: "6px 0 0", fontSize: 38, fontWeight: 600, lineHeight: 1.1 }}>{h.decTitle}</h2>
+              <h2 className="disp" style={{ margin: "6px 0 0", fontSize: "clamp(26px, 7vw, 38px)", fontWeight: 600, lineHeight: 1.1, overflowWrap: "break-word", hyphens: "auto" }}>{h.decTitle}</h2>
             </div>
           </div>
           <label htmlFor="dec-text" style={{ display: "block", marginTop: 22, fontWeight: 600 }}>{h.decLabel}</label>

@@ -53,11 +53,14 @@ export function faqJsonLd(faqs: { question: string; answer_md: string }[]) {
   };
 }
 
-export function videoJsonLd(v: { video_id: string; title: string | null }) {
+/** Video details for Google (VideoObject). uploadDate = the day the owner added the video to the site (we do not guess YouTube's date). */
+export function videoJsonLd(v: { video_id: string; title: string | null; caption?: string | null; created_at?: string }) {
   return {
     "@context": "https://schema.org", "@type": "VideoObject", name: v.title || "Visafeast visa tips",
-    thumbnailUrl: `https://i.ytimg.com/vi/${v.video_id}/hqdefault.jpg`, embedUrl: `https://www.youtube-nocookie.com/embed/${v.video_id}`,
-    description: v.title || "Visa tips from Visafeast", uploadDate: new Date().toISOString().slice(0, 10),
+    thumbnailUrl: [`https://i.ytimg.com/vi/${v.video_id}/maxresdefault.jpg`, `https://i.ytimg.com/vi/${v.video_id}/hqdefault.jpg`],
+    embedUrl: `https://www.youtube-nocookie.com/embed/${v.video_id}`, contentUrl: `https://www.youtube.com/watch?v=${v.video_id}`,
+    description: v.caption || v.title || "Visa tips from Visafeast",
+    ...(v.created_at ? { uploadDate: v.created_at } : {}),
   };
 }
 

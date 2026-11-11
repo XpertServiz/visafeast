@@ -99,7 +99,7 @@ export const getVideos = cache(async (): Promise<HeroVideo[]> => {
   const db = anonClient();
   if (db) {
     try {
-      const { data } = await db.from("hero_videos").select("id,video_id,title,caption,is_short,sort_order").eq("is_active", true).order("sort_order");
+      const { data } = await db.from("hero_videos").select("id,video_id,title,caption,is_short,sort_order,created_at").eq("is_active", true).order("sort_order");
       if (data) return data as HeroVideo[];
     } catch { /* ignore */ }
   }

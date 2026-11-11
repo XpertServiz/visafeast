@@ -49,7 +49,7 @@ export interface Faq { id: string; country_slug: string | null; question: string
 export interface Review { id: string; name: string; city: string | null; visa_type: string | null; rating: number; body: string; created_at: string }
 export interface NewsItem { id: string; title: string; url: string; source: string; is_official: boolean; published_at: string | null; summary: string | null; country_codes: string[]; what_it_means: string | null }
 export interface Post { id: string; slug: string; type: "digest" | "guide" | "blog"; title: string; excerpt: string | null; body_md: string; sources: { title: string; url: string }[]; published_at: string | null }
-export interface HeroVideo { id: string; video_id: string; title: string | null; caption: string | null; is_short: boolean; sort_order: number }
+export interface HeroVideo { id: string; video_id: string; title: string | null; caption: string | null; is_short: boolean; sort_order: number; created_at?: string }
 
 export interface SiteSettings {
   whatsapp_number: string; whatsapp_number_pk: string | null; email: string; facebook_url: string; address_line: string;

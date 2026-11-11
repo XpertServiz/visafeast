@@ -86,8 +86,8 @@ const open = async (country, viewport) => {
   const prices = await page.locator(".local-price").allTextContents();
   ok("fees show an approximate euro amount", prices.length > 0 && prices.every((p) => p.includes("≈") && p.includes("€")), prices.join(" | "));
   await page.locator('[aria-label="Language"] a', { hasText: "EN" }).click();
-  await page.waitForLoadState("domcontentloaded");
-  ok("EN button opens English and stays", new URL(page.url()).pathname === "/");
+  await page.waitForURL((u) => !u.pathname.startsWith("/de"), { timeout: 10000 }).catch(() => {});
+  ok("EN button opens the same page in English", new URL(page.url()).pathname === "/visit-visa/uk-visit-visa-from-pakistan", page.url());
   await page.goto(`${BASE}/`);
   ok("English stays after coming back", new URL(page.url()).pathname === "/");
   await ctx.close();
