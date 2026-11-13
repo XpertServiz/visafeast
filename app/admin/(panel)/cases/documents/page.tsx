@@ -4,6 +4,8 @@ import { db } from "@/lib/server/admin-data";
 import { getAdmin, can } from "@/lib/server/admin-auth";
 import { Badge, Empty, Title, day } from "@/components/admin/ui";
 import { reviewDoc } from "../../../actions";
+import { storageUsed } from "@/lib/server/storage";
+import { KEEP_DAYS, capBytes, daysLeft, mb, usedPercent } from "@/lib/storage-policy";
 
 export const dynamic = "force-dynamic";
 const FILTERS = [["uploaded", "To check"], ["rejected", "Asked again"], ["approved", "Approved"], ["all", "All"]] as const;
@@ -21,6 +23,7 @@ export default async function AllDocuments({ searchParams }: { searchParams: Pro
   type Who = { id: string; full_name: string | null } | null;
   type Row = { id: string; title: string; status: string; file_name: string | null; uploaded_at: string | null; uploaded_by: string | null; person: Who; case: { ref: string; person: Who } | null };
   const rows = (data ?? []) as unknown as Row[];
+  const used = await storageUsed(db()), cap = capBytes(), pct = usedPercent(used, cap);
   // one block per file (Client ID), the newest upload first
   const groups: { key: string; ref: string | null; who: Who; rows: Row[] }[] = [];
   for (const r of rows) {
@@ -32,6 +35,10 @@ export default async function AllDocuments({ searchParams }: { searchParams: Pro
   return (
     <>
       <Title sub="Every document your clients have sent, grouped by their file (Client ID).">Documents by file</Title>
+      <div className="card" style={{ padding: 14, marginBottom: 16 }}>
+        <p style={{ margin: "0 0 8px" }}><b>Storage: {mb(used)} of {mb(cap)} ({pct}%)</b> <span style={{ color: "var(--muted)" }}>· Files are removed automatically {KEEP_DAYS} days after upload. Download what you need before then.</span></p>
+        <div aria-hidden style={{ height: 10, borderRadius: 99, background: "#E4DED3", overflow: "hidden" }}><div style={{ width: `${pct}%`, height: "100%", background: pct >= 80 ? "var(--bad)" : "var(--ok)" }} /></div>
+      </div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
         {FILTERS.map(([k, l]) => <Link key={k} href={`/admin/cases/documents?show=${k}`} className="chip" style={{ textDecoration: "none", fontSize: 15, padding: "10px 16px", fontWeight: show === k ? 700 : 400 }}>{l}</Link>)}
       </div>
@@ -48,7 +55,7 @@ export default async function AllDocuments({ searchParams }: { searchParams: Pro
                 {g.rows.map((r) => (
                   <div key={r.id} style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", alignItems: "center", paddingTop: 8, borderTop: "1px solid var(--line)" }}>
                     <span style={{ minWidth: 0, overflowWrap: "anywhere" }}><b>{r.title}</b><br />
-                      <span style={{ color: "var(--muted)", fontSize: 14 }}>{r.file_name} · {day(r.uploaded_at)} · from {r.uploaded_by === "staff" ? "consultant" : "client"}</span></span>
+                      <span style={{ color: "var(--muted)", fontSize: 14 }}>{r.file_name} · {day(r.uploaded_at)} · from {r.uploaded_by === "staff" ? "consultant" : "client"} · <b style={{ color: r.uploaded_at && daysLeft(r.uploaded_at) <= 7 ? "var(--bad)" : undefined }}>{r.uploaded_at ? `removed in ${Math.max(0, daysLeft(r.uploaded_at))} days` : ""}</b></span></span>
                     <span style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
                       <Badge color={COLOUR[r.status]}>{LABEL[r.status] ?? r.status}</Badge>
                       <a className="btn btn-outline" style={{ minHeight: 44 }} href={`/admin/docs/${r.id}`}>Open file</a>

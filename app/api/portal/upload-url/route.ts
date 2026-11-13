@@ -3,6 +3,8 @@ import { z } from "zod";
 import { rateLimit } from "@/lib/server/guard";
 import { serviceClient } from "@/lib/supabase";
 import { docOwner, ensureCase, getClient, signUpload } from "@/lib/server/portal";
+import { storageUsed } from "@/lib/server/storage";
+import { mb, uploadAllowed } from "@/lib/storage-policy";
 import { esc, notifyOwner } from "@/lib/server/notify";
 import { siteConfig } from "@/config/site";
 import { clientMayUpload, type DocStatus } from "@/lib/portal";
@@ -16,6 +18,12 @@ export async function POST(req: NextRequest) {
   if (!p.success || (!p.data.doc_id && !p.data.title)) return NextResponse.json({ ok: false, error: "Please choose a document and a file." }, { status: 422 });
   if (!(await rateLimit(`pup:${me.person.id}`, 40, 3600_000))) return NextResponse.json({ ok: false, error: "Too many uploads. Please wait a little." }, { status: 429 });
 
+  // free-storage cap: pause uploads before the free plan is full, and tell the owner (at most once a day)
+  const used = await storageUsed(db);
+  if (!uploadAllowed(used, p.data.size)) {
+    if (await rateLimit(`storage-full:${new Date().toISOString().slice(0, 10)}`, 1, 86400_000)) void notifyOwner("Uploads paused: storage is full", `<p>Client files use ${esc(mb(used))}. Uploads are paused until space is freed. Download and clear files in <a href="${esc(siteConfig.url)}/admin/cases/documents">Documents by file</a>.</p>`);
+    return NextResponse.json({ ok: false, error: "Uploads are paused for a short while. Please send your documents on WhatsApp or try again tomorrow." }, { status: 503 });
+  }
   let docId = p.data.doc_id;
   let clientId: string | undefined;
   if (docId) {

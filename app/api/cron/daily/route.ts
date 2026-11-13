@@ -6,6 +6,7 @@ import { notifyOwner } from "@/lib/server/notify";
 import { createRecurringExpenses, morningSummary, purgeExpiredDocuments } from "@/lib/server/daily";
 import { pullSearchConsole } from "@/lib/server/gsc";
 import { translateContent } from "@/lib/server/translate";
+import { storageMaintenance } from "@/lib/server/storage";
 
 export const maxDuration = 60;
 
@@ -22,6 +23,7 @@ export async function GET(req: NextRequest) {
     let made = 0;
     await step("recurring", async () => (made = await createRecurringExpenses(db)));
     await step("documentsDeleted", () => purgeExpiredDocuments(db));
+    await step("storage", () => storageMaintenance(db));
     await step("searchConsole", pullSearchConsole);
     await step("translate", async () => { const r = await translateContent(db, 15000); if (r.done) revalidatePath("/[locale]", "layout"); return r; });
     await step("morningEmail", async () => { const m = await morningSummary(db, made); return { sent: await notifyOwner(m.subject, m.html), ...m.data }; });

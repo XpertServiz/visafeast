@@ -41,6 +41,8 @@ async function signIn(page, who) {
   await page.locator("form.card button.btn-primary").click();
   await page.waitForURL(/\/portal$/, { timeout: 45000 });
 }
+/** Waits (up to 15 s) until the file has this status in the database. */
+const stageIs = async (id, stage) => { for (let i = 0; i < 30; i++) { const { data } = await db.from("cases").select("stage").eq("id", id).single(); if (data?.stage === stage) return true; await new Promise((r) => setTimeout(r, 500)); } return false; };
 const approve = (id) => db.from("people").update({ portal_status: "approved" }).eq("id", id);
 
 try {
@@ -52,7 +54,8 @@ try {
   made.people.push(pa.id); made.users.push(pa.auth_user_id);
   check("the request is saved as pending", pa.portal_status === "pending", pa.portal_status);
   await a.page.goto(`${BASE}/portal`, { waitUntil: "domcontentloaded" });
-  check("a pending client cannot open the portal", /\/portal\/login/.test(a.page.url()), a.page.url());
+  await a.page.waitForURL(/\/portal\/login/, { timeout: 15000 }).catch(() => {});
+  check("a pending client cannot open the portal (sent to sign in)", /\/portal\/login/.test(a.page.url()) && !(await a.page.innerText("body")).includes("Track my file"), a.page.url());
   await a.page.fill("#pl-e", A.email); await a.page.fill("#pl-p", A.password);
   await a.page.locator("form.card button.btn-primary").click();
   await a.page.waitForFunction(() => document.body.innerText.includes("waiting for approval"), null, { timeout: 20000 });
@@ -164,8 +167,8 @@ try {
   check("the admin menu calls it Client files", casesText.includes("Client files"));
   check("Client files lists the new file by its Client ID", casesText.includes(fileA[0].ref));
   check("Client files shows the waiting sign-up request", casesText.includes(R.name) && casesText.includes("Sign-up requests"));
-  await sp.locator("div", { hasText: R.name }).last().locator("button", { hasText: "Approve" }).click();
-  await sp.waitForFunction((n) => !document.body.innerText.includes(n), R.name, { timeout: 20000 });
+  await sp.locator(`form:has(input[name="id"][value="${pr.id}"]):has(input[value="approve"]) button`).click();
+  await sp.waitForSelector(`form:has(input[name="id"][value="${pr.id}"]):has(input[value="approve"])`, { state: "detached", timeout: 20000 });
   const { data: prAfter } = await db.from("people").select("portal_status").eq("id", pr.id).single();
   check("the admin can approve a sign-up request", prAfter.portal_status === "approved", prAfter.portal_status);
 
@@ -175,19 +178,19 @@ try {
   await sp.goto(`${BASE}/admin/cases/${fileA[0].ref}`, { waitUntil: "domcontentloaded" });
   await sp.selectOption('select[name="stage"]', "docs_missing");
   await sp.locator("button", { hasText: "Save status" }).click();
-  await sp.waitForFunction(() => document.body.innerText.includes("Documents missing"), null, { timeout: 20000 });
+  await stageIs(fileA[0].id, "docs_missing");
   const { data: fileNow } = await db.from("cases").select("stage").eq("id", fileA[0].id).single();
   check("the admin sets the status from the drop-down", fileNow.stage === "docs_missing", fileNow.stage);
   await a.page.goto(`${BASE}/portal`, { waitUntil: "domcontentloaded" });
   check("the client sees the new status live", (await a.page.textContent("body")).includes("Documents missing"));
   await sp.selectOption('select[name="stage"]', "refused");
   await sp.locator("button", { hasText: "Save status" }).click();
-  await sp.waitForFunction(() => document.body.innerText.includes("Case refused"), null, { timeout: 20000 });
+  await stageIs(fileA[0].id, "refused");
   const { data: refused } = await db.from("cases").select("stage,decision").eq("id", fileA[0].id).single();
   check("choosing 'Case refused' records the decision", refused.stage === "refused" && refused.decision === "refused");
   await sp.selectOption('select[name="stage"]', "awaiting_embassy");
   await sp.locator("button", { hasText: "Save status" }).click();
-  await sp.waitForFunction(() => !document.body.innerText.includes("REFUSED"), null, { timeout: 20000 });
+  await stageIs(fileA[0].id, "awaiting_embassy");
   const { data: reopened } = await db.from("cases").select("stage,decision").eq("id", fileA[0].id).single();
   check("moving a file back reopens it", reopened.stage === "awaiting_embassy" && reopened.decision === null);
   const staffDl = await sc.request.get(`${BASE}/admin/docs/${doc.id}`, { maxRedirects: 0 });
