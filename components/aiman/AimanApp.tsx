@@ -186,4 +186,4 @@ export function AimanApp({ country, lang: locCode, dict, funds, whatsapp, videos
   );
 }
 
-const LANG_NAME: Record<string, string> = { ur: "اردو", ar: "العربية", fa: "فارسی", hi: "हिन्दी", de: "Deutsch", es: "Español", fr: "Français", tr: "Türkçe", bn: "বাংলা", id: "Indonesia", ms: "Melayu", pt: "Português", it: "Italiano", ru: "Русский", nl: "Nederlands" };
+const LANG_NAME: Record<string, string> = { ur: "اردو", ar: "العربية", fa: "فارسی", hi: "हिन्दी", de: "Deutsch", es: "Español", fr: "Français", tr: "Türkçe", bn: "বাংলা", id: "Indonesia", ms: "Melayu", pt: "Português", it: "Italiano", ru: "Русский", nl: "Nederlands", ja: "日本語", zh: "中文", ko: "한국어", th: "ไทย", vi: "Tiếng Việt", pl: "Polski", el: "Ελληνικά", sv: "Svenska", da: "Dansk", no: "Norsk", fi: "Suomi", cs: "Čeština", hu: "Magyar", ro: "Română", uk: "Українська", he: "עברית", sw: "Kiswahili" };

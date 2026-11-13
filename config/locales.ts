@@ -89,7 +89,13 @@ const LANG_COUNTRIES: Record<string, string> = {
   de: "DE AT CH LI", fr: "FR BE LU MC SN CI CM ML BF NE TG BJ GN MG CD GA HT",
   es: "ES MX AR CO CL PE VE EC GT CU BO DO HN PY SV NI CR PA UY GQ",
 };
+const GPT_LANG_COUNTRIES: Record<string, string> = {
+  ja: "JP", zh: "CN TW HK MO SG", ko: "KR KP", th: "TH", vi: "VN", pl: "PL", el: "GR CY", sv: "SE", da: "DK", no: "NO", fi: "FI", cs: "CZ", hu: "HU", ro: "RO MD", uk: "UA", he: "IL", sw: "KE TZ UG",
+};
+for (const [l, cs] of Object.entries(GPT_LANG_COUNTRIES)) LANG_COUNTRIES[l] = cs;
+/** Languages with a ready-made file in lib/aiman/gen; the others are translated once by GPT the first time a visitor from that country arrives. */
+export const AIMAN_FILE_LANGS = ["ur", "ar", "de", "es", "fr", "tr", "hi", "bn", "id", "ms", "pt", "it", "ru", "fa", "nl"];
 export const AIMAN_LANGS = Object.keys(LANG_COUNTRIES);
-export const AIMAN_RTL = ["ur", "ar", "fa"];
+export const AIMAN_RTL = ["ur", "ar", "fa", "he"];
 export const COUNTRY_MAIN_LANG: Record<string, string> = Object.fromEntries(Object.entries(LANG_COUNTRIES).flatMap(([lang, cs]) => cs.split(" ").map((c) => [c, lang])));
 export const aimanLangFor = (country: string | null | undefined): string | null => (country ? COUNTRY_MAIN_LANG[country.toUpperCase()] ?? null : null);
