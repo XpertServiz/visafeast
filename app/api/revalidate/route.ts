@@ -1,8 +1,10 @@
+import { crossSite } from "@/lib/server/guard";
 import { NextResponse, type NextRequest } from "next/server";
 import { revalidatePath } from "next/cache";
 import { getAdmin } from "@/lib/server/admin-auth";
 
 export async function POST(req: NextRequest) {
+  if (crossSite(req)) return NextResponse.json({ ok: false, error: "Request not allowed." }, { status: 403 });
   const admin = await getAdmin();
   if (!admin) return NextResponse.json({ ok: false }, { status: 401 });
   const { path } = (await req.json().catch(() => ({}))) as { path?: string };

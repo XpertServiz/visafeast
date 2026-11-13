@@ -1,3 +1,4 @@
+import { crossSite } from "@/lib/server/guard";
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { getAdmin, can } from "@/lib/server/admin-auth";
@@ -25,6 +26,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  if (crossSite(req)) return NextResponse.json({ ok: false, error: "Request not allowed." }, { status: 403 });
   const c = await ctx(req);
   if (!c) return NextResponse.json({ ok: false, error: "Please sign in again." }, { status: 401 });
   const p = schema.safeParse(await req.json().catch(() => null));

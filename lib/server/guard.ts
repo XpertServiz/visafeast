@@ -7,6 +7,16 @@ export function clientIp(req: NextRequest): string {
   return (req.headers.get("x-forwarded-for")?.split(",")[0] || req.headers.get("x-real-ip") || "0.0.0.0").trim();
 }
 
+/**
+ * True when a browser request comes from ANOTHER website (its Origin header names a different host). Used on endpoints that act on a signed-in
+ * user's behalf, as a second layer on top of SameSite cookies. Requests with no Origin (our own tests, servers) are not browsers and pass.
+ */
+export function crossSite(req: NextRequest): boolean {
+  const origin = req.headers.get("origin");
+  if (!origin) return false;
+  try { return new URL(origin).host !== (req.headers.get("x-forwarded-host") || req.headers.get("host") || ""); } catch { return true; }
+}
+
 /** sha256(daily salt + ip + ua) — the raw IP is never stored (brief §12). */
 export function visitorHash(req: NextRequest): string {
   const day = new Date().toISOString().slice(0, 10);

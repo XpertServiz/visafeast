@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
-import { clientIp, rateLimit } from "@/lib/server/guard";
+import { clientIp, rateLimit, crossSite } from "@/lib/server/guard";
 import { authClient } from "@/lib/server/admin-auth";
 import { serviceClient } from "@/lib/supabase";
 import { portalStatusFor } from "@/lib/server/portal";
@@ -9,6 +9,7 @@ const schema = z.object({ email: z.string().trim().toLowerCase().email().max(200
 const WRONG = { ok: false, error: "Wrong email or password." };
 
 export async function POST(req: NextRequest) {
+  if (crossSite(req)) return NextResponse.json({ ok: false, error: "Request not allowed." }, { status: 403 });
   const p = schema.safeParse(await req.json().catch(() => null));
   if (!p.success) return NextResponse.json(WRONG, { status: 401 });
   if (!(await rateLimit(`plogin:${clientIp(req)}`, 15, 900_000)) || !(await rateLimit(`plogin-e:${p.data.email}`, 10, 900_000)))

@@ -16,6 +16,6 @@ export async function POST(req: NextRequest) {
   const user = c ? (await c.auth.getUser()).data.user : null;
   if (!db || !user) return NextResponse.json({ ok: false, error: "Please sign in first." }, { status: 401 });
   const { error } = await db.rpc("portal_claim_code", { p_hash: hashCode(p.data.code), p_user: user.id });
-  if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 400 });
+  if (error) return NextResponse.json({ ok: false, error: /^This /.test(error.message) ? error.message : "This link is not valid any more. Please ask your consultant for a new one." }, { status: 400 });
   return NextResponse.json({ ok: true });
 }

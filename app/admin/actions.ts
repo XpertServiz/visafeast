@@ -1,6 +1,8 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
+import { rateLimit } from "@/lib/server/guard";
 import { authClient, getAdmin, can, type Admin } from "@/lib/server/admin-auth";
 import { serviceClient } from "@/lib/supabase";
 import { parseYouTube } from "@/lib/youtube";
@@ -42,6 +44,10 @@ async function pingCountry(db: NonNullable<ReturnType<typeof serviceClient>>, id
 export async function signIn(_: unknown, fd: FormData) {
   const c = await authClient();
   if (!c) return { error: "Supabase is not set up yet." };
+  // brute-force guard: 8 tries per 15 minutes for one address and 20 per computer
+  const h = await headers();
+  const ip = (h.get("x-forwarded-for")?.split(",")[0] || h.get("x-real-ip") || "0.0.0.0").trim();
+  if (!(await rateLimit(`alogin-e:${s(fd, "email").toLowerCase()}`, 8, 900_000)) || !(await rateLimit(`alogin-ip:${ip}`, 20, 900_000))) return { error: "Too many tries. Please wait 15 minutes." };
   const { error } = await c.auth.signInWithPassword({ email: s(fd, "email"), password: s(fd, "password") });
   if (error) return { error: "Wrong email or password." };
   redirect("/admin");

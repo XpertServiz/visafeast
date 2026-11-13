@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
-import { rateLimit } from "@/lib/server/guard";
+import { rateLimit, crossSite } from "@/lib/server/guard";
 import { serviceClient } from "@/lib/supabase";
 import { docOwner, ensureCase, getClient, signUpload } from "@/lib/server/portal";
 import { storageUsed } from "@/lib/server/storage";
@@ -12,6 +12,7 @@ import { clientMayUpload, type DocStatus } from "@/lib/portal";
 const schema = z.object({ doc_id: z.string().uuid().optional(), title: z.string().trim().min(2).max(120).optional(), service: z.enum(["visit", "study", "work", "immigration"]).optional(), mime: z.string().max(60), size: z.number().int().positive() });
 
 export async function POST(req: NextRequest) {
+  if (crossSite(req)) return NextResponse.json({ ok: false, error: "Request not allowed." }, { status: 403 });
   const me = await getClient(); const db = serviceClient();
   if (!me || !db) return NextResponse.json({ ok: false, error: "Please sign in again." }, { status: 401 });
   const p = schema.safeParse(await req.json().catch(() => null));

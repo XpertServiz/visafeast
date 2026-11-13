@@ -16,7 +16,7 @@ async function withSession(req: NextRequest, make: () => NextResponse): Promise<
       setAll: (list) => {
         list.forEach(({ name, value }) => req.cookies.set(name, value));
         res = make();
-        list.forEach(({ name, value, options }) => res.cookies.set(name, value, options));
+        list.forEach(({ name, value, options }) => res.cookies.set(name, value, { ...options, httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax" }));
       },
     },
   });

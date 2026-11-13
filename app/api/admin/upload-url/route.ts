@@ -1,3 +1,4 @@
+import { crossSite } from "@/lib/server/guard";
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { getAdmin, can } from "@/lib/server/admin-auth";
@@ -8,6 +9,7 @@ const schema = z.object({ doc_id: z.string().uuid().optional(), title: z.string(
 
 /** A consultant adds a file for the client, for example one that arrived on WhatsApp. */
 export async function POST(req: NextRequest) {
+  if (crossSite(req)) return NextResponse.json({ ok: false, error: "Request not allowed." }, { status: 403 });
   const a = await getAdmin(); const db = serviceClient();
   if (!a || !db || !can.people(a.role)) return NextResponse.json({ ok: false, error: "Please sign in again." }, { status: 401 });
   const p = schema.safeParse(await req.json().catch(() => null));

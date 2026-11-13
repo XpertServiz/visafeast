@@ -19,6 +19,18 @@ export function uploadProblem(mime: string, size: number): string | null {
   return null;
 }
 
+/** The file's first bytes must match the type it claims (a renamed web page or program is refused). */
+export function looksLike(mime: string, b: Uint8Array): boolean {
+  const at = (i: number, s: string) => s.split("").every((c, k) => b[i + k] === c.charCodeAt(0));
+  switch (mime) {
+    case "application/pdf": return at(0, "%PDF");
+    case "image/jpeg": return b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff;
+    case "image/png": return b[0] === 0x89 && at(1, "PNG");
+    case "image/webp": return at(0, "RIFF") && at(8, "WEBP");
+    default: return false;
+  }
+}
+
 /** Strips paths and odd characters. The name is only ever a download label, never a storage path. */
 export function safeFileName(name: string): string {
   const base = name.split(/[\\/]/).pop() ?? "file";

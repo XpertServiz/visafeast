@@ -1,3 +1,4 @@
+import { crossSite } from "@/lib/server/guard";
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { getAdmin, can } from "@/lib/server/admin-auth";
@@ -7,6 +8,7 @@ import { docOwner, finishUpload } from "@/lib/server/portal";
 const schema = z.object({ doc_id: z.string().uuid(), path: z.string().max(200), file_name: z.string().max(300) });
 
 export async function POST(req: NextRequest) {
+  if (crossSite(req)) return NextResponse.json({ ok: false, error: "Request not allowed." }, { status: 403 });
   const a = await getAdmin(); const db = serviceClient();
   if (!a || !db || !can.people(a.role)) return NextResponse.json({ ok: false, error: "Please sign in again." }, { status: 401 });
   const p = schema.safeParse(await req.json().catch(() => null));

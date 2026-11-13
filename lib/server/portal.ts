@@ -2,7 +2,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { authClient } from "./admin-auth";
 import { serviceClient } from "../supabase";
-import { pathFor, pathIsTheirs, safeFileName, uploadProblem } from "../portal";
+import { looksLike, pathFor, pathIsTheirs, safeFileName, uploadProblem } from "../portal";
 import { SERVICE_TYPES, type ServiceType } from "../case-stages";
 
 export type Db = NonNullable<ReturnType<typeof serviceClient>>;
@@ -80,6 +80,9 @@ export async function finishUpload(db: Db, args: { ownerId: string; doc: DocRow;
   const meta = (obj.metadata ?? {}) as { size?: number; mimetype?: string };
   const problem = uploadProblem(meta.mimetype ?? "", Number(meta.size ?? 0));
   if (problem) { await db.storage.from(BUCKET).remove([path]); return problem; }
+  const { data: blob } = await db.storage.from(BUCKET).download(path);
+  const head = blob ? new Uint8Array(await blob.slice(0, 16).arrayBuffer()) : new Uint8Array();
+  if (!looksLike(meta.mimetype ?? "", head)) { await db.storage.from(BUCKET).remove([path]); return "This file does not look like a real PDF or picture. Please choose another file."; }
   const { error } = await db.from("case_documents").update({
     file_path: path, file_name: safeFileName(fileName), mime: meta.mimetype, size_bytes: meta.size, uploaded_by: by, uploaded_at: new Date().toISOString(),
     status: by === "staff" ? "approved" : "uploaded", received: by === "staff", review_note: null,

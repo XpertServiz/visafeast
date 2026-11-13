@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
-import { rateLimit } from "@/lib/server/guard";
+import { rateLimit, crossSite } from "@/lib/server/guard";
 import { serviceClient } from "@/lib/supabase";
 import { getClient, readMessages } from "@/lib/server/portal";
 import { esc, notifyOwner } from "@/lib/server/notify";
@@ -19,6 +19,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  if (crossSite(req)) return NextResponse.json({ ok: false, error: "Request not allowed." }, { status: 403 });
   const me = await getClient(); const db = serviceClient();
   if (!me || !db) return NextResponse.json({ ok: false, error: "Please sign in again." }, { status: 401 });
   const p = schema.safeParse(await req.json().catch(() => null));
