@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AIMAN_PATH } from "@/config/aiman";
 import Link from "next/link";
 import { pageCtx } from "@/lib/page";
 import { lp, regionName } from "@/lib/i18n";
@@ -74,6 +75,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 10h18M8 3v4M16 3v4" /></svg>{t("cta.book")}
               </a>
               <a className="btn btn-wa" href={whatsapp} aria-label="WhatsApp us" style={{ padding: "16px 20px", minHeight: 52 }}><WaIcon />{t("cta.whatsapp")}</a>
+              <a href={AIMAN_PATH} style={{ background: "#fff", color: "var(--navy)", fontWeight: 700, fontSize: 15, textDecoration: "none", padding: "16px 22px", minHeight: 52, display: "inline-flex", alignItems: "center", borderRadius: 999 }}>{t("cta.talkAiman")}</a>
             </div>
             <a href={book} style={{ display: "inline-block", marginTop: 16, color: "var(--amber)", fontWeight: 600, textDecoration: "underline" }}>{t("cta.enquiry")}</a>
             <ul style={{ listStyle: "none", padding: 0, margin: "32px 0 0", display: "flex", flexWrap: "wrap", gap: 20, fontSize: 14, color: "var(--on-navy)" }}>
