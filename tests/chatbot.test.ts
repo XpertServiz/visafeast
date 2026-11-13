@@ -120,14 +120,47 @@ describe("work permits (pages built from lib/guides/work.ts)", () => {
   it("'how does it work' is not a work permit question", () => {
     expect(askAll("uk visa how does it work").link).not.toMatch(/work-permit/);
   });
-  it("no work page for a country falls back to its immigration page", () => {
-    expect(askAll("australia work visa").link).toMatch(/^\/immigration\//);
+  it("a country with only an immigration page falls back to it", () => {
+    expect(askAll("malaysia work permit").link).toBe("/immigration/immigrate-to-malaysia-from-pakistan");
   });
+  it.each([
+    ["australia work visa", "/work-permit/australia-work-visa-from-pakistan"],
+    ["france talent card", "/work-permit/france-work-visa-from-pakistan"],
+    ["korea eps job", "/work-permit/south-korea-work-visa-from-pakistan"],
+    ["saudi work visa", "/work-permit/saudi-arabia-work-visa-from-pakistan"],
+  ])("%s → %s", (q, link) => { expect(askAll(q).link).toBe(link); });
   it("every work route figure comes with an official source and a read date", () => {
     for (const g of WORK_GUIDES) {
       expect(g.sources.length).toBeGreaterThan(0);
       expect(g.checked).toMatch(/^\d{4}-\d{2}-\d{2}$/);
       for (const o of g.options) expect(o.url, `${g.name}: ${o.name}`).toMatch(/^https:\/\//);
     }
+  });
+});
+
+describe("step-by-step process: the bot invites an enquiry", () => {
+  const all: Country[] = [...countries, ...WORK_GUIDES.map((g) => guideCountry(g, "en", "work"))];
+  const kbAll = buildKb([...SEED_FAQS, ...SEED_UK_FAQS], all, "en");
+  const askAll = (q: string, locale: "en" | "ur" = "en") => answerFromSite(q, { kb: kbAll, countries: all, locale, now });
+  it.each(["step by step process for uk visa", "how do I apply for canada visa", "what is the procedure for germany opportunity card", "uk visa process", "canada visa kaise apply karein"])("%s", (q) => {
+    const a = askAll(q);
+    expect(a.link).toBe("/book");
+    expect(a.answer).toMatch(/enquiry/i);
+    expect(a.answer).toMatch(/representative will contact you/i);
+  });
+  it("a question with no country is answered the same way", () => {
+    const a = askAll("tell me the step by step process");
+    expect(a.link).toBe("/book");
+    expect(a.country).toBeUndefined();
+  });
+  it("Urdu gets the Urdu message", () => {
+    const a = askAll("مرحلہ وار طریقہ کار", "ur");
+    expect(a.link).toBe("/ur/book");
+    expect(a.answer).toMatch(/انکوائری/);
+  });
+  it("fee, documents and time questions still get their facts", () => {
+    expect(askAll("uk visa fee").link).toMatch(/visit-visa/);
+    expect(askAll("canada documents").link).toMatch(/visit-visa/);
+    expect(askAll("france visa fee").answer).not.toMatch(/guarantee/i); // "france" is two letters from "chance"
   });
 });

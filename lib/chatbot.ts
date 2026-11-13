@@ -60,6 +60,8 @@ const COUNTRY_WORDS: Record<string, string[]> = {
   PT: ["portugal", "portuguese", "lisbon", "پرتگال"],
   AE: ["uae", "dubai", "emirates", "abudhabi", "sharjah", "دبئی", "امارات"],
   IE: ["ireland", "irish", "dublin", "آئرلینڈ"],
+  SA: ["saudi", "ksa", "riyadh", "jeddah", "سعودی", "سعودیہ", "ریاض"],
+  KR: ["korea", "korean", "seoul", "کوریا"],
   JP: ["japan", "japanese", "tokyo", "jappan", "جاپان"],
 };
 const TOPIC_WORDS: Record<Topic, string[]> = {
@@ -76,8 +78,8 @@ const TOPIC_WORDS: Record<Topic, string[]> = {
 const STUDY = ["study", "student", "students", "university", "college", "parhai", "padhai", "taleem", "education", "تعلیم", "اسٹوڈنٹ", "پڑھائی"];
 const IMMIGRATION = ["immigration", "immigrate", "settle", "permanent", "pr", "skilled", "express", "امیگریشن"];
 // Work permits, jobs abroad and job-seeker visas (Roman Urdu and Urdu words included).
-const WORK = ["work", "working", "job", "jobs", "permit", "permits", "employment", "employer", "worker", "workers", "naukri", "nokri", "naukari", "kaam", "salary", "sponsor", "sponsorship", "lmia", "chancenkarte", "opportunity", "seeker", "h1b", "نوکری", "ملازمت", "ورک", "پرمٹ", "کام", "جاب"];
-const STOP = new Set("the a an is are am was be do does did i you we to for of in on at and or my me can how what which who why it this that with from have has will would should please tell about give need want get kya hai hain ka ki ke ko se ye yeh mujhe mera meri hum aap ap main mein bhi aur nahi nahin par per liye visa visas کیا ہے ہیں کا کی کے کو سے میں مجھے ویزا".split(" "));
+const WORK = ["work", "working", "job", "jobs", "permit", "permits", "employment", "employer", "worker", "workers", "naukri", "nokri", "naukari", "kaam", "salary", "sponsor", "sponsorship", "lmia", "chancenkarte", "opportunity", "seeker", "h1b", "talent", "blue", "eps", "ssw", "aewv", "نوکری", "ملازمت", "ورک", "پرمٹ", "کام", "جاب"];
+const STOP = new Set("the a an is are am was be do does did i you we to for of in on at and or my me can how what which who why it this that with from have has will would should please tell about give need want get karein karen kare karna karo krna karni kya hai hain ka ki ke ko se ye yeh mujhe mera meri hum aap ap main mein bhi aur nahi nahin par per liye visa visas کیا ہے ہیں کا کی کے کو سے میں مجھے ویزا".split(" "));
 
 const GREET = ["hi", "hello", "hey", "salam", "salaam", "assalam", "aoa", "assalamualaikum", "سلام", "السلام"];
 const THANKS = ["thanks", "thank", "shukriya", "shukria", "jazakallah", "شکریہ"];
@@ -95,11 +97,13 @@ export function detectCountryCode(toks: string[]): string | null {
 }
 export function detectTopic(toks: string[]): Topic | null {
   const content = toks.filter((w) => !STOP.has(w));
+  // a word typed exactly right beats a word that only looks similar ("kaise" = how, one letter from "paise" = money)
+  for (const t of Object.keys(TOPIC_WORDS) as Topic[]) if (content.some((w) => TOPIC_WORDS[t].includes(w))) return t;
   for (const t of Object.keys(TOPIC_WORDS) as Topic[]) if (hasNear(content, TOPIC_WORDS[t])) return t;
   return null;
 }
 const detectKind = (toks: string[]): Country["kind"] | null =>
-  hasNear(toks, STUDY) ? "study"
+  hasNear(toks.filter((w) => !WORK.includes(w)), STUDY) ? "study"
     // "how does it work" is not about work permits: "work" right after it/does/this/process does not count
     : toks.some((w, i) => (WORK.includes(w) && !(w === "work" && ["it", "does", "this", "process", "will"].includes(toks[i - 1] ?? ""))) || (w.length > 5 && (near(w, "permit") || near(w, "employment")))) ? "work"
       : toks.some((w) => IMMIGRATION.includes(w) || near(w, "immigration")) ? "immigration" : null;
@@ -159,7 +163,7 @@ export function buildKb(faqs: Faq[], countries: Country[], loc: Loc): KbDoc[] {
       return { title: c.h1, countrySlug: c.slug, link: `${p}${countryPath(c)}`, body: [c.intro, c.funds_md, ...c.who_for_md, ...c.documents.map((d) => `${d.title} ${d.detail ?? ""}`), ...(g ? [] : c.steps.map((s) => `${s.title} ${s.detail ?? ""}`)), ...c.refusal_reasons.map((r) => `${r.title} ${r.detail ?? ""}`), ...c.extra_sections.map((e) => `${e.heading} ${e.md}`), ...guideText].filter(Boolean).join(" ") };
     }),
     { title: "Visafeast services", link: `${p}/about`, body: "Visafeast is a private visit, study and immigration visa consultancy based in Karachi, serving all of Pakistan online. We prepare your file. Decisions are made only by the embassy. We never guarantee a visa." },
-    { title: "Work permits and work visas abroad", link: `${p}/work-permit`, body: "Work visa, work permit, job seeker visa and jobs abroad from Pakistan: UK Skilled Worker and Health and Care Worker, Canada work permit and LMIA, Germany Opportunity Card (Chancenkarte) and EU Blue Card, New Zealand Accredited Employer Work Visa, Ireland Critical Skills and General Employment Permit, Netherlands highly skilled migrant, Portugal, UAE employment and Green visa, Japan Specified Skilled Worker, USA H-1B. Most work visas need a real job offer from a real employer. Never pay anyone for a job offer." },
+    { title: "Work permits and work visas abroad", link: `${p}/work-permit`, body: "Work visa, work permit, job seeker visa and jobs abroad from Pakistan: UK Skilled Worker and Health and Care Worker, Canada work permit and LMIA, Germany Opportunity Card (Chancenkarte) and EU Blue Card, New Zealand Accredited Employer Work Visa, Ireland Critical Skills and General Employment Permit, Netherlands highly skilled migrant, Portugal, UAE employment and Green visa, Japan Specified Skilled Worker, USA H-1B, Australia 482 and 186, France Talent card, South Korea EPS E-9, Saudi Arabia employer steps. Most work visas need a real job offer from a real employer. Never pay anyone for a job offer." },
     { title: "Free eligibility check", link: `${p}/tools/eligibility`, body: "A free quick check of your visa profile: answer a few questions and see your strengths and what to improve." },
     { title: "Refusal letter decoder", link: `${p}/tools/refusal-decoder`, body: "Paste your visa refusal letter and get it explained in plain language with what to fix before you apply again. Free." },
     { title: "Fee estimator", link: `${p}/tools/fee-estimator`, body: "Estimate the total cost of your visa application: official fees and service fee." },
@@ -202,7 +206,8 @@ export function answerFromSite(question: string, opts: { kb: KbDoc[]; countries:
   const code = detectCountryCode(toks);
   const topic = detectTopic(toks);
   const kindWord = detectKind(toks);
-  const has = (list: string[]) => hasNear(content, list);
+  const countryTokens = new Set(Object.values(COUNTRY_WORDS).flat());
+  const has = (list: string[]) => hasNear(content.filter((w) => !countryTokens.has(w)), list);
 
   if (!code && !topic && toks.length <= 4 && has(THANKS)) return { kind: "smalltalk", answer: T(loc, "You're welcome! Anything else about your visa?", "کوئی بات نہیں! ویزا کے بارے میں اور کچھ؟") };
   if (!code && !topic && toks.length <= 4 && toks.some((w) => GREET.some((g) => near(w, g)))) return { kind: "smalltalk", answer: T(loc, "Assalam-o-Alaikum! I'm Aiman. Ask me about fees, documents or timelines for any country.", "السلام علیکم! میں ایمن ہوں۔ کسی بھی ملک کی فیس، دستاویزات یا وقت کے بارے میں پوچھیں۔"), suggest: [T(loc, "UK visit visa fee", "یوکے ویزا فیس"), T(loc, "Canada documents", "کینیڈا دستاویزات"), T(loc, "Schengen time", "شینگن وقت")] };
@@ -211,6 +216,8 @@ export function answerFromSite(question: string, opts: { kb: KbDoc[]; countries:
   if (has(DECODE) && topic === "refusal") return { kind: "kb", answer: T(loc, "Paste your refusal letter in our free decoder: it explains each reason in plain language.", "اپنا انکار کا خط ہمارے مفت ڈیکوڈر میں ڈالیں: یہ ہر وجہ آسان زبان میں بتاتا ہے۔"), link: `${p}/tools/refusal-decoder` };
   if (!code && has(HUMAN)) return { kind: "kb", answer: T(loc, "Our consultant can help you directly. Use the green WhatsApp button below, or book a free 15-minute call.", "ہمارا کنسلٹنٹ براہ راست مدد کر سکتا ہے۔ نیچے سبز واٹس ایپ بٹن دبائیں، یا مفت 15 منٹ کی کال بک کریں۔"), link: `${p}/book` };
 
+  // "Step by step" / "how do I apply" / "process": every case is different, so the bot invites an enquiry and a representative follows up.
+  const wantsSteps = topic === "steps" || /step by step|stepwise|tareeqa|tariqa|tarika|process kya|مرحلہ وار|طریقہ کار/.test(normalize(question));
   const matches = (c: Country) => {
     const cc = (c.country_code ?? "").toUpperCase();
     if (code === "EU") return /schengen|europe/.test(c.slug);
@@ -221,6 +228,17 @@ export function answerFromSite(question: string, opts: { kb: KbDoc[]; countries:
   let target: Country | undefined = code ? pick(countries.filter(matches)) : undefined;
   // a follow-up like "and documents?" continues with the country being discussed
   if (!target && topic && lastCountry) target = countries.find((c) => c.slug === lastCountry);
+  if (wantsSteps && (target || !code)) {
+    const where = target ? T(loc, ` for ${target.country_name}`, ` ${target.country_name} کے لیے`) : "";
+    return {
+      kind: "kb", country: target?.slug,
+      answer: T(loc,
+        `Every case is different, so I can't give one step-by-step plan that fits everyone${where}. Please send us an enquiry and our representative will contact you with the exact steps for your case.`,
+        `ہر کیس مختلف ہوتا ہے، اس لیے میں سب کے لیے ایک جیسا مرحلہ وار طریقہ نہیں بتا سکتا${where}۔ براہ کرم ہمیں انکوائری بھیجیں، ہمارا نمائندہ آپ کے کیس کے مطابق درست مراحل کے ساتھ آپ سے رابطہ کرے گا۔`),
+      link: `${p}/book`,
+      suggest: target ? suggestFor(target, loc) : undefined,
+    };
+  }
   if (target) return { kind: "facts", answer: factsAnswer(target, topic, loc, now), link: `${p}${countryPath(target)}`, country: target.slug, suggest: suggestFor(target, loc) };
 
   if (topic && topic !== "steps" && topic !== "refusal" && content.length <= 5) {
@@ -258,6 +276,9 @@ const HINTS: [RegExp, string][] = [
   [/\bsingapur|singapour|singapura|新加坡|سنغافورة|सिंगापुर/i, "singapore"],
   [/arbeit|beruf|travail|emploi|trabajo|empleo|çalışma|lavoro|trabalho|emprego|\bwerk\b|praca|pracy|工作|就业|عمل|وظيفة|काम|नौकरी/i, "work permit"],
   [/japan|japon|giappone|japão|japonia|日本|اليابان|जापान/i, "japan"],
+  [/saudi|arabie saoudite|arabia saudita|arábia saudita|saudi-arabien|suudi|arabia saudyjska|沙特|السعودية|सऊदी/i, "saudi"],
+  [/korea|corée|coree|corea|coreia|südkorea|güney kore|korea południowa|韩国|كوريا|कोरिया/i, "korea"],
+  [/schritt|étape|etapes|étapes|paso a paso|pasos|adım|adim|passo a passo|passaggi|stappen|stap voor stap|krok po kroku|kroki|步骤|流程|خطوات|कदम|चरण/i, "step by step process"],
   [/irland|irlande|irlanda|ierland|爱尔兰|أيرلندا|आयरलैंड/i, "ireland"],
 ];
 export const withEnglishHints = (q: string) => [q, ...HINTS.filter(([re]) => re.test(q)).map(([, word]) => word)].join(" ");

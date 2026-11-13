@@ -16,7 +16,7 @@ for (const [name, w, h] of [["desk", 1280, 900], ["phone", 360, 780]]) {
 
   let r = await p.goto(`${BASE}/work-permit`, { waitUntil: "load" });
   ok(`${name}: hub opens`, r.status() === 200, String(r.status()));
-  ok(`${name}: hub lists 10 countries`, (await p.locator('a.card[href^="/work-permit/"]').count()) === 10, String(await p.locator('a.card[href^="/work-permit/"]').count()));
+  ok(`${name}: hub lists 14 countries`, (await p.locator('a.card[href^="/work-permit/"]').count()) === 14, String(await p.locator('a.card[href^="/work-permit/"]').count()));
   ok(`${name}: hub no sideways scroll`, await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
   await p.screenshot({ path: `${S}/work-hub-${name}.png`, fullPage: false });
 
@@ -35,7 +35,7 @@ for (const [name, w, h] of [["desk", 1280, 900], ["phone", 360, 780]]) {
 
   await p.goto(`${BASE}/`, { waitUntil: "load" });
   await p.locator("#tab-work").click();
-  ok(`${name}: homepage Work tab shows cards`, (await p.locator('#panel-work a[href^="/work-permit/"]').count()) >= 10);
+  ok(`${name}: homepage Work tab shows cards`, (await p.locator('#panel-work a[href^="/work-permit/"]').count()) >= 14);
   ok(`${name}: homepage no sideways scroll`, await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
   await p.locator("#visas").scrollIntoViewIfNeeded();
   await p.screenshot({ path: `${S}/work-tab-${name}.png`, fullPage: false });
@@ -67,7 +67,7 @@ for (const [q, link] of [["germany opportunity card", "/work-permit/germany-work
 
 const sm = await (await fetch(`${BASE}/sitemap.xml`)).text();
 ok("sitemap lists the work hub", sm.includes("/work-permit</loc>"));
-ok("sitemap lists 10 work pages", (sm.match(/\/work-permit\/[a-z-]+<\/loc>/g) || []).length === 10);
+ok("sitemap lists 14 work pages", (sm.match(/\/work-permit\/[a-z-]+<\/loc>/g) || []).length === 14);
 await b.close();
 console.log(`${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
