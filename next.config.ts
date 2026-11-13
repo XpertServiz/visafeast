@@ -39,6 +39,14 @@ const config: NextConfig = {
   async headers() {
     return [
       {
+        // the email logo: Gmail shows pictures through its own proxy, so these files must allow cross-origin embedding
+        source: "/brand/:path*",
+        headers: [
+          { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
+          { key: "Cache-Control", value: "public, max-age=86400" },
+        ],
+      },
+      {
         source: "/:path*",
         headers: [
           { key: "Content-Security-Policy", value: csp },

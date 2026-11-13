@@ -25,7 +25,7 @@ try {
   let { data: r1 } = await db.from("aiman_leads").select("*").eq("id", id1).single();
   ok("partial: status qualified, no phone yet, utm kept", r1.status === "qualified" && !r1.phone && r1.utm.utm_source === "facebook" && !r1.email_sent);
   // the browser cannot force a status
-  const forged = await post({ step: "partial", answers: A({ balNum: 1 }), status: "qualified" });
+  const forged = await post({ step: "partial", answers: A({ name: `Forged ${tag}`, balNum: 1 }), status: "qualified" });
   made.leads.push(forged.j.id);
   const { data: rf } = await db.from("aiman_leads").select("status").eq("id", forged.j.id).single();
   ok("a forged 'qualified' is ignored: the server decides (not qualified)", rf.status === "not_qualified");
@@ -58,9 +58,9 @@ try {
   ok("admin menu has Aiman leads", t.includes("Aiman leads"));
   ok("list shows both leads with badges and a NEW tag", t.includes(`Qual ${tag}`) && t.includes(`Plan ${tag}`) && t.includes("QUALIFIED") && t.includes("NOT YET QUALIFIED") && t.includes("NEW"));
   await p.goto(`${BASE}/admin/aiman-leads?status=not_qualified&q=${tag}`, { waitUntil: "domcontentloaded" });
-  const f = await p.innerText("body"); ok("filter by status and search works", f.includes(`Plan ${tag}`) && !f.includes(`Qual ${tag}`));
+  const f = await p.innerText("body"); ok("filter by status and search works", f.includes(`Plan ${tag}`) && !f.includes(`Qual ${tag}`), `plan:${f.includes(`Plan ${tag}`)} qual:${f.includes(`Qual ${tag}`)} :: ${f.replace(/\s+/g, " ").slice(0, 300)}`);
   await p.goto(`${BASE}/admin/aiman-leads/${id1}`, { waitUntil: "domcontentloaded" });
-  const d = await p.innerText("body"); ok("detail shows the summary paragraphs and answers", d.includes("Recommended action: call within 24 hours") && d.includes("Karachi") && d.includes("balNum"));
+  const d = await p.innerText("body"); ok("detail shows the summary paragraphs and answers", d.includes("Recommended action: call within 24 hours") && d.includes("Karachi") && d.includes("balNum"), `rec:${d.includes("Recommended action: call within 24 hours")} kar:${d.includes("Karachi")} bal:${d.includes("balNum")} :: ${d.replace(/\s+/g, " ").slice(0, 400)}`);
   await p.locator("button", { hasText: "Mark as contacted" }).click(); await p.waitForTimeout(1500);
   const { data: rc } = await db.from("aiman_leads").select("contacted,seen").eq("id", id1).single(); ok("opening clears NEW, 'Mark as contacted' works", rc.contacted === true && rc.seen === true);
   const csv = await ctx.request.get(`${BASE}/admin/aiman-leads/export?q=${tag}`);

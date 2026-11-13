@@ -13,7 +13,7 @@ const TRAVEL = { none: "No travel history", regional: "Regional trips (Dubai/Mal
 export interface LeadMeta { secs?: number; phone?: string; city?: string }
 export interface LeadText {
   qualified: boolean; status: "qualified" | "not_qualified"; subject: string; p1: string; p2: string; program: string; programs: string[];
-  rows: [string, string][]; perPerson: number; need: number; target: string; purposeLabel: string; gaps: string[];
+  rows: [string, string][]; perPerson: number; need: number; target: string; purposeLabel: string; gaps: string[]; name: string; phone: string | null; city: string | null;
 }
 
 export function leadText(a: Answers, funds: FundsConfig, meta: LeadMeta = {}): LeadText {
@@ -42,18 +42,41 @@ export function leadText(a: Answers, funds: FundsConfig, meta: LeadMeta = {}): L
     ["Balance", `PKR ${bal} lacs (${perPerson}/person)`], ["Required (indicative)", `~PKR ${need} lacs`], ["Statement pattern", a.deposits === "steady" ? "Steady" : "Recent large deposits"],
     ["Travel / refusal", `${TRAVEL[a.travel ?? "none"]} · ${a.refusal === "refused" ? "Refused before" : "Never refused"}`],
   ];
-  return { qualified: r.qualified, status: r.qualified ? "qualified" : "not_qualified", subject, p1, p2, program: programs[0] ?? "", programs, rows, perPerson, need, target, purposeLabel, gaps };
+  return { qualified: r.qualified, status: r.qualified ? "qualified" : "not_qualified", subject, p1, p2, program: programs[0] ?? "", programs, rows, perPerson, need, target, purposeLabel, gaps, name, phone: meta.phone ?? null, city: meta.city ?? null };
 }
 
 const h = (s: unknown) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
 
-/** The email: coloured header, two short paragraphs, a facts table and a call-to-action bar. Table layout and inline colours so Gmail (also dark mode) shows it properly. */
+/**
+ * The email to the owner. Kept deliberately simple: the coloured verdict, who the person is and what they want at a glance,
+ * one big WhatsApp button that opens a chat with the client, and the consultant's notes at the end.
+ * Table layout and inline colours only, so Gmail (light and dark mode) shows it properly.
+ */
 export function leadEmailHtml(t: LeadText): string {
-  const col = t.qualified ? "#1f9d63" : "#d98a14", bg = t.qualified ? "#e9f8f0" : "#fff4e0", tag = t.qualified ? "QUALIFIED LEAD" : "NOT YET QUALIFIED";
-  const rows = t.rows.map(([k, v]) => `<tr><td style="padding:6px 10px;border-bottom:1px solid #eceff4;color:#667085;width:38%;vertical-align:top;font:13px Arial,sans-serif">${h(k)}</td><td style="padding:6px 10px;border-bottom:1px solid #eceff4;color:#1d2433;vertical-align:top;font:13px Arial,sans-serif">${h(v)}</td></tr>`).join("");
-  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:10px;overflow:hidden"><tr><td style="background:${col};color:#ffffff;padding:14px 16px;font:bold 14px Arial,sans-serif;letter-spacing:.06em">${tag} <span style="font-weight:normal;opacity:.9;letter-spacing:0;float:right">Visafeast · Talk with Aiman</span></td></tr>
-<tr><td style="background:${bg};padding:16px;color:#1d2433;font:14px/1.6 Arial,sans-serif"><p style="margin:0 0 10px;color:#1d2433">${h(t.p1)}</p><p style="margin:0 0 12px;color:#1d2433">${h(t.p2)}</p>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:8px;margin:6px 0 14px">${rows}</table>
-<div style="background:${col};color:#ffffff;text-align:center;border-radius:8px;padding:12px;font:bold 14px Arial,sans-serif">${t.qualified ? "Call / WhatsApp within 24 hours" : "Send improvement plan within 48 hours"}</div></td></tr></table>`;
+  const col = t.qualified ? "#1f9d63" : "#d98a14", bg = t.qualified ? "#e9f8f0" : "#fff4e0";
+  const tag = t.qualified ? "✅ QUALIFIED LEAD" : "⚠️ NOT YET QUALIFIED";
+  const act = t.qualified ? "Call / WhatsApp within 24 hours" : "Send improvement plan within 48 hours";
+  const font = "Arial,Helvetica,sans-serif";
+  const digits = (t.phone ?? "").replace(/\D/g, "");
+  const first = (t.name.split(" ")[0] || t.name).slice(0, 25);
+  const wa = digits ? `https://wa.me/${digits}?text=${encodeURIComponent(`Assalam o Alaikum ${t.name}, this is Visafeast. You just completed Aiman's assessment for ${t.purposeLabel} — ${t.target}. Let's talk about the next steps.`)}` : null;
+  const rows = t.rows.map(([k, v]) => `<tr><td style="padding:7px 10px;border-bottom:1px solid #eceff4;color:#667085;width:38%;vertical-align:top;font:13px ${font}">${h(k)}</td><td style="padding:7px 10px;border-bottom:1px solid #eceff4;color:#1d2433;vertical-align:top;font:13px ${font}"><b style="font-weight:600">${h(v)}</b></td></tr>`).join("");
+  const button = wa
+    ? `<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:14px auto 4px"><tr><td style="background:${col};border-radius:10px"><a href="${h(wa)}" style="display:inline-block;padding:14px 30px;font:bold 16px ${font};color:#ffffff;text-decoration:none">💬 WhatsApp ${h(first)} now</a></td></tr></table>
+<p style="margin:6px 0 0;text-align:center;font:12.5px ${font};color:#667085">${act} · tap the button to open WhatsApp with a ready message</p>`
+    : `<div style="background:${col};color:#ffffff;text-align:center;border-radius:8px;padding:12px;font:bold 14px ${font}">${act}</div><p style="margin:6px 0 0;text-align:center;font:12.5px ${font};color:#667085">No WhatsApp number yet — they saw their result but did not send the form.</p>`;
+  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:10px;overflow:hidden">
+<tr><td style="background:${col};color:#ffffff;padding:14px 16px;font:bold 15px ${font};letter-spacing:.04em">${tag} <span style="font-weight:normal;opacity:.9;letter-spacing:0;float:right;font-size:12px">Talk with Aiman</span></td></tr>
+<tr><td style="background:${bg};padding:18px 16px;color:#1d2433">
+<p style="margin:0 0 2px;font:bold 20px ${font};color:#1d2433">${h(t.name)}</p>
+<p style="margin:0 0 12px;font:14px ${font};color:#475467">${h(t.purposeLabel)} · ${h(t.target)}${t.city ? ` · ${h(t.city)}` : ""}${t.qualified ? ` · <b style="color:${col}">${h(t.program)}</b>` : ` · needs: ${h(t.gaps.join(", ") || "file strengthening")}`}</p>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:8px;margin:0 0 6px">${rows}</table>
+${button}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:16px"><tr><td style="border-top:1px solid #e3d9c2;padding-top:12px">
+<p style="margin:0 0 4px;font:bold 12px ${font};color:#667085;letter-spacing:.08em">CASE NOTES FOR THE CONSULTANT</p>
+<p style="margin:0 0 8px;font:13px/1.6 ${font};color:#475467">${h(t.p1)}</p>
+<p style="margin:0;font:13px/1.6 ${font};color:#475467">${h(t.p2)}</p>
+</td></tr></table>
+</td></tr></table>`;
 }
 export { needFor };
