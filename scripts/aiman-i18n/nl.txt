@@ -1,0 +1,169 @@
+1|Assalam o Alaikum! Ik ben Aiman, uw Visafeast-adviseur. Hoe heet u?
+2|Typ uw naam, zodat ik u goed kan aanspreken.
+3|Aangenaam, {name}! In welke leeftijdsgroep zit u?
+8|Wat is uw hoogste opleiding?
+9|Middelbaar (Matric / Inter)
+10|Bachelor
+11|Master of hoger
+12|Wat beschrijft uw werk het best?
+13|Loondienst
+14|Eigen bedrijf
+15|Freelancer
+16|Student
+17|Werk niet
+18|Wordt uw salaris op uw bankrekening gestort of contant betaald?
+19|Bankrekening
+20|Contant
+21|Is uw bedrijf geregistreerd? (NTN / SECP / kamer)
+22|Ja, geregistreerd
+23|Niet geregistreerd
+24|Hoe ontvangt u uw freelance-inkomsten?
+25|Op mijn bankrekening
+26|Alleen contant / wallet / Payoneer
+27|Wat is uw reisgeschiedenis?
+28|Nog niet gereisd
+29|Dubai / Maleisië / Thailand enz.
+30|VK / Schengen / VS / Canada / Australië
+31|Is een visumaanvraag van u eerder geweigerd?
+32|Nooit geweigerd
+33|Ja, eerder geweigerd
+34|Wat wilt u in het buitenland doen?
+35|Bezoek / Toerisme
+36|Studeren
+37|Werken in het buitenland
+38|Vestigen in het buitenland (PR / Immigratie)
+39|Vraagt u alleen aan of met gezin?
+40|Alleen ik
+41|Met gezin
+42|Hoeveel personen vragen in totaal aan, uzelf inbegrepen?
+43|9 of meer
+44|Typ het exacte aantal gezinsleden (bijv. 10).
+45|Typ een getal van 9 tot 40.
+46|Hoeveel van hen zijn kinderen onder de 18?
+47|6 of meer
+48|Dat zijn meer kinderen dan het totaal aantal personen ({n}). Ik vraag het opnieuw.
+49|Typ het exacte aantal kinderen.
+50|Dat past niet bij de gezinsgrootte — typ een geldig getal.
+51|Hoe oud is uw jongste kind?
+52|Jonger dan 2 jaar
+53|2–11 jaar
+54|12–17 jaar
+55|Heeft u een Engelse taaltoets gedaan (IELTS / PTE / Duolingo)?
+56|Ja, score 6+ (of gelijkwaardig)
+57|Ja, onder 6
+58|Nog niet
+59|Hoeveel jaar voltijds werkervaring heeft u?
+60|Minder dan 2 jaar
+61|2–5 jaar
+62|5+ jaar
+63|Heeft u al een jobaanbod van een buitenlandse werkgever?
+64|Ja, ik heb een aanbod
+65|Nog geen aanbod
+66|Hoeveel staat er ongeveer nu op uw bankrekening (eindsaldo) in lakh? Typ een getal zoals 18 — of kies het dichtstbijzijnde bereik.
+67|Typ het bedrag als getal in lakh, bijv. 18 of 2,5 crore.
+68|Onder 5 lakh
+69|5–10 lakh
+70|10–15 lakh
+71|15–25 lakh
+72|25–40 lakh
+73|40+ lakh
+74|Hoe ziet het saldo eruit op uw afschriften van de laatste 6 maanden?
+75|Stabiel, langzaam opgebouwd
+76|Recent grote stortingen
+77|Welk land interesseert u het meest?
+78|Niet zeker — Aiman, stel u maar voor
+79|Uw saldo ligt onder wat gewoonlijk verwacht wordt. Kan een naast familielid (in Pakistan of in het buitenland) uw financiële garantsteller zijn?
+80|Ja, er is een garantsteller
+81|Geen garantsteller
+82|Verenigd Koninkrijk
+83|Canada
+84|Europa (Schengen)
+85|VS
+86|Australië
+87|Turkije
+88|Dubai / VAE
+89|Maleisië
+90|Duitsland
+91|persoon
+92|personen
+93|De middelen liggen onder het doel (PKR {bal} lakh tegenover ~{need} lakh). Een garantstellersdossier draagt de aanvraag.
+94|Bereid het bankafschrift van de garantsteller + bewijs van verwantschap voor.
+95|Middelen: u noemde PKR {bal} lakh; voor {n} {people} wordt ongeveer PKR {need} lakh verwacht.
+96|Bouw het saldo 3–6 maanden op en houd het aan, of voeg een gedocumenteerde garantsteller toe.
+97|Recent grote stortingen: de herkomst van het geld moet worden gedocumenteerd en het saldo moet eerst stabiliseren.
+98|Houd de rekening ~3 maanden stabiel; wij maken uw herkomst-van-middelendossier.
+99|Recent grote stortingen hebben een gedocumenteerde herkomst nodig.
+100|Brief over de herkomst van de middelen en bewijzen.
+101|Eerdere weigering: wij bestuderen de reden en beantwoorden die rechtstreeks in uw nieuwe motivatiebrief.
+102|Deel de weigeringsbrief met ons.
+103|Geen reisgeschiedenis: mogelijk, maar vraagt een zeer sterk dossier over middelen en binding.
+104|We kunnen eerst een startreis (Dubai/Maleisië) voorstellen.
+105|Contant salaris: inkomen is moeilijk aan te tonen bij een ambassade.
+106|Laat uw salaris minstens 3 maanden op een bankrekening storten.
+107|Niet-geregistreerd bedrijf: binding en inkomen zijn moeilijker te verifiëren.
+108|Registreer bij NTN / SECP en bewaar belastinggegevens.
+109|Freelance-inkomen buiten de bank is moeilijk aan te tonen.
+110|Laat inkomen via een bankrekening lopen.
+111|Matric/Inter: u zou starten met een foundation- of diplomatraject.
+112|Wij maken een shortlist van foundationprogramma's.
+113|Leeftijd 36+: studievisa zijn mogelijk, maar vragen een duidelijke carrièreverklaring.
+114|Wij schrijven een sterk studieplan.
+115|De Engelse toets haalt het vereiste niveau nog niet.
+116|Boek IELTS/PTE; veel universiteiten accepteren ook Duolingo.
+117|Deze werkroute vraagt een jobaanbod met sponsoring, dat u nog niet heeft.
+118|Wij begeleiden u bij het zoeken van een werkgever en sponsorroutes.
+119|Deze route verwacht bachelorniveau of een erkende vakkwalificatie.
+120|Een vaardigheidscertificering of een opleidingstraject kan dit overbruggen.
+121|Minder dan 2 jaar ervaring verkleint uw opties.
+122|Doe ervaring op in uw doelgebied.
+123|Leeftijd: puntensysteem-PR-routes geven sterk de voorkeur aan aanvragers onder 45.
+124|Wij bekijken alternatieve routes (werkvergunning naar PR).
+125|PR-routes vragen minstens een beoordeelde kwalificatie op bachelorniveau.
+126|Overweeg eerst een diploma-/opleidingstraject.
+127|Engelse toets: een IELTS/PTE-resultaat van ongeveer 6+ is nodig voor punten.
+128|Boek IELTS/PTE — 6–8 weken voorbereiding is gebruikelijk.
+129|Minder dan 2 jaar ervaring beperkt de punten.
+130|Doe ervaring op; wij brengen uw punten in kaart.
+131|Assalam o Alaikum! 👋 Ik ben Aiman van Visafeast. In ongeveer 2 minuten vertel ik u voor welke visumprogramma's u in aanmerking komt. Klaar?
+132|Laten we beginnen →
+133|Tik op “Laten we beginnen” wanneer u klaar bent.
+134|Terug naar uw vraag 👇
+135|Sorry, dat begreep ik niet helemaal. Tik op een optie hieronder of typ het eenvoudig (bijvoorbeeld “3” of “ja”).
+136|Bevestig uw WhatsApp-nummer in het formulier hierboven, dan neemt onze adviseur het over.
+137|Bedankt! ✅ Uw gegevens zijn bij ons team. U hoort snel van ons via WhatsApp.
+138|↩ Mijn laatste antwoord wijzigen
+139|Goed nieuws, {name}! 🎉 Op basis van uw antwoorden komt u in aanmerking voor de programma's hieronder. Deel uw WhatsApp-nummer en een Visafeast-adviseur neemt binnen 24 uur contact op.
+140|{name}, bedankt voor uw openhartige antwoorden — u bent dichterbij dan u denkt. 💙 Een paar dingen moeten eerst sterker en alles is op te lossen. Ik heb uw zaak voorbereid voor onze senior adviseur, die u een duidelijk stappenplan stuurt. Bevestig hieronder uw WhatsApp-nummer.
+141|U komt in aanmerking
+142|Nog niet — plan klaar
+143|Wat eerst versterkt moet worden:
+144|Om het sterker te maken:
+145|Uw profiel lijkt goed voorbereid voor deze route.
+146|Goed nieuws: uw profiel komt in aanmerking voor {list} — vraag uw adviseur ernaar.
+147|Eindbeoordeling door een Visafeast-adviseur.
+148|Mijn gegevens naar Visafeast sturen →
+149|Verzenden…
+150|✓ Gegevens verzonden
+151|WhatsApp-nummer (met landcode)
+152|Uw woonplaats
+153|Voer een geldig WhatsApp-nummer met landcode in, bijv. +31612345678.
+154|Sorry, dit kon niet worden verzonden. Probeer opnieuw of stuur ons een WhatsApp-bericht.
+155|Verzenden
+156|Resetten
+157|Typ uw antwoord…
+158|Tik op een optie of typ…
+159|Tik op een van uw antwoorden om het te wijzigen — de volgende vragen en het resultaat worden automatisch bijgewerkt.
+160|Aiman — Visafeast-adviseur
+161|Aiman is online
+162|Ontdek in 2 minuten voor welk visum u in aanmerking komt
+163|Beantwoord een paar korte vragen en Aiman vertelt welk visumprogramma bij uw profiel past.
+164|Bekijk klantverhalen en visumgidsen
+165|Video afspelen
+166|Chatten via WhatsApp
+167|Uw geschiktheid hier controleren is gratis. Onze adviseur noemt de exacte servicekosten na beoordeling van uw profiel — er wordt niets betaald voordat u akkoord gaat.
+168|Geen eerlijke adviseur kan een visum garanderen — de ambassade beslist. Wat wij garanderen is een correct, eerlijk, sterk dossier dat u de beste kans geeft.
+169|De meeste dossiers zijn klaar in 7–14 dagen. De verwerkingstijd hangt af van de ambassade en het land.
+170|U bereikt ons via visafeast@gmail.com of www.visafeast.com. Rond deze korte vragen af en een adviseur neemt contact op via WhatsApp.
+171|Ik ben Aiman, de virtuele adviseur van Visafeast. Uw antwoorden gaan rechtstreeks naar onze menselijke adviseurs, die elk dossier persoonlijk beoordelen.
+172|Wa alaikum assalam! 😊 Laten we doorgaan met uw beoordeling.
+173|Uw gegevens worden alleen gebruikt om uw zaak te beoordelen en alleen door Visafeast-adviseurs gezien.

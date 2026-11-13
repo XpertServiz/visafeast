@@ -1,0 +1,169 @@
+1|Assalam o Alaikum! Ben Aiman, Visafeast danışmanınız. Adınız nedir?
+2|Size doğru hitap edebilmem için lütfen adınızı yazın.
+3|Memnun oldum {name}! Hangi yaş grubundasınız?
+8|En yüksek eğitim durumunuz nedir?
+9|Lise (Matric / Inter)
+10|Lisans
+11|Yüksek lisans veya üzeri
+12|İşinizi en iyi ne tanımlar?
+13|Maaşlı çalışan
+14|Kendi işim
+15|Serbest çalışan
+16|Öğrenci
+17|Çalışmıyorum
+18|Maaşınız banka hesabınıza mı yatıyor, yoksa nakit mi ödeniyor?
+19|Banka hesabı
+20|Nakit
+21|İşletmeniz kayıtlı mı? (NTN / SECP / oda)
+22|Evet, kayıtlı
+23|Kayıtlı değil
+24|Serbest çalışma gelirinizi nasıl alıyorsunuz?
+25|Banka hesabıma
+26|Yalnızca nakit / cüzdan / Payoneer
+27|Seyahat geçmişiniz nedir?
+28|Henüz seyahat etmedim
+29|Dubai / Malezya / Tayland vb.
+30|Birleşik Krallık / Schengen / ABD / Kanada / Avustralya
+31|Daha önce vize başvurunuz reddedildi mi?
+32|Hiç reddedilmedi
+33|Evet, daha önce reddedildi
+34|Yurt dışında ne yapmak istiyorsunuz?
+35|Ziyaret / Turizm
+36|Eğitim
+37|Yurt dışında çalışmak
+38|Yurt dışına yerleşmek (PR / Göç)
+39|Tek mi yoksa aile ile mi başvuracaksınız?
+40|Sadece ben
+41|Aile ile
+42|Siz dahil toplam kaç kişi başvuracak?
+43|9 veya daha fazla
+44|Lütfen aile üyelerinin tam sayısını yazın (örn. 10).
+45|Lütfen 9 ile 40 arasında bir sayı yazın.
+46|Bunların kaçı 18 yaş altı çocuk?
+47|6 veya daha fazla
+48|Çocuk sayısı toplam kişi sayısından ({n}) fazla. Tekrar soruyorum.
+49|Lütfen çocukların tam sayısını yazın.
+50|Bu sayı aile büyüklüğüne uymuyor — lütfen geçerli bir sayı yazın.
+51|En küçük çocuğunuzun yaşı kaç?
+52|2 yaşından küçük
+53|2–11 yaş
+54|12–17 yaş
+55|İngilizce sınavı (IELTS / PTE / Duolingo) aldınız mı?
+56|Evet, puan 6+ (veya eşdeğer)
+57|Evet, 6'nın altında
+58|Henüz değil
+59|Kaç yıllık tam zamanlı iş deneyiminiz var?
+60|2 yıldan az
+61|2–5 yıl
+62|5+ yıl
+63|Yabancı bir işverenden iş teklifiniz var mı?
+64|Evet, teklifim var
+65|Henüz teklif yok
+66|Banka hesabınızda şu anda yaklaşık ne kadar var (bakiye), lakh cinsinden? 18 gibi bir sayı yazın — veya en yakın aralığı seçin.
+67|Lütfen tutarı lakh cinsinden sayı olarak yazın, örn. 18 veya 2,5 crore.
+68|5 lakh altı
+69|5–10 lakh
+70|10–15 lakh
+71|15–25 lakh
+72|25–40 lakh
+73|40+ lakh
+74|Son 6 aylık hesap dökümlerinizde bakiye nasıl görünüyor?
+75|Dengeli, yavaş yavaş birikmiş
+76|Yakın zamanda büyük yatırımlar
+77|En çok hangi ülkeyle ilgileniyorsunuz?
+78|Emin değilim — Aiman, siz önerin
+79|Bakiyeniz genelde beklenenin altında. Yakın bir aile üyesi veya akraba (Pakistan'da ya da yurt dışında) size sponsor olabilir mi?
+80|Evet, sponsor var
+81|Sponsor yok
+82|Birleşik Krallık
+83|Kanada
+84|Avrupa (Schengen)
+85|ABD
+86|Avustralya
+87|Türkiye
+88|Dubai / BAE
+89|Malezya
+90|Almanya
+91|kişi
+92|kişi
+93|Fonlar hedefin altında (PKR {bal} lakh, hedef ~{need} lakh). Sponsor dosyası başvuruyu destekleyecek.
+94|Sponsorun banka dökümünü + akrabalık belgesini hazırlayın.
+95|Fonlar: PKR {bal} lakh belirttiniz; {n} {people} için yaklaşık PKR {need} lakh beklenir.
+96|Bakiyeyi 3–6 ay oluşturup koruyun veya belgeli bir sponsor ekleyin.
+97|Yakın zamanda büyük yatırımlar: paranın kaynağı belgelenmeli ve bakiye önce oturmalı.
+98|Hesabı yaklaşık 3 ay dengeli tutun; fon kaynağı dosyanızı biz hazırlarız.
+99|Yakın zamandaki büyük yatırımların belgeli bir kaynağı olmalı.
+100|Fon kaynağı yazısı ve belgeler.
+101|Önceki ret: ret gerekçesini inceleyip yeni niyet mektubunuzda doğrudan yanıtlarız.
+102|Ret mektubunu bizimle paylaşın.
+103|Seyahat geçmişi yok: mümkün ama çok güçlü bir fon ve bağlar dosyası gerekir.
+104|Önce bir başlangıç seyahati (Dubai/Malezya) önerebiliriz.
+105|Nakit maaş: gelirin büyükelçiliğe kanıtlanması zordur.
+106|Maaşı en az 3 ay banka hesabına alın.
+107|Kayıtsız işletme: bağlar ve gelirin doğrulanması daha zordur.
+108|NTN / SECP kaydı yaptırın ve vergi kayıtlarını saklayın.
+109|Banka dışındaki serbest çalışma gelirini kanıtlamak zordur.
+110|Geliri banka hesabı üzerinden alın.
+111|Matric/Inter: hazırlık veya diploma yoluyla başlarsınız.
+112|Hazırlık programlarını kısa listeye alırız.
+113|36+ yaş: öğrenci vizesi mümkündür ama kariyer bağlantısını açıklayan net bir metin gerekir.
+114|Güçlü bir eğitim planı hazırlarız.
+115|İngilizce sınavı henüz gereken seviyede değil.
+116|IELTS/PTE'ye başvurun; birçok üniversite Duolingo'yu da kabul eder.
+117|Bu çalışma yolu sponsorlu bir iş teklifi gerektirir, henüz yok.
+118|İşveren arama ve sponsorluk yollarında size rehberlik ederiz.
+119|Bu yol lisans düzeyi veya tanınmış bir nitelikli meslek yeterliliği bekler.
+120|Beceri sertifikası veya bir eğitim yolu bu açığı kapatabilir.
+121|2 yıldan az deneyim seçeneklerinizi azaltır.
+122|Hedef alanınızda deneyim kazanın.
+123|Yaş: puan bazlı PR yolları 45 yaş altını güçlü şekilde tercih eder.
+124|Alternatif yolları (çalışma izninden PR'ye) inceleriz.
+125|PR yolları en az değerlendirilmiş lisans düzeyi yeterlilik gerektirir.
+126|Önce bir diploma/lisans yolunu düşünün.
+127|İngilizce sınavı: puan için yaklaşık 6+ IELTS/PTE sonucu gerekir.
+128|IELTS/PTE'ye başvurun — 6–8 haftalık hazırlık tipiktir.
+129|2 yıldan az deneyim puanları sınırlar.
+130|Deneyim kazanın; puanlarınızı biz hesaplarız.
+131|Assalam o Alaikum! 👋 Ben Visafeast'ten Aiman. Yaklaşık 2 dakikada hangi vize programlarına uygun olduğunuzu söyleyeceğim. Hazır mısınız?
+132|Başlayalım →
+133|Hazır olduğunuzda “Başlayalım”a dokunun.
+134|Sorunuza geri dönelim 👇
+135|Üzgünüm, tam anlayamadım. Lütfen aşağıdan bir seçeneğe dokunun veya basitçe yazın (örneğin “3” veya “evet”).
+136|Lütfen yukarıdaki formda WhatsApp numaranızı onaylayın, gerisini danışmanımız üstlenecek.
+137|Teşekkürler! ✅ Bilgileriniz ekibimizde. Yakında WhatsApp'tan size ulaşacağız.
+138|↩ Son cevabımı değiştir
+139|Harika haber, {name}! 🎉 Cevaplarınıza göre aşağıdaki programlara uygunsunuz. WhatsApp numaranızı paylaşın, bir Visafeast danışmanı 24 saat içinde sizinle iletişime geçsin.
+140|{name}, bu kadar açık yanıt verdiğiniz için teşekkürler — sandığınızdan daha yakınsınız. 💙 Önce birkaç noktanın güçlendirilmesi gerekiyor ve hepsi çözülebilir. Vakanızı kıdemli danışmanımız için hazırladım; size net, adım adım bir plan gönderecek. Lütfen aşağıda WhatsApp numaranızı onaylayın.
+141|Uygunsunuz
+142|Henüz değil — plan hazır
+143|Önce neyi güçlendirmeli:
+144|Güçlendirmek için:
+145|Profiliniz bu yol için iyi hazırlanmış görünüyor.
+146|İyi haber: profiliniz {list} için uygun — danışmanınıza sorun.
+147|Nihai değerlendirme bir Visafeast danışmanı tarafından yapılır.
+148|Bilgilerimi Visafeast'e gönder →
+149|Gönderiliyor…
+150|✓ Bilgiler gönderildi
+151|WhatsApp numarası (ülke koduyla, örn. +90…)
+152|Şehriniz
+153|Lütfen ülke koduyla geçerli bir WhatsApp numarası girin, örn. +905321234567.
+154|Üzgünüz, gönderilemedi. Lütfen tekrar deneyin veya bize WhatsApp'tan yazın.
+155|Gönder
+156|Sıfırla
+157|Cevabınızı yazın…
+158|Bir seçeneğe dokunun veya yazın…
+159|Değiştirmek için cevaplarınızdan birine dokunun — sonraki sorular ve sonuç otomatik güncellenir.
+160|Aiman — Visafeast Danışmanı
+161|Aiman çevrimiçi
+162|2 dakikada hangi vizeye uygun olduğunuzu öğrenin
+163|Birkaç kısa soruyu yanıtlayın, Aiman profilinize hangi vize programının uyduğunu söylesin.
+164|Müşteri hikâyelerimizi ve vize rehberlerimizi izleyin
+165|Videoyu oynat
+166|WhatsApp'ta yazın
+167|Uygunluk kontrolü burada ücretsizdir. Danışmanımız profilinizi inceledikten sonra tam hizmet ücretlerini bildirir — siz kabul etmeden hiçbir ödeme yapılmaz.
+168|Dürüst hiçbir danışman vize garantisi veremez — karar büyükelçiliğindir. Garanti ettiğimiz, size en iyi şansı veren doğru, dürüst ve güçlü bir dosyadır.
+169|Çoğu dosya 7–14 günde hazırlanır. İşlem süresi büyükelçiliğe ve ülkeye bağlıdır.
+170|Bize visafeast@gmail.com veya www.visafeast.com üzerinden ulaşabilirsiniz. Bu kısa soruları tamamlayın, danışman WhatsApp'tan sizinle iletişime geçsin.
+171|Ben Aiman, Visafeast'in sanal danışmanıyım. Cevaplarınız her vakayı bizzat inceleyen insan danışmanlarımıza gider.
+172|Ve aleykümselam! 😊 Değerlendirmenize devam edelim.
+173|Bilgileriniz yalnızca vakanızı değerlendirmek için kullanılır ve sadece Visafeast danışmanları görür.

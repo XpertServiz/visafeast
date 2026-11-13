@@ -81,3 +81,15 @@ export const currencyForCountry = (country: string | null | undefined): string |
 
 /** Search engines, link previews and monitoring tools: always shown the language of the address they asked for. */
 export const BOT_RE = /bot\b|bot\/|crawl|spider|slurp|bingpreview|duckduck|baidu|yandex|sogou|facebookexternalhit|embedly|preview|lighthouse|headless|google-inspectiontool|apis-google|mediapartners|adsbot|whatsapp|telegram|linkedin|pinterest|semrush|ahrefs/i;
+
+/** Main language of each visitor country for "Talk with Aiman" (the page shows English plus this language). Countries not listed see English only. */
+const LANG_COUNTRIES: Record<string, string> = {
+  ur: "PK", hi: "IN", bn: "BD", id: "ID", ms: "MY BN", tr: "TR", fa: "IR AF", nl: "NL SR", it: "IT SM VA", ru: "RU BY KZ KG UZ TJ", pt: "PT BR AO MZ CV GW ST TL",
+  ar: "SA AE KW QA OM BH JO EG IQ LB SY YE LY SD DZ MA TN PS MR SO DJ KM",
+  de: "DE AT CH LI", fr: "FR BE LU MC SN CI CM ML BF NE TG BJ GN MG CD GA HT",
+  es: "ES MX AR CO CL PE VE EC GT CU BO DO HN PY SV NI CR PA UY GQ",
+};
+export const AIMAN_LANGS = Object.keys(LANG_COUNTRIES);
+export const AIMAN_RTL = ["ur", "ar", "fa"];
+export const COUNTRY_MAIN_LANG: Record<string, string> = Object.fromEntries(Object.entries(LANG_COUNTRIES).flatMap(([lang, cs]) => cs.split(" ").map((c) => [c, lang])));
+export const aimanLangFor = (country: string | null | undefined): string | null => (country ? COUNTRY_MAIN_LANG[country.toUpperCase()] ?? null : null);

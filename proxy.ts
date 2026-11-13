@@ -60,6 +60,9 @@ export async function proxy(req: NextRequest) {
     return NextResponse.redirect(`https://www.visafeast.com${pathname}${req.nextUrl.search}`, 308);
   }
 
+  // the Talk with Aiman ad page picks its own language and has its own layout: no language redirect or rewrite
+  if (pathname === "/talk-with-aiman") return next();
+
   if (pathname === "/admin" || pathname.startsWith("/admin/")) return withSession(req, next);
 
   if (pathname === "/en" || pathname.startsWith("/en/")) {

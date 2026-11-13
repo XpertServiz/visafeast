@@ -1,0 +1,169 @@
+1|Assalam o Alaikum! Saya Aiman, penasihat Visafeast Anda. Siapa nama Anda?
+2|Mohon ketik nama Anda agar saya bisa menyapa dengan benar.
+3|Senang bertemu, {name}! Anda termasuk kelompok usia mana?
+8|Apa pendidikan tertinggi Anda?
+9|SMA (Matric / Inter)
+10|Sarjana (S1)
+11|Magister atau lebih tinggi
+12|Mana yang paling menggambarkan pekerjaan Anda?
+13|Karyawan bergaji
+14|Usaha sendiri
+15|Freelancer
+16|Pelajar/Mahasiswa
+17|Tidak bekerja
+18|Apakah gaji Anda masuk ke rekening bank, atau dibayar tunai?
+19|Rekening bank
+20|Tunai
+21|Apakah usaha Anda terdaftar? (NTN / SECP / kamar dagang)
+22|Ya, terdaftar
+23|Tidak terdaftar
+24|Bagaimana Anda menerima penghasilan freelance?
+25|Ke rekening bank saya
+26|Hanya tunai / dompet digital / Payoneer
+27|Bagaimana riwayat perjalanan Anda?
+28|Belum pernah bepergian
+29|Dubai / Malaysia / Thailand dll.
+30|Inggris / Schengen / AS / Kanada / Australia
+31|Apakah permohonan visa Anda pernah ditolak?
+32|Tidak pernah ditolak
+33|Ya, pernah ditolak
+34|Apa yang ingin Anda lakukan di luar negeri?
+35|Kunjungan / Wisata
+36|Belajar
+37|Bekerja di luar negeri
+38|Menetap di luar negeri (PR / Imigrasi)
+39|Apakah Anda mengajukan sendiri atau bersama keluarga?
+40|Hanya saya
+41|Bersama keluarga
+42|Berapa orang yang mengajukan secara total, termasuk Anda?
+43|9 atau lebih
+44|Mohon ketik jumlah anggota keluarga yang tepat (mis. 10).
+45|Mohon ketik angka antara 9 dan 40.
+46|Berapa di antaranya anak di bawah 18 tahun?
+47|6 atau lebih
+48|Jumlah anak lebih banyak dari total anggota ({n}). Saya tanyakan lagi.
+49|Mohon ketik jumlah anak yang tepat.
+50|Itu tidak sesuai dengan ukuran keluarga — mohon ketik angka yang valid.
+51|Berapa usia anak termuda Anda?
+52|Di bawah 2 tahun
+53|2–11 tahun
+54|12–17 tahun
+55|Apakah Anda sudah mengambil tes bahasa Inggris (IELTS / PTE / Duolingo)?
+56|Ya, skor 6+ (atau setara)
+57|Ya, di bawah 6
+58|Belum
+59|Berapa tahun pengalaman kerja penuh waktu Anda?
+60|Kurang dari 2 tahun
+61|2–5 tahun
+62|5+ tahun
+63|Apakah Anda sudah punya tawaran kerja dari pemberi kerja asing?
+64|Ya, saya punya tawaran
+65|Belum ada tawaran
+66|Kira-kira berapa saldo rekening bank Anda sekarang (saldo akhir) dalam lakh? Ketik angka seperti 18 — atau pilih rentang terdekat.
+67|Mohon ketik jumlah sebagai angka dalam lakh, mis. 18 atau 2,5 crore.
+68|Di bawah 5 lakh
+69|5–10 lakh
+70|10–15 lakh
+71|15–25 lakh
+72|25–40 lakh
+73|40+ lakh
+74|Bagaimana saldo dalam rekening koran 6 bulan terakhir Anda?
+75|Stabil, dibangun perlahan
+76|Setoran besar baru-baru ini
+77|Negara mana yang paling Anda minati?
+78|Belum yakin — Aiman, Anda yang sarankan
+79|Saldo Anda di bawah yang biasanya diharapkan. Apakah ada kerabat dekat (di Pakistan atau luar negeri) yang bisa menjadi sponsor Anda?
+80|Ya, ada sponsor
+81|Tidak ada sponsor
+82|Inggris
+83|Kanada
+84|Eropa (Schengen)
+85|AS
+86|Australia
+87|Turki
+88|Dubai / UEA
+89|Malaysia
+90|Jerman
+91|orang
+92|orang
+93|Dana di bawah target (PKR {bal} lakh vs ~{need} lakh). Berkas sponsor akan menopang permohonan.
+94|Siapkan rekening koran sponsor + bukti hubungan keluarga.
+95|Dana: Anda menyebut PKR {bal} lakh; sekitar PKR {need} lakh diharapkan untuk {n} {people}.
+96|Bangun dan pertahankan saldo selama 3–6 bulan, atau tambahkan sponsor yang terdokumentasi.
+97|Setoran besar baru-baru ini: sumber uang harus terdokumentasi dan saldo sebaiknya stabil dulu.
+98|Jaga rekening tetap stabil ~3 bulan; kami siapkan berkas sumber dana Anda.
+99|Setoran besar baru-baru ini membutuhkan sumber yang terdokumentasi.
+100|Surat sumber dana dan bukti.
+101|Penolakan sebelumnya: kami pelajari alasannya dan menjawabnya langsung di surat pengantar baru Anda.
+102|Bagikan surat penolakan kepada kami.
+103|Tanpa riwayat perjalanan: mungkin, tetapi butuh berkas dana dan keterikatan yang sangat kuat.
+104|Kami bisa menyarankan perjalanan awal (Dubai/Malaysia) dulu.
+105|Gaji tunai: penghasilan sulit dibuktikan ke kedutaan.
+106|Pindahkan gaji ke rekening bank minimal 3 bulan.
+107|Usaha tidak terdaftar: keterikatan dan penghasilan lebih sulit diverifikasi.
+108|Daftarkan ke NTN / SECP dan simpan catatan pajak.
+109|Penghasilan freelance di luar bank sulit dibuktikan.
+110|Alirkan penghasilan melalui rekening bank.
+111|Matric/Inter: Anda akan mulai dengan jalur foundation atau diploma.
+112|Kami pilihkan program foundation.
+113|Usia 36+: visa pelajar mungkin, tetapi perlu pernyataan jelas kaitan dengan karier.
+114|Kami susun rencana studi yang kuat.
+115|Tes bahasa Inggris belum mencapai level yang dibutuhkan.
+116|Daftar IELTS/PTE; banyak universitas juga menerima Duolingo.
+117|Jalur kerja ini butuh tawaran kerja bersponsor, yang belum Anda miliki.
+118|Kami bantu pencarian pemberi kerja dan jalur sponsor.
+119|Jalur ini mengharapkan kualifikasi setara sarjana atau keahlian yang diakui.
+120|Sertifikasi keahlian atau jalur gelar dapat menutup kekurangan ini.
+121|Pengalaman di bawah 2 tahun mengurangi pilihan Anda.
+122|Tambah pengalaman di bidang target Anda.
+123|Usia: jalur PR berbasis poin sangat mengutamakan pelamar di bawah 45.
+124|Kami tinjau jalur alternatif (izin kerja ke PR).
+125|Jalur PR membutuhkan minimal kualifikasi setara sarjana yang dinilai.
+126|Pertimbangkan jalur gelar/diploma terlebih dahulu.
+127|Tes bahasa Inggris: butuh hasil IELTS/PTE sekitar 6+ untuk mendapat poin.
+128|Daftar IELTS/PTE — persiapan 6–8 minggu itu umum.
+129|Pengalaman di bawah 2 tahun membatasi poin.
+130|Tambah pengalaman; kami petakan poin Anda.
+131|Assalam o Alaikum! 👋 Saya Aiman dari Visafeast. Dalam sekitar 2 menit saya akan memberi tahu program visa mana yang cocok untuk Anda. Siap?
+132|Mari mulai →
+133|Ketuk “Mari mulai” kapan pun Anda siap.
+134|Kembali ke pertanyaan Anda 👇
+135|Maaf, saya kurang paham. Ketuk salah satu pilihan di bawah atau ketik sederhana (misalnya “3” atau “ya”).
+136|Mohon konfirmasi nomor WhatsApp Anda di formulir di atas dan konsultan kami akan melanjutkan.
+137|Terima kasih! ✅ Data Anda sudah di tim kami. Kami akan segera menghubungi lewat WhatsApp.
+138|↩ Ubah jawaban terakhir saya
+139|Kabar baik, {name}! 🎉 Berdasarkan jawaban Anda, Anda memenuhi syarat untuk program di bawah. Bagikan nomor WhatsApp Anda dan konsultan Visafeast akan menghubungi dalam 24 jam.
+140|{name}, terima kasih sudah menjawab dengan terbuka — Anda lebih dekat dari yang Anda kira. 💙 Beberapa hal perlu diperkuat dulu, dan semuanya bisa diperbaiki. Saya sudah menyiapkan kasus Anda untuk konsultan senior kami, yang akan mengirim rencana langkah demi langkah yang jelas. Mohon konfirmasi nomor WhatsApp Anda di bawah.
+141|Anda memenuhi syarat
+142|Belum — rencana siap
+143|Yang perlu diperkuat lebih dulu:
+144|Untuk memperkuatnya:
+145|Profil Anda tampak siap dengan baik untuk jalur ini.
+146|Kabar baik: profil Anda memenuhi syarat untuk {list} — tanyakan kepada konsultan Anda.
+147|Penilaian akhir oleh konsultan Visafeast.
+148|Kirim data saya ke Visafeast →
+149|Mengirim…
+150|✓ Data terkirim
+151|Nomor WhatsApp (dengan kode negara, mis. +62…)
+152|Kota Anda
+153|Masukkan nomor WhatsApp yang valid dengan kode negara, mis. +6281234567890.
+154|Maaf, tidak bisa dikirim. Coba lagi atau kirim pesan lewat WhatsApp.
+155|Kirim
+156|Atur ulang
+157|Ketik jawaban Anda…
+158|Ketuk pilihan atau ketik…
+159|Ketuk jawaban mana pun untuk mengubahnya — pertanyaan berikutnya dan hasil diperbarui otomatis.
+160|Aiman — Penasihat Visafeast
+161|Aiman sedang online
+162|Cari tahu visa mana yang cocok untuk Anda dalam 2 menit
+163|Jawab beberapa pertanyaan singkat dan Aiman akan memberi tahu program visa yang sesuai profil Anda.
+164|Tonton kisah klien dan panduan visa kami
+165|Putar video
+166|Chat di WhatsApp
+167|Cek kelayakan di sini gratis. Konsultan kami menyampaikan biaya layanan pasti setelah meninjau profil Anda — tidak ada yang dibayar sebelum Anda setuju.
+168|Tidak ada konsultan jujur yang bisa menjamin visa — kedutaan yang memutuskan. Yang kami jamin adalah berkas yang benar, jujur, dan kuat yang memberi Anda peluang terbaik.
+169|Sebagian besar berkas siap dalam 7–14 hari. Waktu pemrosesan bergantung pada kedutaan dan negara.
+170|Anda bisa menghubungi kami di visafeast@gmail.com atau www.visafeast.com. Selesaikan pertanyaan singkat ini dan konsultan akan menghubungi lewat WhatsApp.
+171|Saya Aiman, penasihat virtual Visafeast. Jawaban Anda langsung ke konsultan manusia kami yang meninjau setiap kasus secara pribadi.
+172|Wa alaikum salam! 😊 Mari lanjutkan penilaian Anda.
+173|Data Anda hanya dipakai untuk menilai kasus Anda dan hanya dilihat konsultan Visafeast.

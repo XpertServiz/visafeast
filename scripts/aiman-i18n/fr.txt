@@ -1,0 +1,169 @@
+1|Assalam o Alaikum ! Je suis Aiman, votre conseillère Visafeast. Comment vous appelez-vous ?
+2|Veuillez saisir votre nom pour que je puisse m'adresser à vous correctement.
+3|Enchantée, {name} ! Dans quelle tranche d'âge êtes-vous ?
+8|Quel est votre plus haut niveau d'études ?
+9|Matric / Inter (niveau lycée)
+10|Licence
+11|Master ou supérieur
+12|Qu'est-ce qui décrit le mieux votre activité ?
+13|Salarié
+14|Entreprise personnelle
+15|Freelance
+16|Étudiant
+17|Sans emploi
+18|Votre salaire est-il versé sur votre compte bancaire ou payé en espèces ?
+19|Compte bancaire
+20|Espèces
+21|Votre entreprise est-elle enregistrée ? (NTN / SECP / chambre)
+22|Oui, enregistrée
+23|Non enregistrée
+24|Comment recevez-vous vos revenus de freelance ?
+25|Sur mon compte bancaire
+26|Espèces / portefeuille / Payoneer uniquement
+27|Quel est votre historique de voyage ?
+28|Pas encore voyagé
+29|Dubaï / Malaisie / Thaïlande, etc.
+30|Royaume-Uni / Schengen / États-Unis / Canada / Australie
+31|Une de vos demandes de visa a-t-elle déjà été refusée ?
+32|Jamais refusée
+33|Oui, déjà refusée
+34|Que voulez-vous faire à l'étranger ?
+35|Visite / Tourisme
+36|Études
+37|Travailler à l'étranger
+38|S'installer à l'étranger (RP / Immigration)
+39|Postulerez-vous seul ou en famille ?
+40|Seul
+41|En famille
+42|Combien de personnes postuleront au total, vous compris ?
+43|9 ou plus
+44|Saisissez le nombre exact de membres de la famille (ex. 10).
+45|Saisissez un nombre de 9 à 40.
+46|Combien d'entre eux sont des enfants de moins de 18 ans ?
+47|6 ou plus
+48|Il y a plus d'enfants que de personnes au total ({n}). Je repose la question.
+49|Saisissez le nombre exact d'enfants.
+50|Cela ne correspond pas à la taille de la famille — saisissez un nombre valide.
+51|Quel âge a votre plus jeune enfant ?
+52|Moins de 2 ans
+53|2–11 ans
+54|12–17 ans
+55|Avez-vous passé un test d'anglais (IELTS / PTE / Duolingo) ?
+56|Oui, score 6+ (ou équivalent)
+57|Oui, moins de 6
+58|Pas encore
+59|Combien d'années d'expérience professionnelle à temps plein avez-vous ?
+60|Moins de 2 ans
+61|2–5 ans
+62|Plus de 5 ans
+63|Avez-vous déjà une offre d'emploi d'un employeur étranger ?
+64|Oui, j'ai une offre
+65|Pas encore d'offre
+66|Environ combien y a-t-il sur votre compte bancaire en ce moment (solde) en lakhs ? Saisissez un nombre comme 18 — ou choisissez la fourchette la plus proche.
+67|Saisissez le montant en nombre de lakhs, ex. 18 ou 2,5 crore.
+68|Moins de 5 lakhs
+69|5–10 lakhs
+70|10–15 lakhs
+71|15–25 lakhs
+72|25–40 lakhs
+73|Plus de 40 lakhs
+74|Comment se présente le solde dans vos relevés des 6 derniers mois ?
+75|Stable, constitué progressivement
+76|Gros dépôts récents
+77|Quel pays vous intéresse le plus ?
+78|Pas sûr — Aiman, proposez-moi
+79|Votre solde est inférieur à ce qui est généralement attendu. Un proche (au Pakistan ou à l'étranger) peut-il vous parrainer financièrement ?
+80|Oui, un garant est disponible
+81|Pas de garant
+82|Royaume-Uni
+83|Canada
+84|Europe (Schengen)
+85|États-Unis
+86|Australie
+87|Turquie
+88|Dubaï / EAU
+89|Malaisie
+90|Allemagne
+91|personne
+92|personnes
+93|Les fonds sont sous l'objectif (PKR {bal} lakhs contre ~{need} lakhs). Un dossier de garant soutiendra la demande.
+94|Préparer le relevé bancaire du garant + preuve de lien de parenté.
+95|Fonds : vous avez indiqué PKR {bal} lakhs ; environ PKR {need} lakhs sont attendus pour {n} {people}.
+96|Constituez et maintenez le solde 3 à 6 mois, ou ajoutez un garant documenté.
+97|Gros dépôts récents : l'origine de l'argent doit être documentée et le solde doit d'abord se stabiliser.
+98|Gardez le compte stable ~3 mois ; nous préparons votre dossier d'origine des fonds.
+99|Les gros dépôts récents nécessitent une origine documentée.
+100|Lettre d'origine des fonds et justificatifs.
+101|Refus antérieur : nous étudions le motif et y répondons directement dans votre nouvelle lettre de motivation.
+102|Transmettez-nous la lettre de refus.
+103|Pas d'historique de voyage : possible, mais il faut un dossier de fonds et d'attaches très solide.
+104|Nous pouvons d'abord suggérer un voyage de départ (Dubaï/Malaisie).
+105|Salaire en espèces : le revenu est difficile à prouver à une ambassade.
+106|Faites verser le salaire sur un compte bancaire pendant 3 mois ou plus.
+107|Entreprise non enregistrée : attaches et revenus plus difficiles à vérifier.
+108|Enregistrez-vous auprès de NTN / SECP et conservez vos documents fiscaux.
+109|Un revenu freelance hors banque est difficile à prouver.
+110|Faites transiter vos revenus par un compte bancaire.
+111|Matric/Inter : vous commenceriez par une année préparatoire ou un diplôme.
+112|Nous présélectionnons des programmes préparatoires.
+113|Âge 36+ : les visas d'études sont possibles mais exigent une explication claire du lien avec la carrière.
+114|Nous rédigeons un solide projet d'études.
+115|Le test d'anglais n'a pas encore le niveau requis.
+116|Réservez IELTS/PTE ; beaucoup d'universités acceptent aussi Duolingo.
+117|Cette voie de travail exige une offre d'emploi avec parrainage, que vous n'avez pas encore.
+118|Nous vous guidons pour chercher un employeur et sur les voies de parrainage.
+119|Cette voie exige un niveau licence ou une qualification professionnelle reconnue.
+120|Une certification de compétences ou un parcours diplômant peut combler cet écart.
+121|Moins de 2 ans d'expérience réduit vos options.
+122|Gagnez de l'expérience dans votre domaine cible.
+123|Âge : les voies RP à points favorisent fortement les moins de 45 ans.
+124|Nous étudions des voies alternatives (permis de travail vers RP).
+125|Les voies RP exigent au moins une qualification de niveau licence évaluée.
+126|Envisagez d'abord un parcours diplôme/licence.
+127|Test d'anglais : un résultat IELTS/PTE d'environ 6+ est nécessaire pour gagner des points.
+128|Réservez IELTS/PTE — comptez en général 6 à 8 semaines de préparation.
+129|Moins de 2 ans d'expérience limite les points.
+130|Gagnez de l'expérience ; nous calculons vos points.
+131|Assalam o Alaikum ! 👋 Je suis Aiman, de Visafeast. En 2 minutes environ, je vous dirai pour quels programmes de visa vous êtes qualifié. Prêt ?
+132|Commençons →
+133|Touchez « Commençons » quand vous êtes prêt.
+134|Retour à votre question 👇
+135|Désolée, je n'ai pas bien compris. Touchez une option ci-dessous ou écrivez simplement (par exemple « 3 » ou « oui »).
+136|Confirmez votre numéro WhatsApp dans le formulaire ci-dessus et notre conseiller prendra le relais.
+137|Merci ! ✅ Vos informations sont chez notre équipe. Nous vous contacterons bientôt sur WhatsApp.
+138|↩ Modifier ma dernière réponse
+139|Excellente nouvelle, {name} ! 🎉 D'après vos réponses, vous êtes qualifié pour les programmes ci-dessous. Indiquez votre WhatsApp et un conseiller Visafeast vous contactera sous 24 heures.
+140|{name}, merci d'avoir répondu si franchement — vous êtes plus proche que vous ne le pensez. 💙 Quelques points sont à renforcer d'abord, et tous sont corrigeables. J'ai préparé votre dossier pour notre conseiller senior, qui vous enverra un plan clair étape par étape. Confirmez ci-dessous votre numéro WhatsApp.
+141|Vous êtes qualifié
+142|Pas encore — plan prêt
+143|À renforcer en priorité :
+144|Pour le renforcer :
+145|Votre profil semble bien préparé pour cette voie.
+146|Bonne nouvelle : votre profil est qualifié pour {list} — demandez à votre conseiller.
+147|Évaluation finale par un conseiller Visafeast.
+148|Envoyer mes informations à Visafeast →
+149|Envoi…
+150|✓ Informations envoyées
+151|Numéro WhatsApp (avec indicatif du pays)
+152|Votre ville
+153|Saisissez un numéro WhatsApp valide avec indicatif, ex. +33612345678.
+154|Désolée, l'envoi a échoué. Réessayez ou écrivez-nous sur WhatsApp.
+155|Envoyer
+156|Réinitialiser
+157|Saisissez votre réponse…
+158|Touchez une option ou écrivez…
+159|Touchez une de vos réponses pour la modifier — les questions suivantes et le résultat se mettent à jour automatiquement.
+160|Aiman — Conseillère Visafeast
+161|Aiman est en ligne
+162|Découvrez en 2 minutes pour quel visa vous êtes qualifié
+163|Répondez à quelques questions rapides et Aiman vous dira quel programme de visa correspond à votre profil.
+164|Regardez des témoignages de clients et des guides visa
+165|Lire la vidéo
+166|Discuter sur WhatsApp
+167|Vérifier votre éligibilité ici est gratuit. Notre conseiller communique les frais exacts après examen de votre profil — rien n'est payé avant votre accord.
+168|Aucun conseiller honnête ne peut garantir un visa — l'ambassade décide. Nous garantissons un dossier correct, honnête et solide qui vous donne les meilleures chances.
+169|La plupart des dossiers sont prêts en 7–14 jours. Le délai de traitement dépend de l'ambassade et du pays.
+170|Vous pouvez nous joindre à visafeast@gmail.com ou sur www.visafeast.com. Terminez ces quelques questions et un conseiller vous contactera sur WhatsApp.
+171|Je suis Aiman, la conseillère virtuelle de Visafeast. Vos réponses vont directement à nos conseillers humains, qui examinent chaque dossier personnellement.
+172|Wa alaikum assalam ! 😊 Poursuivons votre évaluation.
+173|Vos informations servent uniquement à évaluer votre dossier et ne sont vues que par les conseillers Visafeast.

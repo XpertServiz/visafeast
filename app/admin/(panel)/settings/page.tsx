@@ -2,7 +2,8 @@ import { redirect } from "next/navigation";
 import { getAdmin, can } from "@/lib/server/admin-auth";
 import { db } from "@/lib/server/admin-data";
 import { Card, Field, Grid, Title, pkr } from "@/components/admin/ui";
-import { addMoneyAccount, addService, inviteTeamMember, saveSettings } from "../../actions";
+import { addMoneyAccount, addService, inviteTeamMember, saveAimanFunds, saveSettings } from "../../actions";
+import { DEFAULT_FUNDS, LABEL, mergeFunds, type CountryId } from "@/config/aiman";
 import { DEFAULT_SETTINGS } from "@/lib/seed";
 
 export const dynamic = "force-dynamic";
@@ -17,6 +18,8 @@ export default async function SettingsPage() {
     d.from("profiles").select("id,full_name,role"), d.from("hero_videos").select("id", { count: "exact", head: true }),
   ]);
   const v = { ...DEFAULT_SETTINGS, ...(s ?? {}) } as Record<string, string | boolean | number | null>;
+  const { data: ai } = await d.from("aiman_settings").select("funds").eq("id", 1).maybeSingle();
+  const aiman = mergeFunds(ai?.funds);
   const t = (k: string) => String(v[k] ?? "");
   const checklist = [
     ["Business details", Boolean(s?.address_line)], ["WhatsApp number", Boolean(s?.whatsapp_number)], ["Cal.com link", Boolean(s?.calcom_link)],
@@ -70,6 +73,21 @@ export default async function SettingsPage() {
           </form>
         </Card>
 
+        <Card title="Aiman funds (lacs of PKR)">
+          <p style={{ margin: "0 0 12px", color: "var(--muted)" }}>Money the Talk with Aiman page expects, in lacs. Visit and work/PR figures are per person; study is for the first applicant plus the extra for each family member. Change a number and save: the page and the server use it straight away.</p>
+          <form action={saveAimanFunds} style={{ display: "grid", gap: 14 }}>
+            <b>Visit, per person</b>
+            <Grid min={150}>{(Object.keys(DEFAULT_FUNDS.visit) as CountryId[]).map((c) => <Field key={c} label={LABEL[c][0]}><input name={`v_${c}`} type="number" min={0} max={1000} step="0.5" defaultValue={aiman.visit[c]} className="field" inputMode="decimal" /></Field>)}</Grid>
+            <b>Study, first applicant</b>
+            <Grid min={150}>{(Object.keys(DEFAULT_FUNDS.study) as CountryId[]).map((c) => <Field key={c} label={LABEL[c][0]}><input name={`s_${c}`} type="number" min={0} max={1000} step="0.5" defaultValue={aiman.study[c]} className="field" inputMode="decimal" /></Field>)}</Grid>
+            <Grid min={170}>
+              <Field label="Study: extra per family member"><input name="studyPerDependant" type="number" min={0} max={1000} step="0.5" defaultValue={aiman.studyPerDependant} className="field" /></Field>
+              <Field label="Work abroad, per person"><input name="workPerPerson" type="number" min={0} max={1000} step="0.5" defaultValue={aiman.workPerPerson} className="field" /></Field>
+              <Field label="Settle abroad (PR), per person"><input name="prPerPerson" type="number" min={0} max={1000} step="0.5" defaultValue={aiman.prPerPerson} className="field" /></Field>
+            </Grid>
+            <button className="btn btn-primary" style={{ justifySelf: "start" }}>Save funds</button>
+          </form>
+        </Card>
         <Card title="Team">
           {team?.map((p) => <p key={p.id} style={{ margin: "6px 0" }}>{p.full_name} — <b>{p.role}</b></p>)}
           <form action={inviteTeamMember} style={{ display: "grid", gap: 10, marginTop: 12 }}>

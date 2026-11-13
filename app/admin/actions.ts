@@ -14,6 +14,7 @@ import { hashCode, newCode } from "@/lib/portal";
 import { docOwner } from "@/lib/server/portal";
 import { sendEmail, esc } from "@/lib/server/notify";
 import { isOutcome, stageKey, SERVICE_TYPES } from "@/lib/case-stages";
+import { DEFAULT_FUNDS, mergeFunds } from "@/config/aiman";
 import { siteConfig } from "@/config/site";
 import { downloadPexelsImage, getPexelsPhoto } from "@/lib/server/pexels";
 import { PHOTOS } from "@/lib/photos";
@@ -499,4 +500,28 @@ export async function draftUrdu(fd: FormData) {
   await db.from("countries").update({ content_ur: clean, ur_status: "draft", updated_at: new Date().toISOString() }).eq("id", s(fd, "id"));
   await log(db, a, "draft_urdu", "countries", s(fd, "id"));
   refreshSite(); revalidatePath("/admin/website/countries");
+}
+
+// ---------- Talk with Aiman ----------
+export async function markAimanContacted(fd: FormData) {
+  const { a, db } = await need(can.people);
+  const id = s(fd, "id");
+  if (!/^[0-9a-f-]{36}$/.test(id)) return;
+  await db.from("aiman_leads").update({ contacted: true, contacted_at: new Date().toISOString(), seen: true }).eq("id", id);
+  await log(db, a, "aiman_contacted", "aiman_leads", id);
+  revalidatePath("/admin/aiman-leads"); revalidatePath(`/admin/aiman-leads/${id}`);
+}
+
+/** Saves the funds figures (lacs of PKR) the Aiman page and the server use. Blank or odd values fall back to the defaults. */
+export async function saveAimanFunds(fd: FormData) {
+  const { a, db } = await need(can.settings);
+  const num = (k: string) => { const v = Number(s(fd, k)); return s(fd, k) !== "" && Number.isFinite(v) ? v : undefined; };
+  const group = (prefix: string, base: Record<string, unknown>) => Object.fromEntries(Object.keys(base).map((c) => [c, num(`${prefix}_${c}`)]));
+  const funds = mergeFunds({
+    visit: group("v", DEFAULT_FUNDS.visit), study: group("s", DEFAULT_FUNDS.study),
+    studyPerDependant: num("studyPerDependant"), workPerPerson: num("workPerPerson"), prPerPerson: num("prPerPerson"),
+  });
+  await db.from("aiman_settings").upsert({ id: 1, funds, updated_at: new Date().toISOString() });
+  await log(db, a, "aiman_funds", "aiman_settings", "1", funds);
+  revalidatePath("/admin/settings");
 }
