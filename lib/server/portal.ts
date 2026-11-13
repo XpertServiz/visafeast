@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { authClient } from "./admin-auth";
 import { serviceClient } from "../supabase";
 import { pathFor, pathIsTheirs, safeFileName, uploadProblem } from "../portal";
+import { SERVICE_TYPES, type ServiceType } from "../case-stages";
 
 export type Db = NonNullable<ReturnType<typeof serviceClient>>;
 export const BUCKET = "case-documents";
@@ -16,8 +17,34 @@ export async function getClient(): Promise<PortalClient | null> {
   if (!c || !db) return null;
   const { data: { user } } = await c.auth.getUser();
   if (!user) return null;
-  const { data: p } = await db.from("people").select("id,full_name,whatsapp,email,language").eq("auth_user_id", user.id).is("deleted_at", null).maybeSingle();
-  return p ? { userId: user.id, email: user.email, person: p as Person } : null;
+  const { data: p } = await db.from("people").select("id,full_name,whatsapp,email,language,portal_status").eq("auth_user_id", user.id).is("deleted_at", null).maybeSingle();
+  // a sign-up the admin has not approved yet (or turned down) cannot use the portal
+  if (!p || p.portal_status === "pending" || p.portal_status === "rejected") return null;
+  return { userId: user.id, email: user.email, person: p as Person };
+}
+
+/** What a signed-in login is waiting for, so the sign-in page can say "waiting for approval". */
+export async function portalStatusFor(db: Db, userId: string): Promise<"approved" | "pending" | "rejected" | null> {
+  const { data } = await db.from("people").select("portal_status").eq("auth_user_id", userId).is("deleted_at", null).maybeSingle();
+  if (!data) return null;
+  return (data.portal_status as "pending" | "rejected" | null) ?? "approved";
+}
+
+/**
+ * The client's file. The first document a client uploads opens their file and gives them their Client ID (a case reference like VF-1042),
+ * which they use under "Track my file". Later uploads go into the same file.
+ */
+export async function ensureCase(db: Db, personId: string, service: string): Promise<{ id: string; ref: string; created: boolean } | null> {
+  const { data: have } = await db.from("cases").select("id,ref").eq("person_id", personId).is("deleted_at", null).order("created_at", { ascending: false }).limit(1);
+  if (have?.[0]) return { id: have[0].id as string, ref: have[0].ref as string, created: false };
+  const kind = SERVICE_TYPES.includes(service as ServiceType) ? service : "visit";
+  const { data: ref } = await db.rpc("next_case_ref");
+  if (!ref) return null;
+  const { data: c, error } = await db.from("cases").insert({ ref, person_id: personId, service_type: kind, stage: "file_received" }).select("id,ref").single();
+  if (error || !c) return null;
+  await db.from("people").update({ is_client: true }).eq("id", personId);
+  await db.from("timeline_events").insert({ person_id: personId, case_id: c.id, kind: "stage_change", body: `File ${c.ref} opened by the client's first upload` });
+  return { id: c.id as string, ref: c.ref as string, created: true };
 }
 
 export interface DocRow { id: string; title: string; status: string; case_id: string | null; person_id: string | null; file_path: string | null; file_name: string | null; review_note: string | null }

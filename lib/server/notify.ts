@@ -15,6 +15,20 @@ export async function notifyOwner(subject: string, html: string): Promise<boolea
   } catch { return false; }
 }
 
+/** Email one person (for example a client whose sign-up was approved). Best effort: false when Resend is not set up or refuses. Never throws. */
+export async function sendEmail(to: string, subject: string, html: string): Promise<boolean> {
+  const key = process.env.RESEND_API_KEY;
+  if (!key || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) return false;
+  try {
+    const r = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${key}`, "content-type": "application/json" },
+      body: JSON.stringify({ from: process.env.RESEND_FROM || "Visafeast <no-reply@visafeast.com>", to: [to], subject, html: emailShell(html) }),
+    });
+    return r.ok;
+  } catch { return false; }
+}
+
 /** Wraps an email in the Visafeast look: the logo banner on top, the message below. */
 export function emailShell(inner: string): string {
   const base = siteConfig.url.replace(/\/$/, "");

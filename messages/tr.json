@@ -211,7 +211,10 @@
     "immigration": "Göçmenlik",
     "contact": "İletişim",
     "legal": "Yasal",
-    "rights": "Tüm hakları saklıdır."
+    "rights": "Tüm hakları saklıdır.",
+    "clientIn": "Müşteri girişi",
+    "clientUp": "Müşteri kaydı",
+    "staff": "Personel girişi"
   },
   "fallback": "Doğrulanıyor — güncel tutar için WhatsApp'tan sorun",
   "chat": {

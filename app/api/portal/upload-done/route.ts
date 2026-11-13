@@ -16,6 +16,6 @@ export async function POST(req: NextRequest) {
   if (!found || found.ownerId !== me.person.id) return NextResponse.json({ ok: false, error: "Document not found." }, { status: 404 });
   const err = await finishUpload(db, { ownerId: me.person.id, doc: found.doc, path: p.data.path, fileName: p.data.file_name, by: "client" });
   if (err) return NextResponse.json({ ok: false, error: err }, { status: 422 });
-  void notifyOwner(`Document uploaded: ${me.person.full_name}`, `<p><b>${esc(me.person.full_name)}</b> uploaded <b>${esc(found.doc.title)}</b>. <a href="${esc(siteConfig.url)}/admin/cases/documents">Check it</a>.</p>`);
+  void notifyOwner(`Document uploaded: ${me.person.full_name}`, `<p><b>${esc(me.person.full_name)}</b> uploaded <b>${esc(found.doc.title)}</b>. <a href="${esc(siteConfig.url)}/admin/cases/documents">Open Client files</a>.</p>`);
   return NextResponse.json({ ok: true });
 }

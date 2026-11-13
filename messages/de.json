@@ -211,7 +211,10 @@
     "immigration": "Einwanderung",
     "contact": "Kontakt",
     "legal": "Rechtliches",
-    "rights": "Alle Rechte vorbehalten."
+    "rights": "Alle Rechte vorbehalten.",
+    "clientIn": "Kunden-Anmeldung",
+    "clientUp": "Kunden-Registrierung",
+    "staff": "Mitarbeiter-Login"
   },
   "fallback": "Wird geprüft – fragen Sie uns per WhatsApp nach dem aktuellen Betrag",
   "chat": {

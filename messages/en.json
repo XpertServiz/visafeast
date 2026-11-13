@@ -163,7 +163,10 @@
     "immigration": "Immigration",
     "contact": "Contact",
     "legal": "Legal",
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "clientIn": "Client sign in",
+    "clientUp": "Client sign up",
+    "staff": "Staff login"
   },
   "fallback": "Being verified — WhatsApp us for today's figure",
   "chat": {
@@ -236,11 +239,11 @@
     "resetDone": "Your password is saved. Please sign in.",
     "badLink": "This link is missing its code. Please ask your consultant for a new one.",
     "hello": "Hello",
-    "status": "File status",
+    "status": "Track my file",
     "docs": "My documents",
     "chat": "Talk to your consultant",
     "next": "What happens next",
-    "noCase": "Your consultant will open your file soon. You can send documents and write to us now.",
+    "noCase": "Your file opens when you send your first document. Choose what you need below and upload it: you will get your Client ID here, and you can follow your file live.",
     "refNote": "Reference",
     "st_missing": "Please send",
     "st_uploaded": "We are checking",
@@ -266,7 +269,15 @@
     "c_failed": "Could not send. Please try again.",
     "approved": "Your visa was approved. Congratulations!",
     "refused": "A decision has been made. Please talk to your consultant about next steps.",
-    "withdrawn": "This application was withdrawn."
+    "withdrawn": "This application was withdrawn.",
+    "clientId": "Your Client ID",
+    "currentStatus": "Current status",
+    "serviceAsk": "What do you need?",
+    "serviceChoose": "Choose…",
+    "waitingApproval": "Your sign-up request is waiting for approval. We will email you as soon as it is approved.",
+    "notApproved": "This sign-up request was not approved. Please contact us on WhatsApp.",
+    "requestSentTitle": "Request received",
+    "requestSent": "Thank you. We received your sign-up request. Our team will approve it soon and email you. After that you can sign in, send your documents and follow your file."
   },
   "extras": {
     "destinations": "destinations covered",

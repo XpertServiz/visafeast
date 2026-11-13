@@ -8,8 +8,8 @@ export interface UploadText { choose: string; busy: string; tooBig: string; fail
 const MAX = 10 * 1024 * 1024;
 
 /** Sends the file straight to private storage with a one-file ticket from our server, so big phone photos work. */
-export function DocUpload({ base, docId, title, personId, text, label, variant = "dark" }: {
-  base: string; docId?: string; title?: string; personId?: string; text: UploadText; label?: string; variant?: "dark" | "outline";
+export function DocUpload({ base, docId, title, personId, service, text, label, variant = "dark" }: {
+  base: string; docId?: string; title?: string; personId?: string; service?: string; text: UploadText; label?: string; variant?: "dark" | "outline";
 }) {
   const input = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -20,7 +20,7 @@ export function DocUpload({ base, docId, title, personId, text, label, variant =
     if (file.size > MAX) { setMsg({ ok: false, text: text.tooBig }); return; }
     setState("busy"); setMsg(null);
     try {
-      const r = await fetch(`${base}/upload-url`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ doc_id: docId, title, person_id: personId, mime: file.type, size: file.size }) });
+      const r = await fetch(`${base}/upload-url`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ doc_id: docId, title, person_id: personId, service, mime: file.type, size: file.size }) });
       const t = await r.json();
       if (!r.ok || !t.ok) throw new Error(t.error || text.failed);
       const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, { auth: { persistSession: false, autoRefreshToken: false } });

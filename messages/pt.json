@@ -211,7 +211,10 @@
     "immigration": "Imigração",
     "contact": "Contato",
     "legal": "Legal",
-    "rights": "Todos os direitos reservados."
+    "rights": "Todos os direitos reservados.",
+    "clientIn": "Entrada de clientes",
+    "clientUp": "Cadastro de clientes",
+    "staff": "Acesso da equipe"
   },
   "fallback": "Em verificação: pergunte pelo WhatsApp o valor de hoje",
   "chat": {

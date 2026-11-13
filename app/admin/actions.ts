@@ -10,6 +10,8 @@ import { isTheme } from "@/lib/themes";
 import { pingIndexNow } from "@/lib/server/indexnow";
 import { hashCode, newCode } from "@/lib/portal";
 import { docOwner } from "@/lib/server/portal";
+import { sendEmail, esc } from "@/lib/server/notify";
+import { isOutcome, stageKey, SERVICE_TYPES } from "@/lib/case-stages";
 import { siteConfig } from "@/config/site";
 import { downloadPexelsImage, getPexelsPhoto } from "@/lib/server/pexels";
 import { PHOTOS } from "@/lib/photos";
@@ -65,7 +67,7 @@ export async function startCase(fd: FormData) {
   const { a, db } = await need(can.people);
   const personId = s(fd, "person_id"), service = s(fd, "service_type") || "visit", countryId = s(fd, "country_id") || null;
   const { data: ref } = await db.rpc("next_case_ref");
-  const first = service === "immigration" ? "assessment" : "new";
+  const first = "file_received";
   const { data: c, error } = await db.from("cases").insert({ ref, person_id: personId, service_type: service, country_id: countryId, stage: first, consultant_id: a.id, agreed_fee_pkr: n(fd, "fee") || null }).select("id,ref").single();
   if (error || !c) throw new Error(error?.message ?? "Could not start the case");
   await db.from("people").update({ is_client: true }).eq("id", personId);
@@ -79,38 +81,80 @@ export async function startCase(fd: FormData) {
   revalidatePath("/admin/cases"); revalidatePath("/admin/people");
   redirect(`/admin/cases/${c.ref}`);
 }
+/**
+ * Changes a file's status (Client files drop-down, board, or the case page). A final result (approved, refused, withdrawn) also records the decision
+ * and starts the document-retention clock; moving a file back out of a result reopens it. Only statuses that exist for the file's service count.
+ */
+async function applyStage(db: NonNullable<ReturnType<typeof serviceClient>>, a: Admin, id: string, stage: string, ref: string): Promise<boolean> {
+  const { data: c } = await db.from("cases").select("service_type").eq("id", id).maybeSingle();
+  if (!c) return false;
+  const { data: ok } = await db.from("case_stage_templates").select("stage,label_en").eq("service_type", c.service_type).eq("stage", stage).maybeSingle();
+  if (!ok) return false;
+  const now = new Date();
+  const patch: Record<string, unknown> = { stage };
+  if (isOutcome(stage)) {
+    const months = Number((await db.from("settings").select("case_doc_retention_months").eq("id", 1).maybeSingle()).data?.case_doc_retention_months ?? 12);
+    const del = new Date(now); del.setMonth(del.getMonth() + months);
+    Object.assign(patch, { decision: stage, decision_at: now.toISOString().slice(0, 10), closed_at: now.toISOString() });
+    await db.from("case_documents").update({ delete_after: del.toISOString().slice(0, 10) }).eq("case_id", id);
+  } else {
+    Object.assign(patch, { decision: null, decision_at: null, closed_at: null });
+    await db.from("case_documents").update({ delete_after: null }).eq("case_id", id);
+  }
+  if (stage === "case_submitted") patch.submitted_at = now.toISOString().slice(0, 10);
+  await db.from("cases").update(patch).eq("id", id);
+  await db.from("timeline_events").insert({ case_id: id, kind: "stage_change", body: `Status: ${ok.label_en ?? stage}`, actor: a.id });
+  await log(db, a, "case_status", "cases", id, { stage });
+  revalidatePath("/admin/cases"); revalidatePath(`/admin/cases/${ref}`); revalidatePath("/admin");
+  return true;
+}
 export async function setCaseStage(fd: FormData) {
   const { a, db } = await need(can.people);
-  const id = s(fd, "id"), stage = s(fd, "stage"), ref = s(fd, "ref");
-  const patch: Record<string, unknown> = { stage };
-  if (stage === "closed") patch.closed_at = new Date().toISOString();
-  await db.from("cases").update(patch).eq("id", id);
-  await db.from("timeline_events").insert({ case_id: id, kind: "stage_change", body: `Stage: ${stage}`, actor: a.id });
-  revalidatePath(`/admin/cases/${ref}`); revalidatePath("/admin/cases");
+  await applyStage(db, a, s(fd, "id"), s(fd, "stage"), s(fd, "ref"));
 }
 export async function moveCase(fd: FormData) {
   const { a, db } = await need(can.people);
-  const id = s(fd, "id"), stage = s(fd, "stage");
-  const { data: c } = await db.from("cases").select("service_type").eq("id", id).maybeSingle();
-  if (!c) return;
-  const { data: ok } = await db.from("case_stage_templates").select("stage").eq("service_type", c.service_type).eq("stage", stage).maybeSingle();
-  if (!ok) return; // only real stages of this service type
-  const patch: Record<string, unknown> = { stage };
-  if (stage === "closed") patch.closed_at = new Date().toISOString();
-  if (stage === "submitted") patch.submitted_at = new Date().toISOString().slice(0, 10);
-  await db.from("cases").update(patch).eq("id", id);
-  await db.from("timeline_events").insert({ case_id: id, kind: "stage_change", body: `Stage: ${stage}`, actor: a.id });
-  revalidatePath("/admin/cases"); revalidatePath(`/admin/cases/${s(fd, "ref")}`);
+  await applyStage(db, a, s(fd, "id"), s(fd, "stage"), s(fd, "ref"));
 }
 export async function recordDecision(fd: FormData) {
   const { a, db } = await need(can.people);
   const decision = s(fd, "decision");
-  const months = Number((await db.from("settings").select("case_doc_retention_months").eq("id", 1).maybeSingle()).data?.case_doc_retention_months ?? 12);
-  const del = new Date(); del.setMonth(del.getMonth() + months);
-  await db.from("cases").update({ decision, decision_at: new Date().toISOString().slice(0, 10), stage: "closed", closed_at: new Date().toISOString() }).eq("id", s(fd, "id"));
-  await db.from("case_documents").update({ delete_after: del.toISOString().slice(0, 10) }).eq("case_id", s(fd, "id"));
-  await log(db, a, "decision", "cases", s(fd, "id"), { decision });
-  revalidatePath(`/admin/cases/${s(fd, "ref")}`); revalidatePath("/admin/cases");
+  if (isOutcome(decision)) await applyStage(db, a, s(fd, "id"), decision, s(fd, "ref"));
+}
+
+// ---------- sign-up requests (Client files) ----------
+/** Approve or turn down a client's sign-up request. Approving lets them sign in; they get an email if Resend is set up. */
+export async function decidePortal(fd: FormData) {
+  const { a, db } = await need(can.people);
+  const id = s(fd, "id"), approve = s(fd, "decision") === "approve";
+  const { data: p } = await db.from("people").select("id,full_name,email,portal_status").eq("id", id).maybeSingle();
+  if (!p || p.portal_status !== "pending") { revalidatePath("/admin/cases"); return; }
+  await db.from("people").update({ portal_status: approve ? "approved" : "rejected", portal_decided_at: new Date().toISOString() }).eq("id", id);
+  await log(db, a, approve ? "portal_approved" : "portal_rejected", "people", id);
+  if (approve && p.email) {
+    const url = `${siteConfig.url}/portal/login`;
+    void sendEmail(p.email, "Your Visafeast account is approved", `<p>Assalam-o-Alaikum ${esc(p.full_name ?? "")},</p><p>Your Visafeast client account is approved. You can sign in now, upload your documents and follow your file under <b>Track my file</b>.</p><p><a href="${esc(url)}">Sign in</a></p><p dir="rtl">آپ کا ویزا فیسٹ اکاؤنٹ منظور ہو گیا ہے۔ اب آپ سائن ان کر کے دستاویزات اپ لوڈ کر سکتے ہیں۔</p>`);
+  }
+  revalidatePath("/admin/cases"); revalidatePath("/admin");
+}
+
+// ---------- file statuses (Client files) ----------
+/** Adds a new status (for every service) right after an existing one, so the drop-down and the client's timeline stay in order. */
+export async function addStatus(fd: FormData) {
+  const { a, db } = await need(can.people);
+  const en = s(fd, "label_en").slice(0, 60), ur = s(fd, "label_ur").slice(0, 80), after = s(fd, "after");
+  const key = stageKey(en);
+  if (en.length < 3 || !key) return;
+  for (const service of SERVICE_TYPES) {
+    const { data: rows } = await db.from("case_stage_templates").select("stage,label_en,label_ur,sort").eq("service_type", service).order("sort");
+    const list = rows ?? [];
+    if (list.some((r) => r.stage === key)) continue;
+    const at = Math.max(0, list.findIndex((r) => r.stage === after));
+    const next = [...list.slice(0, at + 1), { stage: key, label_en: en, label_ur: ur || en, sort: 0 }, ...list.slice(at + 1)];
+    await db.from("case_stage_templates").upsert(next.map((r, i) => ({ service_type: service, stage: r.stage, label_en: r.label_en, label_ur: r.label_ur, sort: i + 1 })), { onConflict: "service_type,stage" });
+  }
+  await log(db, a, "add_status", "case_stage_templates", undefined, { key, en });
+  revalidatePath("/admin/cases");
 }
 export async function toggleCaseDoc(fd: FormData) {
   const { db } = await need(can.people);

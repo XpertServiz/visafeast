@@ -11,7 +11,7 @@ const home = (l: L) => lp(l, "/portal");
 const post = async (url: string, body: unknown) => {
   const r = await fetch(url, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
   const j = await r.json().catch(() => ({}));
-  return { ok: r.ok && j.ok, error: j.error as string | undefined };
+  return { ok: r.ok && j.ok, error: j.error as string | undefined, pending: Boolean(j.pending), waiting: j.waiting as "pending" | "rejected" | undefined };
 };
 
 function Shell({ children, onSubmit, err, busy, button }: { children: React.ReactNode; onSubmit: (fd: FormData) => void; err: string; busy: boolean; button: string }) {
@@ -36,7 +36,7 @@ export function LoginForm({ locale, code }: { locale: L; code?: string }) {
         setBusy(true); setErr("");
         const r = await post("/api/portal/login", { email: fd.get("email"), password: fd.get("password") });
         if (r.ok) { location.href = code ? `${home(locale)}/join?code=${encodeURIComponent(code)}` : home(locale); return; }
-        setErr(locale === "en" ? r.error || t.wrong : t.wrong); setBusy(false);
+        setErr(r.waiting === "pending" ? t.waitingApproval : r.waiting === "rejected" ? t.notApproved : locale === "en" ? r.error || t.wrong : t.wrong); setBusy(false);
       }}>
         <Text id="pl-e" name="email" type="email" label={t.email} autoComplete="email" dir="ltr" />
         <Text id="pl-p" name="password" type="password" label={t.password} autoComplete="current-password" dir="ltr" />
@@ -49,12 +49,20 @@ export function LoginForm({ locale, code }: { locale: L; code?: string }) {
 
 export function SignupForm({ locale, code }: { locale: L; code?: string }) {
   const t = useDict().portal;
-  const [busy, setBusy] = useState(false); const [err, setErr] = useState(""); const bot = useBotCheck();
+  const [busy, setBusy] = useState(false); const [err, setErr] = useState(""); const bot = useBotCheck(); const [sent, setSent] = useState(false);
+  if (sent) return (
+    <div className="card" style={{ padding: 24, maxWidth: 480 }}>
+      <h2 style={{ margin: "0 0 8px", fontSize: 22 }}>{t.requestSentTitle}</h2>
+      <p role="status" style={{ margin: 0, color: "var(--ok)" }}>{t.requestSent}</p>
+      <p style={{ marginBottom: 0 }}><Link href={home(locale)}>{t.signIn}</Link></p>
+    </div>
+  );
   return (
     <>
       <Shell err={err} busy={busy} button={t.signUp} onSubmit={async (fd) => {
         setBusy(true); setErr("");
         const r = await post("/api/portal/signup", { name: fd.get("name"), email: fd.get("email"), phone: fd.get("phone"), password: fd.get("password"), website: fd.get("website") || undefined, code, turnstile: await bot.take() });
+        if (r.ok && r.pending) { setSent(true); setBusy(false); return; }
         if (r.ok) { location.href = home(locale); return; }
         setErr(r.error || t.failed); setBusy(false);
       }}>

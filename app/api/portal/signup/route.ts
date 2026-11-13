@@ -6,6 +6,7 @@ import { serviceClient } from "@/lib/supabase";
 import { normPhone } from "@/lib/server/leads";
 import { esc, notifyOwner } from "@/lib/server/notify";
 import { hashCode } from "@/lib/portal";
+import { siteConfig } from "@/config/site";
 
 const schema = z.object({
   name: z.string().trim().min(2).max(80), email: z.string().trim().toLowerCase().email().max(200), phone: z.string().trim().min(7).max(20),
@@ -13,7 +14,7 @@ const schema = z.object({
 });
 const fail = (error: string, status = 400) => NextResponse.json({ ok: false, error }, { status });
 
-/** Creates a client login. Access to an existing file comes ONLY from a code issued by the consultant, never from typing a phone number. */
+/** Asks for a client login. A website sign-up waits for the admin's approval; a consultant's link (code) is approved at once. Access to an existing file comes ONLY from such a code, never from typing a phone number. */
 export async function POST(req: NextRequest) {
   const p = schema.safeParse(await req.json().catch(() => null));
   if (!p.success) return fail("Please check your name, email, WhatsApp number, and use a password of at least 8 characters.", 422);
@@ -37,12 +38,14 @@ export async function POST(req: NextRequest) {
     const whatsapp = normPhone(phone);
     const { data: taken } = await db.from("people").select("id").eq("whatsapp", whatsapp).maybeSingle();
     const { data: person, error: e } = await db.from("people").insert({
-      full_name: name, email, whatsapp: taken ? null : whatsapp, auth_user_id: uid,
+      full_name: name, email, whatsapp: taken ? null : whatsapp, auth_user_id: uid, portal_status: "pending", portal_requested_at: new Date().toISOString(),
       notes: taken ? `Signed up saying WhatsApp ${whatsapp}, which is already on another record. Send them a portal link from that record to connect them.` : null,
     }).select("id").single();
     if (e || !person) return undo("We could not create this account. Please try again.");
     await db.from("leads").insert({ person_id: person.id, name, phone: whatsapp, email, source: "portal_signup", page_path: "/portal/signup" });
-    void notifyOwner(`New client account: ${name}`, `<p><b>${esc(name)}</b> (${esc(whatsapp)}, ${esc(email)}) created a client account.${taken ? " This number is already on another record: send them a portal link from that record." : ""}</p>`);
+    void notifyOwner(`Sign-up request: ${name}`, `<p><b>${esc(name)}</b> asked for a client account.</p><p>WhatsApp: ${esc(whatsapp)}<br>Email: ${esc(email)}</p>${taken ? "<p>This number is already on another record: connect them from that record.</p>" : ""}<p><a href="${esc(siteConfig.url)}/admin/cases#requests">Open Client files to approve or decline</a>. They cannot sign in until you approve.</p>`);
+    // nobody gets in before the admin approves: no automatic sign-in
+    return NextResponse.json({ ok: true, pending: true });
   }
 
   const { error: e2 } = await auth.auth.signInWithPassword({ email, password });

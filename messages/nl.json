@@ -211,7 +211,10 @@
     "immigration": "Immigratie",
     "contact": "Contact",
     "legal": "Juridisch",
-    "rights": "Alle rechten voorbehouden."
+    "rights": "Alle rechten voorbehouden.",
+    "clientIn": "Inloggen klant",
+    "clientUp": "Registreren klant",
+    "staff": "Medewerkers-login"
   },
   "fallback": "Wordt gecontroleerd: vraag via WhatsApp het bedrag van vandaag",
   "chat": {

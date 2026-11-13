@@ -211,7 +211,10 @@
     "immigration": "Immigration",
     "contact": "Contact",
     "legal": "Mentions légales",
-    "rights": "Tous droits réservés."
+    "rights": "Tous droits réservés.",
+    "clientIn": "Connexion client",
+    "clientUp": "Inscription client",
+    "staff": "Accès équipe"
   },
   "fallback": "En cours de vérification — demandez-nous le montant du jour sur WhatsApp",
   "chat": {

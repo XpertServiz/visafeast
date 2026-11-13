@@ -28,31 +28,60 @@ async function session() {
   await page.addInitScript(() => { try { sessionStorage.setItem("vf_splash", "1"); localStorage.setItem("vf_consent", "1"); } catch { /* ignore */ } });
   return { ctx, page };
 }
+/** A website sign-up is only a REQUEST: no sign-in until the admin approves. */
 async function signUp(page, who) {
   await page.goto(`${BASE}/portal/signup`, { waitUntil: "domcontentloaded" });
   await page.fill("#ps-n", who.name); await page.fill("#ps-e", who.email); await page.fill("#ps-w", who.phone); await page.fill("#ps-p", who.password);
   await page.locator("form.card button.btn-primary").click();
+  await page.waitForFunction(() => document.body.innerText.includes("Request received"), null, { timeout: 45000 });
+}
+async function signIn(page, who) {
+  await page.goto(`${BASE}/portal/login`, { waitUntil: "domcontentloaded" });
+  await page.fill("#pl-e", who.email); await page.fill("#pl-p", who.password);
+  await page.locator("form.card button.btn-primary").click();
   await page.waitForURL(/\/portal$/, { timeout: 45000 });
 }
+const approve = (id) => db.from("people").update({ portal_status: "approved" }).eq("id", id);
 
 try {
   // --- client A signs up
   const a = await session();
   await signUp(a.page, A);
-  await a.page.waitForSelector("h1");
-  check("client can sign up and lands on My file", (await a.page.textContent("h1")).includes("My file"));
-  const { data: pa } = await db.from("people").select("id,auth_user_id").eq("email", A.email).single();
+  check("a sign-up shows 'Request received' and does not sign the client in", /\/portal\/signup/.test(a.page.url()));
+  const { data: pa } = await db.from("people").select("id,auth_user_id,portal_status").eq("email", A.email).single();
   made.people.push(pa.id); made.users.push(pa.auth_user_id);
+  check("the request is saved as pending", pa.portal_status === "pending", pa.portal_status);
+  await a.page.goto(`${BASE}/portal`, { waitUntil: "domcontentloaded" });
+  check("a pending client cannot open the portal", /\/portal\/login/.test(a.page.url()), a.page.url());
+  await a.page.fill("#pl-e", A.email); await a.page.fill("#pl-p", A.password);
+  await a.page.locator("form.card button.btn-primary").click();
+  await a.page.waitForFunction(() => document.body.innerText.includes("waiting for approval"), null, { timeout: 20000 });
+  check("signing in while pending says it is waiting for approval", true);
+  const pendDl = await a.ctx.request.post(`${BASE}/api/portal/upload-url`, { data: { title: "Sneaky", mime: "application/pdf", size: 100 } });
+  check("a pending client cannot upload", pendDl.status() === 401, `status ${pendDl.status()}`);
+  await approve(pa.id);
+  await signIn(a.page, A);
+  await a.page.waitForSelector("h1");
+  check("after approval the client signs in and lands on My file", (await a.page.textContent("h1")).includes("My file"));
   check("no sideways scroll at 360px", await a.page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1));
 
   // --- client A uploads a document that isn't on a checklist
-  await a.page.locator("details summary", { hasText: "Send another document" }).click();
+  const det = a.page.locator("details", { has: a.page.locator("#od-t") });
+  if (!(await det.evaluate((e) => e.open))) await det.locator("summary").click();
+  await a.page.selectOption("#od-s", "work");
   await a.page.fill("#od-t", "Bank statement");
   await a.page.locator("details input[type=file]").setInputFiles(pdf);
   await a.page.waitForFunction(() => document.body.innerText.includes("We are checking"), null, { timeout: 30000 });
   const { data: doc } = await db.from("case_documents").select("id,status,file_path,file_name,person_id").eq("person_id", pa.id).single();
   made.paths.push(doc.file_path);
   check("upload reaches private storage and the database", doc.status === "uploaded" && !!doc.file_path, doc.file_name);
+  const { data: fileA } = await db.from("cases").select("id,ref,service_type,stage").eq("person_id", pa.id);
+  check("the first upload opens the client's file with a Client ID", fileA?.length === 1 && /^VF-\d{3,7}$/.test(fileA[0].ref), fileA?.[0]?.ref);
+  check("the file is a work permit file at 'File received'", fileA?.[0]?.service_type === "work" && fileA?.[0]?.stage === "file_received");
+  const { data: docFull } = await db.from("case_documents").select("case_id").eq("id", doc.id).single();
+  check("the document is attached to that file", docFull.case_id === fileA?.[0]?.id);
+  await a.page.reload({ waitUntil: "domcontentloaded" });
+  check("the client sees their Client ID and 'File received' under Track my file", (await a.page.textContent("body")).includes(fileA[0].ref) && (await a.page.textContent("body")).includes("File received"));
 
   // --- client A sends a chat message
   await a.page.locator("#chat textarea").fill("Hello, I sent my bank statement.");
@@ -70,6 +99,14 @@ try {
   await signUp(b.page, B);
   const { data: pb } = await db.from("people").select("id,auth_user_id").eq("email", B.email).single();
   made.people.push(pb.id); made.users.push(pb.auth_user_id);
+  await approve(pb.id);
+  await signIn(b.page, B);
+  // a third person asks for an account and is left waiting, so the admin can approve them from Client files
+  const R = { name: `Waiting Client ${tag}`, email: `e2er-${tag}@example.com`, phone: `+9233${Math.floor(1e8 + Math.random() * 8e8)}`, password: `Pw-${tag}-r1234` };
+  const rr = await session();
+  await signUp(rr.page, R);
+  const { data: pr } = await db.from("people").select("id,auth_user_id").eq("email", R.email).single();
+  made.people.push(pr.id); made.users.push(pr.auth_user_id);
   const steal = await b.ctx.request.get(`${BASE}/api/portal/doc/${doc.id}`, { maxRedirects: 0 });
   check("another client CANNOT download it", steal.status() === 404, `status ${steal.status()}`);
   const stealUp = await b.ctx.request.post(`${BASE}/api/portal/upload-url`, { data: { doc_id: doc.id, mime: "application/pdf", size: 100 } });
@@ -122,8 +159,37 @@ try {
   check("consultant can sign in to admin", true);
   check("Today shows the client's message", (await sp.textContent("body")).includes(A.name));
 
+  await sp.goto(`${BASE}/admin/cases`, { waitUntil: "domcontentloaded" });
+  const casesText = await sp.textContent("body");
+  check("the admin menu calls it Client files", casesText.includes("Client files"));
+  check("Client files lists the new file by its Client ID", casesText.includes(fileA[0].ref));
+  check("Client files shows the waiting sign-up request", casesText.includes(R.name) && casesText.includes("Sign-up requests"));
+  await sp.locator("div", { hasText: R.name }).last().locator("button", { hasText: "Approve" }).click();
+  await sp.waitForFunction((n) => !document.body.innerText.includes(n), R.name, { timeout: 20000 });
+  const { data: prAfter } = await db.from("people").select("portal_status").eq("id", pr.id).single();
+  check("the admin can approve a sign-up request", prAfter.portal_status === "approved", prAfter.portal_status);
+
   await sp.goto(`${BASE}/admin/cases/documents`, { waitUntil: "domcontentloaded" });
-  check("all-documents screen lists the upload", (await sp.textContent("body")).includes("Bank statement"));
+  const docsText = await sp.textContent("body");
+  check("all-documents screen lists the upload under the Client ID", docsText.includes("Bank statement") && docsText.includes(fileA[0].ref));
+  await sp.goto(`${BASE}/admin/cases/${fileA[0].ref}`, { waitUntil: "domcontentloaded" });
+  await sp.selectOption('select[name="stage"]', "docs_missing");
+  await sp.locator("button", { hasText: "Save status" }).click();
+  await sp.waitForFunction(() => document.body.innerText.includes("Documents missing"), null, { timeout: 20000 });
+  const { data: fileNow } = await db.from("cases").select("stage").eq("id", fileA[0].id).single();
+  check("the admin sets the status from the drop-down", fileNow.stage === "docs_missing", fileNow.stage);
+  await a.page.goto(`${BASE}/portal`, { waitUntil: "domcontentloaded" });
+  check("the client sees the new status live", (await a.page.textContent("body")).includes("Documents missing"));
+  await sp.selectOption('select[name="stage"]', "refused");
+  await sp.locator("button", { hasText: "Save status" }).click();
+  await sp.waitForFunction(() => document.body.innerText.includes("Case refused"), null, { timeout: 20000 });
+  const { data: refused } = await db.from("cases").select("stage,decision").eq("id", fileA[0].id).single();
+  check("choosing 'Case refused' records the decision", refused.stage === "refused" && refused.decision === "refused");
+  await sp.selectOption('select[name="stage"]', "awaiting_embassy");
+  await sp.locator("button", { hasText: "Save status" }).click();
+  await sp.waitForFunction(() => !document.body.innerText.includes("REFUSED"), null, { timeout: 20000 });
+  const { data: reopened } = await db.from("cases").select("stage,decision").eq("id", fileA[0].id).single();
+  check("moving a file back reopens it", reopened.stage === "awaiting_embassy" && reopened.decision === null);
   const staffDl = await sc.request.get(`${BASE}/admin/docs/${doc.id}`, { maxRedirects: 0 });
   check("consultant can open the file", staffDl.status() === 302, `status ${staffDl.status()}`);
   const { count: logged } = await db.from("activity_log").select("id", { count: "exact", head: true }).eq("action", "doc_download").eq("target_id", doc.id);
@@ -226,6 +292,7 @@ try {
     const files = (docs ?? []).map((x) => x.file_path).filter(Boolean);
     if (files.length) await db.storage.from("case-documents").remove(files);
     await db.from("timeline_events").delete().eq("person_id", id);
+    await db.from("cases").delete().eq("person_id", id);
     await db.from("leads").delete().eq("person_id", id);
     await db.from("people").delete().eq("id", id);
   }

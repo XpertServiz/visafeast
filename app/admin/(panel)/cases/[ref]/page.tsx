@@ -28,13 +28,13 @@ export default async function CaseDetail({ params }: { params: Promise<{ ref: st
 
   return (
     <>
-      <Title sub={`${c.person?.full_name} · ${c.service_type} ${c.country?.country_name ?? ""} · agreed ${pkr(c.agreed_fee_pkr)}`}>Case {c.ref}</Title>
+      <Title sub={`${c.person?.full_name} · ${c.service_type} ${c.country?.country_name ?? ""} · agreed ${pkr(c.agreed_fee_pkr)}`}>Client file {c.ref}</Title>
       <Grid min={320}>
-        <Card title="Stage">
+        <Card title="File status">
           <form action={setCaseStage} style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             <input type="hidden" name="id" value={c.id} /><input type="hidden" name="ref" value={c.ref} />
-            <select name="stage" defaultValue={c.stage} className="field" style={{ flex: 1 }} aria-label="Stage">{stages?.map((s) => <option key={s.stage} value={s.stage}>{s.label_en}</option>)}</select>
-            <button className="btn btn-primary">Move</button>
+            <select name="stage" defaultValue={c.stage} className="field" style={{ flex: 1 }} aria-label="File status">{stages?.map((s) => <option key={s.stage} value={s.stage}>{s.label_en}</option>)}</select>
+            <button className="btn btn-primary">Save status</button>
           </form>
           {c.decision ? <p style={{ marginBottom: 0 }}><Badge color={c.decision === "approved" ? "var(--ok)" : "var(--bad)"}>{c.decision.toUpperCase()}</Badge> on {day(c.decision_at)}</p> : (
             <form action={recordDecision} style={{ display: "flex", gap: 8, marginTop: 12 }}>

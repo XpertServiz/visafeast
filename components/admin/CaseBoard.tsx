@@ -8,7 +8,7 @@ export interface BoardStage { service_type: string; stage: string; label: string
 
 /** Desktop Kanban: drag a card to another column to change its stage. Phones use the plain list instead. */
 export function CaseBoard({ cases, stages }: { cases: BoardCase[]; stages: BoardStage[] }) {
-  const [service, setService] = useState<"visit" | "study" | "immigration">("visit");
+  const [service, setService] = useState<"visit" | "study" | "work" | "immigration">("visit");
   const [dragId, setDragId] = useState<string | null>(null);
   const [over, setOver] = useState<string | null>(null);
   const [, start] = useTransition();
@@ -27,7 +27,7 @@ export function CaseBoard({ cases, stages }: { cases: BoardCase[]; stages: Board
   return (
     <div>
       <div role="tablist" aria-label="Service" style={{ display: "flex", gap: 8, marginBottom: 14 }}>
-        {(["visit", "study", "immigration"] as const).map((k) => (
+        {(["visit", "study", "work", "immigration"] as const).map((k) => (
           <button key={k} role="tab" aria-selected={service === k} onClick={() => setService(k)} className={service === k ? "btn btn-dark" : "btn btn-outline"} style={{ minHeight: 44, textTransform: "capitalize" }}>{k} ({list.filter((c) => c.service_type === k).length})</button>
         ))}
       </div>

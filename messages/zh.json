@@ -211,7 +211,10 @@
     "immigration": "移民",
     "contact": "联系方式",
     "legal": "法律信息",
-    "rights": "版权所有。"
+    "rights": "版权所有。",
+    "clientIn": "客户登录",
+    "clientUp": "客户注册",
+    "staff": "员工登录"
   },
   "fallback": "核实中——请通过 WhatsApp 询问今日数额",
   "chat": {

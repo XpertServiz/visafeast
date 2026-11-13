@@ -25,7 +25,7 @@ export default async function Today() {
     d.from("reviews").select("id", { count: "exact", head: true }).eq("status", "pending"),
     d.from("posts").select("id,title").eq("status", "draft").eq("type", "digest").limit(3),
     d.from("live_presence").select("country,city,path,device,browser_language").gte("last_seen", new Date(Date.now() - 5 * 60_000).toISOString()),
-    d.from("cases").select("id,ref,stage").in("stage", ["docs_requested", "documents"]).is("deleted_at", null).limit(8),
+    d.from("cases").select("id,ref,stage").in("stage", ["docs_missing", "reminder_sent"]).is("deleted_at", null).limit(8),
   ]);
   let money: { income: number; expenses: number; profit: number } | null = null;
   if (can.reports(admin.role)) { const { data } = await d.rpc("report_profit", { p_from: startOfMonth(), p_to: today() }); if (data?.[0]) money = data[0]; }

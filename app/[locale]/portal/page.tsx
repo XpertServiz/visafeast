@@ -63,7 +63,9 @@ export default async function Portal({ params }: P) {
             {cases.length === 0 && <p style={{ margin: 0 }}>{t("portal.noCase")}</p>}
             {cases.map((c) => (
               <div key={c.id} style={{ marginBottom: 12 }}>
-                <p style={{ margin: "0 0 10px" }}><b className="mono" dir="ltr">{c.ref}</b> · {c.country?.country_name ?? ""} {c.visa_or_pathway ?? ""}</p>
+                <p style={{ margin: "0 0 4px", color: "var(--muted)", fontSize: 14 }}>{t("portal.clientId")}</p>
+                <p style={{ margin: "0 0 10px", fontSize: 22 }}><b className="mono" dir="ltr">{c.ref}</b> <span style={{ fontSize: 16, color: "var(--muted)" }}>· {c.country?.country_name ?? ""} {c.visa_or_pathway ?? ""}</span></p>
+                <p style={{ margin: "0 0 12px" }}><b>{t("portal.currentStatus")}:</b> <span style={{ display: "inline-block", marginInlineStart: 6, padding: "4px 12px", borderRadius: 99, background: "var(--amber)", color: "var(--navy)", fontWeight: 700 }}>{(tpl ?? []).find((x) => x.service_type === c.service_type && x.stage === c.stage)?.[locale === "ur" ? "label_ur" : "label_en"] || c.stage}</span></p>
                 <ol style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: 8 }}>
                   {buildTimeline((tpl ?? []).filter((x) => x.service_type === c.service_type), c.stage, locale === "ur" ? "ur" : "en").map((s) => (
                     <li key={s.stage} style={{ display: "flex", gap: 10, alignItems: "center", opacity: s.state === "todo" ? 0.5 : 1, fontWeight: s.state === "current" ? 700 : 500 }}>
@@ -108,7 +110,8 @@ export default async function Portal({ params }: P) {
               );
             })}
           </div>
-          <OtherDoc label={t("portal.addOther")} name={t("portal.otherName")} placeholder={t("portal.otherPlaceholder")} text={upText} />
+          <OtherDoc label={t("portal.addOther")} name={t("portal.otherName")} placeholder={t("portal.otherPlaceholder")} text={upText}
+            service={cases.length === 0 ? { ask: t("portal.serviceAsk"), choose: t("portal.serviceChoose"), options: [{ value: "visit", label: t("ui.kindVisit") }, { value: "study", label: t("ui.kindStudy") }, { value: "work", label: t("ui.kindWork") }, { value: "immigration", label: t("ui.kindImmigration") }] } : undefined} />
         </section>
       </div>
     </>

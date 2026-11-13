@@ -21,26 +21,46 @@ export default async function AllDocuments({ searchParams }: { searchParams: Pro
   type Who = { id: string; full_name: string | null } | null;
   type Row = { id: string; title: string; status: string; file_name: string | null; uploaded_at: string | null; uploaded_by: string | null; person: Who; case: { ref: string; person: Who } | null };
   const rows = (data ?? []) as unknown as Row[];
+  // one block per file (Client ID), the newest upload first
+  const groups: { key: string; ref: string | null; who: Who; rows: Row[] }[] = [];
+  for (const r of rows) {
+    const who = r.person ?? r.case?.person ?? null;
+    const key = r.case?.ref ?? `p:${who?.id ?? r.id}`;
+    const g = groups.find((x) => x.key === key);
+    if (g) g.rows.push(r); else groups.push({ key, ref: r.case?.ref ?? null, who, rows: [r] });
+  }
   return (
     <>
-      <Title sub="Every file your clients have sent.">Client documents</Title>
+      <Title sub="Every document your clients have sent, grouped by their file (Client ID).">Documents by file</Title>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
         {FILTERS.map(([k, l]) => <Link key={k} href={`/admin/cases/documents?show=${k}`} className="chip" style={{ textDecoration: "none", fontSize: 15, padding: "10px 16px", fontWeight: show === k ? 700 : 400 }}>{l}</Link>)}
       </div>
-      {rows.length ? <div style={{ display: "grid", gap: 10 }}>{rows.map((r) => {
-        const who = r.person ?? r.case?.person ?? null;
-        return (
-          <div key={r.id} className="card" style={{ padding: 14, display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
-            <span style={{ minWidth: 0, overflowWrap: "anywhere" }}><b>{r.title}</b> · {who ? <Link href={`/admin/people/${who.id}`}>{who.full_name}</Link> : "—"}{r.case ? <> · <Link href={`/admin/cases/${r.case.ref}`} className="mono">{r.case.ref}</Link></> : null}<br />
-              <span style={{ color: "var(--muted)", fontSize: 14 }}>{r.file_name} · {day(r.uploaded_at)} · from {r.uploaded_by === "staff" ? "consultant" : "client"}</span></span>
-            <span style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-              <Badge color={COLOUR[r.status]}>{LABEL[r.status] ?? r.status}</Badge>
-              <a className="btn btn-outline" style={{ minHeight: 44 }} href={`/admin/docs/${r.id}`}>Open file</a>
-              {r.status !== "approved" && <form action={reviewDoc}><input type="hidden" name="id" value={r.id} /><input type="hidden" name="status" value="approved" /><input type="hidden" name="path" value="/admin/cases/documents" /><button className="btn btn-dark" style={{ minHeight: 44 }}>Approve</button></form>}
-            </span>
-          </div>
-        );
-      })}</div> : <Empty text="Nothing here right now." />}
+      {rows.length ? (
+        <div style={{ display: "grid", gap: 16 }}>
+          {groups.map((g) => (
+            <section key={g.key} className="card" style={{ padding: 16 }}>
+              <h2 style={{ margin: "0 0 10px", fontSize: 18, display: "flex", gap: 10, alignItems: "baseline", flexWrap: "wrap" }}>
+                {g.ref ? <Link href={`/admin/cases/${g.ref}`} className="mono">{g.ref}</Link> : <span>No file yet</span>}
+                <span style={{ fontWeight: 400 }}>{g.who ? <Link href={`/admin/people/${g.who.id}`}>{g.who.full_name}</Link> : "—"}</span>
+                <span style={{ color: "var(--muted)", fontSize: 14, fontWeight: 400 }}>{g.rows.length} document{g.rows.length === 1 ? "" : "s"}</span>
+              </h2>
+              <div style={{ display: "grid", gap: 8 }}>
+                {g.rows.map((r) => (
+                  <div key={r.id} style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", alignItems: "center", paddingTop: 8, borderTop: "1px solid var(--line)" }}>
+                    <span style={{ minWidth: 0, overflowWrap: "anywhere" }}><b>{r.title}</b><br />
+                      <span style={{ color: "var(--muted)", fontSize: 14 }}>{r.file_name} · {day(r.uploaded_at)} · from {r.uploaded_by === "staff" ? "consultant" : "client"}</span></span>
+                    <span style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                      <Badge color={COLOUR[r.status]}>{LABEL[r.status] ?? r.status}</Badge>
+                      <a className="btn btn-outline" style={{ minHeight: 44 }} href={`/admin/docs/${r.id}`}>Open file</a>
+                      {r.status !== "approved" && <form action={reviewDoc}><input type="hidden" name="id" value={r.id} /><input type="hidden" name="status" value="approved" /><input type="hidden" name="path" value="/admin/cases/documents" /><button className="btn btn-dark" style={{ minHeight: 44 }}>Approve</button></form>}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      ) : <Empty text="Nothing here right now." />}
     </>
   );
 }

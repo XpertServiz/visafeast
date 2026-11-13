@@ -23,14 +23,16 @@ export default async function PanelLayout({ children }: { children: React.ReactN
   const r = admin.role;
   // the little numbers in the menu: new enquiries and reviews waiting
   const sb = serviceClient();
-  const [newLeads, pendingReviews] = sb ? await Promise.all([
+  const [newLeads, pendingReviews, signupRequests, docsToCheck] = sb ? await Promise.all([
     can.people(r) ? sb.from("leads").select("id", { count: "exact", head: true }).eq("status", "new") : Promise.resolve({ count: 0 }),
     can.website(r) ? sb.from("reviews").select("id", { count: "exact", head: true }).eq("status", "pending") : Promise.resolve({ count: 0 }),
-  ]) : [{ count: 0 }, { count: 0 }];
+    can.people(r) ? sb.from("people").select("id", { count: "exact", head: true }).eq("portal_status", "pending").is("deleted_at", null) : Promise.resolve({ count: 0 }),
+    can.people(r) ? sb.from("case_documents").select("id", { count: "exact", head: true }).eq("status", "uploaded") : Promise.resolve({ count: 0 }),
+  ]) : [{ count: 0 }, { count: 0 }, { count: 0 }, { count: 0 }];
   const items = [
     { href: "/admin", label: "Today", icon: Home, ok: true, badge: 0 },
     { href: "/admin/people", label: "People", icon: Users, ok: can.people(r), badge: newLeads.count ?? 0 },
-    { href: "/admin/cases", label: "Cases", icon: Briefcase, ok: can.people(r), badge: 0 },
+    { href: "/admin/cases", label: "Client files", icon: Briefcase, ok: can.people(r), badge: (signupRequests.count ?? 0) + (docsToCheck.count ?? 0) },
     { href: "/admin/money", label: "Money", icon: Wallet, ok: can.money(r), badge: 0 },
     { href: "/admin/website", label: "Website", icon: Globe, ok: can.website(r), badge: 0 },
     { href: "/admin/visitors", label: "Visitors", icon: Eye, ok: can.website(r), badge: 0 },

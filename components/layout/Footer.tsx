@@ -43,7 +43,6 @@ export async function Footer({ locale, settings }: { locale: Locale; settings: S
       <div className="pad32" style={{ ...wrap, paddingBlock: "18px 32px", borderTop: "1px solid rgba(255,255,255,.1)", fontSize: 13, lineHeight: 1.6, color: "var(--on-navy-2)" }}>
         <p style={{ margin: 0 }}>{t("ui.disclaimerShort")} © {new Date().getFullYear()} Visafeast</p>
         <div style={{ ...small, marginTop: 12 }}>
-          <Link prefetch={false} href={lp(locale, "/portal")}>{t("portal.navLink")}</Link>
           <Link prefetch={false} href={lp(locale, "/track")}>{t("track.title")}</Link>
           <Link prefetch={false} href={lp(locale, "/about")}>{t("ui.about")}</Link>
           <Link prefetch={false} href={lp(locale, "/contact")}>{t("ui.contact")}</Link>
@@ -54,6 +53,12 @@ export async function Footer({ locale, settings }: { locale: Locale; settings: S
         </div>
         <div style={{ marginTop: 10 }}><LangLinks locale={locale} /></div>
         {locale !== "en" && <p style={{ margin: "10px 0 0" }}>{t("ui.autoNote")}</p>}
+        {/* the very end of every page: client sign in / sign up, then the staff login */}
+        <div style={{ ...small, marginTop: 14, paddingTop: 12, borderTop: "1px solid rgba(255,255,255,.1)" }}>
+          <Link prefetch={false} href={lp(locale, "/portal/login")}>{t("footer.clientIn")}</Link>
+          <Link prefetch={false} href={lp(locale, "/portal/signup")}>{t("footer.clientUp")}</Link>
+          <a href="/admin/login" rel="nofollow">{t("footer.staff")}</a>
+        </div>
       </div>
     </footer>
   );
