@@ -6,6 +6,7 @@ import { localeMeta } from "@/config/locales";
 import { waLink } from "@/config/site";
 import { getCountriesFor, getFaqsFor, getNews, getPostsFor, getReviews, getSettings, getVideos } from "@/lib/data";
 import { IMMIGRATION_HUB } from "@/lib/seed";
+import { WORK_GUIDES } from "@/lib/guides";
 import { faqJsonLd, JsonLd, seoMeta, videoJsonLd } from "@/lib/seo";
 import { FaqLines, Flag, Icon, KIND_COLOR, UrduWord, WaIcon, fmtDate } from "@/components/ui";
 import { CalFrame } from "@/components/home/CalFrame";
@@ -37,6 +38,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   const book = L("/#book");
   const whatsapp = waLink("Hi Visafeast, I'd like to know about a visa.", settings.whatsapp_number);
   const countryNames = [...visit, ...study].map((c) => c.country_name).filter((v, i, a) => a.indexOf(v) === i);
+  const workCards = WORK_GUIDES.map((g) => ({ name: regionName(g.code, locale, g.name), flag: g.flag, chips: g.options.map((o) => o.name), href: L(`/work-permit/${g.slug}`) }));
   const immCards = IMMIGRATION_HUB.map((h) => ({ name: h.code === "EU" ? t("hero.europe") : regionName(h.code, locale, h.name), flag: h.flag, chips: h.chips, href: h.slug ? L(`/immigration/${h.slug}`) : L("/immigration") }));
   const cardsOf = (list: typeof visit, base: string, label: string, color: string) => (
     <div className="g4" style={{ gap: 16 }}>
@@ -171,8 +173,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       {/* CHOOSE YOUR VISA PAGE */}
       <section id="visas" className="sec" style={{ paddingBlock: "64px 24px" }}>
         <VisaTabs eyebrow={t("nav.visas")} title={t("home.chooseTitle")}
-          visit={cardsOf(visit, "visit-visa", t("ui.kindVisit"), KIND_COLOR.visit)} study={cardsOf(study, "study-visa", t("ui.kindStudy"), KIND_COLOR.study)} immigration={immCards}
-          labels={{ visit: t("ui.kindVisit"), study: t("ui.kindStudy"), immigration: t("ui.kindImmigration") }} immLabel={t("ui.kindImmigration")} immNote={t("home.immNote")} qualify={t("cta.guide")} />
+          visit={cardsOf(visit, "visit-visa", t("ui.kindVisit"), KIND_COLOR.visit)} study={cardsOf(study, "study-visa", t("ui.kindStudy"), KIND_COLOR.study)} immigration={immCards} work={workCards}
+          labels={{ visit: t("ui.kindVisit"), study: t("ui.kindStudy"), immigration: t("ui.kindImmigration"), work: t("ui.kindWork") }} immNote={t("home.immNote")} workNote={t("home.workNote")} workAll={t("home.workAll")} workHref={L("/work-permit")} qualify={t("cta.guide")} />
       </section>
 
       {/* REVIEWS */}

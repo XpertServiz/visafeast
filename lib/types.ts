@@ -1,4 +1,5 @@
-export type Kind = "visit" | "study" | "immigration";
+/** "work" pages (work permits) exist only in code (lib/guides/work.ts); the database's countries.kind stays visit/study/immigration. */
+export type Kind = "visit" | "study" | "immigration" | "work";
 export type Item = { title: string; detail?: string };
 
 export interface Country {

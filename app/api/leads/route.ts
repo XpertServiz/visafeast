@@ -9,7 +9,7 @@ const schema = z.object({
   email: z.string().trim().email().max(120).optional().or(z.literal("")),
   city: z.string().trim().max(60).optional(),
   destination: z.string().trim().max(80).optional(),
-  visa_type: z.enum(["visit", "study", "immigration"]).optional(),
+  visa_type: z.enum(["visit", "study", "immigration", "work"]).optional(),
   prior_refusal: z.enum(["no", "once", "more"]).optional(),
   nationality: z.string().trim().max(60).optional(),
   residence_country: z.string().trim().max(60).optional(),

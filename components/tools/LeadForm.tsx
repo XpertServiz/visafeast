@@ -8,7 +8,7 @@ import { Turnstile, useBotCheck } from "./Turnstile";
 
 /** `compact`: the homepage version from the approved prototype (one column for name and number, no message box). */
 export function LeadForm({ locale, countries, defaultService, defaultCountry, dark = true, source = "enquiry", compact = false }: {
-  locale: Locale; countries: string[]; defaultService?: "visit" | "study" | "immigration"; defaultCountry?: string; dark?: boolean; source?: string; compact?: boolean;
+  locale: Locale; countries: string[]; defaultService?: "visit" | "study" | "immigration" | "work"; defaultCountry?: string; dark?: boolean; source?: string; compact?: boolean;
 }) {
   const d = useDict();
   const f = d.form, b = d.book;
@@ -44,7 +44,7 @@ export function LeadForm({ locale, countries, defaultService, defaultCountry, da
       <div className="g2" style={row}>
         <div><label className="lbl" style={lbl} htmlFor="lf-service">{f.service}</label>
           <select id="lf-service" className={cls} name="visa_type" defaultValue={defaultService ?? "visit"}>
-            <option value="visit">{f.visit}</option><option value="study">{f.study}</option><option value="immigration">{f.immigration}</option>
+            <option value="visit">{f.visit}</option><option value="study">{f.study}</option><option value="work">{f.work}</option><option value="immigration">{f.immigration}</option>
           </select></div>
         <div><label className="lbl" style={lbl} htmlFor="lf-country">{f.country}</label>
           <select id="lf-country" className={cls} name="destination" defaultValue={defaultCountry ?? ""}>

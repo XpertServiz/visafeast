@@ -1,13 +1,14 @@
 // Aiman, the website assistant. This file answers from the site's own content with NO paid API: it fixes typos, understands
 // Roman Urdu and Urdu keywords, and finds the right facts. Only questions it cannot answer may go to GPT (see app/api/chat).
 import type { Country, Faq } from "./types";
+import { getGuide } from "./guides";
 
 export type Loc = "en" | "ur";
 export type Topic = "fee" | "documents" | "time" | "funds" | "stay" | "biometrics" | "apply" | "refusal" | "steps";
 export interface KbDoc { title: string; body: string; link: string; countrySlug?: string }
 export interface BotAnswer { kind: "smalltalk" | "facts" | "kb" | "clarify" | "none"; answer: string; link?: string; country?: string; suggest?: string[]; context?: KbDoc[] }
 
-const BASE = { visit: "visit-visa", study: "study-visa", immigration: "immigration" } as const;
+const BASE = { visit: "visit-visa", study: "study-visa", immigration: "immigration", work: "work-permit" } as const;
 export const countryPath = (c: Pick<Country, "kind" | "slug">) => `/${BASE[c.kind]}/${c.slug}`;
 
 export const normalize = (s: string) => s.toLowerCase().replace(/[’']/g, "").replace(/[^\p{L}\p{N}\s]/gu, " ").replace(/\s+/g, " ").trim();
@@ -58,6 +59,8 @@ const COUNTRY_WORDS: Record<string, string[]> = {
   FR: ["france", "french", "paris", "فرانس"],
   PT: ["portugal", "portuguese", "lisbon", "پرتگال"],
   AE: ["uae", "dubai", "emirates", "abudhabi", "sharjah", "دبئی", "امارات"],
+  IE: ["ireland", "irish", "dublin", "آئرلینڈ"],
+  JP: ["japan", "japanese", "tokyo", "jappan", "جاپان"],
 };
 const TOPIC_WORDS: Record<Topic, string[]> = {
   fee: ["fee", "fees", "cost", "costs", "price", "charges", "charge", "kitni", "kitna", "kitne", "paisa", "paise", "rupees", "kharcha", "qeemat", "kharch", "فیس", "قیمت", "خرچہ", "کتنی", "کتنا"],
@@ -72,6 +75,8 @@ const TOPIC_WORDS: Record<Topic, string[]> = {
 };
 const STUDY = ["study", "student", "students", "university", "college", "parhai", "padhai", "taleem", "education", "تعلیم", "اسٹوڈنٹ", "پڑھائی"];
 const IMMIGRATION = ["immigration", "immigrate", "settle", "permanent", "pr", "skilled", "express", "امیگریشن"];
+// Work permits, jobs abroad and job-seeker visas (Roman Urdu and Urdu words included).
+const WORK = ["work", "working", "job", "jobs", "permit", "permits", "employment", "employer", "worker", "workers", "naukri", "nokri", "naukari", "kaam", "salary", "sponsor", "sponsorship", "lmia", "chancenkarte", "opportunity", "seeker", "h1b", "نوکری", "ملازمت", "ورک", "پرمٹ", "کام", "جاب"];
 const STOP = new Set("the a an is are am was be do does did i you we to for of in on at and or my me can how what which who why it this that with from have has will would should please tell about give need want get kya hai hain ka ki ke ko se ye yeh mujhe mera meri hum aap ap main mein bhi aur nahi nahin par per liye visa visas کیا ہے ہیں کا کی کے کو سے میں مجھے ویزا".split(" "));
 
 const GREET = ["hi", "hello", "hey", "salam", "salaam", "assalam", "aoa", "assalamualaikum", "سلام", "السلام"];
@@ -93,11 +98,26 @@ export function detectTopic(toks: string[]): Topic | null {
   for (const t of Object.keys(TOPIC_WORDS) as Topic[]) if (hasNear(content, TOPIC_WORDS[t])) return t;
   return null;
 }
-const detectKind = (toks: string[]): Country["kind"] | null => (hasNear(toks, STUDY) ? "study" : toks.some((w) => IMMIGRATION.includes(w) || near(w, "immigration")) ? "immigration" : null);
+const detectKind = (toks: string[]): Country["kind"] | null =>
+  hasNear(toks, STUDY) ? "study"
+    // "how does it work" is not about work permits: "work" right after it/does/this/process does not count
+    : toks.some((w, i) => (WORK.includes(w) && !(w === "work" && ["it", "does", "this", "process", "will"].includes(toks[i - 1] ?? ""))) || (w.length > 5 && (near(w, "permit") || near(w, "employment")))) ? "work"
+      : toks.some((w) => IMMIGRATION.includes(w) || near(w, "immigration")) ? "immigration" : null;
 
 /** Facts older than 90 days are treated as unknown, exactly like the country pages. */
 const fresh = (c: Country, now: Date) => Boolean(c.facts_last_checked) && (now.getTime() - new Date(c.facts_last_checked!).getTime()) / 86400000 <= 90;
+
+/** Immigration and Work permit pages list routes instead of one fee: answer with each route and its first key figure. */
+function routesAnswer(c: Country, loc: Loc): string {
+  const g = getGuide(c.slug);
+  const routes = (g?.options ?? []).slice(0, 6).map((o) => `• ${o.name}${o.status ? ` (${o.status})` : ""}${o.facts?.[0] ? ` — ${o.facts[0][0]}: ${o.facts[0][1]}` : ""}`);
+  const head = c.kind === "work" ? T(loc, "Main work routes", "کام کے اہم راستے") : T(loc, "Main programmes", "اہم پروگرام");
+  const checked = g ? T(loc, `Checked on ${g.checked} from the official pages.`, `${g.checked} کو سرکاری صفحات سے چیک کیا گیا۔`) : null;
+  return [c.h1, c.intro, routes.length ? `${head}:\n${routes.join("\n")}` : null, checked].filter(Boolean).join("\n");
+}
+
 function factsAnswer(c: Country, topic: Topic | null, loc: Loc, now: Date): string {
+  if ((c.kind === "work" || c.kind === "immigration") && topic !== "steps") return routesAnswer(c, loc);
   const live = fresh(c, now);
   const verify = T(loc, "Being verified — WhatsApp us for today's figure.", "تصدیق جاری ہے — آج کی معلومات کے لیے واٹس ایپ کریں۔");
   const val = (v: string | null) => (live && v ? v : null);
@@ -132,8 +152,14 @@ export function buildKb(faqs: Faq[], countries: Country[], loc: Loc): KbDoc[] {
   const p = loc === "ur" ? "/ur" : "";
   return [
     ...faqs.map((f) => ({ title: f.question, body: f.answer_md, link: `${p}${f.country_slug ? `/visit-visa/${f.country_slug}` : "/#faq"}`, countrySlug: f.country_slug ?? undefined })),
-    ...countries.map((c) => ({ title: c.h1, countrySlug: c.slug, link: `${p}${countryPath(c)}`, body: [c.intro, c.funds_md, ...c.who_for_md, ...c.documents.map((d) => `${d.title} ${d.detail ?? ""}`), ...c.steps.map((s) => `${s.title} ${s.detail ?? ""}`), ...c.refusal_reasons.map((r) => `${r.title} ${r.detail ?? ""}`), ...c.extra_sections.map((e) => `${e.heading} ${e.md}`)].filter(Boolean).join(" ") })),
+    ...countries.map((c) => {
+      // Immigration and Work permit pages: their content is the guide (routes, key figures, notes), not the shared steps.
+      const g = c.kind === "work" || c.kind === "immigration" ? getGuide(c.slug) : undefined;
+      const guideText = g ? [g.overview, ...(g.options ?? []).map((o) => `${o.name}. ${o.status ?? ""} ${o.summary} ${(o.facts ?? []).map(([k, v]) => `${k}: ${v}`).join(". ")}`), g.funds, ...(g.extra ?? []).map((e) => `${e.heading} ${e.md}`)] : [];
+      return { title: c.h1, countrySlug: c.slug, link: `${p}${countryPath(c)}`, body: [c.intro, c.funds_md, ...c.who_for_md, ...c.documents.map((d) => `${d.title} ${d.detail ?? ""}`), ...(g ? [] : c.steps.map((s) => `${s.title} ${s.detail ?? ""}`)), ...c.refusal_reasons.map((r) => `${r.title} ${r.detail ?? ""}`), ...c.extra_sections.map((e) => `${e.heading} ${e.md}`), ...guideText].filter(Boolean).join(" ") };
+    }),
     { title: "Visafeast services", link: `${p}/about`, body: "Visafeast is a private visit, study and immigration visa consultancy based in Karachi, serving all of Pakistan online. We prepare your file. Decisions are made only by the embassy. We never guarantee a visa." },
+    { title: "Work permits and work visas abroad", link: `${p}/work-permit`, body: "Work visa, work permit, job seeker visa and jobs abroad from Pakistan: UK Skilled Worker and Health and Care Worker, Canada work permit and LMIA, Germany Opportunity Card (Chancenkarte) and EU Blue Card, New Zealand Accredited Employer Work Visa, Ireland Critical Skills and General Employment Permit, Netherlands highly skilled migrant, Portugal, UAE employment and Green visa, Japan Specified Skilled Worker, USA H-1B. Most work visas need a real job offer from a real employer. Never pay anyone for a job offer." },
     { title: "Free eligibility check", link: `${p}/tools/eligibility`, body: "A free quick check of your visa profile: answer a few questions and see your strengths and what to improve." },
     { title: "Refusal letter decoder", link: `${p}/tools/refusal-decoder`, body: "Paste your visa refusal letter and get it explained in plain language with what to fix before you apply again. Free." },
     { title: "Fee estimator", link: `${p}/tools/fee-estimator`, body: "Estimate the total cost of your visa application: official fees and service fee." },
@@ -190,7 +216,8 @@ export function answerFromSite(question: string, opts: { kb: KbDoc[]; countries:
     if (code === "EU") return /schengen|europe/.test(c.slug);
     return cc === code;
   };
-  const pick = (list: Country[]) => list.find((c) => c.kind === (kindWord ?? "visit")) ?? list.find((c) => c.kind === kindWord) ?? list[0];
+  // no visit page for a country (e.g. Japan) falls back to its work or immigration page; no work page falls back to immigration
+  const pick = (list: Country[]) => list.find((c) => c.kind === (kindWord ?? "visit")) ?? (kindWord === "work" ? list.find((c) => c.kind === "immigration") : undefined) ?? list.find((c) => c.kind === "visit") ?? list[0];
   let target: Country | undefined = code ? pick(countries.filter(matches)) : undefined;
   // a follow-up like "and documents?" continues with the country being discussed
   if (!target && topic && lastCountry) target = countries.find((c) => c.slug === lastCountry);
@@ -229,5 +256,8 @@ const HINTS: [RegExp, string][] = [
   [/deutschland|allemagne|alemania|almanya|germania|alemanha|duitsland|niem(cy|czech)|德国|ألمانيا|जर्मनी/i, "germany"],
   [/\btailand|thaïlande|tailandia|tailândia|tajland|泰国|تايلاند|थाईलैंड/i, "thailand"],
   [/\bsingapur|singapour|singapura|新加坡|سنغافورة|सिंगापुर/i, "singapore"],
+  [/arbeit|beruf|travail|emploi|trabajo|empleo|çalışma|lavoro|trabalho|emprego|\bwerk\b|praca|pracy|工作|就业|عمل|وظيفة|काम|नौकरी/i, "work permit"],
+  [/japan|japon|giappone|japão|japonia|日本|اليابان|जापान/i, "japan"],
+  [/irland|irlande|irlanda|ierland|爱尔兰|أيرلندا|आयरलैंड/i, "ireland"],
 ];
 export const withEnglishHints = (q: string) => [q, ...HINTS.filter(([re]) => re.test(q)).map(([, word]) => word)].join(" ");

@@ -68,6 +68,11 @@ html[lang="ur"] .eyebrow { letter-spacing: 0; text-transform: none; font-family:
 .prose-vf p, .prose-vf li { color: #1E293B; }
 .prose-vf ul { padding-inline-start: 22px; } .prose-vf li { margin: 6px 0; }
 
+.nav-inner { max-width: 1280px; }
+/* The top bar never wraps: Eligibility and Decoder show from 1200px, News and Reviews from 1440px; the phone menu always lists them */
+@media (max-width: 1439px) { .nav-more { display: none; } }
+@media (max-width: 1199px) { .nav-mid { display: none; } }
+@media (min-width: 1440px) { .nav-inner { max-width: 1440px; } }
 .vslide { flex: 0 0 calc((100% - 36px) / 3); }
 .vslide-1 { flex: 0 0 min(100%, 760px); }
 .vslide-2 { flex: 0 0 calc((100% - 18px) / 2); }

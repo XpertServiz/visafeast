@@ -6,7 +6,8 @@
     "news": "Notizie visti",
     "reviews": "Recensioni",
     "book": "Chiamata gratuita",
-    "menu": "Menu"
+    "menu": "Menu",
+    "work": "Permessi di lavoro"
   },
   "hero": {
     "eyebrow": "Consulenti per visita, studio e immigrazione · Karachi · per tutto il Pakistan",
@@ -143,7 +144,9 @@
     "visit": "Visti di visita",
     "study": "Visti di studio",
     "immigration": "Immigrazione",
-    "immNote": "Le regole sull'immigrazione cambiano spesso: ogni pagina mostra la fonte ufficiale e la data dell'ultimo controllo. Dove la legge richiede un rappresentante autorizzato (ad esempio un RCIC per il Canada o un agente registrato per l'Australia), le pratiche sono presentate con i nostri partner autorizzati."
+    "immNote": "Le regole sull'immigrazione cambiano spesso: ogni pagina mostra la fonte ufficiale e la data dell'ultimo controllo. Dove la legge richiede un rappresentante autorizzato (ad esempio un RCIC per il Canada o un agente registrato per l'Australia), le pratiche sono presentate con i nostri partner autorizzati.",
+    "work": "Permessi di lavoro",
+    "workNote": "La maggior parte dei visti di lavoro richiede una vera offerta di lavoro da un vero datore di lavoro. Non pagate mai nessuno per un'offerta di lavoro. Ogni pagina mostra la fonte ufficiale e la data dell'ultimo controllo."
   },
   "reviews": {
     "title": "Recensioni dei clienti",
@@ -200,7 +203,8 @@
     "rating": "Valutazione",
     "consent": "Accetto la pubblicazione",
     "submit": "Invia",
-    "error": "Qualcosa è andato storto. Riprova o scrivici su WhatsApp."
+    "error": "Qualcosa è andato storto. Riprova o scrivici su WhatsApp.",
+    "work": "Permesso di lavoro"
   },
   "footer": {
     "visitStudy": "Visita e studio",
@@ -338,7 +342,8 @@
     "immCanada": "Canada Express Entry",
     "immAustralia": "Australia: visti qualificati",
     "immGermany": "Germania: Chancenkarte",
-    "immUk": "UK Skilled Worker"
+    "immUk": "UK Skilled Worker",
+    "kindWork": "Permessi di lavoro"
   },
   "hub": {
     "visitH1": "Visti di visita dal Pakistan",
@@ -346,7 +351,9 @@
     "studyH1": "Visti di studio dal Pakistan",
     "studyIntro": "Scegli un paese per vedere come funziona il visto di studio e cosa preparare.",
     "immH1": "Percorsi di immigrazione dal Pakistan",
-    "immIntro": "Percorsi per lavoratori qualificati, famiglie e imprese. Le regole cambiano spesso: ogni pagina mostra la fonte ufficiale e la data di controllo."
+    "immIntro": "Percorsi per lavoratori qualificati, famiglie e imprese. Le regole cambiano spesso: ogni pagina mostra la fonte ufficiale e la data di controllo.",
+    "workH1": "Permessi e visti di lavoro dal Pakistan",
+    "workIntro": "Visti di lavoro, visti per la ricerca di lavoro e permessi di lavoro per 10 paesi. Ogni pagina mostra la fonte ufficiale e la data dell'ultimo controllo."
   },
   "seo": {
     "home": {
@@ -388,6 +395,10 @@
     "news": {
       "t": "Notizie sui visti per richiedenti dal Pakistan | Visafeast",
       "d": "Aggiornamenti quotidiani da fonti ufficiali e un riepilogo settimanale su cosa significano per i richiedenti dal Pakistan."
+    },
+    "hubWork": {
+      "t": "Consulente per permessi e visti di lavoro in Pakistan | Visafeast",
+      "d": "Visti di lavoro dal Pakistan per Regno Unito, Canada, Germania (Chancenkarte), Nuova Zelanda, Irlanda, Paesi Bassi, Portogallo, EAU, Giappone e USA, con tariffe e fonti ufficiali."
     }
   },
   "pages": {
@@ -494,7 +505,9 @@
     "faqTitle": "Le domande che ci fanno",
     "bookSub": "Video WhatsApp o telefono · ora del Pakistan",
     "enqSub": "Rispondiamo su WhatsApp negli orari d'ufficio.",
-    "footerBrand": "Consulenza per visite, studio e immigrazione. Da Karachi, online per i clienti di tutto il Pakistan."
+    "footerBrand": "Consulenza per visite, studio e immigrazione. Da Karachi, online per i clienti di tutto il Pakistan.",
+    "workNote": "La maggior parte dei visti di lavoro richiede una vera offerta di lavoro da un vero datore di lavoro. Non pagate mai nessuno per un'offerta di lavoro.",
+    "workAll": "Vedi tutti i permessi di lavoro →"
   },
   "guide": {
     "overview": "Panoramica",
@@ -512,6 +525,7 @@
     "prevPhoto": "Foto precedente",
     "nextPhoto": "Foto successiva",
     "photo": "Foto",
-    "of": "di"
+    "of": "di",
+    "optionsWork": "Percorsi per il visto di lavoro"
   }
 }

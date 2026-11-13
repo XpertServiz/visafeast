@@ -4,7 +4,11 @@
 export interface Source { label: string; url: string }
 
 /** A visa type, route or programme: a name, one or two plain sentences, and the official page. */
-export interface Option { name: string; summary: string; status?: string; url?: string }
+export interface Option {
+  name: string; summary: string; status?: string; url?: string;
+  /** Short key figures read on the official page, e.g. ["Fee", "£819"]. Shown as a small table under the summary. */
+  facts?: [string, string][];
+}
 
 export interface GuideFacts {
   embassy_fee_text?: string; vfs_fee_text?: string; processing_time_text?: string;

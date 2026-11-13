@@ -5,6 +5,7 @@ import { clientIp, rateLimit, visitorHash } from "@/lib/server/guard";
 import { CHAT_SYSTEM, llm, llmAvailable } from "@/lib/server/llm";
 import { getAllFaqs, getCountries } from "@/lib/data";
 import { answerFromSite, buildKb, cacheKey, withEnglishHints, words } from "@/lib/chatbot";
+import { guideCountry, IMMIGRATION_GUIDES, WORK_GUIDES } from "@/lib/guides";
 import { serviceClient } from "@/lib/supabase";
 import { LOCALE_CODES, localeMeta, lp, type Locale } from "@/config/locales";
 import { getT } from "@/lib/i18n";
@@ -27,7 +28,9 @@ export async function POST(req: NextRequest) {
   if (!(await rateLimit(`chat:${vh}`, 60, 86400_000)) || !(await rateLimit(`chat-ip:${clientIp(req)}`, 200, 86400_000)))
     return reply({ answer: getT(uiLoc)("ui.chatLimit") });
 
-  const [faqs, countries] = await Promise.all([getAllFaqs(), getCountries()]);
+  const [faqs, dbCountries] = await Promise.all([getAllFaqs(), getCountries()]);
+  // Immigration and Work permit pages live in code, not the database: add them so the assistant can answer from them too.
+  const countries = [...dbCountries, ...IMMIGRATION_GUIDES.map((g) => guideCountry(g, "en", "immigration")), ...WORK_GUIDES.map((g) => guideCountry(g, "en", "work"))];
   const kb = buildKb(faqs, countries, loc);
   const site = answerFromSite(otherLang ? withEnglishHints(p.data.message) : p.data.message, { kb, countries, locale: loc, lastCountry: p.data.lastCountry });
   // Other languages: GPT answers from the same site content in the visitor's language when switched on; otherwise the free English answer.

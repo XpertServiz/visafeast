@@ -29,7 +29,7 @@ const n = (fd: FormData, k: string) => Math.max(0, Math.round(Number(s(fd, k)) |
 const log = (db: NonNullable<ReturnType<typeof serviceClient>>, a: Admin, action: string, table: string, id?: string, meta?: unknown) =>
   db.from("activity_log").insert({ actor: a.id, action, target_table: table, target_id: id, meta: meta ?? null });
 const refreshSite = () => revalidatePath("/", "layout");
-const BASE = { visit: "visit-visa", study: "study-visa", immigration: "immigration" } as const;
+const BASE = { visit: "visit-visa", study: "study-visa", immigration: "immigration", work: "work-permit" } as const;
 /** Tell Bing/Yandex (IndexNow) that a country page changed — English and Urdu URLs. No-op until INDEXNOW_KEY is set. */
 async function pingCountry(db: NonNullable<ReturnType<typeof serviceClient>>, id: string) {
   const { data: c } = await db.from("countries").select("slug,kind,is_published").eq("id", id).maybeSingle();

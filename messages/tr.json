@@ -6,7 +6,8 @@
     "news": "Vize haberleri",
     "reviews": "Yorumlar",
     "book": "Ücretsiz görüşme",
-    "menu": "Menü"
+    "menu": "Menü",
+    "work": "Çalışma izni"
   },
   "hero": {
     "eyebrow": "Ziyaret, öğrenci ve göçmenlik danışmanları · Karaçi · tüm Pakistan'a hizmet",
@@ -143,7 +144,9 @@
     "visit": "Ziyaret vizeleri",
     "study": "Öğrenci vizeleri",
     "immigration": "Göçmenlik",
-    "immNote": "Göçmenlik kuralları sık değişir — her sayfa resmi kaynağı ve son kontrol tarihimizi gösterir. Yasanın lisanslı temsilci istediği yerlerde (örneğin Kanada için RCIC veya Avustralya için kayıtlı göçmenlik acentesi) başvurular lisanslı ortaklarımızla yapılır."
+    "immNote": "Göçmenlik kuralları sık değişir — her sayfa resmi kaynağı ve son kontrol tarihimizi gösterir. Yasanın lisanslı temsilci istediği yerlerde (örneğin Kanada için RCIC veya Avustralya için kayıtlı göçmenlik acentesi) başvurular lisanslı ortaklarımızla yapılır.",
+    "work": "Çalışma izni",
+    "workNote": "Çoğu çalışma vizesi gerçek bir işverenden gerçek bir iş teklifi gerektirir. İş teklifi için asla kimseye para ödemeyin. Her sayfa resmi kaynağı ve son kontrol tarihini gösterir."
   },
   "reviews": {
     "title": "Müşteri yorumları",
@@ -200,7 +203,8 @@
     "rating": "Puan",
     "consent": "Yayımlanmasını kabul ediyorum",
     "submit": "Gönder",
-    "error": "Bir sorun oluştu. Yeniden deneyin veya WhatsApp'tan yazın."
+    "error": "Bir sorun oluştu. Yeniden deneyin veya WhatsApp'tan yazın.",
+    "work": "Çalışma izni"
   },
   "footer": {
     "visitStudy": "Ziyaret ve eğitim",
@@ -338,7 +342,8 @@
     "immCanada": "Kanada Express Entry",
     "immAustralia": "Avustralya nitelikli vizeler",
     "immGermany": "Almanya Chancenkarte",
-    "immUk": "İngiltere Skilled Worker"
+    "immUk": "İngiltere Skilled Worker",
+    "kindWork": "Çalışma izni"
   },
   "hub": {
     "visitH1": "Pakistan'dan ziyaret vizeleri",
@@ -346,7 +351,9 @@
     "studyH1": "Pakistan'dan öğrenci vizeleri",
     "studyIntro": "Öğrenci vizesinin nasıl işlediğini ve neler hazırlamanız gerektiğini görmek için ülke seçin.",
     "immH1": "Pakistan'dan göçmenlik yolları",
-    "immIntro": "Nitelikli, aile ve iş yolları. Kurallar sık değişir — her sayfa resmi kaynağını ve kontrol tarihini gösterir."
+    "immIntro": "Nitelikli, aile ve iş yolları. Kurallar sık değişir — her sayfa resmi kaynağını ve kontrol tarihini gösterir.",
+    "workH1": "Pakistan'dan Çalışma İzni ve Çalışma Vizesi",
+    "workIntro": "10 ülke için çalışma vizeleri, iş arama vizeleri ve çalışma izinleri. Her sayfa resmi kaynağı ve son kontrol tarihini gösterir."
   },
   "seo": {
     "home": {
@@ -388,6 +395,10 @@
     "news": {
       "t": "Pakistanlı başvuru sahipleri için vize haberleri | Visafeast",
       "d": "Resmi kaynaklardan günlük vize güncellemeleri ve Pakistanlı başvuru sahipleri için anlamlarını açıklayan haftalık özet."
+    },
+    "hubWork": {
+      "t": "Pakistan'da Çalışma İzni ve Çalışma Vizesi Danışmanı | Visafeast",
+      "d": "Pakistan'dan Birleşik Krallık, Kanada, Almanya (Fırsat Kartı), Yeni Zelanda, İrlanda, Hollanda, Portekiz, BAE, Japonya ve ABD için çalışma vizeleri; resmi ücretler ve kaynaklarla."
     }
   },
   "pages": {
@@ -494,7 +505,9 @@
     "faqTitle": "Bize sorulan sorular",
     "bookSub": "WhatsApp görüntülü veya telefon · Pakistan saati",
     "enqSub": "Mesai saatlerinde WhatsApp'tan yanıt veririz.",
-    "footerBrand": "Ziyaret, eğitim ve göçmenlik danışmanlığı. Karaçi'den, tüm Pakistan'daki müşterilere çevrimiçi."
+    "footerBrand": "Ziyaret, eğitim ve göçmenlik danışmanlığı. Karaçi'den, tüm Pakistan'daki müşterilere çevrimiçi.",
+    "workNote": "Çoğu çalışma vizesi gerçek bir işverenden gerçek bir iş teklifi gerektirir. İş teklifi için asla kimseye para ödemeyin.",
+    "workAll": "Tüm çalışma izinlerini gör →"
   },
   "guide": {
     "overview": "Genel bakış",
@@ -512,6 +525,7 @@
     "prevPhoto": "Önceki fotoğraf",
     "nextPhoto": "Sonraki fotoğraf",
     "photo": "Fotoğraf",
-    "of": "/"
+    "of": "/",
+    "optionsWork": "Çalışma vizesi yolları"
   }
 }

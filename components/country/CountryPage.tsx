@@ -14,14 +14,15 @@ import { Checklist } from "./Checklist";
 import { Slideshow } from "./Slideshow";
 import { GUIDE } from "@/lib/photos";
 import { DEST } from "@/lib/destination-photos";
-import { getGuide, IMMIGRATION_GUIDES } from "@/lib/guides";
+import { getGuide, IMMIGRATION_GUIDES, WORK_GUIDES } from "@/lib/guides";
 
 export async function CountryPage({ c, locale }: { c: Country; locale: Locale }) {
   const t = getT(locale);
   const guide = getGuide(c.slug);
   const [settings, faqs, news, all] = await Promise.all([getSettings(), getFaqsFor(locale, c.slug), getNews({ country: c.country_code, limit: 3 }), getCountriesFor(locale)]);
   const base = KIND_BASE[c.kind];
-  const imm = c.kind === "immigration";
+  // Immigration and Work permit pages are built from the guides: no single fee table, a list of routes instead.
+  const imm = c.kind === "immigration" || c.kind === "work";
   const wa = (q: string) => waLink(q, settings.whatsapp_number);
   const verify = (
     <p style={{ margin: "14px 0 0", fontSize: 15, color: "var(--muted)" }}>
@@ -43,11 +44,12 @@ export async function CountryPage({ c, locale }: { c: Country; locale: Locale })
   const metaUrl = useDb ? c.facts_source_url : guide?.sources[0]?.url ?? null;
   const domain = metaUrl ? new URL(metaUrl).hostname : null;
 
-  const hubLabel = t(c.kind === "visit" ? "choose.visit" : c.kind === "study" ? "choose.study" : "choose.immigration");
+  const hubLabel = t(c.kind === "visit" ? "choose.visit" : c.kind === "study" ? "choose.study" : c.kind === "work" ? "choose.work" : "choose.immigration");
   const related = c.related_slugs.map((s) => all.find((x) => x.slug === s)).filter(Boolean) as Country[];
   const siblings: { href: string; label: string }[] = [
     ...all.filter((x) => x.country_code === c.country_code && x.kind !== c.kind && x.slug !== c.slug).map((x) => ({ href: lp(locale, `/${KIND_BASE[x.kind]}/${x.slug}`), label: x.h1 })),
-    ...(imm ? [] : IMMIGRATION_GUIDES.filter((g) => g.code === c.country_code).map((g) => ({ href: lp(locale, `/immigration/${g.slug}`), label: g.h1 }))),
+    ...(c.kind === "immigration" ? [] : IMMIGRATION_GUIDES.filter((g) => g.code === c.country_code).map((g) => ({ href: lp(locale, `/immigration/${g.slug}`), label: g.h1 }))),
+    ...(c.kind === "work" ? [] : WORK_GUIDES.filter((g) => g.code === c.country_code).map((g) => ({ href: lp(locale, `/work-permit/${g.slug}`), label: g.h1 }))),
   ];
 
   const whoFor = guide?.who_for ?? c.who_for_md;
@@ -70,7 +72,7 @@ export async function CountryPage({ c, locale }: { c: Country; locale: Locale })
   // One note per page, however many figures are still missing (including the visa-centre fee in the cost table).
   const someUnknown = !imm && ([fee, time, stay, window, bio].some((v) => !v) || !vfs);
 
-  const optionsLabel = t(c.kind === "visit" ? "guide.optionsVisit" : c.kind === "study" ? "guide.optionsStudy" : "guide.optionsImm");
+  const optionsLabel = t(c.kind === "visit" ? "guide.optionsVisit" : c.kind === "study" ? "guide.optionsStudy" : c.kind === "work" ? "guide.optionsWork" : "guide.optionsImm");
   const anchors: [string, string][] = [
     ...(guide?.overview ? [["overview", t("guide.overview")] as [string, string]] : []),
     ...(options.length ? [["options", optionsLabel] as [string, string]] : []),
@@ -136,6 +138,15 @@ export async function CountryPage({ c, locale }: { c: Country; locale: Locale })
                       <h3 className="disp" style={{ margin: 0, fontSize: 20, lineHeight: 1.25 }}>{o.name}</h3>
                       {o.status && <p style={{ margin: 0 }}><span className="mono" style={{ display: "inline-block", fontSize: 12, padding: "3px 9px", borderRadius: 6, background: "#FBE9C9", color: "var(--amber-text)", fontWeight: 600 }}>{o.status}</span></p>}
                       <p style={{ margin: 0, color: "#1E293B", fontSize: 16, lineHeight: 1.55, flex: 1 }}>{o.summary}</p>
+                      {o.facts && o.facts.length > 0 && (
+                        <dl style={{ margin: "4px 0 0", display: "grid", gap: 6, borderTop: "1px solid var(--line)", paddingTop: 10 }}>
+                          {o.facts.map(([k, v]) => (
+                            <div key={k} style={{ display: "flex", flexWrap: "wrap", gap: "2px 10px", fontSize: 14.5, lineHeight: 1.45 }}>
+                              <dt style={{ color: "var(--muted-2)", minWidth: 120 }}>{k}</dt><dd style={{ margin: 0, fontWeight: 600, color: "var(--navy)", flex: "1 1 160px" }}>{v}</dd>
+                            </div>
+                          ))}
+                        </dl>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -163,7 +174,7 @@ export async function CountryPage({ c, locale }: { c: Country; locale: Locale })
             </ol>
 
             {c.licensed_partner && <aside className="card" style={{ padding: 18, borderColor: "var(--stamp-purple)" }}><b>{t("ui.licensedPartner")}</b> {c.licensed_partner}</aside>}
-            {imm && !c.licensed_partner && <aside className="card" style={{ padding: 18 }}>{t("choose.immNote")}</aside>}
+            {imm && !c.licensed_partner && <aside className="card" style={{ padding: 18 }}>{t(c.kind === "work" ? "choose.workNote" : "choose.immNote")}</aside>}
 
             {c.refusal_reasons.length > 0 && (<>
               <h2 id="refusals">{label("refusals")}</h2>

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { answerFromSite, buildKb, cacheKey, detectCountryCode, detectTopic, distance, near, searchKb, withEnglishHints, words } from "../lib/chatbot";
 import { SEED_COUNTRIES, SEED_FAQS, SEED_UK_FAQS } from "../lib/seed";
 import type { Country } from "../lib/types";
+import { guideCountry, IMMIGRATION_GUIDES, WORK_GUIDES } from "../lib/guides";
 
 const now = new Date("2026-11-05");
 const canada = SEED_COUNTRIES.find((c) => c.slug === "canada-visit-visa-from-pakistan")!;
@@ -93,5 +94,40 @@ describe("questions in the website's other languages", () => {
     const a = ask(withEnglishHints(q));
     expect(a.kind, q).toBe("facts");
     expect(a.answer, q).toContain("CAD 100");
+  });
+});
+
+describe("work permits (pages built from lib/guides/work.ts)", () => {
+  // the chat route adds the Immigration and Work permit pages to the database countries, exactly like this
+  const all: Country[] = [...countries, ...IMMIGRATION_GUIDES.map((g) => guideCountry(g, "en", "immigration")), ...WORK_GUIDES.map((g) => guideCountry(g, "en", "work"))];
+  const kbAll = buildKb([...SEED_FAQS, ...SEED_UK_FAQS], all, "en");
+  const askAll = (q: string) => answerFromSite(q, { kb: kbAll, countries: all, locale: "en", now });
+  it.each([
+    ["germany opportunity card", "/work-permit/germany-work-visa-from-pakistan"],
+    ["uk work visa", "/work-permit/uk-work-visa-from-pakistan"],
+    ["canada work permit", "/work-permit/canada-work-permit-from-pakistan"],
+    ["japan job", "/work-permit/japan-work-visa-from-pakistan"],
+    ["dubai naukri", "/work-permit/uae-work-visa-from-pakistan"],
+    ["جرمنی نوکری", "/work-permit/germany-work-visa-from-pakistan"],
+  ])("%s → %s", (q, link) => {
+    const a = askAll(q);
+    expect(a.link).toBe(link);
+    expect(a.answer).toMatch(/•/); // lists the routes
+  });
+  it("a German question about work finds the German page", () => {
+    expect(answerFromSite(withEnglishHints("Arbeitsvisum Deutschland"), { kb: kbAll, countries: all, locale: "en", now }).link).toBe("/work-permit/germany-work-visa-from-pakistan");
+  });
+  it("'how does it work' is not a work permit question", () => {
+    expect(askAll("uk visa how does it work").link).not.toMatch(/work-permit/);
+  });
+  it("no work page for a country falls back to its immigration page", () => {
+    expect(askAll("australia work visa").link).toMatch(/^\/immigration\//);
+  });
+  it("every work route figure comes with an official source and a read date", () => {
+    for (const g of WORK_GUIDES) {
+      expect(g.sources.length).toBeGreaterThan(0);
+      expect(g.checked).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      for (const o of g.options) expect(o.url, `${g.name}: ${o.name}`).toMatch(/^https:\/\//);
+    }
   });
 });

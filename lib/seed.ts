@@ -176,4 +176,4 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   theme: "night_flight", accent_color: "#F2A93B", splash_style: "logo_fade", splash_duration_ms: 2200, splash_once_per_session: true,
 };
 
-export const Kind_LABEL: Record<Kind, string> = { visit: "VISIT", study: "STUDY", immigration: "IMMIGRATION" };
+export const Kind_LABEL: Record<Kind, string> = { visit: "VISIT", study: "STUDY", immigration: "IMMIGRATION", work: "WORK" };

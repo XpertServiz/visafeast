@@ -3,14 +3,14 @@ import { redirect } from "next/navigation";
 import { getAdmin, can } from "@/lib/server/admin-auth";
 import { db } from "@/lib/server/admin-data";
 import { SEED_COUNTRIES } from "@/lib/seed";
-import { GUIDES, IMMIGRATION_GUIDES } from "@/lib/guides";
+import { GUIDES, IMMIGRATION_GUIDES, WORK_GUIDES } from "@/lib/guides";
 import { Badge, Card, Empty, Title, day } from "@/components/admin/ui";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Useful links" };
 
-interface Row { label: string; url: string; kind: "Visit" | "Study" | "Immigration"; checked: string | null }
-const KIND = { visit: "Visit", study: "Study", immigration: "Immigration" } as const;
+interface Row { label: string; url: string; kind: "Visit" | "Study" | "Immigration" | "Work permit"; checked: string | null }
+const KIND = { visit: "Visit", study: "Study", immigration: "Immigration", work: "Work permit" } as const;
 const host = (u: string) => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return u; } };
 
 /** For staff only: the official pages for each country. They are not shown to visitors, so clients get our help instead of applying on their own. */
@@ -32,6 +32,10 @@ export default async function UsefulLinks({ searchParams }: { searchParams: Prom
   for (const g of IMMIGRATION_GUIDES) {
     for (const s of g.sources) add(g.name, { label: s.label, url: s.url, kind: "Immigration", checked: g.checked });
     for (const o of g.options) if (o.url) add(g.name, { label: o.name, url: o.url, kind: "Immigration", checked: g.checked });
+  }
+  for (const g of WORK_GUIDES) {
+    for (const s of g.sources) add(g.name, { label: s.label, url: s.url, kind: "Work permit", checked: g.checked });
+    for (const o of g.options) if (o.url) add(g.name, { label: o.name, url: o.url, kind: "Work permit", checked: g.checked });
   }
   // Links typed into a country page in Admin → Website
   const { data: rows } = await db().from("countries").select("country_name,kind,visa_name,facts_source_url,facts_last_checked").not("facts_source_url", "is", null);

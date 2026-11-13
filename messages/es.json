@@ -6,7 +6,8 @@
     "news": "Noticias de visas",
     "reviews": "Opiniones",
     "book": "Llamada gratis",
-    "menu": "Menú"
+    "menu": "Menú",
+    "work": "Permisos de trabajo"
   },
   "hero": {
     "eyebrow": "Asesores de visita, estudios e inmigración · Karachi · para todo Pakistán",
@@ -143,7 +144,9 @@
     "visit": "Visados de visita",
     "study": "Visados de estudios",
     "immigration": "Inmigración",
-    "immNote": "Las normas de inmigración cambian a menudo: cada página muestra la fuente oficial y la fecha de nuestra última comprobación. Cuando la ley exige un representante autorizado (por ejemplo, un RCIC para Canadá o un agente de migración registrado para Australia), los casos se presentan con nuestros socios autorizados."
+    "immNote": "Las normas de inmigración cambian a menudo: cada página muestra la fuente oficial y la fecha de nuestra última comprobación. Cuando la ley exige un representante autorizado (por ejemplo, un RCIC para Canadá o un agente de migración registrado para Australia), los casos se presentan con nuestros socios autorizados.",
+    "work": "Permisos de trabajo",
+    "workNote": "La mayoría de los visados de trabajo exigen una oferta de empleo real de un empleador real. Nunca pague a nadie por una oferta de empleo. Cada página muestra la fuente oficial y la fecha de la última revisión."
   },
   "reviews": {
     "title": "Opiniones de clientes",
@@ -200,7 +203,8 @@
     "rating": "Valoración",
     "consent": "Acepto que se publique",
     "submit": "Enviar",
-    "error": "Algo salió mal. Inténtelo de nuevo o escríbanos por WhatsApp."
+    "error": "Algo salió mal. Inténtelo de nuevo o escríbanos por WhatsApp.",
+    "work": "Permiso de trabajo"
   },
   "footer": {
     "visitStudy": "Visita y estudios",
@@ -338,7 +342,8 @@
     "immCanada": "Canadá Express Entry",
     "immAustralia": "Australia: visados cualificados",
     "immGermany": "Alemania: Chancenkarte",
-    "immUk": "UK Skilled Worker"
+    "immUk": "UK Skilled Worker",
+    "kindWork": "Permisos de trabajo"
   },
   "hub": {
     "visitH1": "Visados de visita desde Pakistán",
@@ -346,7 +351,9 @@
     "studyH1": "Visados de estudios desde Pakistán",
     "studyIntro": "Elija un país para ver cómo funciona el visado de estudios y qué preparar.",
     "immH1": "Vías de inmigración desde Pakistán",
-    "immIntro": "Vías para trabajadores cualificados, familias y empresarios. Las normas cambian a menudo: cada página muestra su fuente oficial y fecha de comprobación."
+    "immIntro": "Vías para trabajadores cualificados, familias y empresarios. Las normas cambian a menudo: cada página muestra su fuente oficial y fecha de comprobación.",
+    "workH1": "Permisos y visados de trabajo desde Pakistán",
+    "workIntro": "Visados de trabajo, visados de búsqueda de empleo y permisos de trabajo para 10 países. Cada página muestra la fuente oficial y la fecha de la última revisión."
   },
   "seo": {
     "home": {
@@ -388,6 +395,10 @@
     "news": {
       "t": "Noticias de visados para solicitantes de Pakistán | Visafeast",
       "d": "Actualizaciones diarias de fuentes oficiales y un resumen semanal sobre lo que significan para los solicitantes de Pakistán."
+    },
+    "hubWork": {
+      "t": "Asesor de permisos y visados de trabajo en Pakistán | Visafeast",
+      "d": "Visados de trabajo desde Pakistán para Reino Unido, Canadá, Alemania (Chancenkarte), Nueva Zelanda, Irlanda, Países Bajos, Portugal, EAU, Japón y EE. UU., con tasas y fuentes oficiales."
     }
   },
   "pages": {
@@ -494,7 +505,9 @@
     "faqTitle": "Preguntas que nos hacen",
     "bookSub": "Vídeo de WhatsApp o teléfono · hora de Pakistán",
     "enqSub": "Respondemos por WhatsApp en horario de oficina.",
-    "footerBrand": "Asesoría de visitas, estudios e inmigración. Desde Karachi, en línea para clientes de todo Pakistán."
+    "footerBrand": "Asesoría de visitas, estudios e inmigración. Desde Karachi, en línea para clientes de todo Pakistán.",
+    "workNote": "La mayoría de los visados de trabajo exigen una oferta de empleo real de un empleador real. Nunca pague a nadie por una oferta de empleo.",
+    "workAll": "Ver todos los permisos de trabajo →"
   },
   "guide": {
     "overview": "Resumen",
@@ -512,6 +525,7 @@
     "prevPhoto": "Foto anterior",
     "nextPhoto": "Foto siguiente",
     "photo": "Foto",
-    "of": "de"
+    "of": "de",
+    "optionsWork": "Vías de visado de trabajo"
   }
 }

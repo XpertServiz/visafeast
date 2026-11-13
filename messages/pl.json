@@ -6,7 +6,8 @@
     "news": "Wiadomości wizowe",
     "reviews": "Opinie",
     "book": "Bezpłatna rozmowa",
-    "menu": "Menu"
+    "menu": "Menu",
+    "work": "Praca za granicą"
   },
   "hero": {
     "eyebrow": "Doradcy ds. wizyt, studiów i imigracji · Karaczi · dla całego Pakistanu",
@@ -143,7 +144,9 @@
     "visit": "Wizy turystyczne",
     "study": "Wizy studenckie",
     "immigration": "Imigracja",
-    "immNote": "Przepisy imigracyjne często się zmieniają: każda strona podaje oficjalne źródło i datę ostatniego sprawdzenia. Gdy prawo wymaga licencjonowanego przedstawiciela (np. RCIC w Kanadzie lub zarejestrowanego agenta w Australii), sprawy składają nasi licencjonowani partnerzy."
+    "immNote": "Przepisy imigracyjne często się zmieniają: każda strona podaje oficjalne źródło i datę ostatniego sprawdzenia. Gdy prawo wymaga licencjonowanego przedstawiciela (np. RCIC w Kanadzie lub zarejestrowanego agenta w Australii), sprawy składają nasi licencjonowani partnerzy.",
+    "work": "Praca za granicą",
+    "workNote": "Większość wiz pracowniczych wymaga prawdziwej oferty pracy od prawdziwego pracodawcy. Nigdy nikomu nie płać za ofertę pracy. Każda strona podaje oficjalne źródło i datę ostatniego sprawdzenia."
   },
   "reviews": {
     "title": "Opinie klientów",
@@ -200,7 +203,8 @@
     "rating": "Ocena",
     "consent": "Zgadzam się na publikację",
     "submit": "Wyślij",
-    "error": "Coś poszło nie tak. Spróbuj ponownie lub napisz na WhatsAppie."
+    "error": "Coś poszło nie tak. Spróbuj ponownie lub napisz na WhatsAppie.",
+    "work": "Pozwolenie na pracę"
   },
   "footer": {
     "visitStudy": "Wizyty i studia",
@@ -338,7 +342,8 @@
     "immCanada": "Kanada Express Entry",
     "immAustralia": "Australia: wizy dla specjalistów",
     "immGermany": "Niemcy: Chancenkarte",
-    "immUk": "Wielka Brytania Skilled Worker"
+    "immUk": "Wielka Brytania Skilled Worker",
+    "kindWork": "Praca za granicą"
   },
   "hub": {
     "visitH1": "Wizy turystyczne z Pakistanu",
@@ -346,7 +351,9 @@
     "studyH1": "Wizy studenckie z Pakistanu",
     "studyIntro": "Wybierz kraj, aby zobaczyć, jak działa wiza studencka i co przygotować.",
     "immH1": "Ścieżki imigracyjne z Pakistanu",
-    "immIntro": "Ścieżki dla specjalistów, rodzin i firm. Przepisy często się zmieniają: każda strona podaje oficjalne źródło i datę sprawdzenia."
+    "immIntro": "Ścieżki dla specjalistów, rodzin i firm. Przepisy często się zmieniają: każda strona podaje oficjalne źródło i datę sprawdzenia.",
+    "workH1": "Pozwolenia na pracę i wizy pracownicze z Pakistanu",
+    "workIntro": "Wizy pracownicze, wizy dla poszukujących pracy i zezwolenia na pracę w 10 krajach. Każda strona podaje oficjalne źródło i datę ostatniego sprawdzenia."
   },
   "seo": {
     "home": {
@@ -388,6 +395,10 @@
     "news": {
       "t": "Wiadomości wizowe dla wnioskodawców z Pakistanu | Visafeast",
       "d": "Codzienne informacje z oficjalnych źródeł i tygodniowe podsumowanie, co oznaczają dla wnioskodawców z Pakistanu."
+    },
+    "hubWork": {
+      "t": "Doradca ds. pozwoleń na pracę i wiz pracowniczych w Pakistanie | Visafeast",
+      "d": "Wizy pracownicze z Pakistanu do Wielkiej Brytanii, Kanady, Niemiec (Chancenkarte), Nowej Zelandii, Irlandii, Holandii, Portugalii, ZEA, Japonii i USA, z oficjalnymi opłatami i źródłami."
     }
   },
   "pages": {
@@ -494,7 +505,9 @@
     "faqTitle": "Pytania, które nam zadają",
     "bookSub": "Wideo WhatsApp lub telefon · czas pakistański",
     "enqSub": "Odpowiadamy na WhatsApp w godzinach pracy biura.",
-    "footerBrand": "Doradztwo wizowe: odwiedziny, studia i imigracja. Z Karaczi, online dla klientów z całego Pakistanu."
+    "footerBrand": "Doradztwo wizowe: odwiedziny, studia i imigracja. Z Karaczi, online dla klientów z całego Pakistanu.",
+    "workNote": "Większość wiz pracowniczych wymaga prawdziwej oferty pracy od prawdziwego pracodawcy. Nigdy nikomu nie płać za ofertę pracy.",
+    "workAll": "Zobacz wszystkie pozwolenia na pracę →"
   },
   "guide": {
     "overview": "Przegląd",
@@ -512,6 +525,7 @@
     "prevPhoto": "Poprzednie zdjęcie",
     "nextPhoto": "Następne zdjęcie",
     "photo": "Zdjęcie",
-    "of": "z"
+    "of": "z",
+    "optionsWork": "Ścieżki wizy pracowniczej"
   }
 }

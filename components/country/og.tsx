@@ -1,15 +1,16 @@
 import { ImageResponse } from "next/og";
 import { getCountries, getCountry } from "@/lib/data";
-import { getImmigrationGuide, IMMIGRATION_GUIDES, immigrationCountry } from "@/lib/guides";
+import { getImmigrationGuide, guideCountry, guidesOf, immigrationCountry, WORK_GUIDES } from "@/lib/guides";
 import { MARK_LIGHT_DATA, PDF_MARK, PDF_WORD, WORDMARK_LIGHT_DATA } from "@/lib/brand-data";
 
 export const ogSize = { width: 1200, height: 630 };
 
 /** Generated Open Graph image per country: navy background, boarding-pass route, country name (brief §14.2). */
 export async function countryOg(slug: string) {
-  // Immigration pages come from the guides, not the database.
+  // Immigration and Work permit pages come from the guides, not the database.
   const guide = getImmigrationGuide(slug);
-  const c = guide ? immigrationCountry(guide, "en") : await getCountry(slug);
+  const work = guide ? undefined : WORK_GUIDES.find((g) => g.slug === slug);
+  const c = guide ? immigrationCountry(guide, "en") : work ? guideCountry(work, "en", "work") : await getCountry(slug);
   const route = c ? `${c.from_code}  ✈  ${c.to_code}` : "KHI ✈ WORLD";
   return new ImageResponse(
     (
@@ -30,7 +31,7 @@ export async function countryOg(slug: string) {
 }
 
 /** Build every country image once (at build time) instead of drawing it each time a link preview asks for it. */
-export async function ogStaticParams(kind: "visit" | "study" | "immigration") {
-  const slugs = kind === "immigration" ? IMMIGRATION_GUIDES.map((g) => g.slug) : (await getCountries(kind)).map((c) => c.slug);
+export async function ogStaticParams(kind: "visit" | "study" | "immigration" | "work") {
+  const slugs = kind === "immigration" || kind === "work" ? guidesOf(kind).map((g) => g.slug) : (await getCountries(kind)).map((c) => c.slug);
   return ["en", "ur"].flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
 }

@@ -6,7 +6,8 @@
     "news": "Visa-News",
     "reviews": "Bewertungen",
     "book": "Gratis-Gespräch",
-    "menu": "Menü"
+    "menu": "Menü",
+    "work": "Arbeitsvisa"
   },
   "hero": {
     "eyebrow": "Beratung für Besuch, Studium & Einwanderung · Karatschi · für ganz Pakistan",
@@ -143,7 +144,9 @@
     "visit": "Besuchsvisa",
     "study": "Studentenvisa",
     "immigration": "Einwanderung",
-    "immNote": "Einwanderungsregeln ändern sich oft – jede Seite nennt die offizielle Quelle und das Datum unserer letzten Prüfung. Wo das Gesetz einen lizenzierten Vertreter verlangt (z. B. RCIC für Kanada oder registrierter Migrationsagent für Australien), werden Fälle über unsere lizenzierten Partner eingereicht."
+    "immNote": "Einwanderungsregeln ändern sich oft – jede Seite nennt die offizielle Quelle und das Datum unserer letzten Prüfung. Wo das Gesetz einen lizenzierten Vertreter verlangt (z. B. RCIC für Kanada oder registrierter Migrationsagent für Australien), werden Fälle über unsere lizenzierten Partner eingereicht.",
+    "work": "Arbeitsvisa",
+    "workNote": "Für die meisten Arbeitsvisa brauchen Sie ein echtes Jobangebot von einem echten Arbeitgeber. Zahlen Sie niemals Geld für ein Jobangebot. Jede Seite zeigt die offizielle Quelle und das Datum der letzten Prüfung."
   },
   "reviews": {
     "title": "Kundenbewertungen",
@@ -200,7 +203,8 @@
     "rating": "Bewertung",
     "consent": "Ich stimme der Veröffentlichung zu",
     "submit": "Senden",
-    "error": "Etwas ist schiefgelaufen. Bitte erneut versuchen oder uns per WhatsApp schreiben."
+    "error": "Etwas ist schiefgelaufen. Bitte erneut versuchen oder uns per WhatsApp schreiben.",
+    "work": "Arbeitsvisum"
   },
   "footer": {
     "visitStudy": "Besuch & Studium",
@@ -338,7 +342,8 @@
     "immCanada": "Kanada Express Entry",
     "immAustralia": "Australien Fachkräftevisa",
     "immGermany": "Deutschland Chancenkarte",
-    "immUk": "UK Skilled Worker"
+    "immUk": "UK Skilled Worker",
+    "kindWork": "Arbeitsvisa"
   },
   "hub": {
     "visitH1": "Besuchsvisa aus Pakistan",
@@ -346,7 +351,9 @@
     "studyH1": "Studentenvisa aus Pakistan",
     "studyIntro": "Wählen Sie ein Land und sehen Sie, wie das Studentenvisum funktioniert und was Sie vorbereiten müssen.",
     "immH1": "Einwanderungswege aus Pakistan",
-    "immIntro": "Wege für Fachkräfte, Familien und Unternehmer. Regeln ändern sich oft – jede Seite nennt die offizielle Quelle und das Prüfdatum."
+    "immIntro": "Wege für Fachkräfte, Familien und Unternehmer. Regeln ändern sich oft – jede Seite nennt die offizielle Quelle und das Prüfdatum.",
+    "workH1": "Arbeitserlaubnis und Arbeitsvisum aus Pakistan",
+    "workIntro": "Arbeitsvisa, Visa zur Arbeitssuche und Beschäftigungserlaubnisse für 10 Länder. Jede Seite zeigt die offizielle Quelle und das Datum der letzten Prüfung."
   },
   "seo": {
     "home": {
@@ -388,6 +395,10 @@
     "news": {
       "t": "Visa-News für Antragsteller aus Pakistan | Visafeast",
       "d": "Tägliche Visa-Updates aus offiziellen Quellen und ein Wochenüberblick, was sie für Antragsteller aus Pakistan bedeuten."
+    },
+    "hubWork": {
+      "t": "Berater für Arbeitsvisa und Arbeitserlaubnis in Pakistan | Visafeast",
+      "d": "Arbeitsvisa aus Pakistan für Großbritannien, Kanada, Deutschland (Chancenkarte), Neuseeland, Irland, die Niederlande, Portugal, die VAE, Japan und die USA, mit offiziellen Gebühren und Quellen."
     }
   },
   "pages": {
@@ -494,7 +505,9 @@
     "faqTitle": "Fragen, die uns gestellt werden",
     "bookSub": "WhatsApp-Video oder Telefon · pakistanische Zeit",
     "enqSub": "Wir antworten während der Bürozeiten auf WhatsApp.",
-    "footerBrand": "Beratung für Besuch, Studium und Einwanderung. Aus Karatschi, online für Kunden in ganz Pakistan."
+    "footerBrand": "Beratung für Besuch, Studium und Einwanderung. Aus Karatschi, online für Kunden in ganz Pakistan.",
+    "workNote": "Für die meisten Arbeitsvisa brauchen Sie ein echtes Jobangebot von einem echten Arbeitgeber. Zahlen Sie niemals Geld für ein Jobangebot.",
+    "workAll": "Alle Arbeitsvisa ansehen →"
   },
   "guide": {
     "overview": "Überblick",
@@ -512,6 +525,7 @@
     "prevPhoto": "Vorheriges Foto",
     "nextPhoto": "Nächstes Foto",
     "photo": "Foto",
-    "of": "von"
+    "of": "von",
+    "optionsWork": "Wege zum Arbeitsvisum"
   }
 }

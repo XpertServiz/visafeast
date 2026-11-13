@@ -6,7 +6,8 @@
     "news": "Actualités visa",
     "reviews": "Avis",
     "book": "Appel gratuit",
-    "menu": "Menu"
+    "menu": "Menu",
+    "work": "Permis de travail"
   },
   "hero": {
     "eyebrow": "Conseil visite, études et immigration · Karachi · pour tout le Pakistan",
@@ -143,7 +144,9 @@
     "visit": "Visas de visite",
     "study": "Visas étudiants",
     "immigration": "Immigration",
-    "immNote": "Les règles d'immigration changent souvent — chaque page indique la source officielle et notre date de vérification. Lorsque la loi exige un représentant agréé (par exemple un RCIC pour le Canada ou un agent de migration enregistré pour l'Australie), les dossiers sont déposés avec nos partenaires agréés."
+    "immNote": "Les règles d'immigration changent souvent — chaque page indique la source officielle et notre date de vérification. Lorsque la loi exige un représentant agréé (par exemple un RCIC pour le Canada ou un agent de migration enregistré pour l'Australie), les dossiers sont déposés avec nos partenaires agréés.",
+    "work": "Permis de travail",
+    "workNote": "La plupart des visas de travail exigent une vraie offre d'emploi d'un vrai employeur. Ne payez jamais personne pour une offre d'emploi. Chaque page indique la source officielle et la date de notre dernière vérification."
   },
   "reviews": {
     "title": "Avis clients",
@@ -200,7 +203,8 @@
     "rating": "Note",
     "consent": "J'accepte que cela soit publié",
     "submit": "Envoyer",
-    "error": "Une erreur s'est produite. Réessayez ou écrivez-nous sur WhatsApp."
+    "error": "Une erreur s'est produite. Réessayez ou écrivez-nous sur WhatsApp.",
+    "work": "Permis de travail"
   },
   "footer": {
     "visitStudy": "Visite et études",
@@ -338,7 +342,8 @@
     "immCanada": "Canada Express Entry",
     "immAustralia": "Australie : visas qualifiés",
     "immGermany": "Allemagne : Chancenkarte",
-    "immUk": "UK Skilled Worker"
+    "immUk": "UK Skilled Worker",
+    "kindWork": "Permis de travail"
   },
   "hub": {
     "visitH1": "Visas de visite depuis le Pakistan",
@@ -346,7 +351,9 @@
     "studyH1": "Visas étudiants depuis le Pakistan",
     "studyIntro": "Choisissez un pays pour voir comment fonctionne le visa étudiant et que préparer.",
     "immH1": "Voies d'immigration depuis le Pakistan",
-    "immIntro": "Voies pour travailleurs qualifiés, familles et entrepreneurs. Les règles changent souvent — chaque page indique sa source officielle et sa date de vérification."
+    "immIntro": "Voies pour travailleurs qualifiés, familles et entrepreneurs. Les règles changent souvent — chaque page indique sa source officielle et sa date de vérification.",
+    "workH1": "Permis de travail et visas de travail depuis le Pakistan",
+    "workIntro": "Visas de travail, visas de recherche d'emploi et permis de travail pour 10 pays. Chaque page indique la source officielle et la date de notre dernière vérification."
   },
   "seo": {
     "home": {
@@ -388,6 +395,10 @@
     "news": {
       "t": "Actualités visa pour les demandeurs pakistanais | Visafeast",
       "d": "Mises à jour quotidiennes de sources officielles et résumé hebdomadaire expliquant ce qu'elles signifient pour les demandeurs pakistanais."
+    },
+    "hubWork": {
+      "t": "Consultant en permis et visas de travail au Pakistan | Visafeast",
+      "d": "Visas de travail depuis le Pakistan pour le Royaume-Uni, le Canada, l'Allemagne (Chancenkarte), la Nouvelle-Zélande, l'Irlande, les Pays-Bas, le Portugal, les Émirats, le Japon et les États-Unis, avec frais et sources officiels."
     }
   },
   "pages": {
@@ -494,7 +505,9 @@
     "faqTitle": "Les questions qu'on nous pose",
     "bookSub": "Vidéo WhatsApp ou téléphone · heure du Pakistan",
     "enqSub": "Nous répondons sur WhatsApp pendant les heures de bureau.",
-    "footerBrand": "Conseil en visites, études et immigration. À Karachi, en ligne pour les clients de tout le Pakistan."
+    "footerBrand": "Conseil en visites, études et immigration. À Karachi, en ligne pour les clients de tout le Pakistan.",
+    "workNote": "La plupart des visas de travail exigent une vraie offre d'emploi d'un vrai employeur. Ne payez jamais personne pour une offre d'emploi.",
+    "workAll": "Voir tous les permis de travail →"
   },
   "guide": {
     "overview": "Aperçu",
@@ -512,6 +525,7 @@
     "prevPhoto": "Photo précédente",
     "nextPhoto": "Photo suivante",
     "photo": "Photo",
-    "of": "sur"
+    "of": "sur",
+    "optionsWork": "Voies de visa de travail"
   }
 }

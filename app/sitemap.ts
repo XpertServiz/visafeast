@@ -4,10 +4,10 @@ import { LOCALES, localeMeta, lp, type Locale } from "@/config/locales";
 import { getCountries, getPosts, getTranslationIndex } from "@/lib/data";
 import { seoReady } from "@/lib/i18n";
 import { countrySource, postSource, sourceHash } from "@/lib/translate";
-import { IMMIGRATION_GUIDES } from "@/lib/guides";
+import { IMMIGRATION_GUIDES, WORK_GUIDES } from "@/lib/guides";
 
-const STATIC: [string, string][] = [["/", "home"], ["/visit-visa", "hubVisit"], ["/study-visa", "hubStudy"], ["/immigration", "hubImm"], ["/news", "news"], ["/reviews", "reviews"], ["/reviews/write", "reviewsWrite"], ["/about", "about"], ["/contact", "contact"], ["/book", "book"], ["/visa-consultant-karachi", "karachi"], ["/tools/eligibility", "eligibility"], ["/tools/refusal-decoder", "decoder"], ["/tools/fee-estimator", "feeEstimator"], ["/tools/checklists", "checklists"], ["/privacy", "privacy"], ["/terms", "terms"], ["/disclaimer", "disclaimer"]];
-const KIND_BASE = { visit: "visit-visa", study: "study-visa", immigration: "immigration" } as const;
+const STATIC: [string, string][] = [["/", "home"], ["/visit-visa", "hubVisit"], ["/study-visa", "hubStudy"], ["/immigration", "hubImm"], ["/work-permit", "hubWork"], ["/news", "news"], ["/reviews", "reviews"], ["/reviews/write", "reviewsWrite"], ["/about", "about"], ["/contact", "contact"], ["/book", "book"], ["/visa-consultant-karachi", "karachi"], ["/tools/eligibility", "eligibility"], ["/tools/refusal-decoder", "decoder"], ["/tools/fee-estimator", "feeEstimator"], ["/tools/checklists", "checklists"], ["/privacy", "privacy"], ["/terms", "terms"], ["/disclaimer", "disclaimer"]];
+const KIND_BASE = { visit: "visit-visa", study: "study-visa", immigration: "immigration", work: "work-permit" } as const;
 // Newly translated pages join the sitemap within the hour.
 export const revalidate = 3600;
 const ALL = LOCALES.map((l) => l.code);
@@ -28,6 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...STATIC.flatMap(([path, key]) => entries(path, ALL.filter((l) => seoReady(l, key)), new Date(), path === "/" ? 1 : 0.7)),
     ...countries.filter((c) => c.is_published).flatMap((c) => entries(`/${KIND_BASE[c.kind]}/${c.slug}`, translated("country", c.id, sourceHash(countrySource(c)), c.ur_status === "approved" ? ["ur"] : []), new Date(c.updated_at), 0.9)),
     ...IMMIGRATION_GUIDES.flatMap((g) => entries(`/immigration/${g.slug}`, ["en"], new Date(g.checked), 0.8)),
+    ...WORK_GUIDES.flatMap((g) => entries(`/work-permit/${g.slug}`, ["en"], new Date(g.checked), 0.8)),
     ...posts.flatMap((p) => entries(`/news/${p.slug}`, translated("post", p.id, sourceHash(postSource(p))), new Date(p.published_at ?? Date.now()), 0.6)),
   ];
 }

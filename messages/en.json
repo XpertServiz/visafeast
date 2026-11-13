@@ -6,7 +6,8 @@
     "news": "Visa news",
     "reviews": "Reviews",
     "book": "Book a free call",
-    "menu": "Menu"
+    "menu": "Menu",
+    "work": "Work permits"
   },
   "hero": {
     "eyebrow": "Visit, study & immigration consultants · Karachi · serving all Pakistan",
@@ -95,7 +96,9 @@
     "visit": "Visit visas",
     "study": "Study visas",
     "immigration": "Immigration",
-    "immNote": "Immigration rules change often — each pathway page shows the official source and the date we last checked it. Where the law requires a licensed representative (for example an RCIC for Canada or a registered migration agent for Australia), cases are filed with our licensed partners."
+    "immNote": "Immigration rules change often — each pathway page shows the official source and the date we last checked it. Where the law requires a licensed representative (for example an RCIC for Canada or a registered migration agent for Australia), cases are filed with our licensed partners.",
+    "work": "Work permits",
+    "workNote": "Most work visas need a real job offer from a real employer. Never pay anyone for a job offer. Each page shows the official source and the date we last checked it."
   },
   "reviews": {
     "title": "Client reviews",
@@ -152,7 +155,8 @@
     "rating": "Rating",
     "consent": "I agree this can be published",
     "submit": "Send",
-    "error": "Something went wrong. Please try again or WhatsApp us."
+    "error": "Something went wrong. Please try again or WhatsApp us.",
+    "work": "Work permit"
   },
   "footer": {
     "visitStudy": "Visit & study",
@@ -412,7 +416,8 @@
     "immCanada": "Canada Express Entry",
     "immAustralia": "Australia skilled visas",
     "immGermany": "Germany Opportunity Card",
-    "immUk": "UK Skilled Worker"
+    "immUk": "UK Skilled Worker",
+    "kindWork": "Work permits"
   },
   "hub": {
     "visitH1": "Visit Visas from Pakistan",
@@ -420,7 +425,9 @@
     "studyH1": "Study Visas from Pakistan",
     "studyIntro": "Pick a country to see how the student visa works and what to prepare.",
     "immH1": "Immigration Pathways from Pakistan",
-    "immIntro": "Skilled, family and business pathways. Rules change often — every page shows its official source and the date we last checked it."
+    "immIntro": "Skilled, family and business pathways. Rules change often — every page shows its official source and the date we last checked it.",
+    "workH1": "Work Permits and Work Visas from Pakistan",
+    "workIntro": "Work visas, job seeker visas and employment permits for 10 countries. Each page shows the official source and the date we last checked it."
   },
   "seo": {
     "home": {
@@ -494,6 +501,10 @@
     "reviewsWrite": {
       "t": "Write a Review | Visafeast",
       "d": "Share your experience with Visafeast. Reviews are approved before they appear."
+    },
+    "hubWork": {
+      "t": "Work Permit and Work Visa Consultant in Pakistan | Visafeast",
+      "d": "Work visas from Pakistan for the UK, Canada, Germany (Opportunity Card), New Zealand, Ireland, the Netherlands, Portugal, UAE, Japan and the USA, with official fees and sources."
     }
   },
   "pages": {
@@ -684,7 +695,9 @@
     "faqTitle": "Questions people ask us",
     "bookSub": "WhatsApp video or phone · Pakistan time",
     "enqSub": "We reply on WhatsApp during office hours.",
-    "footerBrand": "Visit, study and immigration consultancy. Karachi, serving clients across Pakistan online."
+    "footerBrand": "Visit, study and immigration consultancy. Karachi, serving clients across Pakistan online.",
+    "workNote": "Most work visas need a real job offer from a real employer. Never pay anyone for a job offer.",
+    "workAll": "See all work permits →"
   },
   "guide": {
     "overview": "Overview",
@@ -702,6 +715,7 @@
     "prevPhoto": "Previous photo",
     "nextPhoto": "Next photo",
     "photo": "Photo",
-    "of": "of"
+    "of": "of",
+    "optionsWork": "Work visa routes"
   }
 }

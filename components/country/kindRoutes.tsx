@@ -17,9 +17,9 @@ import { BreadcrumbItems } from "./Breadcrumb";
 import { OriginText } from "@/components/geo/Origin";
 import { IMMIGRATION_HUB } from "@/lib/seed";
 import { Flag } from "@/components/ui";
-import { getImmigrationGuide, IMMIGRATION_GUIDES, immigrationCountry } from "@/lib/guides";
+import { getKindGuide, guideCountry, guidesOf, isGuideKind, WORK_GUIDES } from "@/lib/guides";
 
-const BASE = { visit: "visit-visa", study: "study-visa", immigration: "immigration" } as const;
+const BASE = { visit: "visit-visa", study: "study-visa", immigration: "immigration", work: "work-permit" } as const;
 type P = { params: Promise<{ locale: string }> };
 type PS = { params: Promise<{ locale: string; slug: string }> };
 
@@ -27,8 +27,9 @@ const HUB = {
   visit: { h1: "hub.visitH1", intro: "hub.visitIntro", seo: "hubVisit" },
   study: { h1: "hub.studyH1", intro: "hub.studyIntro", seo: "hubStudy" },
   immigration: { h1: "hub.immH1", intro: "hub.immIntro", seo: "hubImm" },
+  work: { h1: "hub.workH1", intro: "hub.workIntro", seo: "hubWork" },
 } as const;
-const KIND_LABEL = { visit: "ui.kindVisit", study: "ui.kindStudy", immigration: "ui.kindImmigration" } as const;
+const KIND_LABEL = { visit: "ui.kindVisit", study: "ui.kindStudy", immigration: "ui.kindImmigration", work: "ui.kindWork" } as const;
 
 export function hubRoute(kind: Kind) {
   async function generateMetadata({ params }: P): Promise<Metadata> {
@@ -49,7 +50,20 @@ export function hubRoute(kind: Kind) {
           </div>
         </header>
         <Section>
-          {kind === "immigration" ? (
+          {kind === "work" ? (
+            <>
+              <div className="g3" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))" }}>
+                {WORK_GUIDES.map((g) => (
+                  <Link prefetch={false} key={g.slug} href={lp(locale, `/work-permit/${g.slug}`)} className="card lift" style={{ padding: 22, display: "block", textDecoration: "none", color: "var(--ink)" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}><Flag code={g.flag} /><h2 className="disp" style={{ margin: 0, fontSize: 24, color: "var(--navy)" }}>{regionName(g.code, locale, g.name)}</h2></div>
+                    {g.options.map((o) => <span key={o.name} className="chip">{o.name}</span>)}
+                    <p style={{ marginBottom: 0, fontWeight: 600, color: "var(--amber-text)" }}>{t("cta.guide")}</p>
+                  </Link>
+                ))}
+              </div>
+              <p style={{ maxWidth: 800, marginInline: "auto", textAlign: "center", color: "var(--muted)", marginTop: 28 }}>{t("choose.workNote")}</p>
+            </>
+          ) : kind === "immigration" ? (
             <>
               <div className="g3" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))" }}>
                 {IMMIGRATION_HUB.map((h) => (
@@ -76,11 +90,11 @@ export function detailRoute(kind: Kind) {
   async function generateMetadata({ params }: PS): Promise<Metadata> {
     const { locale } = await pageCtx(params);
     const { slug } = await params;
-    if (kind === "immigration") {
-      // Immigration country pages are built from the guides, not the database. Only the English page is offered to Google for now.
-      const g = getImmigrationGuide(slug);
+    if (isGuideKind(kind)) {
+      // Immigration and Work permit country pages are built from the guides, not the database. Only the English page is offered to Google for now.
+      const g = getKindGuide(kind, slug);
       if (!g) return {};
-      const path = `/immigration/${g.slug}`;
+      const path = `/${BASE[kind]}/${g.slug}`;
       return {
         title: g.metaTitle, description: g.metaDescription, alternates: alternates(path, locale, ["en"]),
         robots: locale === "en" ? undefined : { index: false, follow: true },
@@ -104,17 +118,17 @@ export function detailRoute(kind: Kind) {
   async function Page({ params }: PS) {
     const { locale } = await pageCtx(params);
     const { slug } = await params;
-    if (kind === "immigration") {
-      const g = getImmigrationGuide(slug);
+    if (isGuideKind(kind)) {
+      const g = getKindGuide(kind, slug);
       if (!g) notFound();
-      return <CountryPage c={immigrationCountry(g, locale)} locale={locale} />;
+      return <CountryPage c={guideCountry(g, locale, kind)} locale={locale} />;
     }
     const c = await getCountryFor(locale, slug);
     if (!c || c.kind !== kind) notFound();
     return <CountryPage c={c} locale={locale} />;
   }
   async function generateStaticParams() {
-    if (kind === "immigration") return ["en", "ur"].flatMap((locale) => IMMIGRATION_GUIDES.map((g) => ({ locale, slug: g.slug })));
+    if (isGuideKind(kind)) return ["en", "ur"].flatMap((locale) => guidesOf(kind).map((g) => ({ locale, slug: g.slug })));
     const list = await getCountries(kind);
     return ["en", "ur"].flatMap((locale) => list.map((c) => ({ locale, slug: c.slug })));
   }

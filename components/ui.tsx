@@ -27,8 +27,8 @@ export const WaIcon = ({ size = 20 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M3.5 20.5l1.3-4.1A8.5 8.5 0 1 1 8 19.6z" /><path d="M9 8.5c0 3.5 2.5 6.5 6.5 6.5l1-1.6-2-1-1 .8c-1.3-.5-2.3-1.5-2.8-2.8l.8-1-1-2z" /></svg>
 );
 
-export const KIND_BASE = { visit: "visit-visa", study: "study-visa", immigration: "immigration" } as const;
-export const KIND_COLOR = { visit: "var(--stamp-blue)", study: "var(--amber-text)", immigration: "var(--stamp-purple)" } as const;
+export const KIND_BASE = { visit: "visit-visa", study: "study-visa", immigration: "immigration", work: "work-permit" } as const;
+export const KIND_COLOR = { visit: "var(--stamp-blue)", study: "var(--amber-text)", immigration: "var(--stamp-purple)", work: "var(--navy)" } as const;
 
 export function BoardingPass({ c, locale, cta, kindLabel }: { c: Country; locale: Locale; cta: string; kindLabel?: string }) {
   return (
