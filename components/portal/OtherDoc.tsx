@@ -24,7 +24,7 @@ export function OtherDoc({ label, name, placeholder, text, service }: { label: s
             </select></div>
         )}
         <div><label className="lbl" htmlFor="od-t">{name}</label><input id="od-t" className="field" value={title} maxLength={120} placeholder={placeholder} onChange={(e) => setTitle(e.target.value)} /></div>
-        {ready && <DocUpload base="/api/portal" title={title.trim()} service={kind || undefined} text={text} />}
+        {ready && <DocUpload base="/api/portal" multiple title={title.trim()} service={kind || undefined} text={text} />}
       </div>
     </details>
   );

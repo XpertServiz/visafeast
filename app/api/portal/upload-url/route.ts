@@ -39,7 +39,6 @@ export async function POST(req: NextRequest) {
     if (error || !doc) return NextResponse.json({ ok: false, error: "Could not add this document." }, { status: 500 });
     docId = doc.id as string;
     clientId = file.ref;
-    if (file.created) void notifyOwner(`New client file ${file.ref}: ${me.person.full_name}`, `<p><b>${esc(me.person.full_name)}</b> uploaded a first document, so file <b>${esc(file.ref)}</b> (${esc(p.data.service ?? "visit")}) was opened. <a href="${esc(siteConfig.url)}/admin/cases/${esc(file.ref)}">Open the file</a>.</p>`);
   }
   const r = await signUpload(db, me.person.id, docId, p.data.mime, p.data.size);
   if ("error" in r) return NextResponse.json({ ok: false, error: r.error }, { status: 422 });

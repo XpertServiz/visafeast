@@ -105,3 +105,16 @@ export async function readMessages(db: Db, personId: string, after = 0, limit = 
   const { data } = await db.from("client_messages").select("id,sender,body,created_at").eq("person_id", personId).gt("id", after).order("id", { ascending: false }).limit(limit);
   return ((data ?? []) as Msg[]).reverse();
 }
+
+/** Files the client has uploaded since the last time they pressed "Send to consultant". */
+export async function pendingFiles(db: Db, personId: string) {
+  const [{ data: last }, { data: cs }] = await Promise.all([
+    db.from("timeline_events").select("ts").eq("person_id", personId).eq("kind", "client_submit").order("ts", { ascending: false }).limit(1).maybeSingle(),
+    db.from("cases").select("id").eq("person_id", personId),
+  ]);
+  const ids = (cs ?? []).map((c) => c.id as string);
+  let q = db.from("case_documents").select("id,title,file_name").eq("uploaded_by", "client").not("file_path", "is", null).or(ids.length ? `person_id.eq.${personId},case_id.in.(${ids.join(",")})` : `person_id.eq.${personId}`);
+  if (last?.ts) q = q.gt("uploaded_at", last.ts);
+  const { data } = await q.limit(100);
+  return (data ?? []) as { id: string; title: string; file_name: string | null }[];
+}

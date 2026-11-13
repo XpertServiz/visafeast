@@ -4,7 +4,8 @@ import { Check, Clock, FileText, RotateCcw, Upload } from "lucide-react";
 import { pageCtx } from "@/lib/page";
 import { lp } from "@/lib/i18n";
 import { serviceClient } from "@/lib/supabase";
-import { getClient, readMessages } from "@/lib/server/portal";
+import { getClient, pendingFiles, readMessages } from "@/lib/server/portal";
+import { SendToConsultant } from "@/components/portal/SendToConsultant";
 import { buildTimeline, nextStep } from "@/lib/track";
 import { clientMayUpload, type DocStatus } from "@/lib/portal";
 import { DocUpload } from "@/components/portal/DocUpload";
@@ -44,6 +45,7 @@ export default async function Portal({ params }: P) {
   const docs = ((dd ?? []) as Doc[]).sort((a, b) => order(a.status) - order(b.status));
   if (messages.some((m) => m.sender === "staff")) await db.from("client_messages").update({ read_by_client_at: new Date().toISOString() }).eq("person_id", pid).eq("sender", "staff").is("read_by_client_at", null);
 
+  const pending = (await pendingFiles(db, pid)).length;
   const upText = { choose: t("portal.up_choose"), busy: t("portal.up_busy"), tooBig: t("portal.up_tooBig"), failed: t("portal.up_failed"), done: t("portal.up_done") };
   const chatText = { placeholder: t("portal.c_placeholder"), send: t("portal.c_send"), empty: t("portal.c_empty"), me: t("portal.c_me"), them: t("portal.c_them"), failed: t("portal.c_failed") };
 
@@ -110,6 +112,7 @@ export default async function Portal({ params }: P) {
               );
             })}
           </div>
+          <SendToConsultant count={pending} text={{ button: t("portal.sendBtn"), busy: t("portal.sendBusy"), done: t("portal.sendDone"), failed: t("portal.sendFailed"), hint: t("portal.sendHint") }} />
           <OtherDoc label={t("portal.addOther")} name={t("portal.otherName")} placeholder={t("portal.otherPlaceholder")} text={upText}
             service={cases.length === 0 ? { ask: t("portal.serviceAsk"), choose: t("portal.serviceChoose"), options: [{ value: "visit", label: t("ui.kindVisit") }, { value: "study", label: t("ui.kindStudy") }, { value: "work", label: t("ui.kindWork") }, { value: "immigration", label: t("ui.kindImmigration") }] } : undefined} />
         </section>

@@ -278,7 +278,12 @@
     "waitingApproval": "Your sign-up request is waiting for approval. We will email you as soon as it is approved.",
     "notApproved": "This sign-up request was not approved. Please contact us on WhatsApp.",
     "requestSentTitle": "Request received",
-    "requestSent": "Thank you. We received your sign-up request. Our team will approve it soon and email you. After that you can sign in, send your documents and follow your file."
+    "requestSent": "Thank you. We received your sign-up request. Our team will approve it soon and email you. After that you can sign in, send your documents and follow your file.",
+    "sendBtn": "Send {n} file(s) to consultant",
+    "sendBusy": "Sending…",
+    "sendDone": "Thank you! Your consultant has been told about your files.",
+    "sendFailed": "Could not send. Please try again.",
+    "sendHint": "You can add more files first. When you have uploaded everything, tap the button once so your consultant is told ({n} new)."
   },
   "extras": {
     "destinations": "destinations covered",

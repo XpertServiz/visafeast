@@ -86,6 +86,15 @@ try {
   await a.page.reload({ waitUntil: "domcontentloaded" });
   check("the client sees their Client ID and 'File received' under Track my file", (await a.page.textContent("body")).includes(fileA[0].ref) && (await a.page.textContent("body")).includes("File received"));
 
+  // --- "Send to consultant": one tap tells the consultant about the whole batch (one email), and it cannot be sent twice
+  await a.page.reload({ waitUntil: "domcontentloaded" });
+  await a.page.locator("button", { hasText: "to consultant" }).click();
+  await a.page.waitForFunction(() => document.body.innerText.includes("has been told about your files"), null, { timeout: 20000 });
+  const { data: subs } = await db.from("timeline_events").select("id").eq("person_id", pa.id).eq("kind", "client_submit");
+  check("'Send to consultant' records one submission", subs?.length === 1);
+  const again = await a.ctx.request.post(`${BASE}/api/portal/submit`);
+  check("sending again with no new files is refused", again.status() === 409, `status ${again.status()}`);
+
   // --- client A sends a chat message
   await a.page.locator("#chat textarea").fill("Hello, I sent my bank statement.");
   await a.page.locator("#chat button.btn-primary").click();
