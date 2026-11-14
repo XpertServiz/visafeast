@@ -31,11 +31,8 @@ try {
   ok("the staff PDF needs a login", anon.status() === 401, `status ${anon.status()}`);
   const bad = await ctx.request.get(`${BASE}/admin/checklists/pdf?kind=work&c=mars`); ok("an unknown country is refused", bad.status() === 404);
 
-  // visitor's checklist: only after finishing the Aiman chat (the link carries the lead id)
-  const lead = await fetch(`${BASE}/api/aiman/lead`, { method: "POST", headers: { "content-type": "application/json", "x-forwarded-for": "10.77.77.77" }, body: JSON.stringify({ step: "complete", country: "PK", answers: { name: `Chk ${tag}`, age: "26–35", edu: "bach", job: "salaried", salmode: "bank", travel: "west", refusal: "never", purpose: "work", family: "alone", english: "ok", exp: "5plus", offer: "yes", balNum: 30, deposits: "steady", countries: ["germany"], phone: "03001234567", email: "c@example.com" } }) });
-  const lj = await lead.json(); made.lead = lj.id; ok("an Aiman lead was saved", lj.ok && lj.id, JSON.stringify(lj));
-  ok("visitor PDF works with the lead id", await isPdf(await ctx.request.get(`${BASE}/api/aiman/checklist?lead=${lj.id}&c=germany`)));
-  const nolead = await ctx.request.get(`${BASE}/api/aiman/checklist?lead=00000000-0000-4000-8000-000000000000&c=germany`); ok("no lead, no PDF", nolead.status() === 404);
+  // the visitor can NOT download a checklist: only staff can, to send it when the client enrolls
+  const gone = await fetch(`${BASE}/api/aiman/checklist?lead=00000000-0000-4000-8000-000000000000&c=germany`); ok("there is no visitor checklist download", gone.status === 404);
   await b.close();
 
   // chatbot
@@ -45,7 +42,6 @@ try {
   }
 } catch (e) { fail++; console.log("FAIL stopped early:", e.message.split("\n")[0]); }
 finally {
-  if (made.lead) await db.from("aiman_leads").delete().eq("id", made.lead);
   await db.from("aiman_leads").delete().like("name", `%${tag}`);
   if (made.user) { await db.from("profiles").delete().eq("id", made.user); await db.auth.admin.deleteUser(made.user); }
   console.log(`${pass} passed, ${fail} failed. Test data removed.`); process.exit(fail ? 1 : 0);

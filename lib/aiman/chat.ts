@@ -236,7 +236,7 @@ export class Chat {
     this.items = this.items.slice(0, h.count);
     for (let i = h.qi; i < QUESTIONS.length; i++) delete (this.ans as Record<string, unknown>)[QUESTIONS[i].id];
     if (h.qi <= QUESTIONS.findIndex((x) => x.id === "purpose")) delete this.ans.purposeKey;
-    this.finished = false; this.after = null; this.docs = false; this.qi = h.qi - 1; this.advance();
+    this.finished = false; this.after = null; this.docs = false; delete this.ans.ready; delete this.ans.wantsChecklist; this.qi = h.qi - 1; this.advance();
   }
   undo() { this.rewindTo(this.hist.length - 1); }
   canUndo() { return this.hist.length > 0 && !this.finished; }
@@ -266,8 +266,8 @@ export class Chat {
   private simple(id: CopyId, v: string): Chip { const x = this.tx(id); return { en: x.en, loc: x.loc, ur: COPY[id][1], v }; }
   private answerFollowUp(v: string, c: Chip) {
     this.say(c.en, c.loc, "me"); this.chips = [];
-    if (v === "__ry" || v === "__rn") { this.sayId(v === "__ry" ? "m_ready_yes" : "m_ready_no"); this.followUp("docs"); return; }
-    this.docs = v === "__dy"; this.after = "end"; this.sayId(this.docs ? "m_docs_yes" : "m_docs_no"); this.emit();
+    if (v === "__ry" || v === "__rn") { this.ans.ready = v === "__ry" ? "yes" : "no"; this.sayId(v === "__ry" ? "m_ready_yes" : "m_ready_no"); this.followUp("docs"); return; }
+    this.docs = v === "__dy"; this.ans.wantsChecklist = this.docs; this.after = "end"; this.sayId(this.docs ? "m_docs_yes" : "m_docs_no"); this.emit();
   }
 
   /** The first button ("Let's start") is not a question's answer. */

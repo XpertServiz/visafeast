@@ -23,12 +23,12 @@ export function leadQuery(f: LeadFilters, columns: string, limit: number) {
   return q;
 }
 
-type Row = { id: string; created_at: string; status: string; name: string; phone: string | null; city: string | null; purpose: string | null; target_country: string | null; family_size: number | null; program: string | null; seen: boolean; contacted: boolean; completed_at: string | null };
+type Row = { id: string; created_at: string; status: string; name: string; phone: string | null; city: string | null; purpose: string | null; target_country: string | null; family_size: number | null; program: string | null; seen: boolean; contacted: boolean; completed_at: string | null; ready: string | null; docs: string | null };
 
 export default async function AimanLeads({ searchParams }: { searchParams: Promise<LeadFilters> }) {
   const admin = await getAdmin(); if (!admin || !can.people(admin.role)) redirect("/admin");
   const f = await searchParams;
-  const { data } = await leadQuery(f, "id,created_at,status,name,phone,city,purpose,target_country,family_size,program,seen,contacted,completed_at", 200);
+  const { data } = await leadQuery(f, "id,created_at,status,name,phone,city,purpose,target_country,family_size,program,seen,contacted,completed_at,ready:answers->>ready,docs:answers->>wantsChecklist", 200);
   const rows = (data ?? []) as unknown as Row[];
   const qs = new URLSearchParams(Object.entries(f).filter(([, v]) => v) as [string, string][]).toString();
   const field = { minHeight: 44 } as const;
@@ -51,7 +51,7 @@ export default async function AimanLeads({ searchParams }: { searchParams: Promi
           {rows.map((r) => (
             <Link key={r.id} href={`/admin/aiman-leads/${r.id}`} className="card lift" style={{ padding: 14, textDecoration: "none", color: "var(--ink)", display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
               <span style={{ minWidth: 0, overflowWrap: "anywhere" }}>
-                {!r.seen && <Badge color="var(--amber-text)">NEW</Badge>} <b>{r.name}</b> · {r.phone ?? <span style={{ color: "var(--muted)" }}>no phone yet</span>}{r.city ? ` · ${r.city}` : ""}
+                {!r.seen && <Badge color="var(--amber-text)">NEW</Badge>} {r.ready === "yes" && <Badge color="var(--ok)">READY TO ENROLL</Badge>} {r.docs === "true" && <Badge color="var(--navy)">WANTS CHECKLIST</Badge>} <b>{r.name}</b> · {r.phone ?? <span style={{ color: "var(--muted)" }}>no phone yet</span>}{r.city ? ` · ${r.city}` : ""}
                 <br /><span style={{ color: "var(--muted)", fontSize: 14 }}>{r.purpose} · {r.target_country} · {r.family_size ?? 1} {r.family_size === 1 ? "person" : "people"} · {r.program ?? "—"} · {day(r.created_at)}{r.contacted ? " · contacted" : ""}</span>
               </span>
               <Badge color={r.status === "qualified" ? "var(--ok)" : "var(--amber-text)"}>{r.status === "qualified" ? "QUALIFIED" : "NOT YET QUALIFIED"}</Badge>

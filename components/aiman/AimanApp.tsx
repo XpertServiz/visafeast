@@ -42,6 +42,8 @@ export function AimanApp({ country, lang: locCode, dict, funds, whatsapp, videos
     track("page_view_aiman", { page: "talk-with-aiman" });
     return () => chat.destroy();
   }, [chat]);
+  // when she has asked the last question, the same lead is updated with the visitor's answers (no second email)
+  useEffect(() => { if (chat.after === "end" && leadId.current) void submitLead(true); }, [chat.after]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { const t = threadRef.current; if (t) t.scrollTop = t.scrollHeight; }, [chat.items.length, chat.typing]);
 
   async function api(body: Record<string, unknown>) {
@@ -49,13 +51,13 @@ export function AimanApp({ country, lang: locCode, dict, funds, whatsapp, videos
     return (await r.json().catch(() => ({}))) as { ok?: boolean; id?: string; error?: string };
   }
   /** The lead is sent by itself the moment the result shows: the visitor already gave their number and email at the start. Editing an answer updates the same lead. */
-  async function submitLead() {
-    track("result_shown", { page: "talk-with-aiman" });
-    setSend("sending");
+  async function submitLead(quiet = false) {
+    if (!quiet) { track("result_shown", { page: "talk-with-aiman" }); setSend("sending"); }
     try {
       const j = await api({ step: "complete", id: leadId.current ?? undefined, answers: chat.ans, secs: chat.elapsed() });
       if (!j.ok) throw new Error(j.error);
       if (j.id) leadId.current = j.id;
+      if (quiet) return;
       setSend("sent"); track("lead_submitted", { page: "talk-with-aiman" });
       (window as unknown as { fbq?: (...a: unknown[]) => void }).fbq?.("track", "Lead");
     } catch { setSend("error"); }
@@ -152,15 +154,6 @@ export function AimanApp({ country, lang: locCode, dict, funds, whatsapp, videos
                 {send === "sending" && <p className="sub" role="status"><BiId id="u_sending_lead" /></p>}
                 {send === "sent" && <p className="good"><BiId id="m_thanks" /></p>}
                 {send === "error" && <><p className="err" role="alert"><BiId id="u_fail" /></p><button type="button" className="cta" onClick={() => void submitLead()}><BiId id="u_retry" /></button></>}
-                {chat.docs && leadId.current && (
-                  <div style={{ display: "grid", gap: 8 }}>
-                    {r.focus.filter((x) => x.ok || !r.qualified).slice(0, 8).map((x) => (
-                      <a key={x.c} className="cta" style={{ textAlign: "center", textDecoration: "none" }} href={`/api/aiman/checklist?lead=${leadId.current}&c=${x.c}`} download>
-                        📄 {tx(`l_${x.c}` as CopyId).en}: <BiId id="u_download" />
-                      </a>
-                    ))}
-                  </div>
-                )}
                 <a className="cta" style={{ textAlign: "center", textDecoration: "none" }} href={waLink(`Hi Visafeast, I'm ${chat.ans.name}. I just finished the Aiman assessment.`, whatsapp)} rel="noopener"><BiId id="u_whatsapp" /></a>
               </div>
             </div>

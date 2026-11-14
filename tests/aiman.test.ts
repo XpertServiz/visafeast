@@ -233,12 +233,12 @@ describe("after the result: ready to submit? checklist?", () => {
     expect(c.items.map((b) => b.en).join(" ")).toMatch(/consultant will contact you on WhatsApp to start your file/);
     expect(last(c)).toBe("Do you want the checklist of documents?"); expect(c.docs).toBe(false);
     tap(c, "Yes, I'm ready"); // the same "yes" button
-    expect(c.docs).toBe(true); expect(c.after).toBe("end"); expect(last(c)).toMatch(/Download your checklist/);
+    expect(c.docs).toBe(true); expect(c.after).toBe("end"); expect(last(c)).toMatch(/consultant will send you the checklist on WhatsApp/); expect(c.ans.ready).toBe("yes"); expect(c.ans.wantsChecklist).toBe(true);
   });
   it("'not yet' and 'no, thanks' are fine; typing yes/no works too; editing an answer clears it", () => {
     const c = mk(); familyVisit(c); vi.advanceTimersByTime(600);
     say(c, "not yet"); vi.advanceTimersByTime(600); expect(last(c)).toBe("Do you want the checklist of documents?");
-    say(c, "no"); expect(c.docs).toBe(false); expect(c.after).toBe("end");
+    say(c, "no"); expect(c.docs).toBe(false); expect(c.ans.wantsChecklist).toBe(false); expect(c.after).toBe("end");
     const idx = c.items.find((b) => b.who === "me" && b.en === "5")!.edit!; c.rewindTo(idx); vi.advanceTimersByTime(500);
     expect(c.after).toBeNull(); expect(c.finished).toBe(false);
   });

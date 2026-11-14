@@ -10,7 +10,7 @@ export interface Answers {
   purpose?: "visit" | "study" | "work" | "pr"; purposeKey?: Purpose; family?: "alone" | "family";
   members?: string; membersExact?: number; children?: string; childrenExact?: number; youngest?: "u2" | "kid" | "teen";
   english?: "ok" | "low" | "none"; exp?: "lt2" | "2to5" | "5plus"; offer?: "yes" | "no"; balNum?: number;
-  deposits?: "steady" | "big"; countries?: string[]; sponsor?: "yes" | "no"; phone?: string; email?: string;
+  deposits?: "steady" | "big"; countries?: string[]; sponsor?: "yes" | "no"; phone?: string; email?: string; ready?: "yes" | "no"; wantsChecklist?: boolean;
 }
 export const PURPOSE_KEY: Record<string, Purpose> = { visit: "visit", study: "study", work: "work", pr: "immigration" };
 
@@ -107,7 +107,7 @@ export function cleanAnswers(raw: unknown): Answers | null {
     family: pick(r.family, ["alone", "family"] as const), members: pick(r.members, ["2", "3", "4", "5", "6", "7", "8", "9+"] as const), membersExact: int(r.membersExact, 9, 40),
     children: pick(r.children, ["0", "1", "2", "3", "4", "5", "6+"] as const), childrenExact: int(r.childrenExact, 6, 40), youngest: pick(r.youngest, ["u2", "kid", "teen"] as const),
     english: pick(r.english, ["ok", "low", "none"] as const), exp: pick(r.exp, ["lt2", "2to5", "5plus"] as const), offer: pick(r.offer, ["yes", "no"] as const),
-    balNum: bal, deposits: pick(r.deposits, ["steady", "big"] as const), countries, phone, email, sponsor: pick(r.sponsor, ["yes", "no"] as const),
+    balNum: bal, deposits: pick(r.deposits, ["steady", "big"] as const), countries, phone, email, ready: pick(r.ready, ["yes", "no"] as const), wantsChecklist: typeof r.wantsChecklist === "boolean" ? r.wantsChecklist : undefined, sponsor: pick(r.sponsor, ["yes", "no"] as const),
   };
   if (!a.age || !a.edu || !a.job || !a.travel || !a.refusal || !a.family || !a.deposits) return null;
   if (a.family === "family" && (!a.members || (a.members === "9+" && !a.membersExact))) return null;

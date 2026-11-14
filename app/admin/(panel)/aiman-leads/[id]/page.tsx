@@ -28,6 +28,15 @@ export default async function AimanLead({ params }: { params: Promise<{ id: stri
           {l.phone && <a className="btn btn-outline" style={{ minHeight: 44 }} href={waLink(`Hi ${l.name}, this is Visafeast. You just completed the Aiman assessment.`, l.phone)} rel="noopener noreferrer" target="_blank">WhatsApp {l.phone}</a>}
           <span style={{ color: "var(--muted)", fontSize: 14 }}>{ok ? "Call / WhatsApp within 24 hours." : "Send improvement plan within 48 hours."}{!l.completed_at ? " (No phone yet: they did not finish the form.)" : ""}</span>
         </div></Card>
+        {(l.answers as { ready?: string; wantsChecklist?: boolean; countries?: string[] }).wantsChecklist && (
+          <Card title="They asked for the document checklist">
+            <p style={{ marginTop: 0 }}>They were told you will send it on WhatsApp when they are ready to enroll. {(l.answers as { ready?: string }).ready === "yes" ? "They said they are ready to submit their case." : "They said \"not yet\" to submitting."}</p>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+              {(((l.answers as { countries?: string[] }).countries ?? []).slice(0, 8)).map((c) => <a key={c} className="btn btn-outline" style={{ minHeight: 44 }} href={`/admin/checklists/pdf?kind=${l.purpose}&c=${c}`}>Checklist PDF: {c}</a>)}
+              <a className="btn btn-outline" style={{ minHeight: 44 }} href="/admin/checklists">All checklists</a>
+            </div>
+          </Card>
+        )}
         <Card title="Summary"><p style={{ marginTop: 0 }}>{l.p1}</p><p style={{ marginBottom: 0 }}>{l.p2}</p></Card>
         <Card title="Everything they answered">
           <table style={{ width: "100%", borderCollapse: "collapse" }}><tbody>

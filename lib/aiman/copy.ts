@@ -165,9 +165,8 @@ export const COPY: Record<string, Row> = {
   m_ready_no: ["No problem, take your time. Our consultant will still contact you to answer your questions.", "کوئی بات نہیں، آپ اپنا وقت لیں۔ ہمارا کنسلٹنٹ پھر بھی آپ کے سوالات کے جواب کے لیے رابطہ کرے گا۔", "لا مشكلة، خذ وقتك. سيتواصل معك مستشارنا للإجابة عن أسئلتك."],
   q_docs: ["Do you want the checklist of documents?", "کیا آپ دستاویزات کی چیک لسٹ چاہتے ہیں؟", "هل تريد قائمة المستندات المطلوبة؟"],
   c_no_thanks: ["No, thanks", "نہیں، شکریہ", "لا، شكراً"],
-  m_docs_yes: ["Here it is 👇 Download your checklist (PDF) for each country you chose.", "یہ لیں 👇 آپ نے جو ممالک چنے ان کی چیک لسٹ (PDF) ڈاؤن لوڈ کریں۔", "تفضل 👇 حمّل قائمة المستندات (PDF) لكل دولة اخترتها."],
+  m_docs_yes: ["Noted ✅ Our consultant will send you the checklist on WhatsApp when you are ready to enroll your case.","نوٹ کر لیا ✅ جب آپ اپنا کیس شروع کرنے کے لیے تیار ہوں گے تو ہمارا کنسلٹنٹ واٹس ایپ پر چیک لسٹ بھیج دے گا۔","تم التسجيل ✅ سيرسل لك مستشارنا قائمة المستندات عبر واتساب عندما تكون جاهزاً لبدء قضيتك."],
   m_docs_no: ["No problem. Your consultant can send it whenever you need it.", "کوئی بات نہیں۔ جب ضرورت ہو آپ کا کنسلٹنٹ بھیج دے گا۔", "لا مشكلة. يمكن لمستشارك إرسالها في أي وقت."],
-  u_download: ["Download checklist (PDF)", "چیک لسٹ ڈاؤن لوڈ کریں (PDF)", "تحميل قائمة المستندات (PDF)"],
 };
 
 export type CopyId = keyof typeof COPY;
