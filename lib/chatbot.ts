@@ -239,7 +239,16 @@ export function answerFromSite(question: string, opts: { kb: KbDoc[]; countries:
       suggest: target ? suggestFor(target, loc) : undefined,
     };
   }
-  if (target) return { kind: "facts", answer: factsAnswer(target, topic, loc, now), link: `${p}${countryPath(target)}`, country: target.slug, suggest: suggestFor(target, loc) };
+  if (target) {
+    // work and immigration pages have routes, not one fee or one document list: send the visitor to Talk with Aiman for a personal answer and checklist
+    const nudge = (target.kind === "work" || target.kind === "immigration") && (topic === "fee" || topic === "documents");
+    const more = nudge ? T(loc, `
+
+For your personal fees and a checklist of documents, go to “Talk with Aiman” and tap the link below.`, `
+
+اپنی ذاتی فیس اور دستاویزات کی چیک لسٹ کے لیے “Talk with Aiman” پر جائیں اور نیچے دیا گیا لنک دبائیں۔`) : "";
+    return { kind: "facts", answer: factsAnswer(target, topic, loc, now) + more, link: nudge ? "/talk-with-aiman" : `${p}${countryPath(target)}`, country: target.slug, suggest: suggestFor(target, loc) };
+  }
 
   if (topic && topic !== "steps" && topic !== "refusal" && content.length <= 5) {
     return { kind: "clarify", answer: T(loc, "Which country are you asking about?", "آپ کس ملک کے بارے میں پوچھ رہے ہیں؟"), suggest: ["UK", "Canada", "USA", "Australia", "Schengen"] };

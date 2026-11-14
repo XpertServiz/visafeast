@@ -152,6 +152,15 @@ export function AimanApp({ country, lang: locCode, dict, funds, whatsapp, videos
                 {send === "sending" && <p className="sub" role="status"><BiId id="u_sending_lead" /></p>}
                 {send === "sent" && <p className="good"><BiId id="m_thanks" /></p>}
                 {send === "error" && <><p className="err" role="alert"><BiId id="u_fail" /></p><button type="button" className="cta" onClick={() => void submitLead()}><BiId id="u_retry" /></button></>}
+                {chat.docs && leadId.current && (
+                  <div style={{ display: "grid", gap: 8 }}>
+                    {r.focus.filter((x) => x.ok || !r.qualified).slice(0, 8).map((x) => (
+                      <a key={x.c} className="cta" style={{ textAlign: "center", textDecoration: "none" }} href={`/api/aiman/checklist?lead=${leadId.current}&c=${x.c}`} download>
+                        📄 {tx(`l_${x.c}` as CopyId).en}: <BiId id="u_download" />
+                      </a>
+                    ))}
+                  </div>
+                )}
                 <a className="cta" style={{ textAlign: "center", textDecoration: "none" }} href={waLink(`Hi Visafeast, I'm ${chat.ans.name}. I just finished the Aiman assessment.`, whatsapp)} rel="noopener"><BiId id="u_whatsapp" /></a>
               </div>
             </div>

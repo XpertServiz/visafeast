@@ -224,3 +224,22 @@ describe("contact details, many countries, every purpose", () => {
     expect(leadText(a, DEFAULT_FUNDS).subject).toContain("France, Ireland");
   });
 });
+
+describe("after the result: ready to submit? checklist?", () => {
+  it("asks 'ready to submit your case?', then 'do you want the checklist?', and hands over the checklist on yes", () => {
+    const c = mk(); familyVisit(c); vi.advanceTimersByTime(600);
+    expect(last(c)).toBe("Are you ready to submit your case?"); expect(c.chips.map((x) => x.en)).toEqual(["Yes, I'm ready", "Not yet"]);
+    tap(c, "Yes, I'm ready"); vi.advanceTimersByTime(600);
+    expect(c.items.map((b) => b.en).join(" ")).toMatch(/consultant will contact you on WhatsApp to start your file/);
+    expect(last(c)).toBe("Do you want the checklist of documents?"); expect(c.docs).toBe(false);
+    tap(c, "Yes, I'm ready"); // the same "yes" button
+    expect(c.docs).toBe(true); expect(c.after).toBe("end"); expect(last(c)).toMatch(/Download your checklist/);
+  });
+  it("'not yet' and 'no, thanks' are fine; typing yes/no works too; editing an answer clears it", () => {
+    const c = mk(); familyVisit(c); vi.advanceTimersByTime(600);
+    say(c, "not yet"); vi.advanceTimersByTime(600); expect(last(c)).toBe("Do you want the checklist of documents?");
+    say(c, "no"); expect(c.docs).toBe(false); expect(c.after).toBe("end");
+    const idx = c.items.find((b) => b.who === "me" && b.en === "5")!.edit!; c.rewindTo(idx); vi.advanceTimersByTime(500);
+    expect(c.after).toBeNull(); expect(c.finished).toBe(false);
+  });
+});

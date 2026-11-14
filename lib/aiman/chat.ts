@@ -66,7 +66,7 @@ const FAQ: [RegExp, CopyId][] = [
   [/safe|private|secure|data|محفوظ|پرائیویسی|خصوصية|امان|أمان/, "faq_privacy"],
 ];
 
-export interface ChatHooks { onStart?: () => void; onResult?: (a: Answers) => void; onChange: () => void }
+export interface ChatHooks { onStart?: () => void; onResult?: () => void; onChange: () => void }
 
 export class Chat {
   ans: Answers = {};
@@ -76,6 +76,9 @@ export class Chat {
   multi: Chip[] | null = null;
   typing = false;
   finished = false;
+  /** After the result: Aiman asks "ready to submit?" and then "want the checklist?". `docs` is true once the visitor said yes to the checklist. */
+  after: "ready" | "docs" | "end" | null = null;
+  docs = false;
   started = false;
   secs = 0;
   progress = 0;
@@ -200,6 +203,11 @@ export class Chat {
     const mine = () => this.say(raw, raw, "me");
     const later = (fn: () => void) => { const g = this.gen; setTimeout(() => { if (g !== this.gen) return; fn(); this.emit(); }, 350); };
     if (/^(back|undo|change|wapas|واپس|رجوع)$/i.test(raw) && !this.finished) { mine(); later(() => this.undo()); this.emit(); return; }
+    if (this.finished && (this.after === "ready" || this.after === "docs")) {
+      const yes = YES.test(raw), no = NO.test(raw) || /^(not yet|later|baad mein|ابھی نہیں)/i.test(raw);
+      const chip = (yes || no) ? this.chips.find((x) => (yes ? /y$/.test(x.v) : /n$/.test(x.v))) : null;
+      if (chip) { this.answerFollowUp(chip.v, chip); return; }
+    }
     if (this.finished) { mine(); const f = this.faq(raw); later(() => this.sayId(f ?? "m_confirm_wa")); this.emit(); return; }
     if (!this.started) {
       mine(); const go = YES.test(raw) || /ready|start|shuru|شروع|تیار|ابدأ|جاهز|لنبدأ/i.test(raw);
@@ -228,7 +236,7 @@ export class Chat {
     this.items = this.items.slice(0, h.count);
     for (let i = h.qi; i < QUESTIONS.length; i++) delete (this.ans as Record<string, unknown>)[QUESTIONS[i].id];
     if (h.qi <= QUESTIONS.findIndex((x) => x.id === "purpose")) delete this.ans.purposeKey;
-    this.finished = false; this.qi = h.qi - 1; this.advance();
+    this.finished = false; this.after = null; this.docs = false; this.qi = h.qi - 1; this.advance();
   }
   undo() { this.rewindTo(this.hist.length - 1); }
   canUndo() { return this.hist.length > 0 && !this.finished; }
@@ -237,19 +245,33 @@ export class Chat {
     this.finished = true; this.chips = []; this.multi = null; this.progress = 100;
     const r = assessAll(this.ans, this.funds), name = this.ans.name ?? "";
     this.sayId(r.qualified ? "m_qualified" : "m_notyet", { name, s: r.qual.length > 1 ? "s" : "" });
-    this.hooks.onResult?.(this.ans); this.emit();
+    this.hooks.onResult?.(); this.followUp("ready");
   }
 
   /** Back to the first question, with a clean slate (timer, progress and result included). */
   reset() {
     this.gen++; if (this.timer) clearInterval(this.timer); this.timer = null; this.t0 = null;
-    this.ans = {}; this.hist = []; this.qi = -1; this.qMark = 0; this.finished = false; this.started = false; this.typing = false; this.secs = 0; this.progress = 0;
+    this.after = null; this.docs = false; this.ans = {}; this.hist = []; this.qi = -1; this.qMark = 0; this.finished = false; this.started = false; this.typing = false; this.secs = 0; this.progress = 0;
     this.multi = null; this.items = []; this.sayId("m_hello");
     const x = this.tx("m_start"); this.chips = [{ en: x.en, loc: x.loc, ur: COPY.m_start[1], v: "__start" }];
     this.emit();
   }
+  /** After the result: first "ready to submit?", then "want the checklist?". Plain yes/no buttons; they never touch the answers. */
+  private followUp(step: "ready" | "docs") {
+    this.after = step; this.multi = null;
+    const ask = () => { this.sayId(step === "ready" ? "q_ready" : "q_docs"); this.chips = step === "ready" ? [this.simple("c_yes", "__ry"), this.simple("c_notyet", "__rn")] : [this.simple("c_yes", "__dy"), this.simple("c_no_thanks", "__dn")]; };
+    this.typing = true; this.emit(); const g = this.gen;
+    setTimeout(() => { if (g !== this.gen) return; this.typing = false; ask(); this.emit(); }, 450);
+  }
+  private simple(id: CopyId, v: string): Chip { const x = this.tx(id); return { en: x.en, loc: x.loc, ur: COPY[id][1], v }; }
+  private answerFollowUp(v: string, c: Chip) {
+    this.say(c.en, c.loc, "me"); this.chips = [];
+    if (v === "__ry" || v === "__rn") { this.sayId(v === "__ry" ? "m_ready_yes" : "m_ready_no"); this.followUp("docs"); return; }
+    this.docs = v === "__dy"; this.after = "end"; this.sayId(this.docs ? "m_docs_yes" : "m_docs_no"); this.emit();
+  }
+
   /** The first button ("Let's start") is not a question's answer. */
-  press(c: Chip) { if (c.v === "__start") this.start(); else this.pick(c); }
+  press(c: Chip) { if (c.v === "__start") this.start(); else if (c.v.startsWith("__")) this.answerFollowUp(c.v, c); else this.pick(c); }
   /** After the lead form is sent. */
   thank() { this.sayId("m_thanks"); this.emit(); }
   setLang(l: "en" | "loc") { this.lang = l; this.emit(); }

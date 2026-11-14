@@ -55,7 +55,13 @@ export async function POST(req: NextRequest) {
   const context = snippets.length ? snippets.map((d) => `- ${d.title}: ${d.body.slice(0, 450)} (link: ${d.link})`).join("\n") : "(no matching content)";
   const out = await llm(`${CHAT_SYSTEM}${context}\nReply in ${localeMeta(uiLoc).english}. Keep every number and amount exactly as in the content.`, p.data.message, 220);
   if (!out) return reply({ answer: site.answer, handoff: true, source: "site" });
-  const link = fixLink(snippets[0]?.link || undefined);
-  if (db) await db.from("chat_cache").upsert({ q_hash: hash, answer: out, link: link ?? null, created_at: new Date().toISOString() });
-  return reply({ answer: out, link, source: "gpt" });
+  // a refusal-style or fee/checklist answer always ends with the way to get it: the Talk with Aiman page
+  const wantsPersonal = /fee|cost|price|checklist|documents?|dastavez|فیس|دستاویز/i.test(p.data.message) || /can't provide|cannot provide|unable to provide|not able to provide|don't have (the )?(exact|specific)|not sure/i.test(out);
+  const toAiman = wantsPersonal && !/talk with aiman/i.test(out);
+  const link = toAiman ? "/talk-with-aiman" : fixLink(snippets[0]?.link || undefined);
+  const outFinal = toAiman ? `${out}
+
+For your personal fees and a checklist of documents, go to “Talk with Aiman” and tap the link below.` : out;
+  if (db) await db.from("chat_cache").upsert({ q_hash: hash, answer: outFinal, link: link ?? null, created_at: new Date().toISOString() });
+  return reply({ answer: outFinal, link, source: "gpt" });
 }

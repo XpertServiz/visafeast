@@ -158,6 +158,16 @@ export const COPY: Record<string, Row> = {
   l_thailand: ["Thailand", "تھائی لینڈ", "تايلاند"],
   l_srilanka: ["Sri Lanka", "سری لنکا", "سريلانكا"],
   l_azerbaijan: ["Azerbaijan", "آذربائیجان", "أذربيجان"],
+  q_ready: ["Are you ready to submit your case?", "کیا آپ اپنا کیس جمع کرانے کے لیے تیار ہیں؟", "هل أنت مستعد لتقديم قضيتك؟"],
+  c_yes: ["Yes, I'm ready", "جی، میں تیار ہوں", "نعم، أنا مستعد"],
+  c_notyet: ["Not yet", "ابھی نہیں", "ليس بعد"],
+  m_ready_yes: ["Wonderful! 🎉 Our consultant will contact you on WhatsApp to start your file.", "بہت خوب! 🎉 ہمارا کنسلٹنٹ آپ کی فائل شروع کرنے کے لیے واٹس ایپ پر رابطہ کرے گا۔", "رائع! 🎉 سيتواصل معك مستشارنا عبر واتساب لبدء ملفك."],
+  m_ready_no: ["No problem, take your time. Our consultant will still contact you to answer your questions.", "کوئی بات نہیں، آپ اپنا وقت لیں۔ ہمارا کنسلٹنٹ پھر بھی آپ کے سوالات کے جواب کے لیے رابطہ کرے گا۔", "لا مشكلة، خذ وقتك. سيتواصل معك مستشارنا للإجابة عن أسئلتك."],
+  q_docs: ["Do you want the checklist of documents?", "کیا آپ دستاویزات کی چیک لسٹ چاہتے ہیں؟", "هل تريد قائمة المستندات المطلوبة؟"],
+  c_no_thanks: ["No, thanks", "نہیں، شکریہ", "لا، شكراً"],
+  m_docs_yes: ["Here it is 👇 Download your checklist (PDF) for each country you chose.", "یہ لیں 👇 آپ نے جو ممالک چنے ان کی چیک لسٹ (PDF) ڈاؤن لوڈ کریں۔", "تفضل 👇 حمّل قائمة المستندات (PDF) لكل دولة اخترتها."],
+  m_docs_no: ["No problem. Your consultant can send it whenever you need it.", "کوئی بات نہیں۔ جب ضرورت ہو آپ کا کنسلٹنٹ بھیج دے گا۔", "لا مشكلة. يمكن لمستشارك إرسالها في أي وقت."],
+  u_download: ["Download checklist (PDF)", "چیک لسٹ ڈاؤن لوڈ کریں (PDF)", "تحميل قائمة المستندات (PDF)"],
 };
 
 export type CopyId = keyof typeof COPY;
