@@ -34,7 +34,8 @@ describe("the logo", () => {
     const h = emailShell("<p>New enquiry</p>");
     expect(h).toContain("/brand/email-header.png");
     expect(h).toContain("<p>New enquiry</p>");
-    expect(h).toContain(siteConfig.url.replace(/\/$/, ""));
+    // the logo always points at the public site (never a computer's localhost address)
+    expect(h).toContain(/localhost|127\.0\.0\.1/.test(siteConfig.url) ? "https://www.visafeast.com" : siteConfig.url.replace(/\/$/, ""));
   });
   it("the logo files stay light (header pieces under 20 KB each, icons under 40 KB)", () => {
     const size = (p: string) => readFileSync(file(p)).length / 1024;
