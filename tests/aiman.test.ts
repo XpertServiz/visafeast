@@ -17,13 +17,14 @@ const mk = (dict: Record<string, string> = {}) => new Chat(dict, DEFAULT_FUNDS, 
 const tap = (c: Chat, en: string) => { const chip = c.chips.find((x) => x.en === en); if (!chip) throw new Error(`no chip "${en}" among ${c.chips.map((x) => x.en).join(" | ")}`); c.press(chip); vi.advanceTimersByTime(500); };
 const say = (c: Chat, text: string) => { c.type(text); vi.advanceTimersByTime(500); };
 const last = (c: Chat) => c.items[c.items.length - 1].en;
-const start = (c: Chat, name = "Ali") => { tap(c, "Let's start →"); say(c, name); };
+const start = (c: Chat, name = "Ali") => { tap(c, "Let's start →"); say(c, name); say(c, "03001234567"); say(c, "ali@example.com"); };
+const pickCountries = (c: Chat, ids: string[]) => { c.pickMulti(ids); vi.advanceTimersByTime(500); };
 
 /** Visit / UK, a family of 5 with 3 children, 80 lacs, steady, salaried by bank. */
 function familyVisit(c: Chat) {
   start(c); tap(c, "26–35"); tap(c, "Bachelor's"); tap(c, "Salaried job"); tap(c, "Bank account"); tap(c, "UK / Schengen / USA / Canada / Australia");
   tap(c, "Never refused"); tap(c, "Visit / Tourism"); tap(c, "With family"); tap(c, "5"); tap(c, "3"); tap(c, "2–11 years");
-  say(c, "80"); tap(c, "Steady, built up slowly"); tap(c, "UK");
+  say(c, "80"); tap(c, "Steady, built up slowly"); pickCountries(c, ["uk"]);
 }
 
 describe("the chat flow", () => {
@@ -75,7 +76,7 @@ describe("the chat flow", () => {
     expect(c.finished).toBe(false); expect(c.ans.members).toBeUndefined(); expect(c.ans.balNum).toBeUndefined(); expect(c.ans.name).toBe("Ali");
     tap(c, "2"); tap(c, "0"); say(c, "10"); tap(c, "Steady, built up slowly");
     expect(c.ans.balNum).toBe(10);
-    tap(c, "UK");
+    pickCountries(c, ["uk"]);
     // 2 people x 15 = 30 lacs needed, 10 given: after the country, the sponsor question must appear
     expect(last(c)).toMatch(/below what is usually expected/);
     c.reset(); expect(c.ans).toEqual({}); expect(c.finished).toBe(false); expect(c.progress).toBe(0); expect(c.items).toHaveLength(1);
@@ -90,7 +91,7 @@ describe("the chat flow", () => {
 });
 
 describe("eligibility rules (config-driven)", () => {
-  const base: Answers = { name: "Ali", age: "26–35", edu: "bach", job: "salaried", salmode: "bank", travel: "west", refusal: "never", purpose: "visit", purposeKey: "visit", family: "alone", balNum: 20, deposits: "steady", country: "uk" };
+  const base: Answers = { name: "Ali", age: "26–35", edu: "bach", job: "salaried", salmode: "bank", travel: "west", refusal: "never", purpose: "visit", purposeKey: "visit", family: "alone", balNum: 20, deposits: "steady", countries: ["uk"] };
   it("funds figures come from the config and the admin's saved values override them", () => {
     expect(needFor("uk", "visit", { ...base, family: "family", members: "5" })).toBe(75);
     expect(needFor("turkey", "visit", base)).toBe(5);
@@ -105,28 +106,28 @@ describe("eligibility rules (config-driven)", () => {
   });
   it("big recent deposits are a gap for strict countries only", () => {
     expect(assessAll({ ...base, deposits: "big" }).qualified).toBe(false);
-    expect(assessAll({ ...base, deposits: "big", country: "turkey", balNum: 10 }).qualified).toBe(true);
+    expect(assessAll({ ...base, deposits: "big", countries: ["turkey"], balNum: 10 }).qualified).toBe(true);
   });
   it("work without an offer fails (except Germany); PR at 45+ fails", () => {
     const work = { ...base, purpose: "work" as const, purposeKey: "work" as const, english: "ok" as const, exp: "5plus" as const, offer: "no" as const, balNum: 30 };
-    expect(assessAll({ ...work, country: "uk" }).qualified).toBe(false);
-    expect(assessAll({ ...work, country: "germany" }).qualified).toBe(true);
-    const pr = { ...work, purpose: "pr" as const, purposeKey: "immigration" as const, balNum: 60, country: "canada" };
+    expect(assessAll({ ...work, countries: ["uk"] }).qualified).toBe(false);
+    expect(assessAll({ ...work, countries: ["germany"] }).qualified).toBe(true);
+    const pr = { ...work, purpose: "pr" as const, purposeKey: "immigration" as const, balNum: 60, countries: ["canada"] };
     expect(assessAll(pr).qualified).toBe(true);
     expect(assessAll({ ...pr, age: "45+" }).qualified).toBe(false);
   });
   it("if the chosen country fails but others pass, the others are listed", () => {
-    const r = assessAll({ ...base, balNum: 12, country: "uk", deposits: "steady", sponsor: undefined });
+    const r = assessAll({ ...base, balNum: 12, countries: ["uk"], deposits: "steady", sponsor: undefined });
     expect(r.qualified).toBe(false); expect(r.others.map((x) => x.c)).toEqual(expect.arrayContaining(["turkey", "dubai", "malaysia"]));
   });
 });
 
 describe("leads: the server recomputes everything and rejects made-up answers", () => {
-  const good = { name: "Ali", age: "26–35", edu: "bach", job: "salaried", salmode: "bank", travel: "west", refusal: "never", purpose: "visit", family: "alone", balNum: 20, deposits: "steady", country: "uk" };
+  const good = { name: "Ali", age: "26–35", edu: "bach", job: "salaried", salmode: "bank", travel: "west", refusal: "never", purpose: "visit", family: "alone", balNum: 20, deposits: "steady", countries: ["uk"] };
   it("accepts a valid set and fills purposeKey itself", () => { expect(cleanAnswers(good)?.purposeKey).toBe("visit"); });
   it("rejects invented values, missing fields and impossible families", () => {
     expect(cleanAnswers({ ...good, edu: "phd" })).toBeNull();
-    expect(cleanAnswers({ ...good, country: "mars" })).toBeNull();
+    expect(cleanAnswers({ ...good, countries: ["mars"] })).toBeNull();
     expect(cleanAnswers({ ...good, balNum: -1 })).toBeNull();
     expect(cleanAnswers({ ...good, name: "A" })).toBeNull();
     expect(cleanAnswers({ ...good, family: "family", members: "3", children: "5" })).toBeNull();
@@ -176,5 +177,50 @@ describe("languages", () => {
       const want = (COPY[id][0].match(/\{\w+\}/g) ?? []).filter((x) => x !== "{s}").sort().join(), got = (t.match(/\{\w+\}/g) ?? []).sort().join();
       expect(got, `${f}: ${id}`).toBe(want);
     }
+  });
+});
+
+describe("contact details, many countries, every purpose", () => {
+  it("asks name, then WhatsApp number, then email, and refuses bad ones", () => {
+    const c = mk(); tap(c, "Let's start →"); say(c, "Ali");
+    expect(last(c)).toMatch(/WhatsApp number/); say(c, "12"); expect(last(c)).toMatch(/doesn't look right/);
+    say(c, "0300 1234567"); expect(c.ans.phone).toBe("+923001234567"); expect(last(c)).toMatch(/email/);
+    say(c, "not-an-email"); expect(last(c)).toMatch(/doesn't look right/);
+    say(c, "Ali@Example.com"); expect(c.ans.email).toBe("ali@example.com"); expect(last(c)).toMatch(/age group/);
+  });
+  it("email can be skipped", () => {
+    const c = mk(); tap(c, "Let's start →"); say(c, "Ali"); say(c, "03001234567"); tap(c, "Skip"); expect(c.ans.email).toBe(""); expect(last(c)).toMatch(/age group/);
+  });
+  it("the country list offers all landing-page countries, and one or many can be ticked", () => {
+    const c = mk(); familyVisit(c);
+    const d = mk(); start(d); tap(d, "26–35"); tap(d, "Bachelor's"); tap(d, "Not working"); tap(d, "No travel yet"); tap(d, "Never refused"); tap(d, "Settle abroad (PR / Immigration)");
+    tap(d, "Just me"); tap(d, "Yes, score 6+ (or equal)"); tap(d, "5+ years"); say(d, "60"); tap(d, "Steady, built up slowly");
+    const names = d.multi!.map((x) => x.en);
+    for (const n of ["France", "New Zealand", "Portugal", "Ireland", "Netherlands", "Germany", "Saudi Arabia", "Japan", "Not sure — Aiman, you suggest"]) expect(names, n).toContain(n);
+    expect(names.length).toBeGreaterThanOrEqual(24);
+    pickCountries(d, ["france", "ireland", "newzealand"]);
+    expect([...d.ans.countries!].sort()).toEqual(["france", "ireland", "newzealand"]); expect(d.finished).toBe(true);
+    const r = d.assessment(); expect(r.focus.map((x) => x.c).sort()).toEqual(["france", "ireland", "newzealand"]);
+    expect(r.qual[0].program).toMatch(/France|Ireland|New Zealand/);
+  });
+  it("typed country names work, several at once", () => {
+    const d = mk(); start(d); tap(d, "26–35"); tap(d, "Bachelor's"); tap(d, "Not working"); tap(d, "No travel yet"); tap(d, "Never refused"); tap(d, "Visit / Tourism"); tap(d, "Just me"); say(d, "40"); tap(d, "Steady, built up slowly");
+    say(d, "france, portugal and canada"); expect(d.ans.countries).toEqual(expect.arrayContaining(["france", "portugal", "canada"]));
+  });
+  it("'not sure' means Aiman looks at every country", () => {
+    const d = mk(); start(d); tap(d, "26–35"); tap(d, "Bachelor's"); tap(d, "Not working"); tap(d, "No travel yet"); tap(d, "Never refused"); tap(d, "Visit / Tourism"); tap(d, "Just me"); say(d, "40"); tap(d, "Steady, built up slowly");
+    pickCountries(d, ["any"]); expect(d.ans.countries).toEqual([]); expect(d.assessment().focus.length).toBeGreaterThanOrEqual(23);
+  });
+  it("all four purposes give a program name for every country", () => {
+    for (const p of ["visit", "study", "work", "immigration"] as const) {
+      const r = assessAll({ ...{ name: "A", age: "26–35" as const, edu: "bach" as const, travel: "west" as const, refusal: "never" as const, family: "alone" as const, balNum: 100, deposits: "steady" as const, english: "ok" as const, exp: "5plus" as const, offer: "yes" as const }, purposeKey: p, countries: [] });
+      expect(r.all.length).toBeGreaterThanOrEqual(23); expect(r.all.every((x) => x.program.length > 5)).toBe(true);
+    }
+  });
+  it("the server keeps phone and email from the answers and rejects invented countries", () => {
+    const good = { name: "Ali", age: "26–35", edu: "bach", job: "salaried", salmode: "bank", travel: "west", refusal: "never", purpose: "visit", family: "alone", balNum: 20, deposits: "steady", phone: "03001234567", email: "A@B.com", countries: ["france", "ireland"] };
+    const a = cleanAnswers(good)!; expect(a.phone).toBe("+923001234567"); expect(a.email).toBe("a@b.com"); expect(a.countries).toEqual(["france", "ireland"]);
+    expect(cleanAnswers({ ...good, countries: ["france", "mars"] })).toBeNull();
+    expect(leadText(a, DEFAULT_FUNDS).subject).toContain("France, Ireland");
   });
 });

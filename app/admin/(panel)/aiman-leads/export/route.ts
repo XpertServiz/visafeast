@@ -13,8 +13,8 @@ export async function GET(req: NextRequest) {
   if (!admin || !can.people(admin.role)) return NextResponse.json({ ok: false }, { status: 401 });
   const sp = req.nextUrl.searchParams;
   const f: LeadFilters = Object.fromEntries(["status", "country", "purpose", "from", "to", "q", "contacted"].map((k) => [k, sp.get(k) ?? undefined]));
-  const { data } = await leadQuery(f, "created_at,status,name,phone,city,visitor_country,purpose,target_country,family_size,balance_lacs,program,contacted,p1,p2,utm", 5000);
-  const cols = ["created_at", "status", "name", "phone", "city", "visitor_country", "purpose", "target_country", "family_size", "balance_lacs", "program", "contacted", "p1", "p2", "utm"];
-  const rows = ((data ?? []) as unknown as Record<string, unknown>[]).map((r) => cols.map((c) => cell(c === "utm" ? JSON.stringify(r[c] ?? {}) : r[c])).join(","));
+  const { data } = await leadQuery(f, "created_at,status,name,phone,city,visitor_country,purpose,target_country,family_size,balance_lacs,program,contacted,p1,p2,utm,answers", 5000);
+  const cols = ["created_at", "status", "name", "phone", "email", "city", "visitor_country", "purpose", "target_country", "family_size", "balance_lacs", "program", "contacted", "p1", "p2", "utm"];
+  const rows = ((data ?? []) as unknown as Record<string, unknown>[]).map((r) => cols.map((c) => cell(c === "utm" ? JSON.stringify(r[c] ?? {}) : c === "email" ? (r.answers as { email?: string } | null)?.email : r[c])).join(","));
   return new NextResponse("﻿" + [cols.join(","), ...rows].join("\r\n"), { headers: { "content-type": "text/csv; charset=utf-8", "content-disposition": `attachment; filename="aiman-leads-${new Date().toISOString().slice(0, 10)}.csv"`, "cache-control": "no-store" } });
 }

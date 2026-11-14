@@ -1,5 +1,7 @@
 // Browser checks for /talk-with-aiman. Usage: BASE=http://localhost:3100 node tests/e2e/aiman.live.mjs [screenshot folder]
 import { chromium } from "playwright";
+import { createClient } from "@supabase/supabase-js";
+import { readFileSync } from "node:fs";
 const BASE = process.env.BASE || "http://localhost:3100", SHOTS = process.argv[2];
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36";
 let pass = 0, fail = 0;
@@ -53,22 +55,27 @@ for (const w of [360, 390, 768, 1280]) {
 // ---- the whole chat, and no server call while it runs
 {
   const { ctx, p } = await open("PK", 390, 844);
-  const calls = []; p.on("request", (r) => { if (/\/api\//.test(r.url()) && !/\/api\/(track|presence)/.test(r.url())) calls.push(`${r.method()} ${new URL(r.url()).pathname} ${r.postData()?.includes('"step":"partial"') ? "partial" : r.postData()?.includes('"step":"complete"') ? "complete" : ""}`); });
+  const calls = []; p.on("request", (r) => { if (/\/api\//.test(r.url()) && !/\/api\/(track|presence)/.test(r.url())) calls.push(`${r.method()} ${new URL(r.url()).pathname} ${r.postData()?.includes('"step":"complete"') ? "complete" : ""}`); });
   const tapChip = async (t) => { await p.locator(".chips button", { hasText: t }).first().click(); await p.waitForTimeout(560); };
+  const pickCountries = async (names) => { for (const n of names) await p.locator(".cpick label", { hasText: n }).first().click(); await p.locator(".cpick .cta").click(); await p.waitForTimeout(700); };
   const type = async (t) => { await p.fill(".textrow input", t); await p.press(".textrow input", "Enter"); await p.waitForTimeout(560); };
-  await tapChip("Let's start"); await type("Ali");
+  await tapChip("Let's start"); await type("AimanTest"); await type("03001234567"); await type("aimantest@example.com");
   for (const t of ["26–35", "Bachelor's", "Salaried job", "Bank account", "UK / Schengen", "Never refused", "Visit / Tourism", "With family", "5"]) await tapChip(t);
   await tapChip("3");
   ok("family of 5 with 3 children: asks the youngest child's age", (await text(p, ".thread")).includes("youngest child"));
-  await tapChip("2–11"); await type("80"); await tapChip("Steady"); await tapChip("UK");
+  await tapChip("2–11"); await type("80"); await tapChip("Steady");
+  ok("the country question is a tick-box list of all countries", (await p.locator(".cpick label").count()) >= 24);
+  await pickCountries(["UK", "France"]);
   await p.waitForSelector("#result", { timeout: 5000 });
   const res = await text(p, "#result");
-  ok("result shows 'You qualify' and the UK program", res.includes("You qualify") && res.includes("UK Standard Visitor Visa"));
+  ok("result shows 'You qualify' and the UK program", res.includes("You qualify") && res.includes("UK Standard Visitor Visa") && res.includes("France Visit Visa"));
   ok("result shows the Urdu line too", /[؀-ۿ]/.test(res));
-  ok("no server call during the questions (only the one partial save when the result shows)", calls.length === 1 && calls[0].includes("partial"), calls.join(" | "));
+  await p.waitForTimeout(1500);
+  ok("no server call during the questions; the lead is sent once, by itself, when the result shows", calls.length === 1 && calls[0].includes("complete"), calls.join(" | "));
+  ok("there is no form at the end (no phone or email box)", (await p.locator("#result input").count()) === 0 && (await text(p, "#result")).includes("Chat on WhatsApp"));
   await p.locator(".msg.me.editable", { hasText: /^5$/ }).first().click(); await p.waitForTimeout(700);
   ok("tapping an earlier answer removes the result and re-asks", (await p.locator("#result").count()) === 0 && (await text(p, ".thread")).includes("How many people in total"));
-  await tapChip("2"); await tapChip("0"); await type("12"); await tapChip("Steady"); await tapChip("UK");
+  await tapChip("2"); await tapChip("0"); await type("12"); await tapChip("Steady"); await pickCountries(["UK"]);
   ok("the sponsor question appears when the balance is short", (await text(p, ".thread")).includes("below what is usually expected"));
   await p.locator(".resetbtn").click(); await p.waitForTimeout(400);
   ok("reset clears the chat, timer and progress", (await p.locator(".msg.me").count()) === 0 && (await text(p, ".timer")).includes("0:00") && (await p.locator("#result").count()) === 0);
@@ -76,5 +83,10 @@ for (const w of [360, 390, 768, 1280]) {
   await ctx.close();
 }
 await b.close();
+try {
+  const env = Object.fromEntries(readFileSync(".env.local", "utf8").split(/\r?\n/).filter((l) => l.includes("=")).map((l) => [l.slice(0, l.indexOf("=")), l.slice(l.indexOf("=") + 1)]));
+  const db = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
+  await db.from("aiman_leads").delete().eq("name", "Aimantest");
+} catch { /* clean-up is best effort */ }
 console.log(`${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

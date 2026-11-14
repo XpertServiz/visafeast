@@ -1,6 +1,7 @@
 // The chat engine of "Talk with Aiman", ported from the approved prototype. It runs entirely in the browser (no server call per question).
 // The React page only draws what this class holds and calls its methods.
 import { OPTIONS, type CountryId, type FundsConfig, type Purpose } from "@/config/aiman";
+import { cleanPhone } from "./phone";
 import { COPY, type CopyId } from "./copy";
 import { assessAll, childrenNum, membersNum, needSponsorQ, PURPOSE_KEY, type Answers } from "./assess";
 import { fmt } from "./lead";
@@ -10,7 +11,7 @@ export interface Bubble { n: number; who: "ai" | "me"; en: string; loc?: string;
 export interface Chip { en: string; loc?: string; ur?: string; v: string; yn?: "yes" | "no" }
 interface ChipDef { k?: CopyId; t?: string; v: string; yn?: "yes" | "no"; country?: CountryId }
 interface Q {
-  id: keyof Answers; q: CopyId; vars?: (a: Answers) => Vars; when?: (a: Answers, f: FundsConfig) => boolean; text?: boolean;
+  id: keyof Answers; q: CopyId; multi?: boolean; vars?: (a: Answers) => Vars; when?: (a: Answers, f: FundsConfig) => boolean; text?: boolean;
   chips?: ChipDef[] | ((a: Answers) => ChipDef[]); parse?: (raw: string) => unknown | null; bad?: CopyId;
   valid?: (v: string, a: Answers) => { id: CopyId; vars?: Vars } | null; chipValue?: (v: string) => unknown; onSet?: (a: Answers, v: unknown) => void;
 }
@@ -21,6 +22,8 @@ const digits = (list: string[]): ChipDef[] => list.map((t) => ({ t, v: t }));
 
 const QUESTIONS: Q[] = [
   { id: "name", q: "q_name", text: true, bad: "q_name_bad", parse: (r) => { const v = r.trim(); return v.length >= 2 && v.length <= 40 && !/^\d+$/.test(v) ? v.charAt(0).toUpperCase() + v.slice(1) : null; } },
+  { id: "phone", q: "q_phone", text: true, bad: "q_phone_bad", parse: (r) => cleanPhone(r) },
+  { id: "email", q: "q_email", text: true, bad: "q_email_bad", chips: [C("c_skip", "skip")], chipValue: (v) => (v === "skip" ? "" : v), parse: (r) => { const t = r.trim().toLowerCase(); return /^[^\s@]{1,64}@[^\s@]{1,200}\.[^\s@]{2,}$/.test(t) ? t : /^(skip|no|none|nahi|نہیں)$/.test(t) ? "" : null; } },
   { id: "age", q: "q_age", vars: (a) => ({ name: a.name ?? "" }), chips: [C("c_a1", "18–25"), C("c_a2", "26–35"), C("c_a3", "36–44"), C("c_a4", "45+")] },
   { id: "edu", q: "q_edu", chips: [C("c_edu_low", "low"), C("c_edu_bach", "bach"), C("c_edu_mast", "mast")] },
   { id: "job", q: "q_job", chips: [C("c_job_salaried", "salaried"), C("c_job_business", "business"), C("c_job_freelancer", "freelancer"), C("c_job_student", "student"), C("c_job_none", "none")] },
@@ -47,7 +50,7 @@ const QUESTIONS: Q[] = [
     parse: (r) => { const t = r.toLowerCase().replace(/,/g, ""); const m = t.match(/(\d+(\.\d+)?)/); if (!m) return null; let n = parseFloat(m[1]); if (/crore|cr|کروڑ|كرور/.test(t)) n *= 100; else if (/million|m\b/.test(t)) n *= 10; return n >= 0 && n <= 100000 ? n : null; },
   },
   { id: "deposits", q: "q_dep", chips: [C("c_dep_steady", "steady"), C("c_dep_big", "big", "yes")] },
-  { id: "country", q: "q_country", chips: (a) => [...OPTIONS[a.purposeKey ?? "visit"].map((c): ChipDef => ({ k: `l_${c}` as CopyId, v: c, country: c })), C("c_any", "any")] },
+  { id: "countries", q: "q_country", multi: true, chips: (a) => [...OPTIONS[a.purposeKey ?? "visit"].map((c): ChipDef => ({ k: `l_${c}` as CopyId, v: c, country: c })), C("c_any", "any")] },
   { id: "sponsor", q: "q_sponsor", when: null as unknown as Q["when"], chips: [C("c_sp_yes", "yes", "yes"), C("c_sp_no", "no", "no")] },
 ];
 
@@ -69,6 +72,8 @@ export class Chat {
   ans: Answers = {};
   items: Bubble[] = [];
   chips: Chip[] = [];
+  /** Set while the country question is open: the full list to tick one or more from. */
+  multi: Chip[] | null = null;
   typing = false;
   finished = false;
   started = false;
@@ -117,11 +122,11 @@ export class Chat {
       return { en: x.en, loc: x.loc, ur: COPY[c.k][1], v: c.v, yn: c.yn };
     });
   }
-  private showChips() { const q = this.current(); this.chips = !this.finished && q && this.qi >= 0 ? this.chipsFor(q) : []; }
+  private showChips() { const q = this.current(); const on = !this.finished && q && this.qi >= 0; this.multi = on && q.multi ? this.chipsFor(q) : null; this.chips = on && !q.multi ? this.chipsFor(q) : []; }
 
   private ask() {
     const q = this.current()!;
-    this.qMark = this.items.length; this.chips = []; this.typing = true; const g = this.gen; this.emit();
+    this.qMark = this.items.length; this.chips = []; this.multi = null; this.typing = true; const g = this.gen; this.emit();
     setTimeout(() => { if (g !== this.gen) return; this.typing = false; const x = this.tx(q.q, q.vars?.(this.ans)); this.say(x.en, x.loc, "ai"); this.showChips(); this.emit(); }, 450);
   }
   private advance() {
@@ -133,7 +138,7 @@ export class Chat {
   private record(q: Q, value: unknown, en: string, loc?: string) {
     this.hist.push({ qi: this.qi, count: this.qMark });
     (this.ans as Record<string, unknown>)[q.id] = value; q.onSet?.(this.ans, value);
-    this.say(en, loc, "me", this.hist.length - 1); this.chips = [];
+    this.say(en, loc, "me", this.hist.length - 1); this.chips = []; this.multi = null;
   }
 
   start() { this.startTimer(); const x = this.tx("m_start"); this.say(x.en, x.loc, "me"); this.chips = []; this.started = true; this.advance(); }
@@ -143,6 +148,29 @@ export class Chat {
     const bad = q.valid?.(c.v, this.ans);
     if (bad) { this.say(c.en, c.loc, "me"); this.chips = []; this.emit(); const g = this.gen; setTimeout(() => { if (g !== this.gen) return; const x = this.tx(bad.id, bad.vars); this.say(x.en, x.loc, "ai"); this.showChips(); this.emit(); }, 350); return; }
     this.record(q, q.chipValue ? q.chipValue(c.v) : c.v, c.en, c.loc); this.advance();
+  }
+
+  /** The ticked countries (an empty list or "any" = Aiman suggests). */
+  pickMulti(values: string[]) {
+    const q = this.current(); if (!q?.multi || !values.length) return;
+    this.startTimer();
+    const all = this.chipsFor(q), any = values.includes("any");
+    const picked = any ? [] : all.filter((c) => values.includes(c.v));
+    if (!any && !picked.length) return;
+    const src = any ? all.filter((c) => c.v === "any") : picked;
+    const sep = ", ", en = src.map((c) => c.en).join(sep);
+    const loc = src.every((c) => c.loc) ? src.map((c) => c.loc).join(sep) : undefined;
+    this.record(q, any ? [] : picked.map((c) => c.v), en, loc); this.advance();
+  }
+  private matchMulti(q: Q, raw: string): string[] | null {
+    const all = this.chipsFor(q), t = norm(raw);
+    if (/(not sure|any|suggest|you decide|pata nahi|کوئی بھی)/.test(t)) return ["any"];
+    const hits = new Set<string>();
+    for (const part of raw.split(/[,،;/+&]|and|or|اور|و/i)) {
+      const p = norm(part); if (p.length < 2) continue;
+      for (const c of all) if (c.v !== "any" && [c.en, c.loc, c.ur].some((s) => { const n = s ? norm(s) : ""; return n && (n === p || (p.length >= 3 && (n.includes(p) || p.includes(n)))); })) hits.add(c.v);
+    }
+    return hits.size ? [...hits] : null;
   }
 
   private match(q: Q, raw: string): Chip | null {
@@ -185,7 +213,8 @@ export class Chat {
       if (r === null) { mine(); later(() => { this.sayId(q.bad!); this.showChips(); }); this.emit(); return; }
       this.record(q, r, raw, raw); this.advance(); return;
     }
-    const c = this.match(q, raw);
+    if (q.multi) { const m = this.matchMulti(q, raw); if (m) { this.pickMulti(m); return; } }
+    const c = q.multi ? null : this.match(q, raw);
     if (c) { this.pick(c); return; }
     mine(); const f = this.faq(raw);
     later(() => { if (f) { this.sayId(f); this.sayId("m_back"); } else this.sayId("m_nomatch"); this.showChips(); });
@@ -205,7 +234,7 @@ export class Chat {
   canUndo() { return this.hist.length > 0 && !this.finished; }
 
   private finish() {
-    this.finished = true; this.chips = []; this.progress = 100;
+    this.finished = true; this.chips = []; this.multi = null; this.progress = 100;
     const r = assessAll(this.ans, this.funds), name = this.ans.name ?? "";
     this.sayId(r.qualified ? "m_qualified" : "m_notyet", { name, s: r.qual.length > 1 ? "s" : "" });
     this.hooks.onResult?.(this.ans); this.emit();
@@ -215,7 +244,7 @@ export class Chat {
   reset() {
     this.gen++; if (this.timer) clearInterval(this.timer); this.timer = null; this.t0 = null;
     this.ans = {}; this.hist = []; this.qi = -1; this.qMark = 0; this.finished = false; this.started = false; this.typing = false; this.secs = 0; this.progress = 0;
-    this.items = []; this.sayId("m_hello");
+    this.multi = null; this.items = []; this.sayId("m_hello");
     const x = this.tx("m_start"); this.chips = [{ en: x.en, loc: x.loc, ur: COPY.m_start[1], v: "__start" }];
     this.emit();
   }

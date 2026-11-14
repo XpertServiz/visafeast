@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
 
   const { data: st } = await db.from("aiman_settings").select("funds").eq("id", 1).maybeSingle();
   const funds = mergeFunds(st?.funds);
-  const phoneIn = p.data.step === "complete" ? cleanPhone(p.data.phone ?? "") : null;
+  const phoneIn = p.data.step === "complete" ? answers.phone ?? cleanPhone(p.data.phone ?? "") : null;
   if (p.data.step === "complete" && !phoneIn) return bad("Please enter a valid WhatsApp number.");
   // what is already saved for this lead is kept when a later call does not send it again
   let id = p.data.id, alreadySent = false, saved: { city: string | null; phone: string | null; secs: number | null } = { city: null, phone: null, secs: null };

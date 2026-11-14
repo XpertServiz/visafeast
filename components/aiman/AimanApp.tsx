@@ -6,11 +6,11 @@ import type { FundsConfig } from "@/config/aiman";
 import { waLink } from "@/config/site";
 import { Chat, type Bubble, type Chip } from "@/lib/aiman/chat";
 import { COPY, type CopyId } from "@/lib/aiman/copy";
-import { cleanPhone } from "@/lib/aiman/phone";
 import type { HeroVideo } from "@/lib/types";
 import { track } from "@/lib/track-client";
 import { AimanVideo } from "./AimanVideo";
 import { VideoGrid } from "./VideoGrid";
+import { CountryPicker } from "./CountryPicker";
 
 const LOC_FONT: Record<string, string> = { ur: "var(--urdu)", ar: "var(--arab)", fa: "var(--arab)", hi: "var(--f-devanagari), var(--body)" };
 const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
@@ -22,13 +22,13 @@ export function AimanApp({ country, lang: locCode, dict, funds, whatsapp, videos
   const [, render] = useReducer((n: number) => n + 1, 0);
   const leadId = useRef<string | null>(null);
   const utm = useRef<Record<string, string>>({});
-  const hooks = useRef({ onChange: () => render(), onStart: () => track("chat_started", { page: "talk-with-aiman" }), onResult: (a: unknown) => void savePartial(a) });
-  const [chat] = useState(() => new Chat(dict, funds, { onChange: () => hooks.current.onChange(), onStart: () => hooks.current.onStart(), onResult: (a) => hooks.current.onResult(a) }));
+  const hooks = useRef({ onChange: () => render(), onStart: () => track("chat_started", { page: "talk-with-aiman" }), onResult: () => void submitLead() });
+  const [chat] = useState(() => new Chat(dict, funds, { onChange: () => hooks.current.onChange(), onStart: () => hooks.current.onStart(), onResult: () => hooks.current.onResult() }));
   const threadRef = useRef<HTMLDivElement>(null);
   const chatRef = useRef<HTMLElement>(null);
   const [text, setText] = useState("");
-  const [phone, setPhone] = useState(""); const [city, setCity] = useState(""); const [trap, setTrap] = useState("");
-  const [send, setSend] = useState<Send>("idle"); const [err, setErr] = useState<string | null>(null);
+  const [trap, setTrap] = useState("");
+  const [send, setSend] = useState<Send>("idle");
   const hasLoc = Boolean(locCode) && Object.keys(dict).length > 0;
   const rtl = Boolean(locCode && AIMAN_RTL.includes(locCode));
   const dirAttr = rtl ? "rtl" : "ltr";
@@ -48,22 +48,17 @@ export function AimanApp({ country, lang: locCode, dict, funds, whatsapp, videos
     const r = await fetch("/api/aiman/lead", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...body, country, lang: locCode, utm: utm.current, website: trap }) });
     return (await r.json().catch(() => ({}))) as { ok?: boolean; id?: string; error?: string };
   }
-  async function savePartial(a: unknown) {
+  /** The lead is sent by itself the moment the result shows: the visitor already gave their number and email at the start. Editing an answer updates the same lead. */
+  async function submitLead() {
     track("result_shown", { page: "talk-with-aiman" });
-    try { const j = await api({ step: "partial", id: leadId.current ?? undefined, answers: a }); if (j.ok && j.id) leadId.current = j.id; } catch { /* the form still works */ }
-  }
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
-    const p = cleanPhone(phone);
-    if (!p) { setErr("u_phone_err"); return; }
-    setErr(null); setSend("sending");
+    setSend("sending");
     try {
-      const j = await api({ step: "complete", id: leadId.current ?? undefined, answers: chat.ans, phone: p, city: city.trim().slice(0, 60), secs: chat.elapsed() });
+      const j = await api({ step: "complete", id: leadId.current ?? undefined, answers: chat.ans, secs: chat.elapsed() });
       if (!j.ok) throw new Error(j.error);
       if (j.id) leadId.current = j.id;
-      setSend("sent"); chat.thank(); track("lead_submitted", { page: "talk-with-aiman" });
+      setSend("sent"); track("lead_submitted", { page: "talk-with-aiman" });
       (window as unknown as { fbq?: (...a: unknown[]) => void }).fbq?.("track", "Lead");
-    } catch { setSend("error"); setErr("u_fail"); }
+    } catch { setSend("error"); }
   }
 
   const tx = (id: CopyId, vars?: Record<string, string | number>) => chat.tx(id, vars);
@@ -123,7 +118,7 @@ export function AimanApp({ country, lang: locCode, dict, funds, whatsapp, videos
           <div className="chat-head">
             <b><Bi en={COPY.u_title[0]} loc={dict.u_title} /></b>
             <span className="chead-r"><span className="timer" aria-hidden>⏱ {mmss(chat.secs)}</span>
-              <button type="button" className="resetbtn" onClick={() => { chat.reset(); setSend("idle"); setErr(null); leadId.current = null; }}>↻ {plain("u_reset")}</button></span>
+              <button type="button" className="resetbtn" onClick={() => { chat.reset(); setSend("idle"); leadId.current = null; }}>↻ {plain("u_reset")}</button></span>
           </div>
           <div className="progress" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={chat.progress}><i style={{ width: `${chat.progress}%` }} /></div>
           <div className="hint"><Bi en={COPY.u_hint[0]} loc={dict.u_hint} /></div>
@@ -131,6 +126,7 @@ export function AimanApp({ country, lang: locCode, dict, funds, whatsapp, videos
             {chat.items.map(bubble)}
             {chat.typing && <div className="msg ai typing" aria-label="Aiman is typing"><i /><i /><i /></div>}
           </div>
+          {chat.multi && <CountryPicker key={chat.items.length} options={chat.multi} L={L} dir={dirAttr} hasLoc={hasLoc} text={{ open: plain("u_pick"), hint: plain("u_pick_hint"), done: plain("u_done"), doneN: plain("u_done_n") }} onDone={(v) => chat.pickMulti(v)} />}
           <div className="chips">
             {chat.chips.map(chipBtn)}
             {chat.canUndo() && chat.chips.length > 0 && <button type="button" className="undo" onClick={() => chat.undo()}>{L && dict.m_undo ? dict.m_undo : COPY.m_undo[0]}</button>}
@@ -141,6 +137,7 @@ export function AimanApp({ country, lang: locCode, dict, funds, whatsapp, videos
             <button type="submit">{plain("u_send_btn")}</button>
           </form>
 
+          <input type="text" name="website" value={trap} onChange={(e) => setTrap(e.target.value)} tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }} />
           {r && (
             <div className="result" id="result">
               <div className={`badge ${r.qualified ? "ok" : "plan"}`}>{r.qualified ? "✅ " : "🟡 "}<BiId id={r.qualified ? "u_ok" : "u_plan"} /></div>
@@ -151,20 +148,12 @@ export function AimanApp({ country, lang: locCode, dict, funds, whatsapp, videos
                   {r.others.length > 0 && (() => { const x = goodLoc(r.others.map((o) => o.program).join(" · ")); return <p className="good"><Bi en={x.en} loc={x.loc} /></p>; })()}
                 </>}
               <p className="sub" style={{ marginTop: 8 }}><BiId id="u_final" /></p>
-              {send !== "sent" ? (
-                <form className="leadform" onSubmit={submit} noValidate>
-                  <input type="text" name="website" value={trap} onChange={(e) => setTrap(e.target.value)} tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }} />
-                  <input inputMode="tel" autoComplete="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder={plain("u_phone")} aria-label={plain("u_phone")} dir="ltr" />
-                  <input autoComplete="address-level2" value={city} onChange={(e) => setCity(e.target.value)} placeholder={plain("u_city")} aria-label={plain("u_city")} maxLength={60} />
-                  {err && <div className="err" role="alert"><BiId id={err as CopyId} /></div>}
-                  <button type="submit" className="cta" disabled={send === "sending"}><BiId id={send === "sending" ? "u_sending" : "u_send"} /></button>
-                </form>
-              ) : (
-                <div className="leadform">
-                  <p className="good"><BiId id="m_thanks" /></p>
-                  <a className="cta" style={{ textAlign: "center", textDecoration: "none" }} href={waLink(`Hi Visafeast, I'm ${chat.ans.name}. I just finished the Aiman assessment.`, whatsapp)} rel="noopener"><BiId id="u_whatsapp" /></a>
-                </div>
-              )}
+              <div className="leadform">
+                {send === "sending" && <p className="sub" role="status"><BiId id="u_sending_lead" /></p>}
+                {send === "sent" && <p className="good"><BiId id="m_thanks" /></p>}
+                {send === "error" && <><p className="err" role="alert"><BiId id="u_fail" /></p><button type="button" className="cta" onClick={() => void submitLead()}><BiId id="u_retry" /></button></>}
+                <a className="cta" style={{ textAlign: "center", textDecoration: "none" }} href={waLink(`Hi Visafeast, I'm ${chat.ans.name}. I just finished the Aiman assessment.`, whatsapp)} rel="noopener"><BiId id="u_whatsapp" /></a>
+              </div>
             </div>
           )}
         </section>

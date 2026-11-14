@@ -1,5 +1,5 @@
 // English-only text for the admin panel and the email to the owner (the brief: admin emails and the admin panel are always English).
-import { LABEL, type FundsConfig } from "@/config/aiman";
+import { LABEL, isCountry, type FundsConfig } from "@/config/aiman";
 import { COPY } from "./copy";
 import { assessAll, childrenNum, membersNum, needFor, type Answers, type Reason } from "./assess";
 
@@ -19,9 +19,10 @@ export interface LeadText {
 export function leadText(a: Answers, funds: FundsConfig, meta: LeadMeta = {}): LeadText {
   const r = assessAll(a, funds), n = membersNum(a), c = childrenNum(a), bal = a.balNum ?? 0, name = a.name ?? "";
   const purposeKey = a.purposeKey ?? "visit", purposeLabel = PURPOSE[purposeKey];
-  const target = a.country === "any" || !a.country ? "open to suggestions" : LABEL[a.country as keyof typeof LABEL]?.[0] ?? a.country;
+  const chosen = (a.countries ?? []).filter(isCountry);
+  const target = chosen.length ? chosen.map((c) => LABEL[c][0]).join(", ") : "open to suggestions";
   const need = r.best[0]?.need ?? 0, perPerson = Math.round((bal / n) * 10) / 10;
-  const phone = meta.phone || "-", city = meta.city || "-", secs = meta.secs ?? 0;
+  const phone = meta.phone || a.phone || "-", city = meta.city || "-", secs = meta.secs ?? 0;
   const gaps = [...new Set(r.best.flatMap((x) => x.hard.map((h) => reasonEn(h).split(":")[0].split(" ").slice(0, 3).join(" "))))];
   const programs = (r.qualified ? r.qual : r.best).map((x) => x.program);
   const income = a.job === "salaried" ? `Salaried, salary ${a.salmode === "bank" ? "paid into bank" : "paid in cash"}`
@@ -38,11 +39,11 @@ export function leadText(a: Answers, funds: FundsConfig, meta: LeadMeta = {}): L
     ? `Qualifies for: ${programs.join("; ")}. ${money} Strengthen: ${[...new Set(r.qual.flatMap((x) => x.soft.map((s) => reasonEn(s, true))))].slice(0, 3).join(" ") || "file is in good shape"} Recommended action: call within 24 hours.`
     : `Not eligible yet for ${programs.join("; ")}. Gaps: ${r.best.flatMap((x) => x.hard.map((h) => reasonEn(h))).join(" ")} ${money} Suggested plan: ${r.best.flatMap((x) => x.hard.map((h) => reasonEn(h, true))).join(" ")} Handle with a warm, plan-first call — client has been told the case is fixable.${r.others.length ? " Note: profile does qualify for " + r.others.map((x) => x.program).join("; ") + "." : ""}`;
   const rows: [string, string][] = [
-    ["Name", name], ["WhatsApp", phone], ["City", city], ["Age / Education", `${a.age} · ${EDU[a.edu ?? "low"]}`], ["Occupation", income], ["Goal", `${purposeLabel} · ${target}`], ["Family", family],
+    ["Name", name], ["WhatsApp", phone], ["Email", a.email ?? "-"], ["City", city], ["Age / Education", `${a.age} · ${EDU[a.edu ?? "low"]}`], ["Occupation", income], ["Goal", `${purposeLabel} · ${target}`], ["Family", family],
     ["Balance", `PKR ${bal} lacs (${perPerson}/person)`], ["Required (indicative)", `~PKR ${need} lacs`], ["Statement pattern", a.deposits === "steady" ? "Steady" : "Recent large deposits"],
     ["Travel / refusal", `${TRAVEL[a.travel ?? "none"]} · ${a.refusal === "refused" ? "Refused before" : "Never refused"}`],
   ];
-  return { qualified: r.qualified, status: r.qualified ? "qualified" : "not_qualified", subject, p1, p2, program: programs[0] ?? "", programs, rows, perPerson, need, target, purposeLabel, gaps, name, phone: meta.phone ?? null, city: meta.city ?? null };
+  return { qualified: r.qualified, status: r.qualified ? "qualified" : "not_qualified", subject, p1, p2, program: programs[0] ?? "", programs, rows, perPerson, need, target, purposeLabel, gaps, name, phone: meta.phone ?? a.phone ?? null, city: meta.city ?? null };
 }
 
 const h = (s: unknown) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));

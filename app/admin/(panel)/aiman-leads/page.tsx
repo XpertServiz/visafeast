@@ -14,7 +14,7 @@ const ISO = /^\d{4}-\d{2}-\d{2}$/;
 export function leadQuery(f: LeadFilters, columns: string, limit: number) {
   let q = db().from("aiman_leads").select(columns).order("created_at", { ascending: false }).limit(limit);
   if (f.status === "qualified" || f.status === "not_qualified") q = q.eq("status", f.status);
-  if (f.country) q = q.eq("target_country", f.country.slice(0, 40));
+  if (f.country) { const t = f.country.replace(/[^\p{L}\p{N} ]/gu, "").slice(0, 40); if (t) q = q.ilike("target_country", `%${t}%`); }
   if (f.purpose && ["visit", "study", "work", "immigration"].includes(f.purpose)) q = q.eq("purpose", f.purpose);
   if (f.from && ISO.test(f.from)) q = q.gte("created_at", `${f.from}T00:00:00Z`);
   if (f.to && ISO.test(f.to)) q = q.lte("created_at", `${f.to}T23:59:59Z`);

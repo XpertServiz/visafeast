@@ -1,6 +1,7 @@
 // The eligibility engine of "Talk with Aiman" (ported from the approved prototype). Pure functions: the browser uses them to show the result,
 // and the server runs the SAME code on the saved answers to decide the lead's status, so the browser's word is never trusted.
-import { OPTIONS, PROGRAM, STRICT, DEFAULT_FUNDS, type CountryId, type FundsConfig, type Purpose } from "@/config/aiman";
+import { OPTIONS, programName, STRICT, DEFAULT_FUNDS, isCountry, type CountryId, type FundsConfig, type Purpose } from "@/config/aiman";
+import { cleanPhone } from "./phone";
 import type { CopyId } from "./copy";
 
 export interface Answers {
@@ -9,7 +10,7 @@ export interface Answers {
   purpose?: "visit" | "study" | "work" | "pr"; purposeKey?: Purpose; family?: "alone" | "family";
   members?: string; membersExact?: number; children?: string; childrenExact?: number; youngest?: "u2" | "kid" | "teen";
   english?: "ok" | "low" | "none"; exp?: "lt2" | "2to5" | "5plus"; offer?: "yes" | "no"; balNum?: number;
-  deposits?: "steady" | "big"; country?: string; sponsor?: "yes" | "no";
+  deposits?: "steady" | "big"; countries?: string[]; sponsor?: "yes" | "no"; phone?: string; email?: string;
 }
 export const PURPOSE_KEY: Record<string, Purpose> = { visit: "visit", study: "study", work: "work", pr: "immigration" };
 
@@ -32,8 +33,8 @@ export function needFor(c: CountryId, p: Purpose, a: Answers, f: FundsConfig = D
 
 /** True when the balance is below what every candidate country expects, so Aiman asks about a sponsor. */
 export function needSponsorQ(a: Answers, f: FundsConfig = DEFAULT_FUNDS): boolean {
-  if (!a.purposeKey || a.balNum === undefined || !a.country) return false;
-  const ids = a.country !== "any" ? [a.country as CountryId] : OPTIONS[a.purposeKey];
+  if (!a.purposeKey || a.balNum === undefined || !a.countries) return false;
+  const ids = a.countries.length ? (a.countries as CountryId[]) : OPTIONS[a.purposeKey];
   return ids.every((c) => (a.balNum || 0) < needFor(c, a.purposeKey!, a, f));
 }
 
@@ -68,15 +69,15 @@ export function evaluate(c: CountryId, p: Purpose, a: Answers, f: FundsConfig = 
     if (a.english !== "ok") hard.push({ r: "r_pr_eng", f: "f_pr_eng" });
     if (a.exp === "lt2") soft.push({ r: "r_pr_exp", f: "f_pr_exp" });
   }
-  return { c, p, program: PROGRAM[p][c] ?? c, hard, soft, need, ok: hard.length === 0 };
+  return { c, p, program: programName(p, c), hard, soft, need, ok: hard.length === 0 };
 }
 
 export function assessAll(a: Answers, f: FundsConfig = DEFAULT_FUNDS): Assessment {
-  const p = a.purposeKey ?? "visit", ids = OPTIONS[p], chosen = a.country && a.country !== "any" ? a.country : null;
+  const p = a.purposeKey ?? "visit", ids = OPTIONS[p], chosen = (a.countries ?? []).filter(isCountry);
   const all = ids.map((id) => evaluate(id, p, a, f));
-  const focus = chosen ? all.filter((x) => x.c === chosen) : all;
+  const focus = chosen.length ? all.filter((x) => chosen.includes(x.c)) : all;
   const qual = focus.filter((x) => x.ok);
-  const others = chosen ? all.filter((x) => x.ok && x.c !== chosen) : [];
+  const others = chosen.length ? all.filter((x) => x.ok && !chosen.includes(x.c)) : [];
   const best = qual.length ? qual : [...focus].sort((x, y) => x.hard.length - y.hard.length).slice(0, 1);
   return { all, focus, qual, others, best, qualified: qual.length > 0 };
 }
@@ -93,8 +94,12 @@ export function cleanAnswers(raw: unknown): Answers | null {
   const bal = typeof r.balNum === "number" && Number.isFinite(r.balNum) && r.balNum >= 0 && r.balNum <= 100000 ? r.balNum : undefined;
   if (!purpose || bal === undefined) return null;
   const purposeKey = PURPOSE_KEY[purpose];
-  const country = r.country === "any" ? "any" : (OPTIONS[purposeKey] as string[]).includes(String(r.country)) ? String(r.country) : undefined;
-  if (!country) return null;
+  // one or many countries (an empty list = "not sure"); an old single `country` value is still understood
+  const rawList = Array.isArray(r.countries) ? r.countries : r.country && r.country !== "any" ? [r.country] : [];
+  if (!rawList.every((c) => typeof c === "string" && isCountry(c)) || rawList.length > 25) return null;
+  const countries = [...new Set(rawList as string[])];
+  const phone = typeof r.phone === "string" && r.phone ? cleanPhone(r.phone) ?? undefined : undefined;
+  const email = typeof r.email === "string" && /^[^\s@]{1,64}@[^\s@]{1,200}\.[^\s@]{2,}$/.test(r.email.trim()) ? r.email.trim().toLowerCase().slice(0, 200) : undefined;
   const a: Answers = {
     name, age: pick(r.age, ["18–25", "26–35", "36–44", "45+"] as const), edu: pick(r.edu, ["low", "bach", "mast"] as const), job: pick(r.job, ["salaried", "business", "freelancer", "student", "none"] as const),
     salmode: pick(r.salmode, ["bank", "cash"] as const), bizreg: pick(r.bizreg, ["reg", "unreg"] as const), frmode: pick(r.frmode, ["bank", "cash"] as const),
@@ -102,7 +107,7 @@ export function cleanAnswers(raw: unknown): Answers | null {
     family: pick(r.family, ["alone", "family"] as const), members: pick(r.members, ["2", "3", "4", "5", "6", "7", "8", "9+"] as const), membersExact: int(r.membersExact, 9, 40),
     children: pick(r.children, ["0", "1", "2", "3", "4", "5", "6+"] as const), childrenExact: int(r.childrenExact, 6, 40), youngest: pick(r.youngest, ["u2", "kid", "teen"] as const),
     english: pick(r.english, ["ok", "low", "none"] as const), exp: pick(r.exp, ["lt2", "2to5", "5plus"] as const), offer: pick(r.offer, ["yes", "no"] as const),
-    balNum: bal, deposits: pick(r.deposits, ["steady", "big"] as const), country, sponsor: pick(r.sponsor, ["yes", "no"] as const),
+    balNum: bal, deposits: pick(r.deposits, ["steady", "big"] as const), countries, phone, email, sponsor: pick(r.sponsor, ["yes", "no"] as const),
   };
   if (!a.age || !a.edu || !a.job || !a.travel || !a.refusal || !a.family || !a.deposits) return null;
   if (a.family === "family" && (!a.members || (a.members === "9+" && !a.membersExact))) return null;
