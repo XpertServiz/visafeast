@@ -7,8 +7,8 @@ import type { Locale } from "@/config/locales";
 import { Turnstile, useBotCheck } from "./Turnstile";
 
 /** `compact`: the homepage version from the approved prototype (one column for name and number, no message box). */
-export function LeadForm({ locale, countries, defaultService, defaultCountry, dark = true, source = "enquiry", compact = false }: {
-  locale: Locale; countries: string[]; defaultService?: "visit" | "study" | "immigration" | "work"; defaultCountry?: string; dark?: boolean; source?: string; compact?: boolean;
+export function LeadForm({ locale, countries, defaultService, defaultCountry, dark = true, source = "enquiry", compact = false, defaultMessage }: {
+  locale: Locale; countries: string[]; defaultService?: "visit" | "study" | "immigration" | "work"; defaultCountry?: string; dark?: boolean; source?: string; compact?: boolean; defaultMessage?: string;
 }) {
   const d = useDict();
   const f = d.form, b = d.book;
@@ -57,7 +57,7 @@ export function LeadForm({ locale, countries, defaultService, defaultCountry, da
       </div>
       <div><label className="lbl" style={lbl} htmlFor="lf-ref">{f.refused}</label>
         <select id="lf-ref" className={cls} name="prior_refusal" defaultValue="no"><option value="no">{f.no}</option><option value="once">{f.once}</option><option value="more">{f.more}</option></select></div>
-      {!compact && <div><label className="lbl" style={lbl} htmlFor="lf-msg">{f.message}</label><textarea id="lf-msg" className={cls} name="message" rows={3} maxLength={1500} /></div>}
+      {!compact && <div><label className="lbl" style={lbl} htmlFor="lf-msg">{f.message}</label><textarea id="lf-msg" className={cls} name="message" rows={3} maxLength={1500} defaultValue={defaultMessage} /></div>}
       <Turnstile bot={bot} />
       {err && <p role="alert" style={{ color: dark ? "var(--amber)" : "var(--bad)", margin: 0 }}>{err}</p>}
       <button className="btn btn-primary" type="submit" disabled={state === "busy"} style={compact ? { marginTop: 6, padding: "14px 22px" } : undefined}>{!compact && <Send size={18} aria-hidden />}{b.send}</button>

@@ -17,6 +17,8 @@ import { VideoStrip } from "@/components/home/VideoStrip";
 import { VisaTabs } from "@/components/home/VisaTabs";
 import { Eligibility } from "@/components/tools/Eligibility";
 import { Decoder } from "@/components/tools/Decoder";
+import { getRealityChecks } from "@/lib/server/reality";
+import { VerdictBadge } from "@/components/reality/bits";
 import { LeadForm } from "@/components/tools/LeadForm";
 import { ReviewForm } from "@/components/tools/ReviewForm";
 
@@ -32,9 +34,10 @@ const H2 = ({ children, mb = 28 }: { children: React.ReactNode; mb?: number }) =
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale, t } = await pageCtx(params);
-  const [settings, visit, study, videos, reviews, news, posts, faqs] = await Promise.all([
-    getSettings(), getCountriesFor(locale, "visit"), getCountriesFor(locale, "study"), getVideos(), getReviews(), getNews({ limit: 2 }), getPostsFor(locale, "digest"), getFaqsFor(locale, null),
+  const [settings, visit, study, videos, reviews, news, posts, faqs, allChecks] = await Promise.all([
+    getSettings(), getCountriesFor(locale, "visit"), getCountriesFor(locale, "study"), getVideos(), getReviews(), getNews({ limit: 2 }), getPostsFor(locale, "digest"), getFaqsFor(locale, null), getRealityChecks(),
   ]);
+  const latestChecks = allChecks.slice(0, 3);
   const L = (p: string) => lp(locale, p);
   const book = L("/#book");
   const whatsapp = waLink("Hi Visafeast, I'd like to know about a visa.", settings.whatsapp_number);
@@ -232,6 +235,25 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <a className="btn btn-outline" href={book} style={pill}><Icon name="envelope" size={22} />{t("cta.enquiryBtn")}</a>
         </div>
       </section>
+
+      {/* VISA REALITY CHECK: the 3 latest fact-checks */}
+      {latestChecks.length > 0 && (
+        <section id="reality-check" className="sec" style={{ paddingBlock: "64px 24px" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "end", justifyContent: "space-between", gap: 16, marginBottom: 28 }}>
+            <h2 className="disp" style={{ margin: 0, fontSize: 40, fontWeight: 600 }}>Visa Reality Check</h2>
+            <Link prefetch={false} href={L("/reality-check")} style={{ fontWeight: 600, textDecoration: "underline" }}>See all fact-checks</Link>
+          </div>
+          <div className="g3">
+            {latestChecks.map((c) => (
+              <Link key={c.slug} prefetch={false} href={L(`/reality-check/${c.slug}`)} className="card lift" style={{ padding: 22, textDecoration: "none", color: "var(--ink)", display: "flex", flexDirection: "column", gap: 10 }}>
+                <span><VerdictBadge v={c.verdict} /></span>
+                <b style={{ lineHeight: 1.4 }}>&ldquo;{c.claim}&rdquo;</b>
+                <span style={{ color: "var(--muted)", fontSize: 15, lineHeight: 1.55 }}>{c.summary}</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* NEWS */}
       <section id="news" className="sec" style={{ paddingBlock: "64px 24px" }}>

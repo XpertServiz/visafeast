@@ -5,6 +5,7 @@ import { getCountries, getPosts, getTranslationIndex } from "@/lib/data";
 import { seoReady } from "@/lib/i18n";
 import { countrySource, postSource, sourceHash } from "@/lib/translate";
 import { IMMIGRATION_GUIDES, WORK_GUIDES } from "@/lib/guides";
+import { getRealityChecks } from "@/lib/server/reality";
 
 const STATIC: [string, string][] = [["/", "home"], ["/visit-visa", "hubVisit"], ["/study-visa", "hubStudy"], ["/immigration", "hubImm"], ["/work-permit", "hubWork"], ["/news", "news"], ["/reviews", "reviews"], ["/reviews/write", "reviewsWrite"], ["/about", "about"], ["/contact", "contact"], ["/book", "book"], ["/visa-consultant-karachi", "karachi"], ["/tools/eligibility", "eligibility"], ["/tools/refusal-decoder", "decoder"], ["/tools/fee-estimator", "feeEstimator"], ["/tools/checklists", "checklists"], ["/privacy", "privacy"], ["/terms", "terms"], ["/disclaimer", "disclaimer"]];
 const KIND_BASE = { visit: "visit-visa", study: "study-visa", immigration: "immigration", work: "work-permit" } as const;
@@ -14,7 +15,7 @@ const ALL = LOCALES.map((l) => l.code);
 
 /** Every public page in every language that has its text. Each entry also lists its versions in the other languages. */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [countries, posts, index] = await Promise.all([getCountries(), getPosts(), getTranslationIndex()]);
+  const [countries, posts, index, checks] = await Promise.all([getCountries(), getPosts(), getTranslationIndex(), getRealityChecks()]);
   const u = (p: string) => `${siteConfig.url}${p === "/" ? "" : p}`;
   const entries = (path: string, locales: Locale[], lastModified: Date, priority: number): MetadataRoute.Sitemap => {
     const languages = { ...Object.fromEntries(locales.map((l) => [localeMeta(l).hreflang, u(lp(l, path))])), "x-default": u(path) };
@@ -29,6 +30,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...countries.filter((c) => c.is_published).flatMap((c) => entries(`/${KIND_BASE[c.kind]}/${c.slug}`, translated("country", c.id, sourceHash(countrySource(c)), c.ur_status === "approved" ? ["ur"] : []), new Date(c.updated_at), 0.9)),
     ...IMMIGRATION_GUIDES.flatMap((g) => entries(`/immigration/${g.slug}`, ["en"], new Date(g.checked), 0.8)),
     ...WORK_GUIDES.flatMap((g) => entries(`/work-permit/${g.slug}`, ["en"], new Date(g.checked), 0.8)),
+    ...entries("/reality-check", ["en"], new Date(checks[0]?.updated_at ?? Date.now()), 0.8),
+    ...entries("/reality-check/check-an-offer", ["en"], new Date(), 0.6),
+    ...checks.flatMap((c) => entries(`/reality-check/${c.slug}`, ["en"], new Date(c.updated_at), 0.7)),
     ...posts.flatMap((p) => entries(`/news/${p.slug}`, translated("post", p.id, sourceHash(postSource(p))), new Date(p.published_at ?? Date.now()), 0.6)),
   ];
 }

@@ -31,6 +31,7 @@ export async function Footer({ locale, settings }: { locale: Locale; settings: S
         <div style={col}>
           <p className="mono" style={h}>{t("footer.immigration")}</p>
           {([[t("ui.immCanada"), "/immigration/immigrate-to-canada-from-pakistan"], [t("ui.immAustralia"), "/immigration/immigrate-to-australia-from-pakistan"], [t("ui.immGermany"), "/work-permit/germany-work-visa-from-pakistan"], [t("ui.immUk"), "/work-permit/uk-work-visa-from-pakistan"], [t("nav.work"), "/work-permit"]] as const).map(([x, href]) => <Link prefetch={false} key={href} href={lp(locale, href)}>{x}</Link>)}
+          <Link prefetch={false} href={lp(locale, "/reality-check")}>Visa Reality Check</Link>
         </div>
         <div style={col}>
           <p className="mono" style={h}>{t("footer.contact")}</p>
